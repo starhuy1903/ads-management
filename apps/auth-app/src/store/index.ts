@@ -4,14 +4,19 @@ import {
   combineReducers,
   configureStore,
 } from '@reduxjs/toolkit';
-import { userSlice } from './userSlice';
+import { userSlice } from './slice/userSlice';
+import { apiSlice } from './api/baseApiSlice';
 
 const combinedReducer = combineReducers({
   user: userSlice.reducer,
+  [apiSlice.reducerPath]: apiSlice.reducer,
 });
 
 const store = configureStore({
   reducer: combinedReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(apiSlice.middleware),
+  devTools: true,
 });
 
 export type AppDispatch = typeof store.dispatch;
