@@ -4,8 +4,6 @@ import { useLoginMutation } from '../../store/api/userApiSlice';
 function Login() {
   const [requestLogin, { isLoading }] = useLoginMutation();
 
-  // console.log({ option1 });
-
   const handleSubmit = async () => {
     try {
       const res = await requestLogin({
