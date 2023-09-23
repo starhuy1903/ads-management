@@ -1,8 +1,10 @@
-import { Button } from '@mui/material';
+import { Box, Button, CircularProgress } from '@mui/material';
 import { useLoginMutation } from '../../store/api/userApiSlice';
 
 function Login() {
-  const [requestLogin] = useLoginMutation();
+  const [requestLogin, { isLoading }] = useLoginMutation();
+
+  // console.log({ option1 });
 
   const handleSubmit = async () => {
     try {
@@ -15,6 +17,14 @@ function Login() {
       console.log(err);
     }
   };
+
+  if (isLoading) {
+    return (
+      <Box sx={{ display: 'flex' }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
   return (
     <div>
       <Button variant="contained" onClick={handleSubmit}>
