@@ -7,7 +7,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { SigninDto, SignupDto } from './dto';
+import { SigninDto, SignupDto, ForgotPasswordDto, ResetPasswordDto } from './dto';
 import { GetUser } from './decorator';
 import { JwtGuard, JwtRefreshGuard, JwtResetGuard } from './guard';
 
@@ -45,8 +45,8 @@ export class AuthController {
 
   @Post('forgot-password')
   @HttpCode(HttpStatus.OK)
-  forgotPassword(@Body('email') email: string) {
-    return this.authService.forgotPassword(email);
+  forgotPassword(@Body() dto: ForgotPasswordDto) {
+    return this.authService.forgotPassword(dto);
   }
 
   @UseGuards(JwtResetGuard)
@@ -54,8 +54,8 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   resetPassword(
     @GetUser('sub') userId: number,
-    @Body('newPassword') newPassword: string
+    @Body() dto: ResetPasswordDto
   ) {
-    return this.authService.resetPassword(userId, newPassword);
+    return this.authService.resetPassword(userId, dto);
   }
 }

@@ -2,7 +2,7 @@ import { ForbiddenException, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
-import { SignupDto, SigninDto } from './dto';
+import { SignupDto, SigninDto, ForgotPasswordDto, ResetPasswordDto } from './dto';
 import * as bcrypt from 'bcrypt';
 import { Tokens } from './types';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
@@ -111,11 +111,11 @@ export class AuthService {
     };
   }
 
-  async forgotPassword(email: string) {
+  async forgotPassword(dto: ForgotPasswordDto) {
     // Find user by email
     const user = await this.prisma.user.findUnique({
       where: {
-        email,
+        email: dto.email,
       },
     });
 
@@ -128,7 +128,7 @@ export class AuthService {
     const resetToken = await this.genToken(
       {
         sub: user.id,
-        email,
+        email: dto.email,
       },
       '10m'
     );
@@ -143,9 +143,9 @@ export class AuthService {
     };
   }
 
-  async resetPassword(userId: number, newPassword: string) {
+  async resetPassword(userId: number, dto: ResetPasswordDto) {
     // Hash the password
-    const hash = await this.hashData(newPassword);
+    const hash = await this.hashData(dto.newPassword);
 
     // Update password in db
     try {
