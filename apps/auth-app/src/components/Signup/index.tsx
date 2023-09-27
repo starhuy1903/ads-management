@@ -1,7 +1,6 @@
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-function Login() {
+function Signup() {
   // const navigate = useNavigate();
   // const dispatch = useDispatch();
   // const [email, setEmail] = useState('');
@@ -37,18 +36,36 @@ function Login() {
         <div className="bg-gray-100 px-12 py-20 rounded-lg">
           <div className="text-center">
             <h1 className="text-3xl font-bold text-[#101828] mb-2">
-              Log in to your account
+              Create an account
             </h1>
-            <span>Welcome back! Please enter your details.</span>
+            <span>Start your 30-day free trial.</span>
           </div>
 
           <form className="mt-4 space-y-4 md:space-y-6" action="#">
             <div>
               <label
+                htmlFor="name"
+                className="mb-2 text-sm font-semibold text-gray-800"
+              >
+                Name<span className="text-xl text-red-500">*</span>
+              </label>
+              <input
+                type="name"
+                name="name"
+                id="name"
+                className="font-sans bg-gray-50 border border-gray-400 text-gray-900 py-2 px-3 rounded-lg w-full"
+                required
+                placeholder="Enter your name"
+                autoComplete="off"
+                // onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+            <div>
+              <label
                 htmlFor="email"
                 className="mb-2 text-sm font-semibold text-gray-800"
               >
-                Email
+                Email<span className="text-xl text-red-500">*</span>
               </label>
               <input
                 type="email"
@@ -66,7 +83,7 @@ function Login() {
                 htmlFor="password"
                 className="mb-2 text-sm font-semibold text-gray-800"
               >
-                Password
+                Password<span className="text-xl text-red-500">*</span>
               </label>
               <input
                 type="password"
@@ -74,48 +91,28 @@ function Login() {
                 id="password"
                 className="font-sans bg-gray-50 border border-gray-400 text-gray-900 py-2 px-3 rounded-lg w-full"
                 required
-                placeholder="********"
+                placeholder="Create a password"
                 autoComplete="off"
                 // onChange={(e) => setPassword(e.target.value)}
               />
+              <p className="text-sm mt-2">Must be at least 8 characters.</p>
             </div>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center">
-                <div className="h-5">
-                  <input
-                    id="remember"
-                    aria-describedby="remember"
-                    type="checkbox"
-                    className="w-4 h-4 border border-gray-300 rounded bg-gray-50"
-                  />
-                </div>
-                <div className="ml-2 text-sm">
-                  <label htmlFor="remember" className="text-black ">
-                    Remember for 30 days
-                  </label>
-                </div>
-              </div>
-              <Link
-                to="/forgetPassword"
-                className="text-sm font-bold text-[#7F56D9] hover:underline dark:text-primary-500"
-              >
-                Forgot password?
-              </Link>
-            </div>
+
             <button
               type="submit"
               className="w-full text-white bg-[#7F56D9] py-2 rounded-lg font-semibold"
               // onClick={handleSubmit}
             >
-              Sign in
+              Get started
             </button>
-            <p className="text-sm font-light  text-center">
-              Don’t have an account yet?{' '}
+
+            <p className="text-sm font-light text-center">
+              Already have an account?{' '}
               <Link
-                to="/signup"
+                to="/signp"
                 className="font-semibold text-[#7F56D9] hover:underline"
               >
-                Sign up
+                Login
               </Link>
             </p>
           </form>
@@ -136,4 +133,4 @@ function Login() {
     </>
   );
 }
-export default Login;
+export default Signup;
