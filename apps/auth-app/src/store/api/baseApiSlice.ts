@@ -5,9 +5,9 @@ import {
   createApi,
   fetchBaseQuery,
 } from '@reduxjs/toolkit/query/react';
-import { logOut } from '../slice/userSlice';
-import { RootState } from '..';
 import { Mutex } from 'async-mutex';
+import { RootState } from '..';
+import { logOut } from '../slice/userSlice';
 
 const mutex = new Mutex();
 
@@ -41,7 +41,7 @@ const baseQueryWithReAuth: BaseQueryFn<
         const refreshResult = await baseQuery(
           { credentials: 'include', url: 'refresh' },
           api,
-          extraOptions
+          extraOptions,
         );
 
         if (refreshResult.data) {

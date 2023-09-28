@@ -4,9 +4,9 @@ import {
   combineReducers,
   configureStore,
 } from '@reduxjs/toolkit';
-import { userSlice } from './slice/userSlice';
-import { apiSlice } from './api/baseApiSlice';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
+import { apiSlice } from './api/baseApiSlice';
+import { userSlice } from './slice/userSlice';
 
 const combinedReducer = combineReducers({
   user: userSlice.reducer,

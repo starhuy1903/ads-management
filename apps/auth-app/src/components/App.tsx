@@ -1,13 +1,13 @@
-import Login from './Login';
-import Home from './Home';
-import { useAppSelector } from '../store';
-import Register from './Register';
 import {
   Navigate,
   RouterProvider,
   createBrowserRouter,
 } from 'react-router-dom';
+import { useAppSelector } from '../store';
+import Home from './Home';
+import Login from './Login';
 import PageLayout from './PageLayout';
+import Register from './Register';
 
 const protectedRoutes = createBrowserRouter([
   {
