@@ -4,8 +4,9 @@ import {
   combineReducers,
   configureStore,
 } from '@reduxjs/toolkit';
-import { userSlice } from './slice/userSlice';
+import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { apiSlice } from './api/baseApiSlice';
+import { userSlice } from './slice/userSlice';
 
 const combinedReducer = combineReducers({
   user: userSlice.reducer,
@@ -29,5 +30,9 @@ export type AppThunk<ReturnType = void> = ThunkAction<
   unknown,
   Action<string>
 >;
+
+export const useAppDispatch: () => AppDispatch = useDispatch;
+
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 
 export default store;

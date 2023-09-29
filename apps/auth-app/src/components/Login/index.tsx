@@ -1,5 +1,5 @@
+import { useLoginMutation } from '@/store/api/userApiSlice';
 import { Box, Button, CircularProgress } from '@mui/material';
-import { useLoginMutation } from '../../store/api/userApiSlice';
 
 function Login() {
   const [requestLogin, { isLoading }] = useLoginMutation();

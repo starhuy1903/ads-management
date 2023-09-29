@@ -3,7 +3,7 @@ import {
   LoginResponse,
   UserProfile,
 } from '../../types/user';
-import { setToken } from '../slice/userSlice';
+import { setIsLoggedIn, setToken } from '../slice/userSlice';
 import { apiSlice } from './baseApiSlice';
 
 export const userApiSlice = apiSlice.injectEndpoints({
@@ -18,6 +18,7 @@ export const userApiSlice = apiSlice.injectEndpoints({
         try {
           const { data } = await queryFulfilled;
           dispatch(setToken(data));
+          dispatch(setIsLoggedIn(true));
         } catch (error) {
           console.log(error);
         }
