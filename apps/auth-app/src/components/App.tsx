@@ -1,9 +1,9 @@
+import { useAppSelector } from '@/store';
 import {
   Navigate,
   RouterProvider,
   createBrowserRouter,
 } from 'react-router-dom';
-import { useAppSelector } from '../store';
 import Home from './Home';
 import Login from './Login';
 import PageLayout from './PageLayout';
