@@ -1,7 +1,32 @@
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
+import { useLoginMutation } from '@/store/api/userApiSlice';
+import { Box, CircularProgress } from '@mui/material';
+
+
 function Login() {
+  const [requestLogin, { isLoading }] = useLoginMutation();
+
+  const handleSubmit = async () => {
+    try {
+      const res = await requestLogin({
+        email: 'huy@gmail.com',
+        password: '12341234',
+      });
+      console.log(res);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <Box sx={{ display: 'flex' }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
+
   // const navigate = useNavigate();
   // const dispatch = useDispatch();
   // const [email, setEmail] = useState('');
@@ -32,7 +57,6 @@ function Login() {
   // };
 
   return (
-    <>
       <div className="w-full h-screen flex justify-center items-center bg-white">
         <div className="bg-gray-100 px-12 py-20 rounded-lg">
           <div className="text-center">
@@ -121,50 +145,7 @@ function Login() {
           </form>
         </div>
       </div>
-
-      {/* <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0 w-full h-full text-gray-300 bg-white">
-        <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
-          <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-            {error && (
-              <p className="bg-[#D14D72] text-sm text-white font-bold py-3 px-4 rounded">
-                {error}
-              </p>
-            )}
-          </div>
-        </div>
-      </div> */}
-    </>
-import { useLoginMutation } from '@/store/api/userApiSlice';
-import { Box, Button, CircularProgress } from '@mui/material';
-
-function Login() {
-  const [requestLogin, { isLoading }] = useLoginMutation();
-
-  const handleSubmit = async () => {
-    try {
-      const res = await requestLogin({
-        email: 'huy@gmail.com',
-        password: '12341234',
-      });
-      console.log(res);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  if (isLoading) {
-    return (
-      <Box sx={{ display: 'flex' }}>
-        <CircularProgress />
-      </Box>
-    );
-  }
-  return (
-    <div>
-      <Button variant="contained" onClick={handleSubmit}>
-        Login
-      </Button>
-    </div>
-  );
+  )
 }
+
 export default Login;
