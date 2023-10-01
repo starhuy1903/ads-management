@@ -20,7 +20,7 @@
 						}
 					}
 				},
-				"url": "{{URL}}/api/auth/signup"
+				"url": "http://localhost:3000/api/auth/signup"
 			},
 			"response": []
 		},
@@ -38,7 +38,7 @@
 						}
 					}
 				},
-				"url": "{{URL}}/api/auth/signin"
+				"url": "http://localhost:3000/api/auth/signin"
 			},
 			"response": []
 		},
@@ -59,7 +59,7 @@
 						"type": "text"
 					}
 				],
-				"url": "{{URL}}/api/auth/logout"
+				"url": "http://localhost:3000/api/auth/logout"
 			},
 			"response": []
 		},
@@ -80,7 +80,7 @@
 						"type": "text"
 					}
 				],
-				"url": "{{URL}}/api/auth/refresh"
+				"url": "http://localhost:3000/api/auth/refresh"
 			},
 			"response": []
 		}
