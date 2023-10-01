@@ -1,6 +1,7 @@
 import {
   CredentialPayload,
   LoginResponse,
+  RegisterPayload,
   UserProfile,
 } from '../../types/user';
 import { setIsLoggedIn, setToken } from '../slice/userSlice';
@@ -24,10 +25,27 @@ export const userApiSlice = apiSlice.injectEndpoints({
         }
       },
     }),
+    register: build.mutation<LoginResponse, RegisterPayload>({
+      query: (body) => ({
+        url: 'signup',
+        method: 'POST',
+        body,
+      }),
+      onQueryStarted: async (_, { dispatch, queryFulfilled }) => {
+        try {
+          const { data } = await queryFulfilled;
+          dispatch(setToken(data));
+          dispatch(setIsLoggedIn(true));
+        } catch (error) {
+          console.log(error);
+        }
+      },
+    }),
     getProfile: build.query<UserProfile, void>({
       query: () => 'me', // TBD
     }),
   }),
 });
 
-export const { useLoginMutation, useGetProfileQuery } = userApiSlice;
+export const { useLoginMutation, useGetProfileQuery, useRegisterMutation } =
+  userApiSlice;

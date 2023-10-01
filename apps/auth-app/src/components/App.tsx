@@ -23,12 +23,17 @@ const protectedRoutes = createBrowserRouter([
 
 const publicRoutes = createBrowserRouter([
   {
-    path: '/login',
-    element: <Login />,
-  },
-  {
-    path: '/register',
-    element: <Register />,
+    element: <PageLayout />,
+    children: [
+      {
+        path: '/login',
+        element: <Login />,
+      },
+      {
+        path: '/register',
+        element: <Register />,
+      },
+    ],
   },
   {
     path: '*',
