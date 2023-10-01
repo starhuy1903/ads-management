@@ -13,10 +13,10 @@ export default defineConfig(() => {
         allow: [searchForWorkspaceRoot(process.cwd())],
       },
     },
-    root: `${process.cwd()}/auth-app`,
+    root: `${process.cwd()}/apps/auth-app`,
     resolve: {
       alias: {
-        '@/': `${process.cwd()}/auth-app/src/`,
+        '@/': `${process.cwd()}/apps/auth-app/src/`,
       },
     },
 
