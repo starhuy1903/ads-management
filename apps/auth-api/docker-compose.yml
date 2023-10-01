@@ -1,13 +1,16 @@
 version: '3.8'
 services:
-  dev-db:
+  db:
     image: postgres:alpine
     ports:
       - 5432:5432
+    restart: always
     env_file:
       - .env
-    networks:
-      - freecodecamp
-
-networks:
-  freecodecamp:
+  cache:
+    image: redis:alpine
+    restart: always
+    ports:
+      - '6379:6379'
+    env_file:
+      - .env

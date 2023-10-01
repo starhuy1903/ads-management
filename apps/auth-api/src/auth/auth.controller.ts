@@ -1,61 +1,47 @@
 import {
   Body,
   Controller,
+  Get,
   HttpCode,
-  HttpStatus,
   Post,
+  Req,
   UseGuards,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { SigninDto, SignupDto, ForgotPasswordDto, ResetPasswordDto } from './dto';
-import { GetUser } from './decorator';
-import { JwtGuard, JwtRefreshGuard, JwtResetGuard } from './guard';
+import { SignInDto, SignUpDto } from './dto';
+import { IRequestWithUser } from './interfaces';
+import { JwtGuard, JwtRefreshGuard } from './guard';
 
 @Controller()
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(private readonly authService: AuthService) {}
 
   @Post('signup')
-  signup(@Body() dto: SignupDto) {
-    return this.authService.signup(dto);
+  signUp(@Body() dto: SignUpDto) {
+    return this.authService.signUp(dto);
   }
 
-  @HttpCode(HttpStatus.OK)
   @Post('signin')
-  signin(@Body() dto: SigninDto) {
-    return this.authService.signin(dto);
+  async signIn(@Body() dto: SignInDto) {
+    const tokens = await this.authService.signIn(dto);
+    return tokens;
   }
 
   @UseGuards(JwtGuard)
   @Post('logout')
-  @HttpCode(HttpStatus.NO_CONTENT)
-  logout(@GetUser('sub') userId: number) {
-    return this.authService.logout(userId);
+  @HttpCode(200)
+  async signOut(@Req() req: IRequestWithUser) {
+    const tokenId = req.header('token_id');
+    return await this.authService.logOut(tokenId);
   }
 
   @UseGuards(JwtRefreshGuard)
-  @Post('refresh')
-  @HttpCode(HttpStatus.OK)
-  refresh(
-    @GetUser('sub') userId: number,
-    @GetUser('refreshToken') refreshToken: string
-  ) {
-    return this.authService.refresh(userId, refreshToken);
-  }
-
-  @Post('forgot-password')
-  @HttpCode(HttpStatus.OK)
-  forgotPassword(@Body() dto: ForgotPasswordDto) {
-    return this.authService.forgotPassword(dto);
-  }
-
-  @UseGuards(JwtResetGuard)
-  @Post('reset-password')
-  @HttpCode(HttpStatus.OK)
-  resetPassword(
-    @GetUser('sub') userId: number,
-    @Body() dto: ResetPasswordDto
-  ) {
-    return this.authService.resetPassword(userId, dto);
+  @Get('refresh')
+  async refresh(@Req() req: IRequestWithUser) {
+    const refreshToken = req.header('authorization').split(' ')[1];
+    const tokenId = req.header('token_id');
+    const payload = req.user['payload'];
+  
+    return await this.authService.refresh(refreshToken, tokenId, payload)
   }
 }

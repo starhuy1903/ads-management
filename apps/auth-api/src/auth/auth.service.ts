@@ -1,227 +1,234 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import {
+  ForbiddenException,
+  HttpException,
+  HttpStatus,
+  Injectable,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { SignInDto, SignUpDto } from './dto';
+import * as argon from 'argon2';
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
-import { SignupDto, SigninDto, ForgotPasswordDto, ResetPasswordDto } from './dto';
-import * as bcrypt from 'bcrypt';
-import { Tokens } from './types';
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
+import { ITokenPayload } from './interfaces/ITokenPayload';
+
+import dayjs from 'dayjs';
+
+import { User } from '@prisma/client';
+
+const getAccessExpiry = () => dayjs().add(5, 's').toDate();
+const getRefreshExpiry = () => dayjs().add(1, 'd').toDate();
 
 @Injectable()
 export class AuthService {
   constructor(
-    private prisma: PrismaService,
-    private jwt: JwtService,
+    private prismaService: PrismaService,
+    private jwtService: JwtService,
     private config: ConfigService
   ) {}
 
-  async signup(dto: SignupDto): Promise<Tokens> {
-    // Hash the password
-    const hash = await this.hashData(dto.password);
+  async handeleSignIn(user: User) {
+    const { refreshToken } = await this.getJwtRefreshToken(user.id, user.email);
+    const { accessToken } = await this.getJwtAccessToken(user.id, user.email);
 
     try {
-      // Create user in db
-      const newUser = await this.prisma.user.create({
+      const hash = await argon.hash(refreshToken);
+      const token = await this.prismaService.token.create({
         data: {
-          email: dto.email,
-          name: dto.name,
-          password: hash,
+          expiresAt: getRefreshExpiry(),
+          refreshToken: hash,
+          user: {
+            connect: {
+              id: user.id,
+            },
+          },
         },
       });
 
       return {
-        accessToken: await this.genAccessToken(newUser.id, newUser.email),
-        refreshToken: await this.genRefreshToken(newUser.id, newUser.email),
+        accessToken,
+        refreshToken,
+        tokenId: token.id,
+        accessTokenExpires: getAccessExpiry(),
+        user: {
+          id: user.id,
+          email: user.email,
+          name: user.name,
+        },
       };
     } catch (error) {
-      if (error instanceof PrismaClientKnownRequestError) {
-        if (error.code === 'P2002') {
-          throw new ForbiddenException('Email already exists');
+      console.log(error);
+    }
+  }
+
+  async signUp(dto: SignUpDto) {
+    const password = await argon.hash(dto.password);
+    try {
+      const user = await this.prismaService.user.create({
+        data: {
+          email: dto.email,
+          password,
+          name: dto.name,
+        },
+      });
+
+      return await this.handeleSignIn(user);
+    } catch (err) {
+      if (err instanceof PrismaClientKnownRequestError) {
+        if (err.code === 'P2002') {
+          throw new ForbiddenException('Credentials taken');
         }
       }
-      throw error;
+      throw err;
     }
   }
 
-  async signin(dto: SigninDto) {
-    // Find user by email
-    const user = await this.prisma.user.findUnique({
+  async signIn(dto: SignInDto) {
+    //find a user
+    const user = await this.prismaService.user.findUnique({
       where: {
         email: dto.email,
       },
     });
 
-    // Check if user exists
+    //if the there is no user throw exception
     if (!user) {
-      throw new ForbiddenException('Wrong email or password');
+      throw new ForbiddenException('Credentials incorrect');
     }
 
-    // Compare password
-    const passwordMatch = await bcrypt.compare(dto.password, user.password);
-    if (!passwordMatch) {
-      throw new ForbiddenException('Wrong email or password');
+    if (user.password == null) {
+      //this email didn't sign in using form
+      //here i send a mail explaining the situation
+      throw new ForbiddenException(
+        'Credentilas incorrect or this email was gotten from a social account'
+      );
+    }
+    // compare password
+    const isMatch = await argon.verify(user.password, dto.password);
+
+    if (!isMatch) {
+      throw new ForbiddenException('Credentilas incorrect');
     }
 
-    return {
-      accessToken: await this.genAccessToken(user.id, user.email),
-      refreshToken: await this.genRefreshToken(user.id, user.email),
-    };
+    return await this.handeleSignIn(user);
   }
 
-  async logout(userId: number) {
+  async logOut(tokenId: string) {
     try {
-      const result = await this.prisma.user.update({
+      await this.prismaService.token.delete({
         where: {
-          id: userId,
-        },
-        data: {
-          refreshToken: null,
+          id: tokenId,
         },
       });
 
-      if (!result) {
-        throw new ForbiddenException('Error logging out');
-      }
+      return {
+        message: 'Log out successfully',
+      };
     } catch (error) {
-      throw new ForbiddenException('Error logging out');
+      throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
     }
   }
 
-  async refresh(userId: number, refreshToken: string): Promise<Tokens> {
-    // Find user by id
-    const user = await this.prisma.user.findUnique({
+  async refresh(refreshToken: string, tokenId: string, payload: ITokenPayload) {
+    const foundToken = await this.prismaService.token.findUnique({
       where: {
-        id: userId,
+        id: tokenId,
       },
     });
 
-    // Check if user exists
-    if (!user) {
-      throw new ForbiddenException('User not found');
+    if (foundToken == null) {
+      //refresh token is valid but the id is not in database
+      //TODO:inform the user with the payload sub
+      throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
     }
 
-    // Check if refresh token matches
-    if (refreshToken !== user.refreshToken) {
-      throw new ForbiddenException('Invalid refresh token');
-    }
-
-    return {
-      accessToken: await this.genAccessToken(user.id, user.email),
-      refreshToken: await this.genRefreshToken(user.id, user.email),
-    };
-  }
-
-  async forgotPassword(dto: ForgotPasswordDto) {
-    // Find user by email
-    const user = await this.prisma.user.findUnique({
-      where: {
-        email: dto.email,
-      },
-    });
-
-    // Check if user exists
-    if (!user) {
-      throw new ForbiddenException('User not found');
-    }
-
-    // Generate reset token
-    const resetToken = await this.genToken(
-      {
-        sub: user.id,
-        email: dto.email,
-      },
-      '10m'
+    const isMatch = await argon.verify(
+      foundToken.refreshToken ?? '',
+      refreshToken
     );
-    const redirectLink = `http://localhost:3000/reset-password?token=${resetToken}`; // TODO: Change to frontend url
 
-    // Send email with reset token
-    // TODO: Send email
+    const issuedAt = dayjs.unix(payload.iat);
+    const diff = dayjs().diff(issuedAt, 'seconds');
 
-    // Test
+    if (isMatch) {
+      return await this.generateTokens(payload, tokenId);
+    } else {
+      //less than 1 minute leeway allows refresh for network concurrency
+      if (diff < 60 * 1 * 1) {
+        console.log('Leeway');
+        return await this.generateTokens(payload, tokenId);
+      }
+
+      //refresh token is valid but not in db
+      //possible re-use!!! delete all refresh tokens(sessions) belonging to the sub
+      if (payload.sub !== foundToken.userId) {
+        //the sub of the token isn't the id of the token in db
+        // log out all session of this payalod id, reFreshToken has been compromised
+        await this.prismaService.token.deleteMany({
+          where: {
+            userId: payload.sub,
+          },
+        });
+        throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
+      }
+
+      throw new HttpException('Something went wrong', HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  public async getJwtRefreshToken(sub: number, email: string) {
+    const payload: ITokenPayload = { sub, email };
+    const refreshToken = await this.jwtService.signAsync(payload, {
+      secret: this.config.get('JWT_RT_SECRET'),
+      expiresIn: this.config.get('JWT_RT_EXPIRES'),
+    });
     return {
-      link: redirectLink,
+      refreshToken,
     };
   }
 
-  async resetPassword(userId: number, dto: ResetPasswordDto) {
-    // Hash the password
-    const hash = await this.hashData(dto.newPassword);
-
-    // Update password in db
-    try {
-      await this.prisma.user.update({
-        where: {
-          id: userId,
-        },
-        data: {
-          password: hash,
-        },
-      });
-    } catch (error) {
-      throw new ForbiddenException('Error resetting password');
-    }
-  }
-
-  // Utility functions
-  async hashData(data: string) {
-    const saltRounds = 10;
-    return await bcrypt.hash(data, saltRounds);
-  }
-
-  async genToken(data: any, expireTime: string): Promise<string> {
-    const secret = this.config.get('JWT_SECRET');
-
-    const token = await this.jwt.signAsync(data, {
-      expiresIn: expireTime,
-      secret,
+  async getJwtAccessToken(sub: number, email: string) {
+    const payload: ITokenPayload = { sub, email };
+    const accessToken = await this.jwtService.signAsync(payload, {
+      secret: this.config.get('JWT_AT_SECRET'),
+      expiresIn: this.config.get('JWT_AT_EXPIRES'),
     });
-
-    return token;
-  }
-
-  async genAccessToken(userId: number, email: string): Promise<string> {
-    const payload = {
-      sub: userId,
-      email,
+    return {
+      accessToken,
     };
-    const secret = this.config.get('JWT_AT_SECRET');
-    const expiresIn = this.config.get('JWT_AT_EXPIRES');
-
-    const token = await this.jwt.signAsync(payload, {
-      expiresIn,
-      secret,
-    });
-
-    return token;
   }
 
-  async genRefreshToken(userId: number, email: string): Promise<string> {
-    const payload = {
-      sub: userId,
-      email,
-    };
-    const secret = this.config.get('JWT_RT_SECRET');
-    const expiresIn = this.config.get('JWT_RT_EXPIRES');
+  private async generateTokens(payload: ITokenPayload, tokenId: string) {
+    const { accessToken } = await this.getJwtAccessToken(
+      payload.sub,
+      payload.email
+    );
 
-    const token = await this.jwt.signAsync(payload, {
-      expiresIn,
-      secret,
+    const { refreshToken: newRefreshToken } = await this.getJwtRefreshToken(
+      payload.sub,
+      payload.email
+    );
+
+    const hash = await argon.hash(newRefreshToken);
+
+    await this.prismaService.token.update({
+      where: {
+        id: tokenId,
+      },
+      data: {
+        refreshToken: hash,
+      },
     });
 
-    // Update refresh token in db
-    try {
-      await this.prisma.user.update({
-        where: {
-          id: userId,
-        },
-        data: {
-          refreshToken: token,
-        },
-      });
-    } catch (error) {
-      throw new ForbiddenException('Error generating refresh token');
-    }
-
-    return token;
+    return {
+      accessToken,
+      refreshToken: newRefreshToken,
+      tokenId: tokenId,
+      accessTokenExpires: getAccessExpiry(),
+      user: {
+        id: payload.sub,
+        email: payload.email,
+      },
+    };
   }
 }
