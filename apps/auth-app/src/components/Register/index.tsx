@@ -1,15 +1,29 @@
 import { useRegisterMutation } from '@/store/api/userApiSlice';
+import { RegisterPayload } from '@/types/user';
 import { Box, CircularProgress } from '@mui/material';
-import { FormEventHandler, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 
-function Register() {
+export default function Register() {
   const [requestRegister, { isLoading, isError, error }] =
     useRegisterMutation();
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<RegisterPayload>();
+  const onSubmit: SubmitHandler<RegisterPayload> = async (data) => {
+    try {
+      const res = await requestRegister(data);
+
+      console.log(res);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   useEffect(() => {
     if (error) {
@@ -20,28 +34,6 @@ function Register() {
       }
     }
   }, [isError, error]);
-
-  const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
-    e.preventDefault();
-
-    try {
-      console.log({
-        name,
-        email,
-        password,
-      });
-
-      const res = await requestRegister({
-        name,
-        email,
-        password,
-      });
-
-      console.log(res);
-    } catch (err) {
-      console.log(err);
-    }
-  };
 
   if (isLoading) {
     return (
@@ -67,61 +59,93 @@ function Register() {
           </div>
         )}
 
-        <form className="mt-4 space-y-4" onSubmit={handleSubmit}>
+        <form className="mt-4 space-y-4" onSubmit={handleSubmit(onSubmit)}>
           <div>
-            <label
-              htmlFor="name"
-              className="mb-2 text-sm font-semibold text-gray-800"
-            >
+            <label className="mb-2 text-sm font-semibold text-gray-800">
               Name<span className="text-xl text-red-500">*</span>
             </label>
+
             <input
-              type="name"
-              name="name"
-              id="name"
-              className="font-sans bg-gray-50 border border-gray-400 text-gray-900 py-2 px-3 rounded-lg w-full"
-              required
+              {...register('name', {
+                required: 'Name is required!',
+                minLength: {
+                  value: 3,
+                  message: 'Name must be at least 3 characters!',
+                },
+              })}
               placeholder="Enter your name"
-              autoComplete="off"
-              onChange={(e) => setName(e.target.value)}
+              aria-invalid={errors.name ? 'true' : 'false'}
+              className="font-sans bg-gray-50 border border-gray-400 text-gray-900 py-2 px-3 rounded-lg w-full"
             />
+
+            {errors.name && (
+              <p className="pt-1 text-sm text-red-600">{`${errors?.name?.message}`}</p>
+            )}
           </div>
+
           <div>
-            <label
-              htmlFor="email"
-              className="mb-2 text-sm font-semibold text-gray-800"
-            >
+            <label className="mb-2 text-sm font-semibold text-gray-800">
               Email<span className="text-xl text-red-500">*</span>
             </label>
+
             <input
+              {...register('email', {
+                required: 'Email is required!',
+                pattern: {
+                  value: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
+                  message: 'Invalid email address!',
+                },
+              })}
               type="email"
-              name="email"
-              id="email"
-              className="font-sans bg-gray-50 border border-gray-400 text-gray-900 py-2 px-3 rounded-lg w-full"
-              required
               placeholder="Enter your email"
-              autoComplete="off"
-              onChange={(e) => setEmail(e.target.value)}
+              aria-invalid={errors.email ? 'true' : 'false'}
+              className="font-sans bg-gray-50 border border-gray-400 text-gray-900 py-2 px-3 rounded-lg w-full"
             />
+
+            {errors.email && (
+              <p className="pt-1 text-sm text-red-600">{`${errors?.email?.message}`}</p>
+            )}
           </div>
+
           <div>
-            <label
-              htmlFor="password"
-              className="mb-2 text-sm font-semibold text-gray-800"
-            >
+            <label className="mb-2 text-sm font-semibold text-gray-800">
               Password<span className="text-xl text-red-500">*</span>
             </label>
+
             <input
+              {...register('password', {
+                required: 'Password is required!',
+                minLength: {
+                  value: 6,
+                  message: 'Password must be at least 6 characters!',
+                },
+                maxLength: {
+                  value: 20,
+                  message: 'Password must be at most 20 characters!',
+                },
+                validate: {
+                  hasNumber: (value) =>
+                    /\d/.test(value) || 'Password must contain a number!',
+                  hasUppercase: (value) =>
+                    /[A-Z]/.test(value) ||
+                    'Password must contain an uppercase letter!',
+                  hasLowercase: (value) =>
+                    /[a-z]/.test(value) ||
+                    'Password must contain a lowercase letter!',
+                  hasSpecialChar: (value) =>
+                    /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(value) ||
+                    'Password must contain a special character!',
+                },
+              })}
               type="password"
-              name="password"
-              id="password"
+              placeholder="********"
+              aria-invalid={errors.password ? 'true' : 'false'}
               className="font-sans bg-gray-50 border border-gray-400 text-gray-900 py-2 px-3 rounded-lg w-full"
-              required
-              placeholder="Create a password"
-              autoComplete="off"
-              onChange={(e) => setPassword(e.target.value)}
             />
-            <p className="text-sm mt-2">Must be at least 8 characters.</p>
+
+            {errors.password && (
+              <p className="pt-1 text-sm text-red-600">{`${errors?.password?.message}`}</p>
+            )}
           </div>
 
           <button
@@ -145,5 +169,3 @@ function Register() {
     </div>
   );
 }
-
-export default Register;
