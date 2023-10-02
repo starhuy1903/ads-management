@@ -1,0 +1,88 @@
+{
+	"info": {
+		"_postman_id": "9e7da649-fa11-4072-8b23-3a362bf03ad2",
+		"name": "Auth services",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "24188163"
+	},
+	"item": [
+		{
+			"name": "Sign up",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"chihien2002@gmail.com\",\n    \"password\": \"123456789\",\n    \"name\": \"Trương Chí Hiển\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:3000/api/auth/signup"
+			},
+			"response": []
+		},
+		{
+			"name": "Sign in",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"chihien2002@gmail.com\",\n    \"password\": \"123456789\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:3000/api/auth/signin"
+			},
+			"response": []
+		},
+		{
+			"name": "Log out",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoiY2hpaGllbjIwMDJAZ21haWwuY29tIiwiaWF0IjoxNjk1ODkwMTA4LCJleHAiOjE2OTU4OTAxMjN9.pBDEXRfEJywQcQIJSMA8rtSdllAac7ilSyqZakiqAYY"
+					}
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "token_id",
+						"value": "332beb7d-d596-40d8-8da1-02ccbc8b9e63",
+						"type": "text"
+					}
+				],
+				"url": "http://localhost:3000/api/auth/logout"
+			},
+			"response": []
+		},
+		{
+			"name": "Refresh token",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoiY2hpaGllbjIwMDJAZ21haWwuY29tIiwiaWF0IjoxNjk1ODkwMDU5LCJleHAiOjE2OTU5NzY0NTl9.Ix_a96-L5KGSSLZXZp--EChcakdd8LAvzqG32VkzkCo"
+					}
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "token_id",
+						"value": "4a29151c-bb97-46fd-83d5-cddd76bfc8a1",
+						"type": "text"
+					}
+				],
+				"url": "http://localhost:3000/api/auth/refresh"
+			},
+			"response": []
+		}
+	]
+}
