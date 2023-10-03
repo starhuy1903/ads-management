@@ -9,7 +9,7 @@ import { AuthService } from '../auth.service';
 @Injectable()
 export class JwtRefreshStrategy extends PassportStrategy(
   Strategy,
-  'jwt-refresh'
+  'jwt-refresh',
 ) {
   constructor(configService: ConfigService) {
     super({

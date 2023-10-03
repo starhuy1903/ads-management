@@ -24,7 +24,7 @@ export class AuthService {
   constructor(
     private prismaService: PrismaService,
     private jwtService: JwtService,
-    private config: ConfigService
+    private config: ConfigService,
   ) {}
 
   async handeleSignIn(user: User) {
@@ -100,7 +100,7 @@ export class AuthService {
       //this email didn't sign in using form
       //here i send a mail explaining the situation
       throw new ForbiddenException(
-        'Credentilas incorrect or this email was gotten from a social account'
+        'Credentilas incorrect or this email was gotten from a social account',
       );
     }
     // compare password
@@ -144,7 +144,7 @@ export class AuthService {
 
     const isMatch = await argon.verify(
       foundToken.refreshToken ?? '',
-      refreshToken
+      refreshToken,
     );
 
     const issuedAt = dayjs.unix(payload.iat);
@@ -201,12 +201,12 @@ export class AuthService {
   private async generateTokens(payload: ITokenPayload, tokenId: string) {
     const { accessToken } = await this.getJwtAccessToken(
       payload.sub,
-      payload.email
+      payload.email,
     );
 
     const { refreshToken: newRefreshToken } = await this.getJwtRefreshToken(
       payload.sub,
-      payload.email
+      payload.email,
     );
 
     const hash = await argon.hash(newRefreshToken);

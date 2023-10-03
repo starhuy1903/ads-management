@@ -17,14 +17,13 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('signup')
-  signUp(@Body() dto: SignUpDto) {
-    return this.authService.signUp(dto);
+  async signUp(@Body() dto: SignUpDto) {
+    return await this.authService.signUp(dto);
   }
 
   @Post('signin')
   async signIn(@Body() dto: SignInDto) {
-    const tokens = await this.authService.signIn(dto);
-    return tokens;
+    return await this.authService.signIn(dto);
   }
 
   @UseGuards(JwtGuard)
@@ -41,7 +40,7 @@ export class AuthController {
     const refreshToken = req.header('authorization').split(' ')[1];
     const tokenId = req.header('token_id');
     const payload = req.user['payload'];
-  
-    return await this.authService.refresh(refreshToken, tokenId, payload)
+
+    return await this.authService.refresh(refreshToken, tokenId, payload);
   }
 }
