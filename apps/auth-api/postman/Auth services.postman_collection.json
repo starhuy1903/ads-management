@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "9e7da649-fa11-4072-8b23-3a362bf03ad2",
+		"_postman_id": "6cd43ba9-f014-491f-9c69-de017d69a9bd",
 		"name": "Auth services",
 		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
 		"_exporter_id": "24188163"
@@ -25,13 +25,31 @@
 			"response": []
 		},
 		{
+			"name": "Verify registration",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"verifyToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoiY2hpaGllbjIwMDJAZ21haWwuY29tIiwiaWF0IjoxNjk2NDI1MzQ2LCJleHAiOjE2OTY0MjU2NDZ9.EhKoBfz9Kd35j270-FmlGieHjLABIe604jU-zn57HRI\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:3000/api/auth/verify"
+			},
+			"response": []
+		},
+		{
 			"name": "Sign in",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"email\": \"chihien2002@gmail.com\",\n    \"password\": \"123456789\"\n}",
+					"raw": "{\n    \"email\": \"chihien2002@gmail.com\",\n    \"password\": \"1111111111\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -48,17 +66,27 @@
 				"auth": {
 					"type": "bearer",
 					"bearer": {
-						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoiY2hpaGllbjIwMDJAZ21haWwuY29tIiwiaWF0IjoxNjk1ODkwMTA4LCJleHAiOjE2OTU4OTAxMjN9.pBDEXRfEJywQcQIJSMA8rtSdllAac7ilSyqZakiqAYY"
+						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoiY2hpaGllbjIwMDJAZ21haWwuY29tIiwiaWF0IjoxNjk2NDI1NzE4LCJleHAiOjE2OTY0MjYwMTh9.r6V2fV_m9ukH3lM18lrCKE2oRv1uNQLGFBVfg6jWmrE"
 					}
 				},
 				"method": "POST",
 				"header": [
 					{
-						"key": "token_id",
-						"value": "332beb7d-d596-40d8-8da1-02ccbc8b9e63",
-						"type": "text"
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
 					}
 				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"tokenId\": \"b15b500c-e398-424c-acf1-862715afd844\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": "http://localhost:3000/api/auth/logout"
 			},
 			"response": []
@@ -66,21 +94,61 @@
 		{
 			"name": "Refresh token",
 			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": {
-						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoiY2hpaGllbjIwMDJAZ21haWwuY29tIiwiaWF0IjoxNjk1ODkwMDU5LCJleHAiOjE2OTU5NzY0NTl9.Ix_a96-L5KGSSLZXZp--EChcakdd8LAvzqG32VkzkCo"
-					}
-				},
-				"method": "GET",
+				"method": "POST",
 				"header": [
 					{
-						"key": "token_id",
-						"value": "4a29151c-bb97-46fd-83d5-cddd76bfc8a1",
-						"type": "text"
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
 					}
 				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"tokenId\": \"b84d5f2b-4496-4c02-abf9-c5d7b5413621\",\n    \"refreshToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoiY2hpaGllbjIwMDJAZ21haWwuY29tIiwiaWF0IjoxNjk2NDI1NzU4LCJleHAiOjE2OTY1MTIxNTh9.hJGShgQbGdhb1VCxYzXy7z7TyUxZ3exB-CeaAX2OR1Q\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": "http://localhost:3000/api/auth/refresh"
+			},
+			"response": []
+		},
+		{
+			"name": "Forgot password",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"chihien2002@gmail.com\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:3000/api/auth/forgot-password"
+			},
+			"response": []
+		},
+		{
+			"name": "Reset password",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"verifyToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoiY2hpaGllbjIwMDJAZ21haWwuY29tIiwiaWF0IjoxNjk2NDI4NjMzLCJleHAiOjE2OTY0Mjg5MzN9.mM-a4UhY8XKuw7VzeN6llllyg2_YvGLgYY_DRZ4FSl8\",\n    \"newPassword\": \"1111111111\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:3000/api/auth/reset-password"
 			},
 			"response": []
 		}

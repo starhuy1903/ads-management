@@ -11,13 +11,15 @@ datasource db {
 }
 
 model User {
-  id            Int         @id @default(autoincrement())
-  email         String      @unique
-  password      String
-  name          String
-  tokens        Token[]
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
+  id                Int         @id @default(autoincrement())
+  email             String      @unique
+  password          String
+  name              String
+  verified          Boolean     @default(false)
+  resettingPass     Boolean     @default(false)
+  tokens            Token[]
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
 
   @@map("users")
 }
@@ -33,4 +35,3 @@ model Token {
 
   @@map("tokens")
 }
-
