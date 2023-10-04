@@ -6,25 +6,19 @@ import { Request } from 'express';
 import { ITokenPayload } from '../interfaces/ITokenPayload';
 
 @Injectable()
-export class JwtRefreshStrategy extends PassportStrategy(
+export class JwtVerifyStrategy extends PassportStrategy(
   Strategy,
-  'jwt-refresh',
+  'jwt-verify',
 ) {
   constructor(configService: ConfigService) {
     super({
-      jwtFromRequest: ExtractJwt.fromBodyField('refreshToken'),
-      secretOrKey: configService.get('JWT_RT_SECRET'),
-      passReqToCallback: true,
+      jwtFromRequest: ExtractJwt.fromBodyField('verifyToken'),
+      secretOrKey: configService.get('JWT_VT_SECRET'),
     });
   }
 
-  async validate(request: Request, payload: ITokenPayload) {
-    const refreshToken = request.body.refreshToken;
-    const tokenId = request.body.tokenId;
-
+  async validate(payload: ITokenPayload) {
     return {
-      refreshToken,
-      tokenId,
       payload,
     };
   }

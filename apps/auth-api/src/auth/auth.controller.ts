@@ -8,40 +8,68 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { SignInDto, SignUpDto } from './dto';
+import {
+  ForgotPasswordDto,
+  ResetPasswordDto,
+  SignInDto,
+  SignUpDto,
+} from './dto';
 import { IRequestWithUser } from './interfaces';
-import { JwtGuard, JwtRefreshGuard } from './guard';
+import { JwtGuard, JwtRefreshGuard, JwtVerifyGuard } from './guard';
 
 @Controller()
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('signup')
-  signUp(@Body() dto: SignUpDto) {
-    return this.authService.signUp(dto);
+  async signUp(@Body() dto: SignUpDto) {
+    return await this.authService.signUp(dto);
   }
 
   @Post('signin')
   async signIn(@Body() dto: SignInDto) {
-    const tokens = await this.authService.signIn(dto);
-    return tokens;
+    return await this.authService.signIn(dto);
   }
 
   @UseGuards(JwtGuard)
   @Post('logout')
   @HttpCode(200)
   async signOut(@Req() req: IRequestWithUser) {
-    const tokenId = req.header('token_id');
+    const tokenId = req.body['tokenId'];
     return await this.authService.logOut(tokenId);
   }
 
-  @UseGuards(JwtRefreshGuard)
-  @Get('refresh')
-  async refresh(@Req() req: IRequestWithUser) {
-    const refreshToken = req.header('authorization').split(' ')[1];
-    const tokenId = req.header('token_id');
+  @UseGuards(JwtVerifyGuard)
+  @Post('verify')
+  @HttpCode(200)
+  async verify(@Req() req: IRequestWithUser) {
     const payload = req.user['payload'];
-  
-    return await this.authService.refresh(refreshToken, tokenId, payload)
+    return await this.authService.verify(payload);
+  }
+
+  @UseGuards(JwtRefreshGuard)
+  @HttpCode(200)
+  @Post('refresh')
+  async refresh(@Req() req: IRequestWithUser) {
+    const refreshToken = req.user['refreshToken'];
+    const tokenId = req.user['tokenId'];
+    const payload = req.user['payload'];
+    return await this.authService.refresh(refreshToken, tokenId, payload);
+  }
+
+  @HttpCode(200)
+  @Post('forgot-password')
+  async forgotPassword(@Body() dto: ForgotPasswordDto) {
+    const email = dto.email;
+    return await this.authService.forgotPassword(email);
+  }
+
+  @UseGuards(JwtVerifyGuard)
+  @HttpCode(200)
+  @Post('reset-password')
+  async resetPassword(@Req() req: IRequestWithUser) {
+    const newPassword = req.body['newPassword'];
+    const payload = req.user['payload'];
+    return await this.authService.resetPassword(payload['sub'], newPassword);
   }
 }

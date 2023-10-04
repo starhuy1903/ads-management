@@ -14,11 +14,11 @@ async function bootstrap() {
       whitelist: true,
     }),
   );
-  
+
   const port = config.get('PORT');
   await app.listen(port);
   Logger.log(
-    `🚀 Authentication services is running on: http://localhost:${port}/${globalPrefix}`
+    `🚀 Authentication services is running on: http://localhost:${port}/${globalPrefix}`,
   );
 }
 

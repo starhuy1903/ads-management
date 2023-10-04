@@ -5,7 +5,7 @@ import {
   Injectable,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { SignInDto, SignUpDto } from './dto';
+import { ResetPasswordDto, SignInDto, SignUpDto } from './dto';
 import * as argon from 'argon2';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { JwtService } from '@nestjs/jwt';
@@ -24,8 +24,109 @@ export class AuthService {
   constructor(
     private prismaService: PrismaService,
     private jwtService: JwtService,
-    private config: ConfigService
+    private config: ConfigService,
   ) {}
+
+  async signUp(dto: SignUpDto) {
+    // Check if the email is already taken
+    const userExists = await this.prismaService.user.findUnique({
+      where: {
+        email: dto.email,
+      },
+    });
+
+    if (userExists && userExists.verified == true) {
+      throw new ForbiddenException('Email already taken');
+    }
+
+    // Email is taken but not verified
+    if (userExists && userExists.verified == false) {
+      // Re-send verification email
+      // Generate token
+      const { verificationToken } = await this.getJwtVerificationToken(
+        userExists.id,
+        userExists.email,
+      );
+
+      // Generate verification link
+      const verificationLink = `http://localhost:3000/verify?token=${verificationToken}`; // Replace with frontend url
+
+      // Send verification email with token
+      // TODO: Send email
+
+      // Currently returning verification link for testing
+      return {
+        verificationLink,
+      };
+    }
+
+    // Hash password
+    const password = await argon.hash(dto.password);
+    try {
+      // Create new user
+      const newUser = await this.prismaService.user.create({
+        data: {
+          email: dto.email,
+          password,
+          name: dto.name,
+        },
+      });
+
+      // Generate token
+      const { verificationToken } = await this.getJwtVerificationToken(
+        newUser.id,
+        newUser.email,
+      );
+
+      // Generate verification link
+      const verificationLink = `http://localhost:3000/verify?token=${verificationToken}`; // Replace with frontend url
+
+      // Send verification email with token
+      // TODO: Send email
+
+      // Currently returning verification link for testing
+      return {
+        verificationLink,
+      };
+    } catch (err) {
+      if (err instanceof PrismaClientKnownRequestError) {
+        if (err.code === 'P2002') {
+          throw new ForbiddenException('Credentials taken');
+        }
+      }
+      throw err;
+    }
+  }
+
+  async verify(payload: ITokenPayload) {
+    try {
+      const user = await this.prismaService.user.findUnique({
+        where: {
+          id: payload.sub,
+        },
+      });
+
+      if (user.verified == true) {
+        throw new ForbiddenException('This email is already verified');
+      }
+
+      await this.prismaService.user.update({
+        where: {
+          id: payload.sub,
+        },
+        data: {
+          verified: true,
+        },
+      });
+
+      return {
+        statusCode: 200,
+        message: 'Email verified successfully',
+      };
+    } catch (err) {
+      throw err;
+    }
+  }
 
   async handeleSignIn(user: User) {
     const { refreshToken } = await this.getJwtRefreshToken(user.id, user.email);
@@ -56,54 +157,37 @@ export class AuthService {
           name: user.name,
         },
       };
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  async signUp(dto: SignUpDto) {
-    const password = await argon.hash(dto.password);
-    try {
-      const user = await this.prismaService.user.create({
-        data: {
-          email: dto.email,
-          password,
-          name: dto.name,
-        },
-      });
-
-      return await this.handeleSignIn(user);
     } catch (err) {
-      if (err instanceof PrismaClientKnownRequestError) {
-        if (err.code === 'P2002') {
-          throw new ForbiddenException('Credentials taken');
-        }
-      }
-      throw err;
+      throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
     }
   }
 
   async signIn(dto: SignInDto) {
-    //find a user
+    // Find a user
     const user = await this.prismaService.user.findUnique({
       where: {
         email: dto.email,
       },
     });
 
-    //if the there is no user throw exception
+    // If the there is no user throw exception
     if (!user) {
       throw new ForbiddenException('Credentials incorrect');
     }
 
+    // Check if the user verified his email
+    if (user.verified == false) {
+      throw new ForbiddenException('Email not verified');
+    }
+
     if (user.password == null) {
-      //this email didn't sign in using form
-      //here i send a mail explaining the situation
+      // This email didn't sign in using form
+      // Here i send a mail explaining the situation
       throw new ForbiddenException(
-        'Credentilas incorrect or this email was gotten from a social account'
+        'Credentilas incorrect or this email was gotten from a social account',
       );
     }
-    // compare password
+    // Compare password
     const isMatch = await argon.verify(user.password, dto.password);
 
     if (!isMatch) {
@@ -122,10 +206,17 @@ export class AuthService {
       });
 
       return {
+        statusCode: 200,
         message: 'Log out successfully',
       };
-    } catch (error) {
-      throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
+    } catch (err) {
+      // Token not found -> Already logged out
+      if (err.code === 'P2025') {
+        throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
+      }
+
+      // Something went wrong
+      throw err;
     }
   }
 
@@ -137,14 +228,14 @@ export class AuthService {
     });
 
     if (foundToken == null) {
-      //refresh token is valid but the id is not in database
-      //TODO:inform the user with the payload sub
+      // Refresh token is valid but the id is not in database
+      // TODO:inform the user with the payload sub
       throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
     }
 
     const isMatch = await argon.verify(
       foundToken.refreshToken ?? '',
-      refreshToken
+      refreshToken,
     );
 
     const issuedAt = dayjs.unix(payload.iat);
@@ -153,17 +244,17 @@ export class AuthService {
     if (isMatch) {
       return await this.generateTokens(payload, tokenId);
     } else {
-      //less than 1 minute leeway allows refresh for network concurrency
+      // Less than 1 minute leeway allows refresh for network concurrency
       if (diff < 60 * 1 * 1) {
         console.log('Leeway');
         return await this.generateTokens(payload, tokenId);
       }
 
-      //refresh token is valid but not in db
-      //possible re-use!!! delete all refresh tokens(sessions) belonging to the sub
+      // Refresh token is valid but not in db
+      // Possible re-use!!! delete all refresh tokens(sessions) belonging to the sub
       if (payload.sub !== foundToken.userId) {
-        //the sub of the token isn't the id of the token in db
-        // log out all session of this payalod id, reFreshToken has been compromised
+        // The sub of the token isn't the id of the token in db
+        // Log out all session of this payalod id, reFreshToken has been compromised
         await this.prismaService.token.deleteMany({
           where: {
             userId: payload.sub,
@@ -172,7 +263,88 @@ export class AuthService {
         throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
       }
 
-      throw new HttpException('Something went wrong', HttpStatus.BAD_REQUEST);
+      throw new ForbiddenException('Refresh token expired');
+    }
+  }
+
+  async forgotPassword(email: string) {
+    // Find user
+    const user = await this.prismaService.user.findUnique({
+      where: {
+        email,
+        verified: true,
+      },
+    });
+
+    if (!user) {
+      throw new ForbiddenException('Email not found');
+    }
+
+    // Set the resetting password flag to true
+    await this.prismaService.user.update({
+      where: {
+        id: user.id,
+      },
+      data: {
+        resettingPass: true,
+      },
+    });
+
+    // Generate token
+    const { verificationToken } = await this.getJwtVerificationToken(
+      user.id,
+      user.email,
+    );
+
+    // Generate verification link
+    const verificationLink = `http://localhost:3000/reset-password?token=${verificationToken}`; // Replace with frontend url
+
+    // Send verification email with token
+    // Todo: Send email
+
+    // Currently returning verification link for testing
+    return {
+      verificationLink,
+    };
+  }
+
+  async resetPassword(userId: number, newPassword: string) {
+    // Find user
+    const user = await this.prismaService.user.findUnique({
+      where: {
+        id: userId,
+      },
+    });
+
+    if (!user) {
+      throw new ForbiddenException('User not found');
+    }
+
+    if (user.resettingPass == false) {
+      throw new ForbiddenException('User not resetting password');
+    }
+
+    // Hash password
+    const hash = await argon.hash(newPassword);
+
+    try {
+      // Update user password
+      await this.prismaService.user.update({
+        where: {
+          id: userId,
+        },
+        data: {
+          password: hash,
+          resettingPass: false,
+        },
+      });
+
+      return {
+        statusCode: 200,
+        message: 'Password reset successfully',
+      };
+    } catch (err) {
+      throw err;
     }
   }
 
@@ -198,15 +370,26 @@ export class AuthService {
     };
   }
 
+  async getJwtVerificationToken(sub: number, email: string) {
+    const payload: ITokenPayload = { sub, email };
+    const verificationToken = await this.jwtService.signAsync(payload, {
+      secret: this.config.get('JWT_VT_SECRET'),
+      expiresIn: this.config.get('JWT_VT_EXPIRES'),
+    });
+    return {
+      verificationToken,
+    };
+  }
+
   private async generateTokens(payload: ITokenPayload, tokenId: string) {
     const { accessToken } = await this.getJwtAccessToken(
       payload.sub,
-      payload.email
+      payload.email,
     );
 
     const { refreshToken: newRefreshToken } = await this.getJwtRefreshToken(
       payload.sub,
-      payload.email
+      payload.email,
     );
 
     const hash = await argon.hash(newRefreshToken);
