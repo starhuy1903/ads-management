@@ -52,7 +52,7 @@ export default function Login() {
         </div>
 
         {isError && (
-          <div className="mt-4 px-4  py-2 text-white font-semibold bg-red-400 border rounded-lg">
+          <div className="mt-4 px-4 py-2 text-white font-semibold bg-red-400 border rounded-lg">
             {errorMsg}
           </div>
         )}
@@ -73,7 +73,7 @@ export default function Login() {
               })}
               type="email"
               placeholder="Enter your email"
-              aria-invalid={errors.email ? 'true' : 'false'}
+              aria-invalid={Boolean(errors.email)}
               className="font-sans bg-gray-50 border border-gray-400 text-gray-900 py-2 px-3 rounded-lg w-full"
             />
             {errors.email && (
@@ -99,8 +99,8 @@ export default function Login() {
                 },
               })}
               type="password"
-              placeholder="********"
-              aria-invalid={errors.password ? 'true' : 'false'}
+              placeholder="Enter your password"
+              aria-invalid={Boolean(errors.password)}
               className="font-sans bg-gray-50 border border-gray-400 text-gray-900 py-2 px-3 rounded-lg w-full"
             />
             {errors.password && (
@@ -126,7 +126,7 @@ export default function Login() {
             </div>
 
             <Link
-              to="/forgetPassword"
+              to="/forget-password"
               className="text-sm font-bold text-[#7F56D9] hover:underline dark:text-primary-500"
             >
               Forgot password?

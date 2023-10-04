@@ -1,11 +1,20 @@
-import { RootState, useAppDispatch } from '@/store';
-import { setIsLoggedIn } from '@/store/slice/userSlice';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '@/store';
+import { useLogoutMutation } from '@/store/api/userApiSlice';
 import { Link } from 'react-router-dom';
 
 export default function Header() {
-  const dispatch = useAppDispatch();
-  const user = useSelector((state: RootState) => state.user.isLoggedIn);
+  const isLoggedIn = useAppSelector((state) => state.user.isLoggedIn);
+  const [requestLogout] = useLogoutMutation();
+
+  const handleLogout = async () => {
+    try {
+      const res = await requestLogout();
+
+      console.log(res);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <div className="fixed w-full h-[80px] flex justify-center items-center bg-white z-20">
@@ -28,7 +37,21 @@ export default function Header() {
         </div>
 
         <div>
-          {!user ? (
+          {isLoggedIn ? (
+            <ul className="flex items-center">
+              <li>
+                <Link to="/profile">Profile</Link>
+              </li>
+              <li>
+                <button
+                  className="bg-[#7F56D9] text-white py-2 px-3 rounded hover:opacity-90"
+                  onClick={handleLogout}
+                >
+                  Logout
+                </button>
+              </li>
+            </ul>
+          ) : (
             <ul className="flex items-center">
               <li>
                 <Link to="/login">Log in</Link>
@@ -39,20 +62,6 @@ export default function Header() {
                     Sign up
                   </button>
                 </Link>
-              </li>
-            </ul>
-          ) : (
-            <ul className="flex items-center">
-              <li>
-                <Link to="/profile">Profile</Link>
-              </li>
-              <li>
-                <button
-                  className="bg-[#7F56D9] text-white py-2 px-3 rounded hover:opacity-90"
-                  onClick={() => dispatch(setIsLoggedIn(false))}
-                >
-                  Logout
-                </button>
               </li>
             </ul>
           )}

@@ -74,7 +74,7 @@ export default function Register() {
                 },
               })}
               placeholder="Enter your name"
-              aria-invalid={errors.name ? 'true' : 'false'}
+              aria-invalid={Boolean(errors.name)}
               className="font-sans bg-gray-50 border border-gray-400 text-gray-900 py-2 px-3 rounded-lg w-full"
             />
 
@@ -98,7 +98,7 @@ export default function Register() {
               })}
               type="email"
               placeholder="Enter your email"
-              aria-invalid={errors.email ? 'true' : 'false'}
+              aria-invalid={Boolean(errors.email)}
               className="font-sans bg-gray-50 border border-gray-400 text-gray-900 py-2 px-3 rounded-lg w-full"
             />
 
@@ -138,8 +138,8 @@ export default function Register() {
                 },
               })}
               type="password"
-              placeholder="********"
-              aria-invalid={errors.password ? 'true' : 'false'}
+              placeholder="Enter your password"
+              aria-invalid={Boolean(errors.password)}
               className="font-sans bg-gray-50 border border-gray-400 text-gray-900 py-2 px-3 rounded-lg w-full"
             />
 
@@ -158,7 +158,7 @@ export default function Register() {
           <p className="text-sm font-light text-center">
             Already have an account?{' '}
             <Link
-              to="/signp"
+              to="/login"
               className="font-semibold text-[#7F56D9] hover:underline"
             >
               Login
