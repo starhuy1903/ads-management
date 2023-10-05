@@ -13,7 +13,7 @@ const initialState = {
     tokenId: localStorage.getItem('tokenId') || '',
     accessTokenExpires: localStorage.getItem('accessTokenExpires') || '',
   },
-  isLoggedIn: false, // TODO: check local storage
+  isLoggedIn: Boolean(localStorage.getItem('accessToken')),
 };
 
 export const userSlice = createSlice({
