@@ -1,6 +1,6 @@
 {
   "uuid": "40303caf-a649-4f14-a774-087626e31ef3",
-  "lastMigration": 27,
+  "lastMigration": 28,
   "name": "Auth app",
   "endpointPrefix": "",
   "latency": 0,
@@ -13,11 +13,11 @@
       "type": "http",
       "documentation": "",
       "method": "post",
-      "endpoint": "login",
+      "endpoint": "api/auth/signin",
       "responses": [
         {
           "uuid": "c76bbbac-f3f3-42e9-80d3-c6f1fa5a3cd5",
-          "body": "{\n  \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c\",\n  \"refreshToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c\"\n}",
+          "body": "{\n  \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoiY2hpaGllbjIwMDJAZ21haWwuY29tIiwiaWF0IjoxNjk2MjM4Njc4LCJleHAiOjE2OTYyMzg2OTN9.Z2aiXDTpFdyjF92AfN4-G-59apIYMJuCismrjSIeUkI\",\n  \"refreshToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoiY2hpaGllbjIwMDJAZ21haWwuY29tIiwiaWF0IjoxNjk2MjM4Njc4LCJleHAiOjE2OTYzMjUwNzh9.KIM3giDL-oVD41LcGb8DruolZpI77HQ0UQge4dI8SL4\",\n  \"tokenId\": \"dff20586-9521-428a-8551-b5ddf6096efa\",\n  \"accessTokenExpires\": \"2023-10-02T09:24:43.514Z\",\n  \"user\": {\n    \"id\": 1,\n    \"email\": \"chihien2002@gmail.com\",\n    \"name\": \"Trương Chí Hiển\"\n  }\n}",
           "latency": 0,
           "statusCode": 200,
           "label": "",
@@ -35,22 +35,56 @@
             {
               "target": "body",
               "modifier": "email",
-              "value": "''",
-              "invert": true,
+              "value": "admin@gmail.com",
+              "invert": false,
               "operator": "equals"
             },
             {
               "target": "body",
               "modifier": "password",
-              "value": "''",
-              "invert": true,
+              "value": "admin123",
+              "invert": false,
               "operator": "equals"
             }
           ],
           "rulesOperator": "AND",
           "disableTemplating": false,
           "fallbackTo404": false,
-          "default": true
+          "default": true,
+          "crudKey": "id"
+        },
+        {
+          "uuid": "2047a0a2-d308-41df-b7af-0782f2ca468a",
+          "body": "{\n  \"message\": \"Wrong password!\"\n}",
+          "latency": 0,
+          "statusCode": 401,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "email",
+              "value": "admin@gmail.com",
+              "invert": true,
+              "operator": "equals"
+            },
+            {
+              "target": "body",
+              "modifier": "password",
+              "value": "admin123",
+              "invert": true,
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id"
         }
       ],
       "enabled": true,
@@ -61,11 +95,11 @@
       "type": "http",
       "documentation": "",
       "method": "post",
-      "endpoint": "register",
+      "endpoint": "api/auth/signup",
       "responses": [
         {
           "uuid": "0840d099-4ebd-4802-b218-8d864fb8f089",
-          "body": "{\n  \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c\",\n  \"refreshToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c\"\n}",
+          "body": "{\n  \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoiY2hpaGllbjIwMDJAZ21haWwuY29tIiwiaWF0IjoxNjk2MjM4Njc4LCJleHAiOjE2OTYyMzg2OTN9.Z2aiXDTpFdyjF92AfN4-G-59apIYMJuCismrjSIeUkI\",\n  \"refreshToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoiY2hpaGllbjIwMDJAZ21haWwuY29tIiwiaWF0IjoxNjk2MjM4Njc4LCJleHAiOjE2OTYzMjUwNzh9.KIM3giDL-oVD41LcGb8DruolZpI77HQ0UQge4dI8SL4\",\n  \"tokenId\": \"dff20586-9521-428a-8551-b5ddf6096efa\",\n  \"accessTokenExpires\": \"2023-10-02T09:24:43.514Z\",\n  \"user\": {\n    \"id\": 1,\n    \"email\": \"chihien2002@gmail.com\",\n    \"name\": \"Trương Chí Hiển\"\n  }\n}",
           "latency": 0,
           "statusCode": 200,
           "label": "",
@@ -75,10 +109,37 @@
           "databucketID": "",
           "sendFileAsBody": false,
           "rules": [],
-          "rulesOperator": "OR",
+          "rulesOperator": "AND",
           "disableTemplating": false,
           "fallbackTo404": false,
-          "default": true
+          "default": true,
+          "crudKey": "id"
+        },
+        {
+          "uuid": "c0c81e75-e759-472d-b2ab-8376af324fca",
+          "body": "{\n  \"message\": \"This email is already existed!\"\n}",
+          "latency": 0,
+          "statusCode": 409,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "email",
+              "value": "admin@gmail.com",
+              "invert": false,
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "AND",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id"
         }
       ],
       "enabled": true,
@@ -106,7 +167,8 @@
           "rulesOperator": "OR",
           "disableTemplating": false,
           "fallbackTo404": false,
-          "default": true
+          "default": true,
+          "crudKey": "id"
         }
       ],
       "enabled": true,
@@ -117,7 +179,7 @@
       "type": "http",
       "documentation": "",
       "method": "get",
-      "endpoint": "me",
+      "endpoint": "api/auth/me",
       "responses": [
         {
           "uuid": "f084f3cd-8a5e-4e72-b4f8-cdcf0e1d7c8d",
@@ -134,7 +196,71 @@
           "rulesOperator": "OR",
           "disableTemplating": false,
           "fallbackTo404": false,
-          "default": true
+          "default": true,
+          "crudKey": "id"
+        }
+      ],
+      "enabled": true,
+      "responseMode": null
+    },
+    {
+      "uuid": "a3b5fefc-2e86-49e0-855a-78b7e59aff05",
+      "type": "http",
+      "documentation": "",
+      "method": "post",
+      "endpoint": "api/auth/logout",
+      "responses": [
+        {
+          "uuid": "54c168e1-b9e3-4949-8e58-c67963263a49",
+          "body": "{\n  \"message\": \"Logout successfully!\"\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "header",
+              "modifier": "authorization",
+              "value": "",
+              "invert": true,
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "AND",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id"
+        },
+        {
+          "uuid": "80b9d680-2a83-469c-b0ee-651fae24489d",
+          "body": "{\n  \"message\": \"Invalid token, logout failed!\"\n}",
+          "latency": 0,
+          "statusCode": 401,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "header",
+              "modifier": "authorization",
+              "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoiY2hpaGllbjIwMDJAZ21haWwuY29tIiwiaWF0IjoxNjk2MjM4Njc4LCJleHAiOjE2OTYyMzg2OTN9.Z2aiXDTpFdyjF92AfN4-G-59apIYMJuCismrjSIeUkI",
+              "invert": true,
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "AND",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id"
         }
       ],
       "enabled": true,
@@ -149,6 +275,10 @@
     {
       "type": "route",
       "uuid": "ed523b82-792a-4fa6-b6e6-a4a690482fba"
+    },
+    {
+      "type": "route",
+      "uuid": "a3b5fefc-2e86-49e0-855a-78b7e59aff05"
     },
     {
       "type": "route",

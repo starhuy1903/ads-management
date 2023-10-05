@@ -3,14 +3,24 @@ export type CredentialPayload = {
   password: string;
 };
 
+export type RegisterPayload = CredentialPayload & {
+  name: string;
+};
+
 export type LoginResponse = {
   accessToken: string;
   refreshToken: string;
+  tokenId: string;
+  accessTokenExpires: string;
+  user: UserProfile;
+};
+
+export type LoginError = {
+  msg: string;
 };
 
 export type UserProfile = {
   id: string;
-  name: string;
   email: string;
-  avatar: string;
+  name: string;
 };

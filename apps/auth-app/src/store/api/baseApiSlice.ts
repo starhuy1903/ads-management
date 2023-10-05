@@ -11,7 +11,8 @@ import { logOut } from '../slice/userSlice';
 
 const mutex = new Mutex();
 
-const BASE_URL = import.meta.env.REACT_APP_BASE_URL || 'http://localhost:3000';
+const BASE_URL =
+  import.meta.env.REACT_APP_BASE_URL || 'http://localhost:3000/api';
 
 const baseQuery = fetchBaseQuery({
   baseUrl: BASE_URL,
