@@ -73,7 +73,7 @@ export default function Login() {
               })}
               type="email"
               placeholder="Enter your email"
-              aria-invalid={Boolean(errors.email)}
+              aria-invalid={errors.email ? 'true' : 'false'}
               className="font-sans bg-gray-50 border border-gray-400 text-gray-900 py-2 px-3 rounded-lg w-full"
             />
             {errors.email && (
@@ -100,7 +100,7 @@ export default function Login() {
               })}
               type="password"
               placeholder="Enter your password"
-              aria-invalid={Boolean(errors.password)}
+              aria-invalid={errors.password ? 'true' : 'false'}
               className="font-sans bg-gray-50 border border-gray-400 text-gray-900 py-2 px-3 rounded-lg w-full"
             />
             {errors.password && (
