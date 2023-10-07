@@ -14,7 +14,7 @@
         "outputPath": "dist/apps/noti-api",
         "main": "apps/noti-api/src/main.ts",
         "tsConfig": "apps/noti-api/tsconfig.app.json",
-        "assets": ["apps/noti-api/src/assets"],
+        "assets": [],
         "isolatedConfig": true,
         "webpackConfig": "apps/noti-api/webpack.config.js"
       },
