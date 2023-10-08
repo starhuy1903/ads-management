@@ -22,7 +22,6 @@ export class ScheduleController {
     metadata: Metadata,
     call: ServerUnaryCall<any, any>,
   ): Promise<ScheduleMailRes> {
-    // console.log('dataa==>', data);
     const scheduleData = new MailScheduleDto();
     scheduleData.name = data.name;
     scheduleData.priority = getPriority(data.priority);

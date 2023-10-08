@@ -39,6 +39,7 @@ export class ScheduleService {
     const job = this.agenda.create('send-verify-email', jobData);
     job.schedule(new Date(jobData.time));
     job.priority(jobData.priority);
+    job.attrs.failCount = 0;
     await job.save();
     return {
       msg: 'send email was scheduled successfully',
@@ -58,13 +59,13 @@ export class ScheduleService {
         console.error(
           `Job ${job.attrs.name} failed with error: ${error.message}`,
         );
-        if (job.attrs.data.failCount < job.attrs.data.maxRetry) {
-          job.attrs.data.failCount = job.attrs.data.failCount + 1;
-          job.attrs.nextRunAt = new Date(Date.now() + 1000 * 60 * 1); // Retry after 5 minutes
+        if (job.attrs.failCount < job.attrs.data.maxRetry) {
+          job.attrs.failCount = job.attrs.failCount + 1;
+          job.attrs.nextRunAt = new Date(Date.now() + 1000 * 60 * 0.1); // Retry after 10 seconds
           await job.save(); // Save the job back to MongoDB
         } else {
           throw new Error(
-            `Job permanently failed after ${job.attrs.data.failCount} attempts`,
+            error,
           );
         }
       }

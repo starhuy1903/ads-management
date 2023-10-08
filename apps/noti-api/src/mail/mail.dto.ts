@@ -21,10 +21,6 @@ export class SendMailTemplateDto {
   @IsOptional()
   bccAddresses: string[];
 
-  // @IsString()
-  // @IsNotEmpty()
-  // subject: string;
-
   @IsString()
   @IsNotEmpty()
   template: string;
