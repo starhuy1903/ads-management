@@ -18,7 +18,7 @@ export class MailService {
   async sendEmailTemplate(payload: SendMailTemplateDto) {
     const input: SendTemplatedEmailCommandInput = {
       // SendTemplatedEmailRequest
-      Source: this.configService.get("sourceEmail"), // email sending template
+      Source: this.configService.get('sourceEmail'), // email sending template
       Destination: {
         // Destination
         ToAddresses: payload.toAddresses,

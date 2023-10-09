@@ -1,8 +1,9 @@
-import { Controller } from '@nestjs/common';
+import { Controller, ValidationError } from '@nestjs/common';
 import { ScheduleService } from './schedule.service';
 import { MailScheduleDto, SchedulePriority as SP } from './schedule.dto';
 import { GrpcMethod } from '@nestjs/microservices';
 import { Metadata, ServerUnaryCall } from '@grpc/grpc-js';
+import { RpcException } from '@nestjs/microservices';
 import {
   ScheduleMailReq,
   ScheduleMailRes,
@@ -11,6 +12,8 @@ import {
 import Validator from 'ajv';
 import { validate } from 'class-validator';
 import { TEMPLATES } from '../constants/templates';
+import { SendMailTemplateDto } from '../mail/mail.dto';
+import { plainToClass } from '@nestjs/class-transformer';
 
 @Controller('schedule')
 export class ScheduleController {
@@ -27,14 +30,14 @@ export class ScheduleController {
     scheduleData.priority = getPriority(data.priority);
     scheduleData.time = data.time;
     scheduleData.maxRetry = data.maxRetry;
-    scheduleData.mailInfo = data.mailInfo;
+    scheduleData.mailInfo = plainToClass(SendMailTemplateDto, data.mailInfo);
 
     const errors = await validate(scheduleData);
     if (errors.length > 0) {
-      return {
-        jobId: null,
-        msg: errors[0].constraints.isString,
-      };
+      throw new RpcException({
+        code: 3,
+        message: getAllConstraints(errors)[0],
+      });
     }
     const validator = new Validator();
     const template = TEMPLATES.find(
@@ -52,13 +55,13 @@ export class ScheduleController {
         scheduleData.maxRetry,
       );
     }
-    return {
-      jobId: '',
-      msg:
-        avjValidate.errors[0].instancePath +
+    throw new RpcException({
+      code: 3,
+      message:
+        avjValidate.errors[0].instancePath.substring(1) +
         ' ' +
         avjValidate.errors[0].message,
-    };
+    });
   }
 }
 
@@ -77,4 +80,22 @@ const getPriority = (priority: SchedulePriority): SP => {
     default:
       return SP.normal;
   }
+};
+
+const getAllConstraints = (errors: ValidationError[]): string[] => {
+  const constraints: string[] = [];
+
+  for (const error of errors) {
+    if (error.constraints) {
+      const constraintValues = Object.values(error.constraints);
+      constraints.push(...constraintValues);
+    }
+
+    if (error.children) {
+      const childConstraints = getAllConstraints(error.children);
+      constraints.push(...childConstraints);
+    }
+  }
+
+  return constraints;
 };

@@ -21,16 +21,16 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
 
   const grpcUrl = configService.get('GRPC_URL');
-  
+
   await app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.GRPC,
     options: {
       package: MAIL_PACKAGE_NAME,
       protoPath: 'apps/noti-api/src/proto/mail-schedule.proto',
-      url: grpcUrl
+      url: grpcUrl,
     },
   });
- 
+
   const port = configService.get('PORT') || 3000;
   await app.listen(port);
   await app.startAllMicroservices();

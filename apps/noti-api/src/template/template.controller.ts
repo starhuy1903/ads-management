@@ -10,7 +10,7 @@ import {
   Patch,
   Post,
   UseGuards,
-  Query
+  Query,
 } from '@nestjs/common';
 import { TemplateService } from './template.service';
 import { CreateTemplateResponse, TemplateDto } from './template.dto';

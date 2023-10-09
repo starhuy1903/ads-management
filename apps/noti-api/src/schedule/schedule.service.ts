@@ -64,9 +64,7 @@ export class ScheduleService {
           job.attrs.nextRunAt = new Date(Date.now() + 1000 * 60 * 0.1); // Retry after 10 seconds
           await job.save(); // Save the job back to MongoDB
         } else {
-          throw new Error(
-            error,
-          );
+          throw new Error(error);
         }
       }
     });

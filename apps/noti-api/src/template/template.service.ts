@@ -7,7 +7,7 @@ import {
   CreateTemplateCommand,
   DeleteTemplateCommand,
 } from '@aws-sdk/client-ses';
-import { readTemplateFile } from '../../utils';
+import { readTemplateFile } from '../utils';
 import { TEMPLATES } from '../constants/templates';
 
 @Injectable()
