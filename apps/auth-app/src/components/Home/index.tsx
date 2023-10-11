@@ -1,4 +1,6 @@
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Button, Stack, Typography } from '@mui/material';
+import toast from 'react-hot-toast';
+
 import { useAppDispatch } from '../../store';
 import { setIsLoggedIn } from '../../store/slice/userSlice';
 
@@ -7,12 +9,20 @@ function Home() {
   return (
     <Box>
       <Typography>Home Page go here</Typography>
-      <Button
-        variant="contained"
-        onClick={() => dispatch(setIsLoggedIn(false))}
-      >
-        Logout
-      </Button>
+      <Stack>
+        <Button
+          variant="contained"
+          onClick={() => toast.success('Success toast')}
+        >
+          Stimulate success toast
+        </Button>
+        <Button
+          variant="contained"
+          onClick={() => toast.error('Error toast')}
+        >
+          Stimulate error toast
+        </Button>
+      </Stack>
     </Box>
   );
 }
