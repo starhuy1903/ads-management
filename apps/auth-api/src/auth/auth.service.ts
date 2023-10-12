@@ -197,8 +197,18 @@ export class AuthService {
     return await this.handeleSignIn(user);
   }
 
-  async logOut(tokenId: string) {
+  async logOut(userId: number, tokenId: string) {
     try {
+      const user = await this.prismaService.user.findUnique({
+        where: {
+          id: userId,
+        },
+      });
+
+      if (!user) {
+        throw new ForbiddenException('User not found');
+      }
+
       await this.prismaService.token.delete({
         where: {
           id: tokenId,
@@ -408,10 +418,6 @@ export class AuthService {
       refreshToken: newRefreshToken,
       tokenId: tokenId,
       accessTokenExpires: getAccessExpiry(),
-      user: {
-        id: payload.sub,
-        email: payload.email,
-      },
     };
   }
 }

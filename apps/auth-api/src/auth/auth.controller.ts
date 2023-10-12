@@ -10,6 +10,7 @@ import {
 import { AuthService } from './auth.service';
 import {
   ForgotPasswordDto,
+  LogoutDto,
   ResetPasswordDto,
   SignInDto,
   SignUpDto,
@@ -34,9 +35,9 @@ export class AuthController {
   @UseGuards(JwtGuard)
   @Post('logout')
   @HttpCode(200)
-  async signOut(@Req() req: IRequestWithUser) {
-    const tokenId = req.body['tokenId'];
-    return await this.authService.logOut(tokenId);
+  async signOut(@Req() req: IRequestWithUser, @Body() dto: LogoutDto) {
+    const userId = req.user['payload']['sub'];
+    return await this.authService.logOut(userId, dto.tokenId);
   }
 
   @UseGuards(JwtVerifyGuard)
@@ -67,9 +68,14 @@ export class AuthController {
   @UseGuards(JwtVerifyGuard)
   @HttpCode(200)
   @Post('reset-password')
-  async resetPassword(@Req() req: IRequestWithUser) {
-    const newPassword = req.body['newPassword'];
+  async resetPassword(
+    @Req() req: IRequestWithUser,
+    @Body() dto: ResetPasswordDto,
+  ) {
     const payload = req.user['payload'];
-    return await this.authService.resetPassword(payload['sub'], newPassword);
+    return await this.authService.resetPassword(
+      payload['sub'],
+      dto.newPassword,
+    );
   }
 }
