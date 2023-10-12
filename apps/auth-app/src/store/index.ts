@@ -7,9 +7,11 @@ import {
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { apiSlice } from './api/baseApiSlice';
 import { userSlice } from './slice/userSlice';
+import { statusSlice } from './slice/statusSlice';
 
 const combinedReducer = combineReducers({
   user: userSlice.reducer,
+  status: statusSlice.reducer,
   [apiSlice.reducerPath]: apiSlice.reducer,
 });
 

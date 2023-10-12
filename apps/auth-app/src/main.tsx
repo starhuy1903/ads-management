@@ -4,7 +4,6 @@ import { Provider } from 'react-redux';
 import { ThemeProvider } from '@mui/material/styles';
 import App from './components/App';
 import store from './store';
-import CustomToaster from '@/components/CustomToaster';
 import { defaultTheme } from '@/constants/themes';
 
 const root = ReactDOM.createRoot(
@@ -14,7 +13,6 @@ root.render(
   <StrictMode>
     <Provider store={store}>
       <ThemeProvider theme={defaultTheme}>
-        <CustomToaster />
         <App />
       </ThemeProvider>
     </Provider>

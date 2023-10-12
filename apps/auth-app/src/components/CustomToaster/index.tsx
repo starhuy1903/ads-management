@@ -1,7 +1,20 @@
+import { useEffect } from 'react';
+import toast, { Toaster } from 'react-hot-toast';
+
 import { defaultTheme } from '@/constants/themes';
-import { Toaster } from 'react-hot-toast';
+import { useAppSelector } from '@/store';
 
 function CustomToaster() {
+  const status = useAppSelector(state => state.status);
+
+  useEffect(() => {
+    if(status.success?.message) toast.success(status.success.message);
+  }, [status.success])
+
+  useEffect(() => {
+    if(status.error?.message) toast.error(status.error.message);
+  }, [status.error])
+
   return (
     <Toaster
       position="bottom-right"
