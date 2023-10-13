@@ -3,7 +3,7 @@ import { ResetPasswordPayload } from '@/types/user';
 import { Box, CircularProgress } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import Status from '../Status';
 
 export default function ResetPassword() {
@@ -127,14 +127,12 @@ export default function ResetPassword() {
             description="Your password has been reset. Please login to continue."
           >
             <div className="flex justify-center">
-              <button
-                className="w-1/2 text-white bg-[#7F56D9] py-2 rounded-lg font-semibold"
-                onClick={() => {
-                  window.location.href = '/login';
-                }}
+              <Link
+                to="/login"
+                className="text-white bg-[#7F56D9] py-2 px-8 rounded-lg font-semibold"
               >
                 Continue
-              </button>
+              </Link>
             </div>
           </Status>
         ) : (
@@ -144,14 +142,12 @@ export default function ResetPassword() {
             description="Reset password failed. Please try again."
           >
             <div className="flex justify-center">
-              <button
-                className="w-1/2 text-white bg-[#7F56D9] py-2 rounded-lg font-semibold"
-                onClick={() => {
-                  window.location.href = '/login';
-                }}
+              <Link
+                to="/login"
+                className="text-white bg-[#7F56D9] py-2 px-8 rounded-lg font-semibold"
               >
                 Try again
-              </button>
+              </Link>
             </div>
           </Status>
         )}

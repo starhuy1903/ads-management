@@ -1,9 +1,7 @@
 import { useVerifyMutation } from '@/store/api/userApiSlice';
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
-import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import { Box, CircularProgress } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import Status from '../Status';
 
 export default function Verify() {
@@ -56,34 +54,30 @@ export default function Verify() {
           <Status
             status="success"
             title="Email Verified!"
-            description="Your email verification has failed. Please try again."
+            description="Your email has been verified. Please login to continue."
           >
             <div className="flex justify-center">
-              <button
-                className="w-1/2 text-white bg-[#7F56D9] py-2 rounded-lg font-semibold"
-                onClick={() => {
-                  window.location.href = '/login';
-                }}
+              <Link
+                to="/login"
+                className="text-white bg-[#7F56D9] py-2 px-8 rounded-lg font-semibold"
               >
                 Continue
-              </button>
+              </Link>
             </div>
           </Status>
         ) : (
           <Status
             status="error"
             title="Verification Failed!"
-            description="Your email has been verified. Please login to continue."
+            description="Your email verification has failed. Please try again."
           >
             <div className="flex justify-center">
-              <button
-                className="w-1/2 text-white bg-[#7F56D9] py-2 rounded-lg font-semibold"
-                onClick={() => {
-                  window.location.href = '/login';
-                }}
+              <Link
+                to="/login"
+                className="text-white bg-[#7F56D9] py-2 px-8 rounded-lg font-semibold"
               >
-                Continue
-              </button>
+                Try again
+              </Link>
             </div>
           </Status>
         )}

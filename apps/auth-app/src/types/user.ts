@@ -37,9 +37,11 @@ export type MessageResponse = {
   message?: string;
 };
 
-export type ForgotPasswordResponse = MessageResponse & {
+export type RegisterResponse = MessageResponse & {
   verificationLink?: string;
 };
+
+export type ForgotPasswordResponse = RegisterResponse;
 
 export type UserProfile = {
   id: string;

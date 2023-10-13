@@ -1,20 +1,21 @@
 import {
   CredentialPayload,
-  LoginResponse,
-  MessageResponse,
-  RegisterPayload,
-  UserProfile,
-  VerifyPayload,
   ForgotPasswordPayload,
   ForgotPasswordResponse,
-  ResetPasswordPayload,
+  LoginResponse,
   LogoutPayload,
+  MessageResponse,
+  RegisterPayload,
+  RegisterResponse,
+  ResetPasswordPayload,
+  UserProfile,
+  VerifyPayload,
 } from '../../types/user';
 import {
+  logOut,
   setIsLoggedIn,
   setProfile,
   setToken,
-  logOut,
 } from '../slice/userSlice';
 import { apiSlice } from './baseApiSlice';
 
@@ -37,18 +38,15 @@ export const userApiSlice = apiSlice.injectEndpoints({
         }
       },
     }),
-    register: build.mutation<LoginResponse, RegisterPayload>({
+    register: build.mutation<RegisterResponse, RegisterPayload>({
       query: (body) => ({
         url: 'auth/signup',
         method: 'POST',
         body,
       }),
-      onQueryStarted: async (_, { dispatch, queryFulfilled }) => {
+      onQueryStarted: async (_, { queryFulfilled }) => {
         try {
-          const { data } = await queryFulfilled;
-          dispatch(setProfile(data));
-          dispatch(setToken(data));
-          dispatch(setIsLoggedIn(true));
+          await queryFulfilled;
         } catch (error) {
           console.log(error);
         }

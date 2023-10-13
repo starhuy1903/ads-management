@@ -99,7 +99,7 @@
       "responses": [
         {
           "uuid": "0840d099-4ebd-4802-b218-8d864fb8f089",
-          "body": "{\n  \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoiY2hpaGllbjIwMDJAZ21haWwuY29tIiwiaWF0IjoxNjk2MjM4Njc4LCJleHAiOjE2OTYyMzg2OTN9.Z2aiXDTpFdyjF92AfN4-G-59apIYMJuCismrjSIeUkI\",\n  \"refreshToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoiY2hpaGllbjIwMDJAZ21haWwuY29tIiwiaWF0IjoxNjk2MjM4Njc4LCJleHAiOjE2OTYzMjUwNzh9.KIM3giDL-oVD41LcGb8DruolZpI77HQ0UQge4dI8SL4\",\n  \"tokenId\": \"dff20586-9521-428a-8551-b5ddf6096efa\",\n  \"accessTokenExpires\": \"2023-10-02T09:24:43.514Z\",\n  \"user\": {\n    \"id\": 1,\n    \"email\": \"chihien2002@gmail.com\",\n    \"name\": \"Trương Chí Hiển\"\n  }\n}",
+          "body": "{\n  \"verificationLink\": \"http://localhost:3000/verify?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoiY2hpaGllbjIwMDJAZ21haWwuY29tIiwiaWF0IjoxNjk3MDk3ODA2LCJleHAiOjE2OTcwOTgxMDZ9.nKDwRDHKQP9L3qmiamKKPZsGGFFOkd1X4RjLfsiMcxk\"\n}",
           "latency": 0,
           "statusCode": 200,
           "label": "",
