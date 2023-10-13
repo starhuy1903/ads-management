@@ -4,13 +4,13 @@ import {
   RouterProvider,
   createBrowserRouter,
 } from 'react-router-dom';
+import ForgotPassword from './ForgotPassword';
 import Home from './Home';
 import Login from './Login';
 import PageLayout from './PageLayout';
 import Register from './Register';
-import Verify from './Verify';
-import ForgotPassword from './ForgotPassword';
 import ResetPassword from './ResetPassword';
+import Verify from './Verify';
 
 const protectedRoutes = createBrowserRouter([
   {

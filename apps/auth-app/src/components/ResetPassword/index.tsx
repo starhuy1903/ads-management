@@ -4,7 +4,6 @@ import { Box, CircularProgress } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useSearchParams } from 'react-router-dom';
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import Status from '../Status';
 
 export default function ResetPassword() {

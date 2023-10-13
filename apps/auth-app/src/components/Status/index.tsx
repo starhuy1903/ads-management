@@ -1,6 +1,6 @@
+import { StatusProps } from '@/types/status';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-import { StatusProps } from '@/types/status';
 
 export default function Status({
   status,

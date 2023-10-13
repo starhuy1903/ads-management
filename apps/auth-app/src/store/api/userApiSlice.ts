@@ -78,7 +78,6 @@ export const userApiSlice = apiSlice.injectEndpoints({
       onQueryStarted: async (_, { queryFulfilled }) => {
         try {
           await queryFulfilled;
-          console.log('verify');
         } catch (error) {
           console.log(error);
         }
@@ -95,8 +94,7 @@ export const userApiSlice = apiSlice.injectEndpoints({
       }),
       onQueryStarted: async (_, { queryFulfilled }) => {
         try {
-          const { data } = await queryFulfilled;
-          window.location.href = data?.verificationLink || '/';
+          await queryFulfilled;
         } catch (error) {
           console.log(error);
         }
