@@ -225,8 +225,8 @@
             {
               "target": "header",
               "modifier": "authorization",
-              "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoiY2hpaGllbjIwMDJAZ21haWwuY29tIiwiaWF0IjoxNjk2MjM4Njc4LCJleHAiOjE2OTYyMzg2OTN9.Z2aiXDTpFdyjF92AfN4-G-59apIYMJuCismrjSIeUkI",
-              "invert": false,
+              "value": "",
+              "invert": true,
               "operator": "equals"
             }
           ],

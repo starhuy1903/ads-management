@@ -1,5 +1,16 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { LoginResponse } from '../../types/user';
+import { LoginResponse, UserProfile } from '../../types/user';
+
+type UserSliceType = {
+  profile: UserProfile | null;
+  token: {
+    accessToken: string;
+    refreshToken: string;
+    tokenId: string;
+    accessTokenExpires: string;
+  } | null;
+  isLoggedIn: boolean;
+};
 
 const initialState = {
   profile: {
@@ -13,8 +24,8 @@ const initialState = {
     tokenId: localStorage.getItem('tokenId') || '',
     accessTokenExpires: localStorage.getItem('accessTokenExpires') || '',
   },
-  isLoggedIn: false, // TODO: check local storage
-};
+  isLoggedIn: Boolean(localStorage.getItem('accessToken')),
+} as UserSliceType;
 
 export const userSlice = createSlice({
   name: 'user',
@@ -25,10 +36,7 @@ export const userSlice = createSlice({
     },
 
     setToken: (state, action: PayloadAction<LoginResponse>) => {
-      state.token.accessToken = action.payload.accessToken;
-      state.token.refreshToken = action.payload.refreshToken;
-      state.token.tokenId = action.payload.tokenId;
-      state.token.accessTokenExpires = action.payload.accessTokenExpires;
+      state.token = action.payload;
       localStorage.setItem('accessToken', action.payload.accessToken);
       localStorage.setItem('refreshToken', action.payload.refreshToken);
     },
@@ -38,9 +46,9 @@ export const userSlice = createSlice({
     },
 
     logOut: (state) => {
-      state.profile = initialState.profile;
-      state.token = initialState.token;
-      state.isLoggedIn = initialState.isLoggedIn;
+      state.profile = null;
+      state.token = null;
+      state.isLoggedIn = false;
       localStorage.setItem('accessToken', '');
       localStorage.setItem('refreshToken', '');
     },
