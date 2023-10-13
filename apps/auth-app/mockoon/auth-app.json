@@ -212,7 +212,7 @@
       "responses": [
         {
           "uuid": "54c168e1-b9e3-4949-8e58-c67963263a49",
-          "body": "{\n  \"message\": \"Logout successfully!\"\n}",
+          "body": "{\n  \"statusCode\": 200\n  \"message\": \"Logout successfully!\"\n}",
           "latency": 0,
           "statusCode": 200,
           "label": "",
@@ -275,7 +275,7 @@
       "responses": [
         {
           "uuid": "219e5298-199b-49fb-a3d9-040a6e8aeca9",
-          "body": "{\n  \"message\": \"Verify account successfully!\"\n}",
+          "body": "{\n  \"statusCode\": 200,\n  \"message\": \"Email verified successfully\"\n}",
           "latency": 0,
           "statusCode": 200,
           "label": "",
@@ -288,7 +288,7 @@
             {
               "target": "body",
               "modifier": "verifyToken",
-              "value": "123456",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoiY2hpaGllbjIwMDJAZ21haWwuY29tIiwiaWF0IjoxNjk3MDk4MTI0LCJleHAiOjE2OTcwOTg0MjR9.-03lQvgEdYrprakAH-zuHZZJEK_ks9JYaT9v8KSghd4",
               "invert": false,
               "operator": "equals"
             }
@@ -301,7 +301,7 @@
         },
         {
           "uuid": "6a9b9c39-c6b8-4dd3-8cf0-23e591893048",
-          "body": "{\n  \"message\": \"Invalid token, verify account failed!\"\n}",
+          "body": "{\n  \"statusCode\": 401,\n  \"message\": \"Missing or invalid verifyToken\"\n}",
           "latency": 0,
           "statusCode": 401,
           "label": "",
@@ -314,7 +314,159 @@
             {
               "target": "body",
               "modifier": "verifyToken",
-              "value": "123456",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoiY2hpaGllbjIwMDJAZ21haWwuY29tIiwiaWF0IjoxNjk3MDk4MTI0LCJleHAiOjE2OTcwOTg0MjR9.-03lQvgEdYrprakAH-zuHZZJEK_ks9JYaT9v8KSghd4",
+              "invert": true,
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id"
+        }
+      ],
+      "enabled": true,
+      "responseMode": null
+    },
+    {
+      "uuid": "53fbe8be-8f98-4f9d-ae96-155c1d3f0a3c",
+      "type": "http",
+      "documentation": "",
+      "method": "post",
+      "endpoint": "api/auth/forgot-password",
+      "responses": [
+        {
+          "uuid": "d47e42ec-a374-4aac-9438-c2bf0218a345",
+          "body": "{\n  \"verificationLink\": \"http://localhost:4200/reset-password?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoiY2hpaGllbjIwMDJAZ21haWwuY29tIiwiaWF0IjoxNjk3MTAxNjk5LCJleHAiOjE2OTcxMDE5OTl9.ZGGJaLER4eL6S-cRfMKbQAISGss_zY7PtGvSrcGHuo4\"\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "email",
+              "value": "admin@gmail.com",
+              "invert": false,
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id"
+        },
+        {
+          "uuid": "007bc459-245b-4ffc-a290-e8f67673a345",
+          "body": "{\n  \"message\": \"Missing field(s)\"\n}",
+          "latency": 0,
+          "statusCode": 400,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "email",
+              "value": "",
+              "invert": false,
+              "operator": "null"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id"
+        },
+        {
+          "uuid": "e81a4ed4-dc49-46d8-b7d8-5481d0a987f6",
+          "body": "{\n  \"message\": \"Email not found\"\n}",
+          "latency": 0,
+          "statusCode": 404,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "email",
+              "value": "admin@gmail.com",
+              "invert": true,
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id"
+        }
+      ],
+      "enabled": true,
+      "responseMode": null
+    },
+    {
+      "uuid": "2e9cf234-a6c7-4683-98ce-6f77bfb5ae1a",
+      "type": "http",
+      "documentation": "",
+      "method": "post",
+      "endpoint": "api/auth/reset-password",
+      "responses": [
+        {
+          "uuid": "161cad95-a7d9-4243-b488-6c98e856d9bd",
+          "body": "{\n  \"statusCode\": 200,\n  \"message\": \"Reset password successfully\"\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "verifyToken",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoiY2hpaGllbjIwMDJAZ21haWwuY29tIiwiaWF0IjoxNjk3MTAxNjk5LCJleHAiOjE2OTcxMDE5OTl9.ZGGJaLER4eL6S-cRfMKbQAISGss_zY7PtGvSrcGHuo4",
+              "invert": false,
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "AND",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id"
+        },
+        {
+          "uuid": "dbfae27a-b3b5-4594-90c3-6409d8fde500",
+          "body": "{\n  \"statusCode\": 401,\n  \"message\": \"Missing or invalid token\"\n}",
+          "latency": 0,
+          "statusCode": 401,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "verifyToken",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoiY2hpaGllbjIwMDJAZ21haWwuY29tIiwiaWF0IjoxNjk3MTAxNjk5LCJleHAiOjE2OTcxMDE5OTl9.ZGGJaLER4eL6S-cRfMKbQAISGss_zY7PtGvSrcGHuo4",
               "invert": true,
               "operator": "equals"
             }
@@ -346,6 +498,14 @@
     {
       "type": "route",
       "uuid": "1de6269a-0af0-4f25-933d-f7bcb05d0bd9"
+    },
+    {
+      "type": "route",
+      "uuid": "53fbe8be-8f98-4f9d-ae96-155c1d3f0a3c"
+    },
+    {
+      "type": "route",
+      "uuid": "2e9cf234-a6c7-4683-98ce-6f77bfb5ae1a"
     },
     {
       "type": "route",

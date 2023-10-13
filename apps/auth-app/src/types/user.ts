@@ -11,6 +11,15 @@ export type VerifyPayload = {
   verifyToken: string;
 };
 
+export type ForgotPasswordPayload = {
+  email: string;
+};
+
+export type ResetPasswordPayload = {
+  newPassword: string;
+  verifyToken: string;
+};
+
 export type LoginResponse = {
   accessToken: string;
   refreshToken: string;
@@ -19,16 +28,17 @@ export type LoginResponse = {
   user: UserProfile;
 };
 
-export type LoginError = {
-  msg: string;
+export type MessageResponse = {
+  statusCode?: string;
+  message?: string;
+};
+
+export type ForgotPasswordResponse = MessageResponse & {
+  verificationLink?: string;
 };
 
 export type UserProfile = {
   id: string;
   email: string;
   name: string;
-};
-
-export type MessageResponse = {
-  message: string;
 };

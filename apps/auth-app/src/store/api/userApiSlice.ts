@@ -5,6 +5,9 @@ import {
   RegisterPayload,
   UserProfile,
   VerifyPayload,
+  ForgotPasswordPayload,
+  ForgotPasswordResponse,
+  ResetPasswordPayload,
 } from '../../types/user';
 import {
   setIsLoggedIn,
@@ -73,6 +76,39 @@ export const userApiSlice = apiSlice.injectEndpoints({
       onQueryStarted: async (_, { queryFulfilled }) => {
         try {
           await queryFulfilled;
+          console.log('verify');
+        } catch (error) {
+          console.log(error);
+        }
+      },
+    }),
+    forgotPassword: build.mutation<
+      ForgotPasswordResponse,
+      ForgotPasswordPayload
+    >({
+      query: (body) => ({
+        url: 'auth/forgot-password',
+        method: 'POST',
+        body,
+      }),
+      onQueryStarted: async (_, { queryFulfilled }) => {
+        try {
+          const { data } = await queryFulfilled;
+          window.location.href = data?.verificationLink || '/';
+        } catch (error) {
+          console.log(error);
+        }
+      },
+    }),
+    resetPassword: build.mutation<MessageResponse, ResetPasswordPayload>({
+      query: (body) => ({
+        url: 'auth/reset-password',
+        method: 'POST',
+        body,
+      }),
+      onQueryStarted: async (_, { queryFulfilled }) => {
+        try {
+          await queryFulfilled;
         } catch (error) {
           console.log(error);
         }
@@ -90,4 +126,6 @@ export const {
   useRegisterMutation,
   useLogoutMutation,
   useVerifyMutation,
+  useForgotPasswordMutation,
+  useResetPasswordMutation,
 } = userApiSlice;

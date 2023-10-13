@@ -1,16 +1,17 @@
 import { useVerifyMutation } from '@/store/api/userApiSlice';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import { Box, CircularProgress } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
+import Status from '../Status';
 
 export default function Verify() {
-  const params = useParams();
-  const verifyToken = params.verifyToken;
-
-  console.log(verifyToken);
+  const [urlParams] = useSearchParams();
+  const verifyToken = urlParams.get('token') || '';
 
   const [requestVerify, { isLoading, isError, error }] = useVerifyMutation();
-  const [message, setMessage] = useState('');
+  const [isSuccess, setIsSuccess] = useState(false);
 
   useEffect(() => {
     if (verifyToken) {
@@ -18,9 +19,9 @@ export default function Verify() {
         try {
           const res = await requestVerify({ verifyToken });
 
-          console.log(res);
-
-          setMessage(res.data.message);
+          if (res.data) {
+            setIsSuccess(true);
+          }
         } catch (err) {
           console.log(err);
         }
@@ -33,8 +34,7 @@ export default function Verify() {
   useEffect(() => {
     if (error) {
       if ('data' in error) {
-        const errMsg = error.data as { message: string };
-        setMessage(errMsg.message);
+        setIsSuccess(false);
       }
     }
   }, [isError, error]);
@@ -47,17 +47,47 @@ export default function Verify() {
     );
   }
 
+  console.log(isSuccess);
+
   return (
     <div className="w-full h-screen flex justify-center items-center bg-white">
-      {isError ? (
-        <div className="mt-4 px-4 py-2 text-white font-semibold bg-red-400 border rounded-lg">
-          {message}
-        </div>
-      ) : (
-        <div className="mt-4 px-4 py-2 text-white font-semibold bg-green-400 border rounded-lg">
-          {message}
-        </div>
-      )}
+      <div className="bg-gray-100 px-12 py-20 rounded-lg">
+        {isSuccess ? (
+          <Status
+            status="success"
+            title="Email Verified!"
+            description="Your email verification has failed. Please try again."
+          >
+            <div className="flex justify-center">
+              <button
+                className="w-1/2 text-white bg-[#7F56D9] py-2 rounded-lg font-semibold"
+                onClick={() => {
+                  window.location.href = '/login';
+                }}
+              >
+                Continue
+              </button>
+            </div>
+          </Status>
+        ) : (
+          <Status
+            status="error"
+            title="Verification Failed!"
+            description="Your email has been verified. Please login to continue."
+          >
+            <div className="flex justify-center">
+              <button
+                className="w-1/2 text-white bg-[#7F56D9] py-2 rounded-lg font-semibold"
+                onClick={() => {
+                  window.location.href = '/login';
+                }}
+              >
+                Continue
+              </button>
+            </div>
+          </Status>
+        )}
+      </div>
     </div>
   );
 }
