@@ -12,7 +12,8 @@ import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { ITokenPayload } from './interfaces/ITokenPayload';
 import { MailService } from '../mail/mail.service';
-import { ScheduleMailReq,SchedulePriority} from '../proto/mail-schedule.pb';
+import { ScheduleMailReq, SchedulePriority } from '../proto/mail-schedule.pb';
+import moment from 'moment-timezone';
 
 import dayjs from 'dayjs';
 
@@ -56,16 +57,16 @@ export class AuthService {
 
       // Send verification email with token
       // TODO: Send email
-      
+
       //send mail
       const templateData = {
-        "fullname": userExists.name,
-        "link":verificationLink
-      }
+        fullname: userExists.name,
+        link: verificationLink,
+      };
       const data: ScheduleMailReq = {
         name: 'Send mail verify account',
         priority: SchedulePriority.normal,
-        time: new Date().toString(),
+        time: moment().utc().format(),
         maxRetry: 3,
         mailInfo: {
           toAddresses: [dto.email],
@@ -108,13 +109,13 @@ export class AuthService {
       // Send verification email with token
       // TODO: Send email
       const templateData = {
-        "fullname": dto.name,
-        "link":verificationLink
-      }
+        fullname: dto.name,
+        link: verificationLink,
+      };
       const data: ScheduleMailReq = {
         name: 'Send mail verify account',
         priority: SchedulePriority.normal,
-        time: new Date().toString(),
+        time: moment().format(),
         maxRetry: 3,
         mailInfo: {
           toAddresses: [dto.email],
@@ -344,13 +345,13 @@ export class AuthService {
     // Send verification email with token
     // Todo: Send email
     const templateData = {
-      "fullname": user.name,
-      "link":verificationLink
-    }
+      fullname: user.name,
+      link: verificationLink,
+    };
     const data: ScheduleMailReq = {
       name: 'Send mail verify account',
       priority: SchedulePriority.normal,
-      time: new Date().toString(),
+      time: moment().format(),
       maxRetry: 3,
       mailInfo: {
         toAddresses: [user.email],
