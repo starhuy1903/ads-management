@@ -212,7 +212,7 @@
       "responses": [
         {
           "uuid": "54c168e1-b9e3-4949-8e58-c67963263a49",
-          "body": "{\n  \"statusCode\": 200\n  \"message\": \"Logout successfully!\"\n}",
+          "body": "{\n  \"statusCode\": 200,\n  \"message\": \"Logout successfully!\"\n}",
           "latency": 0,
           "statusCode": 200,
           "label": "",
@@ -228,6 +228,13 @@
               "value": "",
               "invert": true,
               "operator": "equals"
+            },
+            {
+              "target": "body",
+              "modifier": "tokenId",
+              "value": "dff20586-9521-428a-8551-b5ddf6096efa",
+              "invert": false,
+              "operator": "equals"
             }
           ],
           "rulesOperator": "AND",
@@ -238,7 +245,7 @@
         },
         {
           "uuid": "80b9d680-2a83-469c-b0ee-651fae24489d",
-          "body": "{\n  \"message\": \"Invalid token, logout failed!\"\n}",
+          "body": "{\n  \"statusCode\": 401,\n  \"message\": \"Invalid token, logout failed!\"\n}",
           "latency": 0,
           "statusCode": 401,
           "label": "",
@@ -254,9 +261,16 @@
               "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoiY2hpaGllbjIwMDJAZ21haWwuY29tIiwiaWF0IjoxNjk2MjM4Njc4LCJleHAiOjE2OTYyMzg2OTN9.Z2aiXDTpFdyjF92AfN4-G-59apIYMJuCismrjSIeUkI",
               "invert": true,
               "operator": "equals"
+            },
+            {
+              "target": "body",
+              "modifier": "tokenId",
+              "value": "dff20586-9521-428a-8551-b5ddf6096efa",
+              "invert": true,
+              "operator": "equals"
             }
           ],
-          "rulesOperator": "AND",
+          "rulesOperator": "OR",
           "disableTemplating": false,
           "fallbackTo404": false,
           "default": false,

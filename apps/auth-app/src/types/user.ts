@@ -20,6 +20,10 @@ export type ResetPasswordPayload = {
   verifyToken: string;
 };
 
+export type LogoutPayload = {
+  tokenId: string;
+};
+
 export type LoginResponse = {
   accessToken: string;
   refreshToken: string;

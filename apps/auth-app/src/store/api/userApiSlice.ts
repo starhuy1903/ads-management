@@ -8,6 +8,7 @@ import {
   ForgotPasswordPayload,
   ForgotPasswordResponse,
   ResetPasswordPayload,
+  LogoutPayload,
 } from '../../types/user';
 import {
   setIsLoggedIn,
@@ -53,10 +54,11 @@ export const userApiSlice = apiSlice.injectEndpoints({
         }
       },
     }),
-    logout: build.mutation<void, void>({
-      query: () => ({
+    logout: build.mutation<MessageResponse, LogoutPayload>({
+      query: (body) => ({
         url: 'auth/logout',
         method: 'POST',
+        body,
       }),
       onQueryStarted: async (_, { dispatch, queryFulfilled }) => {
         try {

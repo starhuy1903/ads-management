@@ -4,11 +4,15 @@ import { Link } from 'react-router-dom';
 
 export default function Header() {
   const isLoggedIn = useAppSelector((state) => state.user.isLoggedIn);
+  const tokenId = useAppSelector((state) => state.user.token?.tokenId) || '';
   const [requestLogout] = useLogoutMutation();
 
   const handleLogout = async () => {
     try {
-      const res = await requestLogout();
+      console.log(tokenId);
+      const res = await requestLogout({
+        tokenId,
+      });
 
       console.log(res);
     } catch (err) {
