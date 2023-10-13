@@ -1,8 +1,10 @@
 import {
   CredentialPayload,
   LoginResponse,
+  MessageResponse,
   RegisterPayload,
   UserProfile,
+  VerifyPayload,
 } from '../../types/user';
 import {
   setIsLoggedIn,
@@ -62,6 +64,20 @@ export const userApiSlice = apiSlice.injectEndpoints({
         }
       },
     }),
+    verify: build.mutation<MessageResponse, VerifyPayload>({
+      query: (body) => ({
+        url: 'auth/verify',
+        method: 'POST',
+        body,
+      }),
+      onQueryStarted: async (_, { queryFulfilled }) => {
+        try {
+          await queryFulfilled;
+        } catch (error) {
+          console.log(error);
+        }
+      },
+    }),
     getProfile: build.query<UserProfile, void>({
       query: () => 'me', // TBD
     }),
@@ -73,4 +89,5 @@ export const {
   useGetProfileQuery,
   useRegisterMutation,
   useLogoutMutation,
+  useVerifyMutation,
 } = userApiSlice;

@@ -8,6 +8,7 @@ import Home from './Home';
 import Login from './Login';
 import PageLayout from './PageLayout';
 import Register from './Register';
+import Verify from './Verify';
 
 const protectedRoutes = createBrowserRouter([
   {
@@ -32,6 +33,10 @@ const publicRoutes = createBrowserRouter([
       {
         path: '/register',
         element: <Register />,
+      },
+      {
+        path: '/verify/:verifyToken',
+        element: <Verify />,
       },
     ],
   },

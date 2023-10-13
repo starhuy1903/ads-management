@@ -265,6 +265,69 @@
       ],
       "enabled": true,
       "responseMode": null
+    },
+    {
+      "uuid": "1de6269a-0af0-4f25-933d-f7bcb05d0bd9",
+      "type": "http",
+      "documentation": "",
+      "method": "post",
+      "endpoint": "api/auth/verify",
+      "responses": [
+        {
+          "uuid": "219e5298-199b-49fb-a3d9-040a6e8aeca9",
+          "body": "{\n  \"message\": \"Verify account successfully!\"\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "verifyToken",
+              "value": "123456",
+              "invert": false,
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id"
+        },
+        {
+          "uuid": "6a9b9c39-c6b8-4dd3-8cf0-23e591893048",
+          "body": "{\n  \"message\": \"Invalid token, verify account failed!\"\n}",
+          "latency": 0,
+          "statusCode": 401,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "verifyToken",
+              "value": "123456",
+              "invert": true,
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id"
+        }
+      ],
+      "enabled": true,
+      "responseMode": null
     }
   ],
   "rootChildren": [
@@ -279,6 +342,10 @@
     {
       "type": "route",
       "uuid": "a3b5fefc-2e86-49e0-855a-78b7e59aff05"
+    },
+    {
+      "type": "route",
+      "uuid": "1de6269a-0af0-4f25-933d-f7bcb05d0bd9"
     },
     {
       "type": "route",
