@@ -8,7 +8,6 @@ import Home from './Home';
 import Login from './Login';
 import PageLayout from './PageLayout';
 import Register from './Register';
-import CustomToaster from './CustomToaster';
 
 const protectedRoutes = createBrowserRouter([
   {
@@ -45,15 +44,10 @@ const publicRoutes = createBrowserRouter([
 function App() {
   const isLoggedIn = useAppSelector((state) => state.user.isLoggedIn);
 
-  return (
-    <>
-      <CustomToaster />
-      {isLoggedIn ? (
-        <RouterProvider router={protectedRoutes} />
-      ) : (
-        <RouterProvider router={publicRoutes} />
-      )}
-    </>
+  return isLoggedIn ? (
+    <RouterProvider router={protectedRoutes} />
+  ) : (
+    <RouterProvider router={publicRoutes} />
   );
 }
 
