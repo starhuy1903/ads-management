@@ -9,7 +9,6 @@ export default function Header() {
 
   const handleLogout = async () => {
     try {
-      console.log(tokenId);
       const res = await requestLogout({
         tokenId,
       });

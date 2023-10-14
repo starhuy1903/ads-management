@@ -27,7 +27,7 @@ export default function Verify() {
 
       verifyAccount();
     }
-  }, [verifyToken]);
+  }, [verifyToken, requestVerify]);
 
   useEffect(() => {
     if (error) {
@@ -44,8 +44,6 @@ export default function Verify() {
       </Box>
     );
   }
-
-  console.log(isSuccess);
 
   return (
     <div className="w-full h-screen flex justify-center items-center bg-white">

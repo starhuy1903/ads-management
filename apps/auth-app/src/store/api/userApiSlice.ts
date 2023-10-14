@@ -44,13 +44,6 @@ export const userApiSlice = apiSlice.injectEndpoints({
         method: 'POST',
         body,
       }),
-      onQueryStarted: async (_, { queryFulfilled }) => {
-        try {
-          await queryFulfilled;
-        } catch (error) {
-          console.log(error);
-        }
-      },
     }),
     logout: build.mutation<MessageResponse, LogoutPayload>({
       query: (body) => ({
@@ -73,13 +66,6 @@ export const userApiSlice = apiSlice.injectEndpoints({
         method: 'POST',
         body,
       }),
-      onQueryStarted: async (_, { queryFulfilled }) => {
-        try {
-          await queryFulfilled;
-        } catch (error) {
-          console.log(error);
-        }
-      },
     }),
     forgotPassword: build.mutation<
       ForgotPasswordResponse,
@@ -90,13 +76,6 @@ export const userApiSlice = apiSlice.injectEndpoints({
         method: 'POST',
         body,
       }),
-      onQueryStarted: async (_, { queryFulfilled }) => {
-        try {
-          await queryFulfilled;
-        } catch (error) {
-          console.log(error);
-        }
-      },
     }),
     resetPassword: build.mutation<MessageResponse, ResetPasswordPayload>({
       query: (body) => ({
@@ -104,13 +83,6 @@ export const userApiSlice = apiSlice.injectEndpoints({
         method: 'POST',
         body,
       }),
-      onQueryStarted: async (_, { queryFulfilled }) => {
-        try {
-          await queryFulfilled;
-        } catch (error) {
-          console.log(error);
-        }
-      },
     }),
     getProfile: build.query<UserProfile, void>({
       query: () => 'me', // TBD

@@ -10,7 +10,7 @@ export default function Register() {
   const [requestRegister, { isLoading, isError, error }] =
     useRegisterMutation();
   const [errorMsg, setErrorMsg] = useState('');
-  const [isSent, setIsSent] = useState(false);
+  const [isSentEmail, setIsSentEmail] = useState(false);
 
   const {
     register,
@@ -22,7 +22,7 @@ export default function Register() {
       const res = await requestRegister(data);
 
       if (res.data) {
-        setIsSent(true);
+        setIsSentEmail(true);
       }
     } catch (err) {
       console.log(err);
@@ -50,7 +50,7 @@ export default function Register() {
   return (
     <div className="w-full h-screen flex justify-center items-center bg-white">
       <div className="bg-gray-100 px-12 py-20 rounded-lg">
-        {!isSent ? (
+        {!isSentEmail ? (
           <>
             <div className="text-center">
               <h1 className="text-3xl font-bold text-[#101828] mb-2">

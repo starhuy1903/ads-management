@@ -1,6 +1,13 @@
-import { StatusProps } from '@/types/status';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import { ReactNode } from 'react';
+
+export type StatusProps = {
+  status?: string;
+  title?: string;
+  description?: string;
+  children?: ReactNode;
+};
 
 export default function Status({
   status,
