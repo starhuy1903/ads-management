@@ -1,14 +1,14 @@
-import { useRegisterMutation } from '@/store/api/userApiSlice';
-import { RegisterPayload } from '@/types/user';
-import { Box, CircularProgress } from '@mui/material';
-import { useEffect, useState } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Box, CircularProgress } from "@mui/material";
+import { useEffect, useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { Link } from "react-router-dom";
+import { useRegisterMutation } from "@/store/api/userApiSlice";
+import { RegisterPayload } from "@/types/user";
 
 export default function Register() {
   const [requestRegister, { isLoading, isError, error }] =
     useRegisterMutation();
-  const [errorMsg, setErrorMsg] = useState('');
+  const [errorMsg, setErrorMsg] = useState("");
 
   const {
     register,
@@ -27,7 +27,7 @@ export default function Register() {
 
   useEffect(() => {
     if (error) {
-      if ('data' in error) {
+      if ("data" in error) {
         const errMsg = error.data as { message: string };
         setErrorMsg(errMsg.message);
         console.log(errMsg.message);
@@ -37,7 +37,7 @@ export default function Register() {
 
   if (isLoading) {
     return (
-      <Box sx={{ display: 'flex' }}>
+      <Box sx={{ display: "flex" }}>
         <CircularProgress />
       </Box>
     );
@@ -66,15 +66,15 @@ export default function Register() {
             </label>
 
             <input
-              {...register('name', {
-                required: 'Name is required!',
+              {...register("name", {
+                required: "Name is required!",
                 minLength: {
                   value: 3,
-                  message: 'Name must be at least 3 characters!',
+                  message: "Name must be at least 3 characters!",
                 },
               })}
               placeholder="Enter your name"
-              aria-invalid={errors.name ? 'true' : 'false'}
+              aria-invalid={errors.name ? "true" : "false"}
               className="font-sans bg-gray-50 border border-gray-400 text-gray-900 py-2 px-3 rounded-lg w-full"
             />
 
@@ -89,16 +89,16 @@ export default function Register() {
             </label>
 
             <input
-              {...register('email', {
-                required: 'Email is required!',
+              {...register("email", {
+                required: "Email is required!",
                 pattern: {
                   value: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
-                  message: 'Invalid email address!',
+                  message: "Invalid email address!",
                 },
               })}
               type="email"
               placeholder="Enter your email"
-              aria-invalid={errors.email ? 'true' : 'false'}
+              aria-invalid={errors.email ? "true" : "false"}
               className="font-sans bg-gray-50 border border-gray-400 text-gray-900 py-2 px-3 rounded-lg w-full"
             />
 
@@ -113,33 +113,33 @@ export default function Register() {
             </label>
 
             <input
-              {...register('password', {
-                required: 'Password is required!',
+              {...register("password", {
+                required: "Password is required!",
                 minLength: {
                   value: 6,
-                  message: 'Password must be at least 6 characters!',
+                  message: "Password must be at least 6 characters!",
                 },
                 maxLength: {
                   value: 20,
-                  message: 'Password must be at most 20 characters!',
+                  message: "Password must be at most 20 characters!",
                 },
                 validate: {
                   hasNumber: (value) =>
-                    /\d/.test(value) || 'Password must contain a number!',
+                    /\d/.test(value) || "Password must contain a number!",
                   hasUppercase: (value) =>
                     /[A-Z]/.test(value) ||
-                    'Password must contain an uppercase letter!',
+                    "Password must contain an uppercase letter!",
                   hasLowercase: (value) =>
                     /[a-z]/.test(value) ||
-                    'Password must contain a lowercase letter!',
+                    "Password must contain a lowercase letter!",
                   hasSpecialChar: (value) =>
                     /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(value) ||
-                    'Password must contain a special character!',
+                    "Password must contain a special character!",
                 },
               })}
               type="password"
               placeholder="Enter your password"
-              aria-invalid={errors.password ? 'true' : 'false'}
+              aria-invalid={errors.password ? "true" : "false"}
               className="font-sans bg-gray-50 border border-gray-400 text-gray-900 py-2 px-3 rounded-lg w-full"
             />
 
@@ -156,7 +156,7 @@ export default function Register() {
           </button>
 
           <p className="text-sm font-light text-center">
-            Already have an account?{' '}
+            Already have an account?{" "}
             <Link
               to="/login"
               className="font-semibold text-[#7F56D9] hover:underline"

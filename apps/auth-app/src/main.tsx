@@ -1,14 +1,14 @@
-import { StrictMode } from 'react';
-import * as ReactDOM from 'react-dom/client';
-import { Provider } from 'react-redux';
-import { ThemeProvider } from '@mui/material/styles';
-import App from './components/App';
-import store from './store';
-import CustomToaster from '@/components/CustomToaster';
-import { defaultTheme } from '@/constants/themes';
+import { ThemeProvider } from "@mui/material/styles";
+import { StrictMode } from "react";
+import * as ReactDOM from "react-dom/client";
+import { Provider } from "react-redux";
+import CustomToaster from "@/components/CustomToaster";
+import { defaultTheme } from "@/constants/themes";
+import App from "./components/App";
+import store from "./store";
 
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement,
+  document.getElementById("root") as HTMLElement
 );
 root.render(
   <StrictMode>
@@ -18,5 +18,5 @@ root.render(
         <App />
       </ThemeProvider>
     </Provider>
-  </StrictMode>,
+  </StrictMode>
 );

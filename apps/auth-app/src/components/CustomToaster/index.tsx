@@ -1,6 +1,5 @@
-import { Toaster } from 'react-hot-toast';
-
-import { defaultTheme } from '@/constants/themes';
+import { Toaster } from "react-hot-toast";
+import { defaultTheme } from "@/constants/themes";
 
 function CustomToaster() {
   return (
