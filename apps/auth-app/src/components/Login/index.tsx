@@ -1,4 +1,3 @@
-import { CircularProgress } from '@mui/material';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { isApiErrorResponse } from '@/store/api/helper';
@@ -116,11 +115,7 @@ export default function Login() {
             type="submit"
             className="w-full text-white bg-[#7F56D9] py-2 rounded-lg font-semibold"
           >
-            {isLoading ? (
-              <CircularProgress size="sm" color="success" />
-            ) : (
-              <span>Sign in</span>
-            )}
+            {isLoading ? <span>Loading...</span> : <span>Sign in</span>}
           </button>
 
           <p className="text-sm font-light  text-center">
