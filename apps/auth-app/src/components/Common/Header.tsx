@@ -1,6 +1,6 @@
-import { useAppSelector } from '@/store';
-import { useLogoutMutation } from '@/store/api/userApiSlice';
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
+import { useAppSelector } from "@/store";
+import { useLogoutMutation } from "@/store/api/userApiSlice";
 
 export default function Header() {
   const isLoggedIn = useAppSelector((state) => state.user.isLoggedIn);

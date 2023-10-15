@@ -1,13 +1,13 @@
-import { useLoginMutation } from '@/store/api/userApiSlice';
-import { CredentialPayload } from '@/types/user';
-import { Box, CircularProgress } from '@mui/material';
-import { useEffect, useState } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Box, CircularProgress } from "@mui/material";
+import { useEffect, useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { Link } from "react-router-dom";
+import { useLoginMutation } from "@/store/api/userApiSlice";
+import { CredentialPayload } from "@/types/user";
 
 export default function Login() {
   const [requestLogin, { isLoading, isError, error }] = useLoginMutation();
-  const [errorMsg, setErrorMsg] = useState('');
+  const [errorMsg, setErrorMsg] = useState("");
 
   const {
     register,
@@ -26,7 +26,7 @@ export default function Login() {
 
   useEffect(() => {
     if (error) {
-      if ('data' in error) {
+      if ("data" in error) {
         const errMsg = error.data as { message: string };
         setErrorMsg(errMsg.message);
       }
@@ -35,7 +35,7 @@ export default function Login() {
 
   if (isLoading) {
     return (
-      <Box sx={{ display: 'flex' }}>
+      <Box sx={{ display: "flex" }}>
         <CircularProgress />
       </Box>
     );
@@ -64,16 +64,16 @@ export default function Login() {
             </label>
 
             <input
-              {...register('email', {
-                required: 'Email is required!',
+              {...register("email", {
+                required: "Email is required!",
                 pattern: {
                   value: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
-                  message: 'Invalid email address!',
+                  message: "Invalid email address!",
                 },
               })}
               type="email"
               placeholder="Enter your email"
-              aria-invalid={errors.email ? 'true' : 'false'}
+              aria-invalid={errors.email ? "true" : "false"}
               className="font-sans bg-gray-50 border border-gray-400 text-gray-900 py-2 px-3 rounded-lg w-full"
             />
             {errors.email && (
@@ -87,20 +87,20 @@ export default function Login() {
             </label>
 
             <input
-              {...register('password', {
-                required: 'Password is required!',
+              {...register("password", {
+                required: "Password is required!",
                 minLength: {
                   value: 6,
-                  message: 'Password must be at least 6 characters!',
+                  message: "Password must be at least 6 characters!",
                 },
                 maxLength: {
                   value: 20,
-                  message: 'Password must be at most 20 characters!',
+                  message: "Password must be at most 20 characters!",
                 },
               })}
               type="password"
               placeholder="Enter your password"
-              aria-invalid={errors.password ? 'true' : 'false'}
+              aria-invalid={errors.password ? "true" : "false"}
               className="font-sans bg-gray-50 border border-gray-400 text-gray-900 py-2 px-3 rounded-lg w-full"
             />
             {errors.password && (
@@ -141,7 +141,7 @@ export default function Login() {
           </button>
 
           <p className="text-sm font-light  text-center">
-            Don’t have an account yet?{' '}
+            Don’t have an account yet?{" "}
             <Link
               to="/register"
               className="font-semibold text-[#7F56D9] hover:underline"
