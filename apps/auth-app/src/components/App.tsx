@@ -44,10 +44,11 @@ const publicRoutes = createBrowserRouter([
 function App() {
   const isLoggedIn = useAppSelector((state) => state.user.isLoggedIn);
 
-  if (isLoggedIn) {
-    return <RouterProvider router={protectedRoutes} />;
-  }
-  return <RouterProvider router={publicRoutes} />;
+  return isLoggedIn ? (
+    <RouterProvider router={protectedRoutes} />
+  ) : (
+    <RouterProvider router={publicRoutes} />
+  );
 }
 
 export default App;
