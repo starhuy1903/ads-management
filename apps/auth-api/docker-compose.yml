@@ -2,6 +2,13 @@ version: '3.8'
 services:
   db:
     image: postgres:alpine
+
+    # Config usage of resources
+    mem_limit: '1g'
+    mem_reservation: '512m'
+    # cpus: '1'
+    # cpuset: '2'
+
     ports:
       - 5432:5432
     restart: always
