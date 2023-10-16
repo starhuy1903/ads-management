@@ -11,6 +11,9 @@ import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { ITokenPayload } from './interfaces/ITokenPayload';
+import { MailService } from '../mail/mail.service';
+import { ScheduleMailReq, SchedulePriority } from '../proto/mail-schedule.pb';
+import moment from 'moment-timezone';
 
 import dayjs from 'dayjs';
 
@@ -25,6 +28,7 @@ export class AuthService {
     private prismaService: PrismaService,
     private jwtService: JwtService,
     private config: ConfigService,
+    private readonly mailService: MailService,
   ) {}
 
   async signUp(dto: SignUpDto) {
@@ -53,6 +57,27 @@ export class AuthService {
 
       // Send verification email with token
       // TODO: Send email
+
+      //send mail
+      const templateData = {
+        fullname: userExists.name,
+        link: verificationLink,
+      };
+      const data: ScheduleMailReq = {
+        name: 'Send mail verify account',
+        priority: SchedulePriority.normal,
+        time: moment().utc().format(),
+        maxRetry: 3,
+        mailInfo: {
+          toAddresses: [dto.email],
+          ccAddresses: [dto.email],
+          bccAddresses: [dto.email],
+          template: 'account_email_confirm_code',
+          templateData: JSON.stringify(templateData),
+        },
+      };
+
+      await this.mailService.scheduleMail(data).toPromise();
 
       // Currently returning verification link for testing
       return {
@@ -83,7 +108,25 @@ export class AuthService {
 
       // Send verification email with token
       // TODO: Send email
+      const templateData = {
+        fullname: dto.name,
+        link: verificationLink,
+      };
+      const data: ScheduleMailReq = {
+        name: 'Send mail verify account',
+        priority: SchedulePriority.normal,
+        time: moment().format(),
+        maxRetry: 3,
+        mailInfo: {
+          toAddresses: [dto.email],
+          ccAddresses: [dto.email],
+          bccAddresses: [dto.email],
+          template: 'account_email_confirm_code',
+          templateData: JSON.stringify(templateData),
+        },
+      };
 
+      await this.mailService.scheduleMail(data).toPromise();
       // Currently returning verification link for testing
       return {
         verificationLink,
@@ -197,8 +240,18 @@ export class AuthService {
     return await this.handeleSignIn(user);
   }
 
-  async logOut(tokenId: string) {
+  async logOut(userId: number, tokenId: string) {
     try {
+      const user = await this.prismaService.user.findUnique({
+        where: {
+          id: userId,
+        },
+      });
+
+      if (!user) {
+        throw new ForbiddenException('User not found');
+      }
+
       await this.prismaService.token.delete({
         where: {
           id: tokenId,
@@ -301,6 +354,24 @@ export class AuthService {
 
     // Send verification email with token
     // Todo: Send email
+    const templateData = {
+      fullname: user.name,
+      link: verificationLink,
+    };
+    const data: ScheduleMailReq = {
+      name: 'Send mail verify account',
+      priority: SchedulePriority.normal,
+      time: moment().format(),
+      maxRetry: 3,
+      mailInfo: {
+        toAddresses: [user.email],
+        ccAddresses: [user.email],
+        bccAddresses: [user.email],
+        template: 'change_password_request',
+        templateData: JSON.stringify(templateData),
+      },
+    };
+    await this.mailService.scheduleMail(data).toPromise();
 
     // Currently returning verification link for testing
     return {
@@ -408,10 +479,6 @@ export class AuthService {
       refreshToken: newRefreshToken,
       tokenId: tokenId,
       accessTokenExpires: getAccessExpiry(),
-      user: {
-        id: payload.sub,
-        email: payload.email,
-      },
     };
   }
 }
