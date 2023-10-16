@@ -14,9 +14,6 @@ export default function Verify() {
   const [isSent, setIsSent] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
-  console.log('isSent: ', isSent);
-  console.log('isSuccess: ', isSuccess);
-
   useEffect(() => {
     if (verifyToken) {
       const verifyAccount = async () => {

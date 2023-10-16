@@ -24,7 +24,6 @@ export default function Register() {
         setIsSentEmail(true);
       }
     } catch (err) {
-      console.log(err);
       if (isApiErrorResponse(err)) {
         showError(err.data.message);
       }
