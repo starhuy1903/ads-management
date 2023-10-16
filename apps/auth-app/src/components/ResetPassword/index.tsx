@@ -1,20 +1,18 @@
-import { useResetPasswordMutation } from '@/store/api/userApiSlice';
-import { ResetPasswordPayload } from '@/types/user';
-import { Box, CircularProgress } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Link, useSearchParams } from 'react-router-dom';
+import { isApiErrorResponse } from '@/store/api/helper';
+import { useResetPasswordMutation } from '@/store/api/userApiSlice';
+import { ResetPasswordPayload } from '@/types/user';
+import { showError } from '@/utils/toast';
 import Status from '../Status';
 
 export default function ResetPassword() {
   const [urlParams] = useSearchParams();
   const verifyToken = urlParams.get('token') || '';
 
-  const [requestResetPassword, { isLoading, isError, error }] =
-    useResetPasswordMutation();
-  const [errMsg, setErrMsg] = useState('');
+  const [requestResetPassword, { isLoading }] = useResetPasswordMutation();
   const [isReset, setIsReset] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
 
   const {
     register,
@@ -29,34 +27,17 @@ export default function ResetPassword() {
       const res = await requestResetPassword({
         newPassword: data.newPassword,
         verifyToken,
-      });
+      }).unwrap();
 
-      setIsReset(true);
-
-      if (res.data) {
-        setIsSuccess(true);
+      if (res.statusCode === 200) {
+        setIsReset(true);
       }
     } catch (err) {
-      console.log(err);
-    }
-  };
-
-  useEffect(() => {
-    if (error) {
-      if ('data' in error) {
-        const errMsg = error.data as { message: string };
-        setErrMsg(errMsg.message);
+      if (isApiErrorResponse(err)) {
+        showError(err.data.message);
       }
     }
-  }, [isError, error]);
-
-  if (isLoading) {
-    return (
-      <Box sx={{ display: 'flex' }}>
-        <CircularProgress />
-      </Box>
-    );
-  }
+  };
 
   return (
     <div className="w-full h-screen flex justify-center items-center bg-white">
@@ -105,6 +86,7 @@ export default function ResetPassword() {
                   placeholder="Enter your password"
                   aria-invalid={errors.newPassword ? 'true' : 'false'}
                   className="font-sans bg-gray-50 border border-gray-400 text-gray-900 py-2 px-3 rounded-lg w-full"
+                  disabled={isLoading}
                 />
 
                 {errors.newPassword && (
@@ -116,11 +98,15 @@ export default function ResetPassword() {
                 type="submit"
                 className="w-full text-white bg-[#7F56D9] py-2 rounded-lg font-semibold"
               >
-                Reset
+                {isLoading ? (
+                  <span>'Loading...'</span>
+                ) : (
+                  <span>'Reset Password'</span>
+                )}
               </button>
             </form>
           </>
-        ) : isSuccess ? (
+        ) : (
           <Status
             status="success"
             title="Password Changed!"
@@ -132,21 +118,6 @@ export default function ResetPassword() {
                 className="text-white bg-[#7F56D9] py-2 px-8 rounded-lg font-semibold"
               >
                 Continue
-              </Link>
-            </div>
-          </Status>
-        ) : (
-          <Status
-            status="error"
-            title={errMsg}
-            description="Reset password failed. Please try again."
-          >
-            <div className="flex justify-center">
-              <Link
-                to="/login"
-                className="text-white bg-[#7F56D9] py-2 px-8 rounded-lg font-semibold"
-              >
-                Try again
               </Link>
             </div>
           </Status>

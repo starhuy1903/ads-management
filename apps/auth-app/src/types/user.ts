@@ -33,7 +33,7 @@ export type LoginResponse = {
 };
 
 export type MessageResponse = {
-  statusCode?: string;
+  statusCode?: number;
   message?: string;
 };
 

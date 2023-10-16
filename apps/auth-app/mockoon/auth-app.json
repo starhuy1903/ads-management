@@ -99,7 +99,7 @@
       "responses": [
         {
           "uuid": "0840d099-4ebd-4802-b218-8d864fb8f089",
-          "body": "{\n  \"verificationLink\": \"http://localhost:3000/verify?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoiY2hpaGllbjIwMDJAZ21haWwuY29tIiwiaWF0IjoxNjk3MDk3ODA2LCJleHAiOjE2OTcwOTgxMDZ9.nKDwRDHKQP9L3qmiamKKPZsGGFFOkd1X4RjLfsiMcxk\"\n}",
+          "body": "{\n  \"statusCode\": 200,\n  \"verificationLink\": \"http://localhost:3000/verify?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoiY2hpaGllbjIwMDJAZ21haWwuY29tIiwiaWF0IjoxNjk3MDk3ODA2LCJleHAiOjE2OTcwOTgxMDZ9.nKDwRDHKQP9L3qmiamKKPZsGGFFOkd1X4RjLfsiMcxk\"\n}",
           "latency": 0,
           "statusCode": 200,
           "label": "",
@@ -117,7 +117,7 @@
         },
         {
           "uuid": "c0c81e75-e759-472d-b2ab-8376af324fca",
-          "body": "{\n  \"message\": \"This email is already existed!\"\n}",
+          "body": "{\n  \"statusCode\": 409,\n  \"message\": \"This email is already existed!\"\n}",
           "latency": 0,
           "statusCode": 409,
           "label": "",
@@ -352,7 +352,7 @@
       "responses": [
         {
           "uuid": "d47e42ec-a374-4aac-9438-c2bf0218a345",
-          "body": "{\n  \"verificationLink\": \"http://localhost:4200/reset-password?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoiY2hpaGllbjIwMDJAZ21haWwuY29tIiwiaWF0IjoxNjk3MTAxNjk5LCJleHAiOjE2OTcxMDE5OTl9.ZGGJaLER4eL6S-cRfMKbQAISGss_zY7PtGvSrcGHuo4\"\n}",
+          "body": "{\n  \"statusCode\": 200,\n  \"verificationLink\": \"http://localhost:4200/reset-password?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoiY2hpaGllbjIwMDJAZ21haWwuY29tIiwiaWF0IjoxNjk3MTAxNjk5LCJleHAiOjE2OTcxMDE5OTl9.ZGGJaLER4eL6S-cRfMKbQAISGss_zY7PtGvSrcGHuo4\"\n}",
           "latency": 0,
           "statusCode": 200,
           "label": "",
@@ -378,7 +378,7 @@
         },
         {
           "uuid": "007bc459-245b-4ffc-a290-e8f67673a345",
-          "body": "{\n  \"message\": \"Missing field(s)\"\n}",
+          "body": "{\n  \"statusCode\": 400,\n  \"message\": \"Missing field(s)\"\n}",
           "latency": 0,
           "statusCode": 400,
           "label": "",
@@ -404,7 +404,7 @@
         },
         {
           "uuid": "e81a4ed4-dc49-46d8-b7d8-5481d0a987f6",
-          "body": "{\n  \"message\": \"Email not found\"\n}",
+          "body": "{\n  \"statusCode\": 404,\n  \"message\": \"Email not found\"\n}",
           "latency": 0,
           "statusCode": 404,
           "label": "",

@@ -1,45 +1,55 @@
-import { useVerifyMutation } from '@/store/api/userApiSlice';
 import { Box, CircularProgress } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
+import { isApiErrorResponse } from '@/store/api/helper';
+import { useVerifyMutation } from '@/store/api/userApiSlice';
+import { showError } from '@/utils/toast';
 import Status from '../Status';
 
 export default function Verify() {
   const [urlParams] = useSearchParams();
   const verifyToken = urlParams.get('token') || '';
 
-  const [requestVerify, { isLoading, isError, error }] = useVerifyMutation();
+  const [requestVerify, { isLoading }] = useVerifyMutation();
+  const [isSent, setIsSent] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+
+  console.log('isSent: ', isSent);
+  console.log('isSuccess: ', isSuccess);
 
   useEffect(() => {
     if (verifyToken) {
       const verifyAccount = async () => {
         try {
-          const res = await requestVerify({ verifyToken });
+          const res = await requestVerify({ verifyToken }).unwrap();
 
-          if (res.data) {
+          if (res.statusCode === 200) {
             setIsSuccess(true);
           }
         } catch (err) {
-          console.log(err);
+          if (isApiErrorResponse(err)) {
+            showError(err.data.message);
+          }
         }
+
+        setIsSent(true);
       };
 
       verifyAccount();
     }
   }, [verifyToken, requestVerify]);
 
-  useEffect(() => {
-    if (error) {
-      if ('data' in error) {
-        setIsSuccess(false);
-      }
-    }
-  }, [isError, error]);
-
-  if (isLoading) {
+  if (isLoading || !isSent) {
     return (
-      <Box sx={{ display: 'flex' }}>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          width: '100%',
+          height: '100vh',
+        }}
+      >
         <CircularProgress />
       </Box>
     );

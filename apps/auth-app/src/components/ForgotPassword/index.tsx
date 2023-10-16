@@ -1,16 +1,15 @@
-import { useForgotPasswordMutation } from '@/store/api/userApiSlice';
-import { ForgotPasswordPayload } from '@/types/user';
-import { Box, CircularProgress } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
+import { isApiErrorResponse } from '@/store/api/helper';
+import { useForgotPasswordMutation } from '@/store/api/userApiSlice';
+import { ForgotPasswordPayload } from '@/types/user';
+import { showError } from '@/utils/toast';
 import Status from '../Status';
 
 export default function ForgotPassword() {
-  const [requestForgetPassword, { isLoading, isError, error }] =
-    useForgotPasswordMutation();
+  const [requestForgetPassword, { isLoading }] = useForgotPasswordMutation();
   const [isSent, setIsSent] = useState(false);
-  const [errMsg, setErrorMsg] = useState('');
 
   const {
     register,
@@ -19,32 +18,17 @@ export default function ForgotPassword() {
   } = useForm<ForgotPasswordPayload>();
   const onSubmit: SubmitHandler<ForgotPasswordPayload> = async (data) => {
     try {
-      const res = await requestForgetPassword(data);
+      const res = await requestForgetPassword(data).unwrap();
 
-      if (res.data) {
+      if (res.statusCode === 200) {
         setIsSent(true);
       }
     } catch (err) {
-      console.log(err);
-    }
-  };
-
-  useEffect(() => {
-    if (error) {
-      if ('data' in error) {
-        const errMsg = error.data as { message: string };
-        setErrorMsg(errMsg.message);
+      if (isApiErrorResponse(err)) {
+        showError(err.data.message);
       }
     }
-  }, [isError, error]);
-
-  if (isLoading) {
-    return (
-      <Box sx={{ display: 'flex' }}>
-        <CircularProgress />
-      </Box>
-    );
-  }
+  };
 
   return (
     <div className="w-full h-screen flex justify-center items-center bg-white">
@@ -59,12 +43,6 @@ export default function ForgotPassword() {
                 Please enter your email address to reset your account.
               </span>
             </div>
-
-            {errMsg && isError && (
-              <div className="mt-4 px-4 py-2 text-white font-semibold bg-red-400 border rounded-lg">
-                {errMsg}
-              </div>
-            )}
 
             <form className="mt-4 space-y-6" onSubmit={handleSubmit(onSubmit)}>
               <div>
@@ -84,7 +62,9 @@ export default function ForgotPassword() {
                   placeholder="Enter your email"
                   aria-invalid={errors.email ? 'true' : 'false'}
                   className="font-sans bg-gray-50 border border-gray-400 text-gray-900 py-2 px-3 rounded-lg w-full"
+                  disabled={isLoading}
                 />
+
                 {errors.email && (
                   <p className="pt-1 text-sm text-red-600">{`${errors?.email?.message}`}</p>
                 )}
@@ -102,7 +82,11 @@ export default function ForgotPassword() {
                   type="submit"
                   className="w-1/3 text-white bg-[#7F56D9] py-2 px-2 rounded-lg font-semibold"
                 >
-                  Continue
+                  {isLoading ? (
+                    <span>Loanding ...</span>
+                  ) : (
+                    <span>Continue</span>
+                  )}
                 </button>
               </div>
             </form>
