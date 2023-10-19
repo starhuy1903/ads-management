@@ -31,12 +31,10 @@
       },
       "configurations": {
         "development": {
-          "buildTarget": "auth-api:build:development",
-          "port": 3000
+          "buildTarget": "auth-api:build:development"
         },
         "production": {
-          "buildTarget": "auth-api:build:production",
-          "port": 3000
+          "buildTarget": "auth-api:build:production"
         }
       }
     },
