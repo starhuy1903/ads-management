@@ -8,6 +8,11 @@ async function bootstrap() {
   const config = app.get(ConfigService);
   const globalPrefix = 'api/auth';
 
+  // Allow all domains
+  app.enableCors({
+    origin: '*',
+    credentials: true,
+  });
   app.setGlobalPrefix(globalPrefix);
   app.useGlobalPipes(
     new ValidationPipe({

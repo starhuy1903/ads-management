@@ -1,13 +1,12 @@
-import { useLoginMutation } from '@/store/api/userApiSlice';
-import { CredentialPayload } from '@/types/user';
-import { Box, CircularProgress } from '@mui/material';
-import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
+import { isApiErrorResponse } from '@/store/api/helper';
+import { useLoginMutation } from '@/store/api/userApiSlice';
+import { CredentialPayload } from '@/types/user';
+import { showError } from '@/utils/toast';
 
 export default function Login() {
-  const [requestLogin, { isLoading, isError, error }] = useLoginMutation();
-  const [errorMsg, setErrorMsg] = useState('');
+  const [requestLogin, { isLoading }] = useLoginMutation();
 
   const {
     register,
@@ -16,30 +15,13 @@ export default function Login() {
   } = useForm<CredentialPayload>();
   const onSubmit: SubmitHandler<CredentialPayload> = async (data) => {
     try {
-      const res = await requestLogin(data);
-
-      console.log(res);
+      await requestLogin(data).unwrap();
     } catch (err) {
-      console.log(err);
-    }
-  };
-
-  useEffect(() => {
-    if (error) {
-      if ('data' in error) {
-        const errMsg = error.data as { message: string };
-        setErrorMsg(errMsg.message);
+      if (isApiErrorResponse(err)) {
+        showError(err.data.message);
       }
     }
-  }, [isError, error]);
-
-  if (isLoading) {
-    return (
-      <Box sx={{ display: 'flex' }}>
-        <CircularProgress />
-      </Box>
-    );
-  }
+  };
 
   return (
     <div className="w-full h-screen flex justify-center items-center bg-white">
@@ -50,12 +32,6 @@ export default function Login() {
           </h1>
           <span>Welcome back! Please enter your details.</span>
         </div>
-
-        {isError && (
-          <div className="mt-4 px-4 py-2 text-white font-semibold bg-red-400 border rounded-lg">
-            {errorMsg}
-          </div>
-        )}
 
         <form className="mt-4 space-y-6" onSubmit={handleSubmit(onSubmit)}>
           <div>
@@ -75,6 +51,7 @@ export default function Login() {
               placeholder="Enter your email"
               aria-invalid={errors.email ? 'true' : 'false'}
               className="font-sans bg-gray-50 border border-gray-400 text-gray-900 py-2 px-3 rounded-lg w-full"
+              disabled={isLoading}
             />
             {errors.email && (
               <p className="pt-1 text-sm text-red-600">{`${errors?.email?.message}`}</p>
@@ -102,6 +79,7 @@ export default function Login() {
               placeholder="Enter your password"
               aria-invalid={errors.password ? 'true' : 'false'}
               className="font-sans bg-gray-50 border border-gray-400 text-gray-900 py-2 px-3 rounded-lg w-full"
+              disabled={isLoading}
             />
             {errors.password && (
               <p className="pt-1 text-sm text-red-600">{`${errors?.password?.message}`}</p>
@@ -137,7 +115,7 @@ export default function Login() {
             type="submit"
             className="w-full text-white bg-[#7F56D9] py-2 rounded-lg font-semibold"
           >
-            Sign in
+            {isLoading ? <span>Loading...</span> : <span>Sign in</span>}
           </button>
 
           <p className="text-sm font-light  text-center">
