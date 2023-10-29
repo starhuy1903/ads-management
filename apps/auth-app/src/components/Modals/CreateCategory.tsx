@@ -1,39 +1,78 @@
-import { Box, Modal, Typography } from '@mui/material';
+import { Box, TextField } from '@mui/material';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import GeneralModal from './GeneralModal';
 
 interface CreateCategoryProps {
   onModalClose: () => void;
 }
 
-const style = {
-  position: 'absolute' as const,
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 400,
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
-  boxShadow: 24,
-  p: 4,
-};
+interface FormDataType {
+  title: string;
+  description: string;
+}
 
 function CreateCategory({ onModalClose }: CreateCategoryProps) {
-  return (
-    <Modal
-      open
-      onClose={onModalClose}
-      aria-labelledby="modal-modal-title"
-      aria-describedby="modal-modal-description"
-      disableEscapeKeyDown
+  const {
+    register,
+    handleSubmit,
+    reset,
+    control,
+    setValue,
+    formState: { errors },
+  } = useForm<FormDataType>({
+    defaultValues: {
+      title: '',
+      description: '',
+    },
+  });
+  const [submitting, setSubmitting] = useState(false);
+
+  console.log({ errors });
+
+  const body = (
+    <Box
+      component="form"
+      noValidate
+      autoComplete="off"
+      sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
     >
-      <Box sx={style}>
-        <Typography id="modal-modal-title" variant="h6" component="h2">
-          Text in a modal
-        </Typography>
-        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-          Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-        </Typography>
-      </Box>
-    </Modal>
+      <TextField
+        label="Title"
+        {...register('title', {
+          minLength: 3,
+          maxLength: 255,
+        })}
+        disabled={submitting}
+        helperText={errors.title?.message as string}
+        fullWidth
+      />
+      <TextField
+        label="Description"
+        {...register('description', {
+          minLength: 40,
+          maxLength: 2000,
+        })}
+        disabled={submitting}
+        helperText={errors.description?.message as string}
+        fullWidth
+        multiline
+        rows={3}
+      />
+    </Box>
+  );
+
+  return (
+    <GeneralModal
+      headerText="Create Category"
+      onModalClose={onModalClose}
+      body={body}
+      primaryButtonText="Create"
+      onClickPrimaryButton={() => {
+        console.log('Created');
+      }}
+      disabledPrimaryButton={false}
+    />
   );
 }
 
