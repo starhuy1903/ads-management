@@ -69,6 +69,7 @@ function GeneralModal({
           {secondaryButtonText}
         </Button>
         <Button
+          variant="contained"
           autoFocus
           onClick={onClickPrimaryButton}
           disabled={disabledPrimaryButton}
