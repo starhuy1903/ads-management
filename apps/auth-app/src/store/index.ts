@@ -6,10 +6,12 @@ import {
 } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { apiSlice } from './api/baseApiSlice';
+import { modalSlice } from './slice/modal';
 import { userSlice } from './slice/userSlice';
 
 const combinedReducer = combineReducers({
   user: userSlice.reducer,
+  modal: modalSlice.reducer,
   [apiSlice.reducerPath]: apiSlice.reducer,
 });
 

@@ -32,6 +32,7 @@
     "bcrypt": "^5.1.1",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
+    "clsx": "2.0.0",
     "dayjs": "^1.11.10",
     "moment-timezone": "^0.5.43",
     "mongoose": "^7.5.4",
@@ -39,6 +40,7 @@
     "passport-jwt": "^4.0.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-dropzone": "14.2.3",
     "react-hook-form": "7.46.1",
     "react-hot-toast": "^2.4.1",
     "react-perfect-scrollbar": "^1.5.8",
@@ -49,6 +51,7 @@
     "tslib": "^2.3.0"
   },
   "devDependencies": {
+    "@hookform/devtools": "4.3.1",
     "@nestjs/schematics": "^10.0.1",
     "@nestjs/testing": "^10.0.2",
     "@nx/cypress": "16.8.1",
