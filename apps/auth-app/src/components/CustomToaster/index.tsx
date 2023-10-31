@@ -1,7 +1,9 @@
-import { Toaster } from "react-hot-toast";
-import { defaultTheme } from "@/constants/themes";
+import { useTheme } from '@mui/material/styles';
+import { Toaster } from 'react-hot-toast';
 
 function CustomToaster() {
+  const theme = useTheme();
+
   return (
     <Toaster
       position="bottom-right"
@@ -11,23 +13,23 @@ function CustomToaster() {
         success: {
           duration: 3000,
           style: {
-            color: defaultTheme.palette.common.white,
-            background: defaultTheme.palette.success.main,
+            color: theme.palette.common.white,
+            background: theme.palette.success.main,
           },
           iconTheme: {
-            primary: defaultTheme.palette.common.white,
-            secondary: defaultTheme.palette.success.main,
+            primary: theme.palette.common.white,
+            secondary: theme.palette.success.main,
           },
         },
         error: {
           duration: 5000,
           style: {
-            color: defaultTheme.palette.common.white,
-            background: defaultTheme.palette.error.main,
+            color: theme.palette.common.white,
+            background: theme.palette.error.main,
           },
           iconTheme: {
-            primary: defaultTheme.palette.common.white,
-            secondary: defaultTheme.palette.error.main,
+            primary: theme.palette.common.white,
+            secondary: theme.palette.error.main,
           },
         },
       }}
