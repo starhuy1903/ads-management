@@ -1,10 +1,10 @@
-import { Box, CircularProgress } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { isApiErrorResponse } from '@/store/api/helper';
 import { useVerifyMutation } from '@/store/api/userApiSlice';
 import { showError } from '@/utils/toast';
-import Status from '../Status';
+import CenterLoading from '../Common/CenterLoading';
+import Status from '../Common/Status';
 
 export default function Verify() {
   const [urlParams] = useSearchParams();
@@ -37,19 +37,7 @@ export default function Verify() {
   }, [verifyToken, requestVerify]);
 
   if (isLoading || !isSent) {
-    return (
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          width: '100%',
-          height: '100vh',
-        }}
-      >
-        <CircularProgress />
-      </Box>
-    );
+    return <CenterLoading />;
   }
 
   return (

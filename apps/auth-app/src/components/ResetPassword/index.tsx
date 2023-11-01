@@ -5,7 +5,7 @@ import { isApiErrorResponse } from '@/store/api/helper';
 import { useResetPasswordMutation } from '@/store/api/userApiSlice';
 import { ResetPasswordPayload } from '@/types/user';
 import { showError } from '@/utils/toast';
-import Status from '../Status';
+import Status from '../Common/Status';
 
 export default function ResetPassword() {
   const [urlParams] = useSearchParams();

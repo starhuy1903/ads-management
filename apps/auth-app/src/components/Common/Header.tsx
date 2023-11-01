@@ -1,6 +1,6 @@
-import { Link } from "react-router-dom";
-import { useAppSelector } from "@/store";
-import { useLogoutMutation } from "@/store/api/userApiSlice";
+import { Link } from 'react-router-dom';
+import { useAppSelector } from '@/store';
+import { useLogoutMutation } from '@/store/api/userApiSlice';
 
 export default function Header() {
   const isLoggedIn = useAppSelector((state) => state.user.isLoggedIn);
@@ -9,11 +9,9 @@ export default function Header() {
 
   const handleLogout = async () => {
     try {
-      const res = await requestLogout({
+      await requestLogout({
         tokenId,
-      });
-
-      console.log(res);
+      }).unwrap();
     } catch (err) {
       console.log(err);
     }
