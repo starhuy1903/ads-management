@@ -2,7 +2,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import { StrictMode } from 'react';
 import * as ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
-import CustomToaster from '@/components/CustomToaster';
+import CustomToaster from '@/components/Common/CustomToaster';
 import { defaultTheme } from '@/constants/themes';
 import App from './components/App';
 import { ModalContainer } from './components/Modals';
