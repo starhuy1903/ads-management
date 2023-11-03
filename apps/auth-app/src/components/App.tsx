@@ -15,6 +15,10 @@ import PageLayout from './PageLayout';
 import Register from './Register';
 import SettingsPage from './Admin/SettingsPage';
 
+import ForgotPassword from "./ForgotPassword";
+import ResetPassword from "./ResetPassword";
+import Verify from "./Verify";
+
 const protectedRoutes = createBrowserRouter([
   {
     id: 'root',
@@ -38,6 +42,18 @@ const publicRoutes = createBrowserRouter([
       {
         path: '/register',
         element: <Register />,
+      },
+      {
+        path: "/verify",
+        element: <Verify />,
+      },
+      {
+        path: "/forgot-password",
+        element: <ForgotPassword />,
+      },
+      {
+        path: "/reset-password",
+        element: <ResetPassword />,
       },
     ],
   },
