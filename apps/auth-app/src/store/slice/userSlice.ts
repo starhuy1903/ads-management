@@ -49,8 +49,8 @@ export const userSlice = createSlice({
       state.profile = null;
       state.token = null;
       state.isLoggedIn = false;
-      localStorage.setItem('accessToken', '');
-      localStorage.setItem('refreshToken', '');
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
     },
   },
 });

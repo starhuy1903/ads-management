@@ -1,14 +1,21 @@
 import {
   CredentialPayload,
+  ForgotPasswordPayload,
+  ForgotPasswordResponse,
   LoginResponse,
+  LogoutPayload,
+  MessageResponse,
   RegisterPayload,
+  RegisterResponse,
+  ResetPasswordPayload,
   UserProfile,
+  VerifyPayload,
 } from '../../types/user';
 import {
+  logOut,
   setIsLoggedIn,
   setProfile,
   setToken,
-  logOut,
 } from '../slice/userSlice';
 import { apiSlice } from './baseApiSlice';
 
@@ -31,27 +38,18 @@ export const userApiSlice = apiSlice.injectEndpoints({
         }
       },
     }),
-    register: build.mutation<LoginResponse, RegisterPayload>({
+    register: build.mutation<RegisterResponse, RegisterPayload>({
       query: (body) => ({
         url: 'auth/signup',
         method: 'POST',
         body,
       }),
-      onQueryStarted: async (_, { dispatch, queryFulfilled }) => {
-        try {
-          const { data } = await queryFulfilled;
-          dispatch(setProfile(data));
-          dispatch(setToken(data));
-          dispatch(setIsLoggedIn(true));
-        } catch (error) {
-          console.log(error);
-        }
-      },
     }),
-    logout: build.mutation<void, void>({
-      query: () => ({
+    logout: build.mutation<MessageResponse, LogoutPayload>({
+      query: (body) => ({
         url: 'auth/logout',
         method: 'POST',
+        body,
       }),
       onQueryStarted: async (_, { dispatch, queryFulfilled }) => {
         try {
@@ -61,6 +59,30 @@ export const userApiSlice = apiSlice.injectEndpoints({
           console.log(error);
         }
       },
+    }),
+    verify: build.mutation<MessageResponse, VerifyPayload>({
+      query: (body) => ({
+        url: 'auth/verify',
+        method: 'POST',
+        body,
+      }),
+    }),
+    forgotPassword: build.mutation<
+      ForgotPasswordResponse,
+      ForgotPasswordPayload
+    >({
+      query: (body) => ({
+        url: 'auth/forgot-password',
+        method: 'POST',
+        body,
+      }),
+    }),
+    resetPassword: build.mutation<MessageResponse, ResetPasswordPayload>({
+      query: (body) => ({
+        url: 'auth/reset-password',
+        method: 'POST',
+        body,
+      }),
     }),
     getProfile: build.query<UserProfile, void>({
       query: () => 'me', // TBD
@@ -73,4 +95,7 @@ export const {
   useGetProfileQuery,
   useRegisterMutation,
   useLogoutMutation,
+  useVerifyMutation,
+  useForgotPasswordMutation,
+  useResetPasswordMutation,
 } = userApiSlice;

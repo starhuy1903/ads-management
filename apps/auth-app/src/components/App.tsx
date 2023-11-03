@@ -4,10 +4,13 @@ import {
   createBrowserRouter,
 } from "react-router-dom";
 import { useAppSelector } from "@/store";
+import ForgotPassword from "./ForgotPassword";
 import Home from "./Home";
 import Login from "./Login";
 import PageLayout from "./PageLayout";
 import Register from "./Register";
+import ResetPassword from "./ResetPassword";
+import Verify from "./Verify";
 
 const protectedRoutes = createBrowserRouter([
   {
@@ -32,6 +35,18 @@ const publicRoutes = createBrowserRouter([
       {
         path: "/register",
         element: <Register />,
+      },
+      {
+        path: "/verify",
+        element: <Verify />,
+      },
+      {
+        path: "/forgot-password",
+        element: <ForgotPassword />,
+      },
+      {
+        path: "/reset-password",
+        element: <ResetPassword />,
       },
     ],
   },
