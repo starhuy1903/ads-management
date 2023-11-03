@@ -52,9 +52,7 @@ type ProfileSectionProps = {
   alt?: string;
 };
 
-function ProfileSection(props: ProfileSectionProps) {
-  const { src, alt } = props;
-
+function ProfileSection({ src, alt }: ProfileSectionProps) {
   const theme = useTheme();
 
   const anchorRef = useRef<HTMLButtonElement>(null);
@@ -115,7 +113,7 @@ function ProfileSection(props: ProfileSectionProps) {
                           <LogoutIcon />
                         </ListItemIcon>
                         <ListItemText
-                          primary={<Typography >Log out</Typography>}
+                          primary={<Typography>Log out</Typography>}
                         />
                       </ListItemButton>
                     </PopperListItem>

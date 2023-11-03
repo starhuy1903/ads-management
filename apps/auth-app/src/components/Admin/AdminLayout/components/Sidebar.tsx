@@ -13,11 +13,9 @@ type SidebarProps = {
   handleOnClose: () => void;
 };
 
-function Sidebar(props: SidebarProps) {
+function Sidebar({ open, handleOnClose }: SidebarProps) {
   const theme = useTheme();
   const matchUpMd = useMediaQuery(theme.breakpoints.up('md'));
-
-  const { open, handleOnClose } = props;
 
   return (
     <Box component="nav">

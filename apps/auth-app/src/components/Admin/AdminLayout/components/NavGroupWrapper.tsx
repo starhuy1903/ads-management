@@ -6,23 +6,23 @@ type NavGroupWrapperProps = {
   children: ReactNode;
 };
 
-function NavGroupWrapper(props: NavGroupWrapperProps) {
-  const { title, children } = props;
-
+function NavGroupWrapper({ title, children }: NavGroupWrapperProps) {
   return (
     <List
       sx={{ paddingBottom: '10px' }}
       subheader={
-        title && <Typography
-          sx={{
-            fontSize: '0.875rem',
-            fontWeight: 'bold',
-            padding: ' 10px 0',
-            userSelect: 'none'
-          }}
-        >
-          {title}
-        </Typography>
+        title && (
+          <Typography
+            sx={{
+              fontSize: '0.875rem',
+              fontWeight: 'bold',
+              padding: ' 10px 0',
+              userSelect: 'none',
+            }}
+          >
+            {title}
+          </Typography>
+        )
       }
     >
       {children}

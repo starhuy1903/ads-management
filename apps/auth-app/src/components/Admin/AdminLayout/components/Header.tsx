@@ -10,10 +10,8 @@ type HeaderProps = {
   handleSidebarToogle: () => void;
 };
 
-function Header(props: HeaderProps) {
+function Header({ handleSidebarToogle }: HeaderProps) {
   const theme = useTheme();
-
-  const { handleSidebarToogle } = props;
 
   return (
     <AppBar
@@ -38,19 +36,16 @@ function Header(props: HeaderProps) {
           }}
         >
           <Logo sx={{ height: '60px', display: { xs: 'none', md: 'block' } }} />
-          <CustomIconButton
-            className='h-fit'
-            onClick={handleSidebarToogle}
-          >
+          <CustomIconButton className="h-fit" onClick={handleSidebarToogle}>
             <MenuIcon />
           </CustomIconButton>
         </Box>
         <Box className="flex-1" />
         <Box className="flex gap-x-4">
-          <CustomIconButton className='h-fit'>
+          <CustomIconButton className="h-fit">
             <NotificationsNoneOutlinedIcon />
           </CustomIconButton>
-          <ProfileSection/>
+          <ProfileSection />
         </Box>
       </Toolbar>
     </AppBar>

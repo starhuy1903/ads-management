@@ -15,10 +15,8 @@ type NavItemProps = {
   icon?: ReactNode;
 };
 
-function NavItem(props: NavItemProps) {
+function NavItem({ title, href, icon }: NavItemProps) {
   const theme = useTheme();
-
-  const { title, href, icon } = props;
 
   return (
     <ListItem disablePadding className="px-0 py-1">

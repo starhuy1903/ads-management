@@ -58,7 +58,7 @@ const publicRoutes = createBrowserRouter([
     ],
   },
   {
-    path: '/admin',
+    path: 'admin',
     element: <AdminLayout />,
     children: [
       {
@@ -66,19 +66,19 @@ const publicRoutes = createBrowserRouter([
         element: <Navigate replace to='/admin/dashboard' />,
       },
       {
-        path: '/admin/dashboard',
+        path: 'dashboard',
         element: <AdminDashboard />,
       },
       {
-        path: '/admin/categories',
+        path: 'categories',
         element: <CategoriesPage />,
       },
       {
-        path: '/admin/items',
+        path: 'items',
         element: <ItemsPage />,
       },
       {
-        path: '/admin/settings',
+        path: 'settings',
         element: <SettingsPage/>
       }
     ],
