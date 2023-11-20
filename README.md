@@ -2,7 +2,7 @@
 
 ## How to open workspace
 
-Open `org/.vscode/AuthDemo.code-workspace`
+Open `ads-management/.vscode/AdsManagement.code-workspace`
 
 ## How to start
 
