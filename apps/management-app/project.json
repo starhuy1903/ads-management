@@ -1,7 +1,7 @@
 {
-  "name": "auth-app",
+  "name": "management-app",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/auth-app/src",
+  "sourceRoot": "apps/management-app/src",
   "projectType": "application",
   "targets": {
     "build": {
@@ -9,7 +9,7 @@
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
-        "outputPath": "dist/apps/auth-app"
+        "outputPath": "dist/apps/management-app"
       },
       "configurations": {
         "development": {
@@ -24,15 +24,15 @@
       "executor": "@nx/vite:dev-server",
       "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "auth-app:build"
+        "buildTarget": "management-app:build"
       },
       "configurations": {
         "development": {
-          "buildTarget": "auth-app:build:development",
+          "buildTarget": "management-app:build:development",
           "hmr": true
         },
         "production": {
-          "buildTarget": "auth-app:build:production",
+          "buildTarget": "management-app:build:production",
           "hmr": false
         }
       }
@@ -41,14 +41,14 @@
       "executor": "@nx/vite:preview-server",
       "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "auth-app:build"
+        "buildTarget": "management-app:build"
       },
       "configurations": {
         "development": {
-          "buildTarget": "auth-app:build:development"
+          "buildTarget": "management-app:build:development"
         },
         "production": {
-          "buildTarget": "auth-app:build:production"
+          "buildTarget": "management-app:build:production"
         }
       }
     },
@@ -57,20 +57,20 @@
       "outputs": ["{options.reportsDirectory}"],
       "options": {
         "passWithNoTests": true,
-        "reportsDirectory": "../../coverage/apps/auth-app"
+        "reportsDirectory": "../../coverage/apps/management-app"
       }
     },
     "lint": {
       "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["apps/auth-app/**/*.{ts,tsx,js,jsx}"]
+        "lintFilePatterns": ["apps/management-app/**/*.{ts,tsx,js,jsx}"]
       }
     },
     "serve-static": {
       "executor": "@nx/web:file-server",
       "options": {
-        "buildTarget": "auth-app:build"
+        "buildTarget": "management-app:build"
       }
     }
   },

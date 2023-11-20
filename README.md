@@ -23,5 +23,5 @@ nx serve auth-api
 3. Run Frontend app
 
 ```shell
-nx serve auth-app
+nx serve management-app
 ```

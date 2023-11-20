@@ -5,7 +5,7 @@ import { defineConfig, searchForWorkspaceRoot } from 'vite';
 
 export default defineConfig(() => {
   return {
-    cacheDir: '../../node_modules/.vite/auth-app',
+    cacheDir: '../../node_modules/.vite/management-app',
     server: {
       port: 4200,
       host: 'localhost',
@@ -13,10 +13,10 @@ export default defineConfig(() => {
         allow: [searchForWorkspaceRoot(process.cwd())],
       },
     },
-    root: `${process.cwd()}/apps/auth-app`,
+    root: `${process.cwd()}/apps/management-app`,
     resolve: {
       alias: {
-        '@/': `${process.cwd()}/apps/auth-app/src/`,
+        '@/': `${process.cwd()}/apps/management-app/src/`,
       },
     },
 
