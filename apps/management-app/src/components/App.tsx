@@ -5,26 +5,21 @@ import {
   createBrowserRouter,
 } from 'react-router-dom';
 import { useAppSelector } from '@/store';
-import AdminLayout from './Admin/AdminLayout';
-import AdminDashboard from './Admin/AdminDashboard';
-import CategoriesPage from './Admin/CategoriesPage';
-import ItemsPage from './Admin/ItemsPage';
-import Home from './Home';
-import Login from './Login';
+import ResetPassword from './Authenticated/ResetPassword';
+import CitizenHome from './Citizen/CitizenHome';
+import CitizenReport from './Citizen/CitizenReport';
 import PageLayout from './PageLayout';
-import Register from './Register';
-import SettingsPage from './Admin/SettingsPage';
-
-import ForgotPassword from "./ForgotPassword";
-import ResetPassword from "./ResetPassword";
-import Verify from "./Verify";
+import ForgotPassword from './Unauthenticated/ForgotPassword';
+import Login from './Unauthenticated/Login';
+import Register from './Unauthenticated/Register';
+import Verify from './Unauthenticated/Verify';
 
 const protectedRoutes = createBrowserRouter([
-  {
-    id: 'root',
-    element: <PageLayout />,
-    children: [{ path: '/', element: <Home /> }],
-  },
+  // {
+  //   id: 'root',
+  //   element: <PageLayout />,
+  //   children: [{ path: '/', element: <Home /> }],
+  // },
   {
     path: '*',
     element: <Navigate to={`/`} />,
@@ -33,8 +28,22 @@ const protectedRoutes = createBrowserRouter([
 
 const publicRoutes = createBrowserRouter([
   {
-    element: <PageLayout />,
+    // element: <PageLayout />,
     children: [
+      {
+        path: '/',
+        element: <PageLayout />,
+        children: [
+          {
+            index: true,
+            element: <CitizenHome />,
+          },
+          {
+            path: '/report',
+            element: <CitizenReport />,
+          },
+        ],
+      },
       {
         path: '/login',
         element: <Login />,
@@ -44,43 +53,17 @@ const publicRoutes = createBrowserRouter([
         element: <Register />,
       },
       {
-        path: "/verify",
+        path: '/verify',
         element: <Verify />,
       },
       {
-        path: "/forgot-password",
+        path: '/forgot-password',
         element: <ForgotPassword />,
       },
       {
-        path: "/reset-password",
+        path: '/reset-password',
         element: <ResetPassword />,
       },
-    ],
-  },
-  {
-    path: 'admin',
-    element: <AdminLayout />,
-    children: [
-      {
-        index: true,
-        element: <Navigate replace to='/admin/dashboard' />,
-      },
-      {
-        path: 'dashboard',
-        element: <AdminDashboard />,
-      },
-      {
-        path: 'categories',
-        element: <CategoriesPage />,
-      },
-      {
-        path: 'items',
-        element: <ItemsPage />,
-      },
-      {
-        path: 'settings',
-        element: <SettingsPage/>
-      }
     ],
   },
   {

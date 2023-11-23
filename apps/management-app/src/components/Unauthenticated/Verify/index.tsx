@@ -3,8 +3,8 @@ import { Link, useSearchParams } from 'react-router-dom';
 import { isApiErrorResponse } from '@/store/api/helper';
 import { useVerifyMutation } from '@/store/api/userApiSlice';
 import { showError } from '@/utils/toast';
-import CenterLoading from '../Common/CenterLoading';
-import Status from '../Common/Status';
+import CenterLoading from '../../Common/CenterLoading';
+import Status from '../../Common/Status';
 
 export default function Verify() {
   const [urlParams] = useSearchParams();

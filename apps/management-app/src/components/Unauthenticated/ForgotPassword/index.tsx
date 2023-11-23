@@ -5,7 +5,7 @@ import { isApiErrorResponse } from '@/store/api/helper';
 import { useForgotPasswordMutation } from '@/store/api/userApiSlice';
 import { ForgotPasswordPayload } from '@/types/user';
 import { showError } from '@/utils/toast';
-import Status from '../Common/Status';
+import Status from '../../Common/Status';
 
 export default function ForgotPassword() {
   const [requestForgetPassword, { isLoading }] = useForgotPasswordMutation();

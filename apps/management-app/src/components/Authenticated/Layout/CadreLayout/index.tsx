@@ -2,8 +2,8 @@ import { Box, useMediaQuery } from '@mui/material';
 import { useTheme, styled } from '@mui/material/styles';
 import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
-import Header from './components/Header';
-import Sidebar from './components/Sidebar';
+import Header from './Header';
+import Sidebar from './Sidebar';
 
 const Main = styled('main', {
   shouldForwardProp: (prop) => prop !== 'sidebarOpen',
@@ -20,9 +20,7 @@ const Main = styled('main', {
 
   [theme.breakpoints.up('md')]: {
     width: sidebarOpen ? `calc(100% - ${theme.layout.drawerWidth})` : '100%',
-    marginLeft: sidebarOpen
-      ? theme.layout.drawerWidth
-      : '16px',
+    marginLeft: sidebarOpen ? theme.layout.drawerWidth : '16px',
     transition: theme.transitions.create(
       ['margin', 'width'],
       sidebarOpen

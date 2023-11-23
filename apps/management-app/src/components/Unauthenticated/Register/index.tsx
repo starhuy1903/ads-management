@@ -5,7 +5,7 @@ import { isApiErrorResponse } from '@/store/api/helper';
 import { useRegisterMutation } from '@/store/api/userApiSlice';
 import { RegisterPayload } from '@/types/user';
 import { showError } from '@/utils/toast';
-import Status from '../Common/Status';
+import Status from '../../Common/Status';
 
 export default function Register() {
   const [requestRegister, { isLoading }] = useRegisterMutation();
