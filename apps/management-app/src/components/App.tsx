@@ -9,8 +9,8 @@ import { useGetProfileQuery } from '@/store/api/userApiSlice';
 import { checkRole } from '@/store/slice/userSlice';
 import AdsLocation from './Authenticated/AdsLocation';
 import AdsPermission from './Authenticated/AdsPermission';
-import CreateAdPermissionReq from './Authenticated/CreateAdPermissionReq';
-import CreateEditingReq from './Authenticated/CreateEditingReq';
+import CreateAdsPermission from './Authenticated/CreateAdsPermission';
+import CreateEditing from './Authenticated/CreateEditing';
 import Home from './Authenticated/Home';
 import ReportDetail from './Authenticated/ReportDetail';
 import ReportTable from './Authenticated/ReportTable';
@@ -79,7 +79,7 @@ const officerRoutes = createBrowserRouter([
       },
       {
         path: 'locations/edit',
-        element: <CreateEditingReq />,
+        element: <CreateEditing />,
       },
       {
         path: 'reports',
@@ -95,7 +95,7 @@ const officerRoutes = createBrowserRouter([
       },
       {
         path: 'permissions/new',
-        element: <CreateAdPermissionReq />,
+        element: <CreateAdsPermission />,
       },
     ],
   },
