@@ -1,3 +1,5 @@
+import { UserRole } from '@/constants/user';
+
 export type CredentialPayload = {
   email: string;
   password: string;
@@ -47,4 +49,5 @@ export type UserProfile = {
   id: string;
   email: string;
   name: string;
+  role: UserRole;
 };

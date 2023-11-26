@@ -1,5 +1,7 @@
-import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createSelector, createSlice } from '@reduxjs/toolkit';
+import { UserRole } from '@/constants/user';
 import { UserSliceType } from '@/types/store/user';
+import { RootState } from '..';
 import { LoginResponse } from '../../types/user';
 
 const initialState = {
@@ -7,6 +9,7 @@ const initialState = {
     id: '',
     email: '',
     name: '',
+    role: UserRole.CITIZEN,
   },
   token: {
     accessToken: localStorage.getItem('accessToken') || '',
@@ -47,3 +50,15 @@ export const userSlice = createSlice({
 
 export const { setIsLoggedIn, setToken, setProfile, logOut } =
   userSlice.actions;
+
+export const checkRole = createSelector(
+  (state: RootState) => state.user.profile?.role || UserRole.CITIZEN,
+  (role) => {
+    return {
+      isCitizen: role === UserRole.CITIZEN,
+      isWardOfficer: role === UserRole.WARD_OFFICER,
+      isDistrictOfficer: role === UserRole.DISTRICT_OFFICER,
+      isCDO: role === UserRole.CDO,
+    };
+  },
+);

@@ -1,5 +1,5 @@
 import { Box } from '@mui/material';
 
-export default function CreateRequest() {
+export default function CreateAdPermissionReq() {
   return <Box>CreateRequest page</Box>;
 }

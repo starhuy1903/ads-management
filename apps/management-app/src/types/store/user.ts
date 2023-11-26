@@ -9,9 +9,4 @@ export type UserSliceType = {
     accessTokenExpires: string;
   } | null;
   isLoggedIn: boolean;
-  // roles
-  isCitizen: false;
-  isWardOfficer: false;
-  isDistrictOfficer: false;
-  isDepartmentOfCultureOfficer: false;
 };
