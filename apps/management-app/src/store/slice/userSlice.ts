@@ -1,16 +1,6 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { LoginResponse, UserProfile } from '../../types/user';
-
-type UserSliceType = {
-  profile: UserProfile | null;
-  token: {
-    accessToken: string;
-    refreshToken: string;
-    tokenId: string;
-    accessTokenExpires: string;
-  } | null;
-  isLoggedIn: boolean;
-};
+import { UserSliceType } from '@/types/store/user';
+import { LoginResponse } from '../../types/user';
 
 const initialState = {
   profile: {

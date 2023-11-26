@@ -5,9 +5,11 @@ import {
   createBrowserRouter,
 } from 'react-router-dom';
 import { useAppSelector } from '@/store';
+import { useGetProfileQuery } from '@/store/api/userApiSlice';
 import ResetPassword from './Authenticated/ResetPassword';
 import CitizenHome from './Citizen/CitizenHome';
 import CitizenReport from './Citizen/CitizenReport';
+import CenterLoading from './Common/CenterLoading';
 import PageLayout from './PageLayout';
 import ForgotPassword from './Unauthenticated/ForgotPassword';
 import Login from './Unauthenticated/Login';
@@ -74,6 +76,11 @@ const publicRoutes = createBrowserRouter([
 
 function App() {
   const isLoggedIn = useAppSelector((state) => state.user.isLoggedIn);
+  const { isLoading } = useGetProfileQuery();
+
+  if (isLoading) {
+    return <CenterLoading />;
+  }
 
   return isLoggedIn ? (
     <RouterProvider router={protectedRoutes} />

@@ -85,7 +85,7 @@ export const userApiSlice = apiSlice.injectEndpoints({
       }),
     }),
     getProfile: build.query<UserProfile, void>({
-      query: () => 'me', // TBD
+      query: () => 'users/me',
     }),
   }),
 });
