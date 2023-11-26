@@ -1,7 +1,5 @@
 import CategoryOutlinedIcon from '@mui/icons-material/CategoryOutlined';
-import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
-import SpaceDashboardOutlinedIcon from '@mui/icons-material/SpaceDashboardOutlined';
-import { Box, Divider, Drawer, useMediaQuery } from '@mui/material';
+import { Box, Drawer, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import Logo from './Logo';
@@ -55,32 +53,21 @@ function Sidebar({ open, handleOnClose }: SidebarProps) {
             padding: '0 16px',
           }}
         >
-          <NavGroupWrapper title="Dashboard">
-            <NavItem
-              title="Dashboard"
-              icon={<SpaceDashboardOutlinedIcon />}
-              href="/admin/dashboard"
-            />
-          </NavGroupWrapper>
-          <Divider />
           <NavGroupWrapper title="Management">
             <NavItem
-              title="Categories"
+              title="Location"
               icon={<CategoryOutlinedIcon />}
-              href="/admin/categories"
+              href="/locations"
             />
             <NavItem
-              title="Items"
+              title="Report"
               icon={<CategoryOutlinedIcon />}
-              href="/admin/items"
+              href="/reports"
             />
-          </NavGroupWrapper>
-          <Divider />
-          <NavGroupWrapper>
             <NavItem
-              title="Settings"
-              icon={<SettingsOutlinedIcon />}
-              href="/admin/settings"
+              title="Permission"
+              icon={<CategoryOutlinedIcon />}
+              href="/permissions"
             />
           </NavGroupWrapper>
         </PerfectScrollbar>

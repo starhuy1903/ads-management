@@ -12,6 +12,7 @@ import AdsPermission from './Authenticated/AdsPermission';
 import CreateAdsPermission from './Authenticated/CreateAdsPermission';
 import CreateEditing from './Authenticated/CreateEditing';
 import Home from './Authenticated/Home';
+import OfficerLayout from './Authenticated/Layout/OfficerLayout';
 import ReportDetail from './Authenticated/ReportDetail';
 import ReportTable from './Authenticated/ReportTable';
 import ResetPassword from './Authenticated/ResetPassword';
@@ -68,6 +69,7 @@ const CDORoutes = createBrowserRouter([
 const officerRoutes = createBrowserRouter([
   {
     path: '/',
+    element: <OfficerLayout />,
     children: [
       {
         index: true,

@@ -7,10 +7,10 @@ import Logo from './Logo';
 import ProfileSection from './ProfileSection';
 
 type HeaderProps = {
-  handleSidebarToogle: () => void;
+  onSidebarToggle: () => void;
 };
 
-function Header({ handleSidebarToogle }: HeaderProps) {
+function Header({ onSidebarToggle }: HeaderProps) {
   const theme = useTheme();
 
   return (
@@ -36,7 +36,7 @@ function Header({ handleSidebarToogle }: HeaderProps) {
           }}
         >
           <Logo sx={{ height: '60px', display: { xs: 'none', md: 'block' } }} />
-          <CustomIconButton className="h-fit" onClick={handleSidebarToogle}>
+          <CustomIconButton className="h-fit" onClick={onSidebarToggle}>
             <MenuIcon />
           </CustomIconButton>
         </Box>

@@ -36,7 +36,7 @@ const Main = styled('main', {
   },
 }));
 
-function AdminLayout() {
+function OfficerLayout() {
   const theme = useTheme();
   const matchUpMd = useMediaQuery(theme.breakpoints.up('md'));
 
@@ -44,7 +44,7 @@ function AdminLayout() {
 
   return (
     <Box sx={{ display: 'flex' }}>
-      <Header handleSidebarToogle={() => setSidebarOpen((open) => !open)} />
+      <Header onSidebarToggle={() => setSidebarOpen((open) => !open)} />
       <Sidebar open={sidebarOpen} handleOnClose={() => setSidebarOpen(false)} />
 
       <Main sidebarOpen={sidebarOpen}>
@@ -53,4 +53,4 @@ function AdminLayout() {
     </Box>
   );
 }
-export default AdminLayout;
+export default OfficerLayout;
