@@ -6,6 +6,8 @@ export default function SearchBar() {
       component="form"
       sx={{
         '& > :not(style)': { m: 1, width: '25ch' },
+        marginTop: 8,
+        marginLeft: 2,
       }}
       noValidate
       autoComplete="off"
