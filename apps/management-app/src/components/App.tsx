@@ -25,7 +25,7 @@ import Login from './Unauthenticated/Login';
 import Register from './Unauthenticated/Register';
 import Verify from './Unauthenticated/Verify';
 
-// Culture Department Office
+// Culture Department Officer
 const CDORoutes = createBrowserRouter([
   {
     path: '/',
