@@ -1,4 +1,5 @@
 export enum ModalKey {
   CREATE_CATEGORY = 'CREATE_CATEGORY',
   CERATE_ITEM = 'CREATE_ITEM',
+  CROP_IMAGE = 'CROP_IMAGE',
 }

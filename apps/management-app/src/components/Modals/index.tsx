@@ -3,10 +3,12 @@ import { ModalKey } from '@/constants/modal';
 import { showModal } from '@/store/slice/modal';
 import CreateCategory from './CreateCategory';
 import CreateItem from './CreateItem';
+import CropImage from './CropImage';
 
 const modalsMap: { [modalKey: string]: any } = {
   [ModalKey.CREATE_CATEGORY]: CreateCategory,
   [ModalKey.CERATE_ITEM]: CreateItem,
+  [ModalKey.CROP_IMAGE]: CropImage,
 };
 
 export function ModalContainer() {
