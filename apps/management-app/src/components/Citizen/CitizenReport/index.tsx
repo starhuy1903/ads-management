@@ -21,6 +21,7 @@ import DropFileContainer from '@/components/Common/DropFileContainer';
 import { ModalKey } from '@/constants/modal';
 import { ImageFileConfig } from '@/constants/validation';
 import { showModal } from '@/store/slice/modal';
+import ImagePreview from './ImagePreview';
 import UploadImageCard from './UploadImageCard';
 
 const ReportTypes = [
@@ -46,9 +47,9 @@ interface FormType {
   fullName: string;
   email: string;
   phoneNumber: string;
-  reportType: string;
+  reportType: number;
   description: string;
-  images: File[];
+  imageFiles: File[];
 }
 
 export default function CitizenReport() {
@@ -56,18 +57,19 @@ export default function CitizenReport() {
   const [editorMounted, setEditorMounted] = useState(false);
   const dispatch = useAppDispatch();
 
-  const { handleSubmit, register, control, formState } = useForm<FormType>({
-    mode: 'onChange',
-    defaultValues: {
-      fullName: '',
-      email: '',
-      phoneNumber: '',
-      reportType: '',
-      description: '',
-      images: [],
-    },
-  });
+  const { handleSubmit, register, control, formState, setValue, watch } =
+    useForm<FormType>({
+      mode: 'onChange',
+      defaultValues: {
+        fullName: '',
+        email: '',
+        phoneNumber: '',
+        reportType: 1,
+        imageFiles: [],
+      },
+    });
   const { errors: formError } = formState;
+  const formValue = watch();
 
   const {
     field: { value: descValue, onChange: onChangeDesc },
@@ -76,8 +78,8 @@ export default function CitizenReport() {
     name: 'description',
     rules: {
       maxLength: {
-        value: 255,
-        message: 'Course name can not exceed 255 characters.',
+        value: 5000,
+        message: 'Description can not exceed 5000 characters.',
       },
     },
     defaultValue: '',
@@ -95,15 +97,30 @@ export default function CitizenReport() {
         return;
       }
 
-      dispatch(
-        showModal(ModalKey.CROP_IMAGE, {
-          image: file,
-          onSubmit: () => {},
-          onModalClose: () => {},
-        }),
+      console.log({ file });
+
+      setValue('imageFiles', [...formValue.imageFiles, file]);
+
+      // TODO: crop image
+      // dispatch(
+      //   showModal(ModalKey.CROP_IMAGE, {
+      //     image: file,
+      //     onSubmit: () => {},
+      //     onModalClose: () => {},
+      //   }),
+      // );
+    },
+    [formValue.imageFiles, setValue],
+  );
+
+  const handleDeleteImage = useCallback(
+    (file: File) => {
+      setValue(
+        'imageFiles',
+        formValue.imageFiles.filter((image) => image !== file),
       );
     },
-    [dispatch],
+    [formValue.imageFiles, setValue],
   );
 
   const renderUpdateImageContainer = ({
@@ -121,7 +138,7 @@ export default function CitizenReport() {
   };
 
   return (
-    <Container maxWidth="xl">
+    <Container maxWidth="xl" sx={{ marginY: 8 }}>
       <Typography
         variant="h3"
         noWrap
@@ -239,21 +256,36 @@ export default function CitizenReport() {
             {!editorMounted && <Box>Loading...</Box>}
           </Box>
         </FormControl>
-        <Stack direction="row" spacing={2} flexWrap="wrap">
-          <DropFileContainer
-            onDropFile={handleUpdateImage}
-            onRejectFile={() => {}}
-            acceptMIMETypes={ImageFileConfig.ACCEPTED_MINE_TYPES}
-            renderChildren={renderUpdateImageContainer}
-            disabled={submitting}
-            maxSize={ImageFileConfig.MAX_SIZE}
-          />
-        </Stack>
+        <FormControl>
+          <FormLabel sx={{ mb: 1 }}>Upload image</FormLabel>
+          <Stack direction="row" spacing={2}>
+            {formValue.imageFiles.map((image) => (
+              <ImagePreview
+                image={image}
+                disabled={submitting}
+                onDeleteImage={handleDeleteImage}
+              />
+            ))}
+            {formValue.imageFiles.length < 2 && (
+              <DropFileContainer
+                onDropFile={handleUpdateImage}
+                onRejectFile={(error) => {
+                  console.log('wrong file type ', error);
+                }}
+                acceptMIMETypes={ImageFileConfig.ACCEPTED_MINE_TYPES}
+                renderChildren={renderUpdateImageContainer}
+                disabled={submitting}
+                maxSize={ImageFileConfig.MAX_SIZE}
+              />
+            )}
+          </Stack>
+        </FormControl>
         <Button
           variant="contained"
           color="primary"
           disabled={submitting}
           onClick={handleSubmit(onSubmit)}
+          sx={{ mt: 4 }}
         >
           Send
         </Button>
