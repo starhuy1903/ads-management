@@ -14,7 +14,8 @@ import {
 } from '@mui/material';
 import { Editor } from '@tinymce/tinymce-react';
 import { useCallback, useRef, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useController, useForm } from 'react-hook-form';
+import { Editor as TinyMCEEditor } from 'tinymce';
 import { useAppDispatch } from '@/store';
 import DropFileContainer from '@/components/Common/DropFileContainer';
 import { ModalKey } from '@/constants/modal';
@@ -51,8 +52,10 @@ interface FormType {
 }
 
 export default function CitizenReport() {
-  const editorRef = useRef<Editor>(null);
+  const editorRef = useRef<TinyMCEEditor | null>(null);
+  const [editorMounted, setEditorMounted] = useState(false);
   const dispatch = useAppDispatch();
+
   const { handleSubmit, register, control, formState } = useForm<FormType>({
     mode: 'onChange',
     defaultValues: {
@@ -66,11 +69,24 @@ export default function CitizenReport() {
   });
   const { errors: formError } = formState;
 
+  const {
+    field: { value: descValue, onChange: onChangeDesc },
+  } = useController({
+    control,
+    name: 'description',
+    rules: {
+      maxLength: {
+        value: 255,
+        message: 'Course name can not exceed 255 characters.',
+      },
+    },
+    defaultValue: '',
+  });
+
   const [submitting, setSubmitting] = useState(false);
-  const log = () => {
-    if (editorRef.current) {
-      console.log(editorRef.current.getContent());
-    }
+
+  const handleEditorChange = (a: string, _: TinyMCEEditor) => {
+    onChangeDesc(a);
   };
 
   const handleUpdateImage = useCallback(
@@ -180,7 +196,9 @@ export default function CitizenReport() {
               aria-describedby="reportType-helper-text"
             >
               {ReportTypes.map((type) => (
-                <MenuItem value={type.id}>{type.value}</MenuItem>
+                <MenuItem key={type.id} value={type.id}>
+                  {type.value}
+                </MenuItem>
               ))}
             </Select>
             <FormHelperText id="reportType-helper-text">
@@ -190,27 +208,36 @@ export default function CitizenReport() {
         </Stack>
         <FormControl fullWidth>
           <FormLabel>Description</FormLabel>
-          <Editor
-            apiKey="kulkkatvrqim8ho9lhxqo5d0l4u80m68n44pbjphhlyzsy8n"
-            onInit={(evt, editor) => (editorRef.current = editor)}
-            initialValue="<p>This is the initial content of the editor.</p>"
-            init={{
-              height: 400,
-              menubar: false,
-              plugins: [
-                'advlist autolink lists link image charmap print preview anchor',
-                'searchreplace visualblocks code fullscreen',
-                'insertdatetime media table paste code help wordcount',
-              ],
-              toolbar:
-                'undo redo | formatselect | ' +
-                'bold italic backcolor | alignleft aligncenter ' +
-                'alignright alignjustify | bullist numlist outdent indent | ' +
-                'removeformat | help',
-              content_style:
-                'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
-            }}
-          />
+          <Box minHeight={400}>
+            <Editor
+              id="report-description-editor"
+              apiKey="kulkkatvrqim8ho9lhxqo5d0l4u80m68n44pbjphhlyzsy8n" // TODO: get from env
+              onInit={(evt, editor) => {
+                editorRef.current = editor;
+                setEditorMounted(true);
+              }}
+              initialValue=""
+              onEditorChange={handleEditorChange}
+              init={{
+                height: 400,
+                menubar: false,
+                plugins: [
+                  'advlist autolink lists link image charmap print preview anchor',
+                  'searchreplace visualblocks code fullscreen',
+                  'insertdatetime media table paste code help wordcount',
+                ],
+                toolbar:
+                  'undo redo | formatselect | ' +
+                  'bold italic backcolor | alignleft aligncenter ' +
+                  'alignright alignjustify | bullist numlist outdent indent | ' +
+                  'removeformat | help',
+                content_style:
+                  'body { font-family:"Roboto","Helvetica","Arial",sans-serif; font-size:14px }',
+              }}
+              disabled={submitting}
+            />
+            {!editorMounted && <Box>Loading...</Box>}
+          </Box>
         </FormControl>
         <Stack direction="row" spacing={2} flexWrap="wrap">
           <DropFileContainer
@@ -226,7 +253,7 @@ export default function CitizenReport() {
           variant="contained"
           color="primary"
           disabled={submitting}
-          onClick={() => handleSubmit(onSubmit)()}
+          onClick={handleSubmit(onSubmit)}
         >
           Send
         </Button>
