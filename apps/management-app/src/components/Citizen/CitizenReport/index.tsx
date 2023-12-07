@@ -1,9 +1,11 @@
+import { DevTool } from '@hookform/devtools';
 import {
   Box,
   Button,
   Container,
   FormControl,
-  InputLabel,
+  FormHelperText,
+  FormLabel,
   MenuItem,
   Select,
   Stack,
@@ -21,14 +23,26 @@ import { showModal } from '@/store/slice/modal';
 import UploadImageCard from './UploadImageCard';
 
 const ReportTypes = [
-  'Tố giác sai phạm',
-  'Đăng ký nội dung',
-  'Đóng góp ý kiến',
-  'Giải đáp thắc mắc',
+  {
+    id: 1,
+    value: 'Tố giác sai phạm',
+  },
+  {
+    id: 2,
+    value: 'Đăng ký nội dung',
+  },
+  {
+    id: 3,
+    value: 'Đóng góp ý kiến',
+  },
+  {
+    id: 4,
+    value: 'Giải đáp thắc mắc',
+  },
 ];
 
 interface FormType {
-  name: string;
+  fullName: string;
   email: string;
   phoneNumber: string;
   reportType: string;
@@ -39,7 +53,18 @@ interface FormType {
 export default function CitizenReport() {
   const editorRef = useRef<Editor>(null);
   const dispatch = useAppDispatch();
-  const { handleSubmit } = useForm<FormType>();
+  const { handleSubmit, register, control, formState } = useForm<FormType>({
+    mode: 'onChange',
+    defaultValues: {
+      fullName: '',
+      email: '',
+      phoneNumber: '',
+      reportType: '',
+      description: '',
+      images: [],
+    },
+  });
+  const { errors: formError } = formState;
 
   const [submitting, setSubmitting] = useState(false);
   const log = () => {
@@ -92,65 +117,101 @@ export default function CitizenReport() {
       >
         Send Report
       </Typography>
-      <Box component="form" autoComplete="off">
+      <Box
+        component="form"
+        autoComplete="off"
+        sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 2 }}
+      >
         <Stack direction="row" spacing={2}>
-          <TextField
-            required
-            id="outlined-required"
-            label="Full Name"
-            placeholder="Nguyen Van A"
-          />
-          <TextField
-            required
-            id="outlined-required"
-            label="Email"
-            placeholder="example@gmail.com"
-          />
-        </Stack>
-        <Stack direction="row" spacing={2}>
-          <TextField
-            required
-            id="outlined-required"
-            label="Phone Number"
-            placeholder="09999999"
-          />
-          <FormControl>
-            <InputLabel id="demo-simple-select-label">Report Type</InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              // value={age}
-              label="Report Type"
-              // onChange={handleChange}
-            >
-              {ReportTypes.map((type) => (
-                <MenuItem>{type}</MenuItem>
-              ))}
-            </Select>
+          <FormControl fullWidth error={!!formError.fullName}>
+            <FormLabel htmlFor="fullName">Full Name</FormLabel>
+            <TextField
+              {...register('fullName', {
+                required: 'The full name is required.',
+              })}
+              required
+              id="fullName"
+              placeholder="Nguyen Van A"
+              error={!!formError.fullName}
+              aria-describedby="fullName-helper-text"
+            />
+            <FormHelperText id="fullName-helper-text">
+              {formError.fullName?.message}
+            </FormHelperText>
+          </FormControl>
+
+          <FormControl fullWidth error={!!formError.email}>
+            <FormLabel htmlFor="email">Email</FormLabel>
+            <TextField
+              {...register('email', {
+                required: 'The email is required.',
+              })}
+              id="email"
+              placeholder="example@gmail.com"
+              error={!!formError.email}
+              aria-describedby="email-helper-text"
+            />
+            <FormHelperText id="email-helper-text">
+              {formError.email?.message}
+            </FormHelperText>
           </FormControl>
         </Stack>
-
-        <Editor
-          apiKey="kulkkatvrqim8ho9lhxqo5d0l4u80m68n44pbjphhlyzsy8n"
-          onInit={(evt, editor) => (editorRef.current = editor)}
-          initialValue="<p>This is the initial content of the editor.</p>"
-          init={{
-            height: 600,
-            menubar: false,
-            plugins: [
-              'advlist autolink lists link image charmap print preview anchor',
-              'searchreplace visualblocks code fullscreen',
-              'insertdatetime media table paste code help wordcount',
-            ],
-            toolbar:
-              'undo redo | formatselect | ' +
-              'bold italic backcolor | alignleft aligncenter ' +
-              'alignright alignjustify | bullist numlist outdent indent | ' +
-              'removeformat | help',
-            content_style:
-              'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
-          }}
-        />
+        <Stack direction="row" spacing={2}>
+          <FormControl fullWidth error={!!formError.phoneNumber}>
+            <FormLabel htmlFor="phoneNumber">Phone Number</FormLabel>
+            <TextField
+              {...register('phoneNumber', {
+                required: 'The phone number is required.',
+              })}
+              id="phoneNumber"
+              placeholder="0999999999"
+              error={!!formError.phoneNumber}
+              aria-describedby="phoneNumber-helper-text"
+            />
+            <FormHelperText id="phoneNumber-helper-text">
+              {formError.phoneNumber?.message}
+            </FormHelperText>
+          </FormControl>
+          <FormControl fullWidth error={!!formError.reportType}>
+            <FormLabel htmlFor="reportType">Report Type</FormLabel>
+            <Select
+              id="reportType"
+              {...register('reportType')}
+              aria-describedby="reportType-helper-text"
+            >
+              {ReportTypes.map((type) => (
+                <MenuItem value={type.id}>{type.value}</MenuItem>
+              ))}
+            </Select>
+            <FormHelperText id="reportType-helper-text">
+              {formError.reportType?.message}
+            </FormHelperText>
+          </FormControl>
+        </Stack>
+        <FormControl fullWidth>
+          <FormLabel>Description</FormLabel>
+          <Editor
+            apiKey="kulkkatvrqim8ho9lhxqo5d0l4u80m68n44pbjphhlyzsy8n"
+            onInit={(evt, editor) => (editorRef.current = editor)}
+            initialValue="<p>This is the initial content of the editor.</p>"
+            init={{
+              height: 400,
+              menubar: false,
+              plugins: [
+                'advlist autolink lists link image charmap print preview anchor',
+                'searchreplace visualblocks code fullscreen',
+                'insertdatetime media table paste code help wordcount',
+              ],
+              toolbar:
+                'undo redo | formatselect | ' +
+                'bold italic backcolor | alignleft aligncenter ' +
+                'alignright alignjustify | bullist numlist outdent indent | ' +
+                'removeformat | help',
+              content_style:
+                'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
+            }}
+          />
+        </FormControl>
         <Stack direction="row" spacing={2} flexWrap="wrap">
           <DropFileContainer
             onDropFile={handleUpdateImage}
@@ -169,6 +230,7 @@ export default function CitizenReport() {
         >
           Send
         </Button>
+        <DevTool control={control} /> {/* set up the dev tool */}
       </Box>
     </Container>
   );
