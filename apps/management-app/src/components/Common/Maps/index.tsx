@@ -13,7 +13,7 @@ export default function Maps() {
       }}
       style={{ width: '100%', height: '100%' }}
       mapStyle="mapbox://styles/mapbox/streets-v9"
-      mapboxAccessToken="pk.eyJ1Ijoic3Rhcmh1eTE5MDMiLCJhIjoiY2xwcXV6bmNnMDE0ejJqbzE3YWNqd3ViMCJ9.mWC4Rz_t-lMCPakGKCZtyQ"
+      mapboxAccessToken="pk.eyJ1Ijoic3Rhcmh1eTE5MDMiLCJhIjoiY2xwcXQ4MWdsMDFjYzJrbno1NG56dmlsayJ9.0tjPVNh_SUN9x_CDaVSr6g"
       // mapboxAccessToken={import.meta.env.REACT_APP_MAPBOX_ACCESS_TOKEN}
     >
       <GeolocateControl
