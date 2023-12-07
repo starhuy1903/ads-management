@@ -97,8 +97,6 @@ export default function CitizenReport() {
         return;
       }
 
-      console.log({ file });
-
       setValue('imageFiles', [...formValue.imageFiles, file]);
 
       // TODO: crop image
@@ -269,9 +267,6 @@ export default function CitizenReport() {
             {formValue.imageFiles.length < 2 && (
               <DropFileContainer
                 onDropFile={handleUpdateImage}
-                onRejectFile={(error) => {
-                  console.log('wrong file type ', error);
-                }}
                 acceptMIMETypes={ImageFileConfig.ACCEPTED_MINE_TYPES}
                 renderChildren={renderUpdateImageContainer}
                 disabled={submitting}
