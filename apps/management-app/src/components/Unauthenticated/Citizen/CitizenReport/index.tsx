@@ -8,6 +8,7 @@ import {
   FormLabel,
   MenuItem,
   Select,
+  Skeleton,
   Stack,
   TextField,
   Typography,
@@ -223,7 +224,7 @@ export default function CitizenReport() {
         </Stack>
         <FormControl fullWidth>
           <FormLabel>Description</FormLabel>
-          <Box minHeight={400}>
+          <Box>
             <Editor
               id="report-description-editor"
               apiKey="kulkkatvrqim8ho9lhxqo5d0l4u80m68n44pbjphhlyzsy8n" // TODO: get from env
@@ -251,7 +252,9 @@ export default function CitizenReport() {
               }}
               disabled={submitting}
             />
-            {!editorMounted && <Box>Loading...</Box>}
+            {!editorMounted && (
+              <Skeleton variant="rectangular" width="100%" height={400} />
+            )}
           </Box>
         </FormControl>
         <FormControl>
