@@ -18,7 +18,7 @@ export function DropFileContainer({
   maxSize,
 }: {
   onDropFile: (file: File | null) => void;
-  onRejectFile: (error: string) => void;
+  onRejectFile?: (error: string) => void;
   children?: React.ReactNode;
   acceptMIMETypes: Accept;
   multiple?: boolean;
@@ -32,7 +32,7 @@ export function DropFileContainer({
   const onDropAccepted = useCallback(
     (files: File[]) => {
       onDropFile(files[0]);
-      onRejectFile('');
+      onRejectFile?.('');
     },
     [onDropFile, onRejectFile],
   );
@@ -40,7 +40,7 @@ export function DropFileContainer({
   const onDropRejected = useCallback(
     (fileRejections: FileRejection[]) => {
       onDropFile(null);
-      onRejectFile(
+      onRejectFile?.(
         RejectErrors[
           fileRejections[0].errors[0].code as keyof typeof RejectErrors
         ],

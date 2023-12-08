@@ -16,16 +16,16 @@ import OfficerLayout from './Authenticated/Layout/OfficerLayout';
 import ReportDetail from './Authenticated/ReportDetail';
 import ReportTable from './Authenticated/ReportTable';
 import ResetPassword from './Authenticated/ResetPassword';
-import CitizenHome from './Citizen/CitizenHome';
-import CitizenReport from './Citizen/CitizenReport';
 import CenterLoading from './Common/CenterLoading';
 import PageLayout from './PageLayout';
+import CitizenHome from './Unauthenticated/Citizen/CitizenHome';
+import CitizenReport from './Unauthenticated/Citizen/CitizenReport';
 import ForgotPassword from './Unauthenticated/ForgotPassword';
 import Login from './Unauthenticated/Login';
 import Register from './Unauthenticated/Register';
 import Verify from './Unauthenticated/Verify';
 
-// Culture Department Office
+// Culture Department Officer
 const CDORoutes = createBrowserRouter([
   {
     path: '/',
