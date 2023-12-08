@@ -1,8 +1,10 @@
 import { Box } from '@mui/material';
+import { useState } from 'react';
 import Maps from '@/components/Common/Maps';
 import Sidebar from './Sidebar';
 
 export default function CitizenHome() {
+  const [openSidebar, setOpenSidebar] = useState(false);
   return (
     <Box
       position="absolute"
@@ -13,7 +15,7 @@ export default function CitizenHome() {
       zIndex={-1}
       display="flex"
     >
-      <Sidebar />
+      <Sidebar open={openSidebar} onOpen={setOpenSidebar} />
       <Maps />
     </Box>
   );
