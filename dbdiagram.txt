@@ -1,11 +1,9 @@
-// Paste full file vào https://dbdiagram.io/
-
-Table Signboard { // Biển quảng cáo
+Table panel { // Biển quảng cáo
   id integer [primary key]
-  type ENUM // loại biển quảng cáo
+  type_id ENUM // loại biển quảng cáo, FK panel_type
   width number
   height number
-  location_id integer // FK Location
+  location_id integer // FK location
   image_url string
   create_contract_date Date
   expired_contract_date Date
@@ -15,14 +13,19 @@ Table Signboard { // Biển quảng cáo
   modified_time Date
 }
 
-// đang suy nghĩ có nên tách company ra không, nhưng thôi làm gọn project này chắc không tách cho nhanh
+Table panel_type { // Biển quảng cáo
+  id integer [primary key]
+  name string
+  created_time Date
+  modified_time Date
+}
 
-Table Location { // Điểm đặt biển quảng cáo
+Table location { // Điểm đặt biển quảng cáo
   id integer [primary key]
   lat number
   long number
   isPlanning boolean // check quy hoạch
-  commune_id integer // FK đến commune
+  commue_id integer // FK đến commue
   ward_id integer // FK đến ward
   address string // địa chỉ cụ thể
   type ENUM // loại vị trí
@@ -32,22 +35,22 @@ Table Location { // Điểm đặt biển quảng cáo
   modified_time Date
 }
 
-Table Feedback {
+Table report {
   id integer [primary key]
   type ENUM // hình thức báo cáo
   fullname string
   email string
   content string // dạng html rich text
   image_url string[] // max length = 2
-  target_type ENUM // Báo cáo Signboard hoặc Location
-  target_id integer // FK đến Signboard hoặc Location
+  target_type ENUM // Báo cáo panel hoặc location
+  target_id integer // FK đến panel hoặc location
   status ENUM // trạng thái Mới / Đang xử lí / Đã xử lí done / Pending
   resolved_content string // dạng html rich text, cách xử lí cho báo cáo này (cán bộ điền)
   created_time Date
   modified_time Date
 }
 
-Table Captcha { // autogenerate callback khi captcha work
+Table captcha { // autogenerate callback khi captcha work
   id integer [primary key]
   expired_time Date
   content string
@@ -55,7 +58,7 @@ Table Captcha { // autogenerate callback khi captcha work
   modified_time Date
 }
 
-Table Commune { // Table quận tự có data, không thao tác ở bất kì đâu khác
+Table commue { // Table quận tự có data, không thao tác ở bất kì đâu khác
   id integer [primary key]
   name string
 }
@@ -63,25 +66,26 @@ Table Commune { // Table quận tự có data, không thao tác ở bất kì đ
 Table Ward { // Table xã tự có data, không thao tác ở bất kì đâu khác
   id integer [primary key]
   name string
-  commune_id integer
+  commue_id integer
 }
 
-Table AdsRequest { // yêu cầu chỉnh sửa hoặc cấp phép biển quảng cáo từ cán bộ xã/quận đến sở
+Table ads_request { // yêu cầu chỉnh sửa hoặc cấp phép biển quảng cáo từ cán bộ xã/quận đến sở
   id integer [primary key]
   created_time Date
   modified_time Date
   type ENUM // edit hoặc cấp phép
   reason string // dạng html rich text, chỉ có nếu type là edit
   status ENUM // đã gửi / đồng ý / không chấp nhận / đã hủy bỏ
-  target_type ENUM // Báo cáo Signboard hoặc Location
-  target_id integer // FK đến Signboard hoặc Location
+  target_type ENUM // Báo cáo panel hoặc location
+  target_id integer // FK đến panel hoặc location
   user_id integer // FK đến User
 }
 
-Ref: Signboard.location_id > Location.id
-Ref: Location.commune_id > Commune.id
-Ref: Location.ward_id > Ward.id
-Ref: Feedback.target_id > Location.id
-Ref: Feedback.target_id > Signboard.id
-Ref: AdsRequest.target_id > Signboard.id
-Ref: AdsRequest.target_id > Location.id
+Ref: panel.location_id > location.id
+Ref: panel.type_id > panel_type.id
+Ref: location.commue_id > commue.id
+Ref: location.ward_id > Ward.id
+Ref: report.target_id > location.id
+Ref: report.target_id > panel.id
+Ref: ads_request.target_id > panel.id
+Ref: ads_request.target_id > location.id
