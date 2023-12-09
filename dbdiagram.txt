@@ -1,0 +1,87 @@
+
+
+Table Signboard { // Biển quảng cáo
+  id integer [primary key]
+  type ENUM // loại biển quảng cáo
+  width number
+  height number
+  location_id integer // FK Location
+  image_url string
+  create_contract_date Date
+  expired_contract_date Date
+  company_email string
+  company_number string
+  created_time Date
+  modified_time Date
+}
+
+// đang suy nghĩ có nên tách company ra không, nhưng thôi làm gọn project này chắc không tách cho nhanh
+
+Table Location { // Điểm đặt biển quảng cáo
+  id integer [primary key]
+  lat number
+  long number
+  isPlanning boolean // check quy hoạch
+  commune_id integer // FK đến commune
+  ward_id integer // FK đến ward
+  address string // địa chỉ cụ thể
+  type ENUM // loại vị trí
+  ads_type ENUM // loại quảng cáo
+  image_url string
+  created_time Date
+  modified_time Date
+}
+
+Table Feedback {
+  id integer [primary key]
+  type ENUM // hình thức báo cáo
+  fullname string
+  email string
+  content string // dạng html rich text
+  image_url string[] // max length = 2
+  target_type ENUM // Báo cáo Signboard hoặc Location
+  target_id integer // FK đến Signboard hoặc Location
+  status ENUM // trạng thái Mới / Đang xử lí / Đã xử lí done / Pending
+  resolved_content string // dạng html rich text, cách xử lí cho báo cáo này (cán bộ điền)
+  created_time Date
+  modified_time Date
+}
+
+Table Captcha { // autogenerate callback khi captcha work
+  id integer [primary key]
+  expired_time Date
+  content string
+  created_time Date
+  modified_time Date
+}
+
+Table Commune { // Table quận tự có data, không thao tác ở bất kì đâu khác
+  id integer [primary key]
+  name string
+}
+
+Table Ward { // Table xã tự có data, không thao tác ở bất kì đâu khác
+  id integer [primary key]
+  name string
+  commune_id integer
+}
+
+Table AdsRequest { // yêu cầu chỉnh sửa hoặc cấp phép biển quảng cáo từ cán bộ xã/quận đến sở
+  id integer [primary key]
+  created_time Date
+  modified_time Date
+  type ENUM // edit hoặc cấp phép
+  reason string // dạng html rich text, chỉ có nếu type là edit
+  status ENUM // đã gửi / đồng ý / không chấp nhận / đã hủy bỏ
+  target_type ENUM // Báo cáo Signboard hoặc Location
+  target_id integer // FK đến Signboard hoặc Location
+  user_id integer // FK đến User
+}
+
+Ref: Signboard.location_id > Location.id
+Ref: Location.commune_id > Commune.id
+Ref: Location.ward_id > Ward.id
+Ref: Feedback.target_id > Location.id
+Ref: Feedback.target_id > Signboard.id
+Ref: AdsRequest.target_id > Signboard.id
+Ref: AdsRequest.target_id > Location.id
