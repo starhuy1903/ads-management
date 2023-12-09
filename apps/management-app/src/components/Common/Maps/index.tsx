@@ -1,3 +1,4 @@
+// import mapLib from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import Map, { GeolocateControl } from 'react-map-gl';
 import SearchBar from './SearchBar';
@@ -5,7 +6,7 @@ import SearchBar from './SearchBar';
 export default function Maps() {
   return (
     <Map
-      mapLib={import('mapbox-gl')}
+      // mapLib={mapLib}
       initialViewState={{
         longitude: -100,
         latitude: 40,

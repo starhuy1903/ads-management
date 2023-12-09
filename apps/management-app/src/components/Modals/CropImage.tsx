@@ -2,7 +2,6 @@ import { Box, Stack } from '@mui/material';
 import { getOrientation } from 'get-orientation/browser';
 import { useEffect, useState } from 'react';
 import Cropper from 'react-easy-crop';
-import { getCroppedImg, getRotatedImage } from '@/utils/canvas';
 import GeneralModal from './GeneralModal';
 
 const ORIENTATION_TO_ANGLE = {
@@ -17,13 +16,13 @@ interface CropImageProps {
   onModalClose: () => void;
 }
 
-function readFile(file) {
-  return new Promise((resolve) => {
-    const reader = new FileReader();
-    reader.addEventListener('load', () => resolve(reader.result), false);
-    reader.readAsDataURL(file);
-  });
-}
+// function readFile(file) {
+//   return new Promise((resolve) => {
+//     const reader = new FileReader();
+//     reader.addEventListener('load', () => resolve(reader.result), false);
+//     reader.readAsDataURL(file);
+//   });
+// }
 
 export default function CropImage({
   image,
@@ -37,22 +36,22 @@ export default function CropImage({
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
   const [croppedImage, setCroppedImage] = useState(null);
 
-  const onCropComplete = (croppedArea, croppedAreaPixels) => {
-    setCroppedAreaPixels(croppedAreaPixels);
-  };
+  // const onCropComplete = (croppedArea, croppedAreaPixels) => {
+  //   setCroppedAreaPixels(croppedAreaPixels);
+  // };
 
   const showCroppedImage = async () => {
-    try {
-      const croppedImage = await getCroppedImg(
-        imageSrc,
-        croppedAreaPixels,
-        rotation,
-      );
-      console.log('donee', { croppedImage });
-      setCroppedImage(croppedImage);
-    } catch (e) {
-      console.error(e);
-    }
+    // try {
+    //   const croppedImage = await getCroppedImg(
+    //     imageSrc,
+    //     croppedAreaPixels,
+    //     rotation,
+    //   );
+    //   console.log('donee', { croppedImage });
+    //   setCroppedImage(croppedImage);
+    // } catch (e) {
+    //   console.error(e);
+    // }
   };
 
   useEffect(() => {
@@ -61,21 +60,21 @@ export default function CropImage({
         return;
       }
 
-      let imageDataUrl = await readFile(image);
+      // let imageDataUrl = await readFile(image);
 
-      try {
-        // apply rotation if needed
-        const orientation = await getOrientation(image);
-        const rotation =
-          ORIENTATION_TO_ANGLE[orientation as keyof ORIENTATION_TO_ANGLE];
-        if (rotation) {
-          imageDataUrl = await getRotatedImage(imageDataUrl, rotation);
-        }
-      } catch (e) {
-        console.warn('failed to detect the orientation');
-      }
+      // try {
+      //   // apply rotation if needed
+      //   const orientation = await getOrientation(image);
+      //   const rotation =
+      //     ORIENTATION_TO_ANGLE[orientation as keyof ORIENTATION_TO_ANGLE];
+      //   if (rotation) {
+      //     imageDataUrl = await getRotatedImage(imageDataUrl, rotation);
+      //   }
+      // } catch (e) {
+      //   console.warn('failed to detect the orientation');
+      // }
 
-      setImageSrc(imageDataUrl);
+      // setImageSrc(imageDataUrl);
     })();
   }, [image]);
 
@@ -90,7 +89,9 @@ export default function CropImage({
           aspect={4 / 3}
           onCropChange={setCrop}
           onRotationChange={setRotation}
-          onCropComplete={onCropComplete}
+          onCropComplete={() => {
+            console.log('onCropComplete');
+          }}
           onZoomChange={setZoom}
         />
       ) : null}
