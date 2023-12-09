@@ -1,4 +1,4 @@
-
+// Paste full file vào https://dbdiagram.io/
 
 Table Signboard { // Biển quảng cáo
   id integer [primary key]
