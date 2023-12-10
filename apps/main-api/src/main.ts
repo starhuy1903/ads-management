@@ -11,7 +11,7 @@ async function bootstrap() {
     new ValidationPipe({
       whitelist: true,
     }),
-  ); // If whitelist = true, then it will remove any properties that are not in the DTO
+  );
   app.setGlobalPrefix('api');
   app.enableCors();
   
