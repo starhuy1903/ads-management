@@ -1,6 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { uploadFiles, EUploadFolder } from '../../services/files/upload';
-import { deleteFiles } from '../../services/files/delete';
+import {
+  uploadFilesFromFirebase,
+  EUploadFolder,
+} from '../../services/files/upload';
+import { deleteFilesFromFirebase } from '../../services/files/delete';
 
 @Injectable()
 export class AppService {
@@ -9,7 +12,7 @@ export class AppService {
   }
 
   async exampleUploadImage(files: Express.Multer.File[]) {
-    const result = await uploadFiles(files, EUploadFolder.location);
+    const result = await uploadFilesFromFirebase(files, EUploadFolder.location);
     // store urls into DB
 
     return {
@@ -19,7 +22,7 @@ export class AppService {
   }
 
   async exampleDeleteImage(fileUrls: string[]) {
-    const result = await deleteFiles(fileUrls);
+    const result = await deleteFilesFromFirebase(fileUrls);
 
     return result;
   }

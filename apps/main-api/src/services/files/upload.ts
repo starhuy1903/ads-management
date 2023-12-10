@@ -14,7 +14,7 @@ export enum EUploadFolder {
  *
  * @returns Promise { success: boolean, urls: string[] } success là trạng thái, urls là các links của các file vừa up
  */
-export const uploadFiles = async (
+export const uploadFilesFromFirebase = async (
   filesContent: Express.Multer.File[],
   uploadFolder: EUploadFolder,
 ) => {

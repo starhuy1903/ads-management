@@ -20,7 +20,7 @@ const parseFileName = (publicUrl: string) => {
  *
  * @returns Promise { success: boolean, urls: string[] } success là trạng thái
  */
-export const deleteFiles = async (urls: string[]) => {
+export const deleteFilesFromFirebase = async (urls: string[]) => {
   const bucket = getStorage().bucket();
 
   try {
