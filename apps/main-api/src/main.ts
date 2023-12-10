@@ -7,6 +7,11 @@ import { Multer } from 'multer'; // cheating type, dont delete
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+    }),
+  ); // If whitelist = true, then it will remove any properties that are not in the DTO
   app.setGlobalPrefix('api');
   app.enableCors();
   
