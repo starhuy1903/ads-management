@@ -11,13 +11,13 @@ import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { ITokenPayload } from './interfaces/ITokenPayload';
-import { MailService } from '../mail/mail.service';
-import { ScheduleMailReq, SchedulePriority } from '../proto/mail-schedule.pb';
+// import { MailService } from '../mail/mail.service';
+// import { ScheduleMailReq, SchedulePriority } from '../proto/mail-schedule.pb';
 import moment from 'moment-timezone';
 
 import dayjs from 'dayjs';
 
-import { User } from '@prisma/client';
+import { user } from '@prisma/client';
 
 const getAccessExpiry = () => dayjs().add(5, 's').toDate();
 const getRefreshExpiry = () => dayjs().add(1, 'd').toDate();
@@ -27,8 +27,7 @@ export class AuthService {
   constructor(
     private prismaService: PrismaService,
     private jwtService: JwtService,
-    private config: ConfigService,
-    private readonly mailService: MailService,
+    private config: ConfigService, // private readonly mailService: MailService,
   ) {}
 
   async signUp(dto: SignUpDto) {
@@ -39,12 +38,12 @@ export class AuthService {
       },
     });
 
-    if (userExists && userExists.verified == true) {
+    if (userExists && userExists.account_verified == true) {
       throw new ForbiddenException('Email already taken');
     }
 
     // Email is taken but not verified
-    if (userExists && userExists.verified == false) {
+    if (userExists && userExists.account_verified == false) {
       // Re-send verification email
       // Generate token
       const { verificationToken } = await this.getJwtVerificationToken(
@@ -59,25 +58,25 @@ export class AuthService {
       // TODO: Send email
 
       //send mail
-      const templateData = {
-        fullname: userExists.name,
-        link: verificationLink,
-      };
-      const data: ScheduleMailReq = {
-        name: 'Send mail verify account',
-        priority: SchedulePriority.normal,
-        time: moment().utc().format(),
-        maxRetry: 3,
-        mailInfo: {
-          toAddresses: [dto.email],
-          ccAddresses: [dto.email],
-          bccAddresses: [dto.email],
-          template: 'account_email_confirm_code',
-          templateData: JSON.stringify(templateData),
-        },
-      };
+      // const templateData = {
+      //   fullname: userExists.name,
+      //   link: verificationLink,
+      // };
+      // const data: ScheduleMailReq = {
+      //   name: 'Send mail verify account',
+      //   priority: SchedulePriority.normal,
+      //   time: moment().utc().format(),
+      //   maxRetry: 3,
+      //   mailInfo: {
+      //     toAddresses: [dto.email],
+      //     ccAddresses: [dto.email],
+      //     bccAddresses: [dto.email],
+      //     template: 'account_email_confirm_code',
+      //     templateData: JSON.stringify(templateData),
+      //   },
+      // };
 
-      await this.mailService.scheduleMail(data).toPromise();
+      // await this.mailService.scheduleMail(data).toPromise();
 
       // Currently returning verification link for testing
       return {
@@ -88,12 +87,16 @@ export class AuthService {
     // Hash password
     const password = await argon.hash(dto.password);
     try {
-      // Create new user
+      // Create new user (temporarily)
       const newUser = await this.prismaService.user.create({
         data: {
           email: dto.email,
           password,
-          name: dto.name,
+          first_name: dto.first_name,
+          last_name: dto.last_name,
+          phone_number: '', // Add phone_number property
+          dob: '', // Add dob property
+          role: '', // Add role property
         },
       });
 
@@ -108,25 +111,25 @@ export class AuthService {
 
       // Send verification email with token
       // TODO: Send email
-      const templateData = {
-        fullname: dto.name,
-        link: verificationLink,
-      };
-      const data: ScheduleMailReq = {
-        name: 'Send mail verify account',
-        priority: SchedulePriority.normal,
-        time: moment().format(),
-        maxRetry: 3,
-        mailInfo: {
-          toAddresses: [dto.email],
-          ccAddresses: [dto.email],
-          bccAddresses: [dto.email],
-          template: 'account_email_confirm_code',
-          templateData: JSON.stringify(templateData),
-        },
-      };
+      // const templateData = {
+      //   fullname: dto.name,
+      //   link: verificationLink,
+      // };
+      // const data: ScheduleMailReq = {
+      //   name: 'Send mail verify account',
+      //   priority: SchedulePriority.normal,
+      //   time: moment().format(),
+      //   maxRetry: 3,
+      //   mailInfo: {
+      //     toAddresses: [dto.email],
+      //     ccAddresses: [dto.email],
+      //     bccAddresses: [dto.email],
+      //     template: 'account_email_confirm_code',
+      //     templateData: JSON.stringify(templateData),
+      //   },
+      // };
 
-      await this.mailService.scheduleMail(data).toPromise();
+      // await this.mailService.scheduleMail(data).toPromise();
       // Currently returning verification link for testing
       return {
         verificationLink,
@@ -149,7 +152,7 @@ export class AuthService {
         },
       });
 
-      if (user.verified == true) {
+      if (user.account_verified == true) {
         throw new ForbiddenException('This email is already verified');
       }
 
@@ -158,7 +161,7 @@ export class AuthService {
           id: payload.sub,
         },
         data: {
-          verified: true,
+          account_verified: true,
         },
       });
 
@@ -171,7 +174,7 @@ export class AuthService {
     }
   }
 
-  async handeleSignIn(user: User) {
+  async handeleSignIn(user: user) {
     const { refreshToken } = await this.getJwtRefreshToken(user.id, user.email);
     const { accessToken } = await this.getJwtAccessToken(user.id, user.email);
 
@@ -179,8 +182,8 @@ export class AuthService {
       const hash = await argon.hash(refreshToken);
       const token = await this.prismaService.token.create({
         data: {
-          expiresAt: getRefreshExpiry(),
-          refreshToken: hash,
+          expires_at: getRefreshExpiry(),
+          token: hash,
           user: {
             connect: {
               id: user.id,
@@ -197,7 +200,8 @@ export class AuthService {
         user: {
           id: user.id,
           email: user.email,
-          name: user.name,
+          first_name: user.first_name,
+          last_name: user.last_name,
         },
       };
     } catch (err) {
@@ -219,7 +223,7 @@ export class AuthService {
     }
 
     // Check if the user verified his email
-    if (user.verified == false) {
+    if (user.account_verified == false) {
       throw new ForbiddenException('Email not verified');
     }
 
@@ -286,10 +290,7 @@ export class AuthService {
       throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
     }
 
-    const isMatch = await argon.verify(
-      foundToken.refreshToken ?? '',
-      refreshToken,
-    );
+    const isMatch = await argon.verify(foundToken.token ?? '', refreshToken);
 
     const issuedAt = dayjs.unix(payload.iat);
     const diff = dayjs().diff(issuedAt, 'seconds');
@@ -305,12 +306,12 @@ export class AuthService {
 
       // Refresh token is valid but not in db
       // Possible re-use!!! delete all refresh tokens(sessions) belonging to the sub
-      if (payload.sub !== foundToken.userId) {
+      if (payload.sub !== foundToken.user_id) {
         // The sub of the token isn't the id of the token in db
         // Log out all session of this payalod id, reFreshToken has been compromised
         await this.prismaService.token.deleteMany({
           where: {
-            userId: payload.sub,
+            user_id: payload.sub,
           },
         });
         throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
@@ -325,7 +326,7 @@ export class AuthService {
     const user = await this.prismaService.user.findUnique({
       where: {
         email,
-        verified: true,
+        account_verified: true,
       },
     });
 
@@ -339,7 +340,7 @@ export class AuthService {
         id: user.id,
       },
       data: {
-        resettingPass: true,
+        reset_password: true,
       },
     });
 
@@ -354,24 +355,24 @@ export class AuthService {
 
     // Send verification email with token
     // Todo: Send email
-    const templateData = {
-      fullname: user.name,
-      link: verificationLink,
-    };
-    const data: ScheduleMailReq = {
-      name: 'Send mail verify account',
-      priority: SchedulePriority.normal,
-      time: moment().format(),
-      maxRetry: 3,
-      mailInfo: {
-        toAddresses: [user.email],
-        ccAddresses: [user.email],
-        bccAddresses: [user.email],
-        template: 'change_password_request',
-        templateData: JSON.stringify(templateData),
-      },
-    };
-    await this.mailService.scheduleMail(data).toPromise();
+    // const templateData = {
+    //   fullname: user.name,
+    //   link: verificationLink,
+    // };
+    // const data: ScheduleMailReq = {
+    //   name: 'Send mail verify account',
+    //   priority: SchedulePriority.normal,
+    //   time: moment().format(),
+    //   maxRetry: 3,
+    //   mailInfo: {
+    //     toAddresses: [user.email],
+    //     ccAddresses: [user.email],
+    //     bccAddresses: [user.email],
+    //     template: 'change_password_request',
+    //     templateData: JSON.stringify(templateData),
+    //   },
+    // };
+    // await this.mailService.scheduleMail(data).toPromise();
 
     // Currently returning verification link for testing
     return {
@@ -391,7 +392,7 @@ export class AuthService {
       throw new ForbiddenException('User not found');
     }
 
-    if (user.resettingPass == false) {
+    if (user.reset_password == false) {
       throw new ForbiddenException('User not resetting password');
     }
 
@@ -406,7 +407,7 @@ export class AuthService {
         },
         data: {
           password: hash,
-          resettingPass: false,
+          reset_password: false,
         },
       });
 
@@ -470,7 +471,7 @@ export class AuthService {
         id: tokenId,
       },
       data: {
-        refreshToken: hash,
+        token: hash,
       },
     });
 

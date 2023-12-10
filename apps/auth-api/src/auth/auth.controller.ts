@@ -18,9 +18,17 @@ import {
 import { IRequestWithUser } from './interfaces';
 import { JwtGuard, JwtRefreshGuard, JwtVerifyGuard } from './guard';
 
-@Controller()
+@Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
+
+  @Get('health-check')
+  async healthCheck() {
+    return {
+      status: 'ok',
+      message: 'Authentication services is running',
+    };
+  }
 
   @Post('signup')
   async signUp(@Body() dto: SignUpDto) {

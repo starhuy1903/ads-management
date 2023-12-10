@@ -83,9 +83,8 @@ Table ads_request { // yêu cầu chỉnh sửa hoặc cấp phép biển quản
 
 Table user { // User - Các phân hệ Cán bộ
   id integer [primary key]
-  username string [unique]
+  email string [unique]
   password string
-  email string
   first_name string
   last_name string
   phone_number string
