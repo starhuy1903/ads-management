@@ -1,4 +1,4 @@
-import { Logger } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './modules/app/app.module';
 import InitFirebase from './services/firebase';
@@ -6,6 +6,11 @@ import { Multer } from 'multer'; // cheating type, dont delete, will fix this la
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+    }),
+  ); // If whitelist = true, then it will remove any properties that are not in the DTO
   app.setGlobalPrefix('api');
   app.enableCors();
 
