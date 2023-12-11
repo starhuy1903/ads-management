@@ -107,9 +107,6 @@ export default function AdsLocation() {
               <TableCell align="center">District</TableCell>
               <TableCell align="center">Position type</TableCell>
               <TableCell align="center">Advertising type</TableCell>
-              <TableCell align="center">Image</TableCell>
-              <TableCell align="center">Latitude</TableCell>
-              <TableCell align="center">Longitude</TableCell>
               <TableCell align="center">Planned</TableCell>
               <TableCell align="center">Created</TableCell>
               <TableCell align="center">Modified</TableCell>
@@ -126,20 +123,6 @@ export default function AdsLocation() {
                 <TableCell align="center">{row?.commue}</TableCell>
                 <TableCell align="center">{row?.positionType}</TableCell>
                 <TableCell align="center">{row?.adsType}</TableCell>
-                <TableCell
-                  sx={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <img
-                    src={row?.imageUrl}
-                    alt="advertising point"
-                    width={120}
-                  />
-                </TableCell>
-                <TableCell align="center">{row?.lat}</TableCell>
-                <TableCell align="center">{row?.long}</TableCell>
                 <TableCell align="center">{`${
                   row?.isPlanning ? 'Yes' : 'No'
                 }`}</TableCell>
