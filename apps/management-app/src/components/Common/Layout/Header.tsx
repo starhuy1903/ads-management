@@ -49,7 +49,7 @@ export default function Header() {
       position="static"
       sx={{ background: 'transparent', boxShadow: 'none' }}
     >
-      <Container maxWidth="xl">
+      <Container maxWidth={false}>
         <Toolbar disableGutters sx={{ justifyContent: 'space-between' }}>
           <Link to="/">
             <img src={Logo} alt="app-logo" width={50} />
