@@ -28,6 +28,7 @@ export class PanelService {
     };
     const [result, totalCount] = await Promise.all([
       this.prismaService.panel.findMany({
+        ...conditions,
         skip: pageOptionsPanelDto.skip,
         take: pageOptionsPanelDto.take,
       }),
