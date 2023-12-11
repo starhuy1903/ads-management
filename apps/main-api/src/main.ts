@@ -14,12 +14,12 @@ async function bootstrap() {
   );
   app.setGlobalPrefix('api');
   app.enableCors();
-  
+
   InitFirebase();
 
   const port = process.env.API_PORT || 8194;
   await app.listen(port);
-  Logger.log(`🚀 Application is running on: ${port} `);
+  Logger.log(`🚀 Application is running on port: ${port} `);
 }
 
 bootstrap();

@@ -1,7 +1,6 @@
 import {
   Body,
   Controller,
-  Get,
   HttpCode,
   Post,
   Req,
@@ -13,7 +12,7 @@ import {
   LogoutDto,
   ResetPasswordDto,
   SignInDto,
-  SignUpDto,
+  CreateUserDto,
 } from './dto';
 import { IRequestWithUser } from './interfaces';
 import { JwtGuard, JwtRefreshGuard, JwtVerifyGuard } from './guard';
@@ -22,17 +21,9 @@ import { JwtGuard, JwtRefreshGuard, JwtVerifyGuard } from './guard';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Get('health-check')
-  async healthCheck() {
-    return {
-      status: 'ok',
-      message: 'Authentication services is running',
-    };
-  }
-
-  @Post('signup')
-  async signUp(@Body() dto: SignUpDto) {
-    return await this.authService.signUp(dto);
+  @Post('create-user')
+  async signUp(@Body() dto: CreateUserDto) {
+    return await this.authService.createUser(dto);
   }
 
   @Post('signin')
@@ -46,14 +37,6 @@ export class AuthController {
   async signOut(@Req() req: IRequestWithUser, @Body() dto: LogoutDto) {
     const userId = req.user['payload']['sub'];
     return await this.authService.logOut(userId, dto.tokenId);
-  }
-
-  @UseGuards(JwtVerifyGuard)
-  @Post('verify')
-  @HttpCode(200)
-  async verify(@Req() req: IRequestWithUser) {
-    const payload = req.user['payload'];
-    return await this.authService.verify(payload);
   }
 
   @UseGuards(JwtRefreshGuard)

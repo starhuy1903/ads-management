@@ -4,12 +4,11 @@ import {
   HttpStatus,
   Injectable,
 } from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma.service';
-import { ResetPasswordDto, SignInDto, SignUpDto } from './dto';
+import { PrismaService } from '../../services/prisma/prisma.service';
+import { ResetPasswordDto, SignInDto, CreateUserDto } from './dto';
 import * as argon from 'argon2';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { JwtService } from '@nestjs/jwt';
-import { ConfigService } from '@nestjs/config';
 import { ITokenPayload } from './interfaces/ITokenPayload';
 // import { MailService } from '../mail/mail.service';
 // import { ScheduleMailReq, SchedulePriority } from '../proto/mail-schedule.pb';
@@ -26,11 +25,10 @@ const getRefreshExpiry = () => dayjs().add(1, 'd').toDate();
 export class AuthService {
   constructor(
     private prismaService: PrismaService,
-    private jwtService: JwtService,
-    private config: ConfigService, // private readonly mailService: MailService,
+    private jwtService: JwtService, // private readonly mailService: MailService,
   ) {}
 
-  async signUp(dto: SignUpDto) {
+  async createUser(dto: CreateUserDto) {
     // Check if the email is already taken
     const userExists = await this.prismaService.user.findUnique({
       where: {
@@ -38,139 +36,71 @@ export class AuthService {
       },
     });
 
-    if (userExists && userExists.account_verified == true) {
-      throw new ForbiddenException('Email already taken');
+    if (userExists) {
+      throw new HttpException(
+        {
+          success: false,
+          message: 'Email already exists',
+        },
+        HttpStatus.BAD_REQUEST,
+      );
     }
 
-    // Email is taken but not verified
-    if (userExists && userExists.account_verified == false) {
-      // Re-send verification email
-      // Generate token
-      const { verificationToken } = await this.getJwtVerificationToken(
-        userExists.id,
-        userExists.email,
+    // Validate role_id
+    const role = await this.prismaService.role.findUnique({
+      where: {
+        id: dto.role_id,
+      },
+    });
+
+    if (!role) {
+      throw new HttpException(
+        {
+          success: false,
+          message: 'Invalid role',
+        },
+        HttpStatus.BAD_REQUEST,
       );
-
-      // Generate verification link
-      const verificationLink = `http://localhost:3000/verify?token=${verificationToken}`; // Replace with frontend url
-
-      // Send verification email with token
-      // TODO: Send email
-
-      //send mail
-      // const templateData = {
-      //   fullname: userExists.name,
-      //   link: verificationLink,
-      // };
-      // const data: ScheduleMailReq = {
-      //   name: 'Send mail verify account',
-      //   priority: SchedulePriority.normal,
-      //   time: moment().utc().format(),
-      //   maxRetry: 3,
-      //   mailInfo: {
-      //     toAddresses: [dto.email],
-      //     ccAddresses: [dto.email],
-      //     bccAddresses: [dto.email],
-      //     template: 'account_email_confirm_code',
-      //     templateData: JSON.stringify(templateData),
-      //   },
-      // };
-
-      // await this.mailService.scheduleMail(data).toPromise();
-
-      // Currently returning verification link for testing
-      return {
-        verificationLink,
-      };
     }
 
     // Hash password
     const password = await argon.hash(dto.password);
     try {
-      // Create new user (temporarily)
-      const newUser = await this.prismaService.user.create({
+      // Create new user
+      await this.prismaService.user.create({
         data: {
           email: dto.email,
-          password,
+          password: password,
           first_name: dto.first_name,
           last_name: dto.last_name,
-          phone_number: '', // Add phone_number property
-          dob: '', // Add dob property
-          role: '', // Add role property
+          role_id: role.id,
         },
       });
 
-      // Generate token
-      const { verificationToken } = await this.getJwtVerificationToken(
-        newUser.id,
-        newUser.email,
-      );
-
-      // Generate verification link
-      const verificationLink = `http://localhost:3000/verify?token=${verificationToken}`; // Replace with frontend url
-
-      // Send verification email with token
-      // TODO: Send email
-      // const templateData = {
-      //   fullname: dto.name,
-      //   link: verificationLink,
-      // };
-      // const data: ScheduleMailReq = {
-      //   name: 'Send mail verify account',
-      //   priority: SchedulePriority.normal,
-      //   time: moment().format(),
-      //   maxRetry: 3,
-      //   mailInfo: {
-      //     toAddresses: [dto.email],
-      //     ccAddresses: [dto.email],
-      //     bccAddresses: [dto.email],
-      //     template: 'account_email_confirm_code',
-      //     templateData: JSON.stringify(templateData),
-      //   },
-      // };
-
-      // await this.mailService.scheduleMail(data).toPromise();
-      // Currently returning verification link for testing
       return {
-        verificationLink,
+        success: true,
+        message: 'Create user successfully',
       };
     } catch (err) {
       if (err instanceof PrismaClientKnownRequestError) {
         if (err.code === 'P2002') {
-          throw new ForbiddenException('Credentials taken');
+          throw new ForbiddenException({
+            success: false,
+            message: 'Credentials taken',
+          });
         }
       }
-      throw err;
-    }
-  }
 
-  async verify(payload: ITokenPayload) {
-    try {
-      const user = await this.prismaService.user.findUnique({
-        where: {
-          id: payload.sub,
+      // Add logger
+      console.log(err);
+
+      throw new HttpException(
+        {
+          success: false,
+          message: 'Something went wrong',
         },
-      });
-
-      if (user.account_verified == true) {
-        throw new ForbiddenException('This email is already verified');
-      }
-
-      await this.prismaService.user.update({
-        where: {
-          id: payload.sub,
-        },
-        data: {
-          account_verified: true,
-        },
-      });
-
-      return {
-        statusCode: 200,
-        message: 'Email verified successfully',
-      };
-    } catch (err) {
-      throw err;
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
@@ -202,10 +132,19 @@ export class AuthService {
           email: user.email,
           first_name: user.first_name,
           last_name: user.last_name,
+          phone_number: user.phone_number,
+          dob: user.dob,
+          role_id: user.role_id,
         },
       };
     } catch (err) {
-      throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
+      throw new HttpException(
+        {
+          success: false,
+          message: 'Bad Request',
+        },
+        HttpStatus.BAD_REQUEST,
+      );
     }
   }
 
@@ -219,26 +158,20 @@ export class AuthService {
 
     // If the there is no user throw exception
     if (!user) {
-      throw new ForbiddenException('Credentials incorrect');
+      throw new ForbiddenException({
+        success: false,
+        message: 'Credentials incorrect',
+      });
     }
 
-    // Check if the user verified his email
-    if (user.account_verified == false) {
-      throw new ForbiddenException('Email not verified');
-    }
-
-    if (user.password == null) {
-      // This email didn't sign in using form
-      // Here i send a mail explaining the situation
-      throw new ForbiddenException(
-        'Credentilas incorrect or this email was gotten from a social account',
-      );
-    }
     // Compare password
     const isMatch = await argon.verify(user.password, dto.password);
 
     if (!isMatch) {
-      throw new ForbiddenException('Credentilas incorrect');
+      throw new ForbiddenException({
+        success: false,
+        message: 'Credentials incorrect',
+      });
     }
 
     return await this.handeleSignIn(user);
@@ -253,9 +186,13 @@ export class AuthService {
       });
 
       if (!user) {
-        throw new ForbiddenException('User not found');
+        throw new ForbiddenException({
+          success: false,
+          message: 'User not found',
+        });
       }
 
+      // Delete token
       await this.prismaService.token.delete({
         where: {
           id: tokenId,
@@ -263,17 +200,31 @@ export class AuthService {
       });
 
       return {
-        statusCode: 200,
+        success: true,
         message: 'Log out successfully',
       };
     } catch (err) {
       // Token not found -> Already logged out
       if (err.code === 'P2025') {
-        throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
+        throw new HttpException(
+          {
+            success: false,
+            message: 'Unauthorized',
+          },
+          HttpStatus.UNAUTHORIZED,
+        );
       }
 
-      // Something went wrong
-      throw err;
+      // Add logger
+      console.log(err);
+
+      throw new HttpException(
+        {
+          success: false,
+          message: 'Something went wrong',
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
@@ -286,8 +237,14 @@ export class AuthService {
 
     if (foundToken == null) {
       // Refresh token is valid but the id is not in database
-      // TODO:inform the user with the payload sub
-      throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
+      // TODO: inform the user with the payload sub
+      throw new HttpException(
+        {
+          success: false,
+          message: 'Unauthorized',
+        },
+        HttpStatus.UNAUTHORIZED,
+      );
     }
 
     const isMatch = await argon.verify(foundToken.token ?? '', refreshToken);
@@ -314,10 +271,19 @@ export class AuthService {
             user_id: payload.sub,
           },
         });
-        throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
+        throw new HttpException(
+          {
+            success: false,
+            message: 'Forbidden',
+          },
+          HttpStatus.FORBIDDEN,
+        );
       }
 
-      throw new ForbiddenException('Refresh token expired');
+      throw new ForbiddenException({
+        success: false,
+        message: 'Refresh token expired',
+      });
     }
   }
 
@@ -326,12 +292,14 @@ export class AuthService {
     const user = await this.prismaService.user.findUnique({
       where: {
         email,
-        account_verified: true,
       },
     });
 
     if (!user) {
-      throw new ForbiddenException('Email not found');
+      throw new ForbiddenException({
+        success: false,
+        message: 'User not found',
+      });
     }
 
     // Set the resetting password flag to true
@@ -389,42 +357,44 @@ export class AuthService {
     });
 
     if (!user) {
-      throw new ForbiddenException('User not found');
+      throw new ForbiddenException({
+        success: false,
+        message: 'User not found',
+      });
     }
 
     if (user.reset_password == false) {
-      throw new ForbiddenException('User not resetting password');
+      throw new ForbiddenException({
+        success: false,
+        message: 'User has not requested for password reset',
+      });
     }
 
     // Hash password
     const hash = await argon.hash(newPassword);
 
-    try {
-      // Update user password
-      await this.prismaService.user.update({
-        where: {
-          id: userId,
-        },
-        data: {
-          password: hash,
-          reset_password: false,
-        },
-      });
+    // Update user password
+    await this.prismaService.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        password: hash,
+        reset_password: false,
+      },
+    });
 
-      return {
-        statusCode: 200,
-        message: 'Password reset successfully',
-      };
-    } catch (err) {
-      throw err;
-    }
+    return {
+      success: true,
+      message: 'Reset password successfully',
+    };
   }
 
   public async getJwtRefreshToken(sub: number, email: string) {
     const payload: ITokenPayload = { sub, email };
     const refreshToken = await this.jwtService.signAsync(payload, {
-      secret: this.config.get('JWT_RT_SECRET'),
-      expiresIn: this.config.get('JWT_RT_EXPIRES'),
+      secret: process.env.JWT_RT_SECRET,
+      expiresIn: process.env.JWT_RT_EXPIRES,
     });
     return {
       refreshToken,
@@ -434,8 +404,8 @@ export class AuthService {
   async getJwtAccessToken(sub: number, email: string) {
     const payload: ITokenPayload = { sub, email };
     const accessToken = await this.jwtService.signAsync(payload, {
-      secret: this.config.get('JWT_AT_SECRET'),
-      expiresIn: this.config.get('JWT_AT_EXPIRES'),
+      secret: process.env.JWT_AT_SECRET,
+      expiresIn: process.env.JWT_AT_EXPIRES,
     });
     return {
       accessToken,
@@ -445,8 +415,8 @@ export class AuthService {
   async getJwtVerificationToken(sub: number, email: string) {
     const payload: ITokenPayload = { sub, email };
     const verificationToken = await this.jwtService.signAsync(payload, {
-      secret: this.config.get('JWT_VT_SECRET'),
-      expiresIn: this.config.get('JWT_VT_EXPIRES'),
+      secret: process.env.JWT_VT_SECRET,
+      expiresIn: process.env.JWT_VT_EXPIRES,
     });
     return {
       verificationToken,

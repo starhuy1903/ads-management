@@ -1,6 +1,7 @@
 import {
   Controller,
   Delete,
+  Get,
   HttpStatus,
   ParseFilePipeBuilder,
   Post,
@@ -13,6 +14,14 @@ import { AppService } from './app.service';
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
+
+  @Get('health-check')
+  healthCheck() {
+    return {
+      status: 'ok',
+      message: 'Backend services is running',
+    };
+  }
 
   @Post('example-upload-files')
   @UseInterceptors(FilesInterceptor('files'))

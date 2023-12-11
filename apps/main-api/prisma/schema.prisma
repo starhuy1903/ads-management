@@ -9,11 +9,9 @@ datasource db {
 
 model panel {
   id                    Int        @id @default(autoincrement())
-  type                  panel_type @relation(fields: [type_id], references: [id])
   type_id               Int
   width                 Decimal
   height                Decimal
-  location              location   @relation(fields: [location_id], references: [id])
   location_id           Int
   image_urls            String[]
   create_contract_date  DateTime
@@ -22,6 +20,9 @@ model panel {
   company_number        String
   created_time          DateTime   @default(now())
   modified_time         DateTime   @updatedAt
+  location              location   @relation(fields: [location_id], references: [id])
+  type                  panel_type @relation(fields: [type_id], references: [id])
+  report                report[]
 }
 
 model panel_type {
@@ -35,19 +36,20 @@ model location {
   lat           Decimal
   long          Decimal
   isPlanning    Boolean            @default(false)
-  district      district           @relation(fields: [district_id], references: [id])
   district_id   Int
-  ward          ward               @relation(fields: [ward_id], references: [id])
   ward_id       Int
   full_address  String
-  type          location_type      @relation(fields: [type_id], references: [id])
   type_id       Int
-  ad_type       advertisement_type @relation(fields: [ad_type_id], references: [id])
   ad_type_id    Int
   image_urls    String[]
   created_time  DateTime           @default(now())
   modified_time DateTime           @updatedAt
+  ad_type       advertisement_type @relation(fields: [ad_type_id], references: [id])
+  district      district           @relation(fields: [district_id], references: [id])
+  type          location_type      @relation(fields: [type_id], references: [id])
+  ward          ward               @relation(fields: [ward_id], references: [id])
   panel         panel[]
+  report        report[]
 }
 
 model location_type {
@@ -72,7 +74,101 @@ model district {
 model ward {
   id          Int        @id @default(autoincrement())
   name        String
-  district    district   @relation(fields: [district_id], references: [id])
   district_id Int
   location    location[]
+  district    district   @relation(fields: [district_id], references: [id])
+}
+
+model ads_request {
+  id               Int              @id @default(autoincrement())
+  type_id          Int
+  reason           String
+  status           String           @db.VarChar(255)
+  target_type      String           @db.VarChar(255)
+  target_id        Int
+  user_id          Int
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime
+  ads_request_type ads_request_type @relation(fields: [type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_ads_request_adsrequesttype")
+}
+
+model ads_request_type {
+  id          Int           @id @default(autoincrement())
+  name        String?       @db.VarChar(255)
+  ads_request ads_request[]
+}
+
+model report {
+  id               Int         @id @default(autoincrement())
+  type_id          Int
+  fullname         String      @db.VarChar(255)
+  email            String      @db.VarChar(255)
+  content          String
+  image_url        String[]    @db.VarChar(255)
+  target_type      String      @db.VarChar(255)
+  location_id      Int?
+  panel_id         Int?
+  status           String      @db.VarChar(255)
+  resolved_content String
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime
+  location         location?   @relation(fields: [location_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_report_location")
+  panel            panel?      @relation(fields: [panel_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_report_panel")
+  report_type      report_type @relation(fields: [type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_report_reporttype")
+}
+
+model report_type {
+  id     Int      @id @default(autoincrement())
+  name   String?  @db.VarChar(255)
+  report report[]
+}
+
+model user {
+  id               Int      @id @default(autoincrement())
+  email            String   @unique
+  password         String
+  first_name       String
+  last_name        String
+  phone_number     String?
+  dob              DateTime?
+  role_id          Int
+  reset_password   Boolean  @default(false)
+  created_at       DateTime @default(now())
+  modified_at      DateTime @updatedAt
+  tokens           token[]
+  role             role     @relation(fields: [role_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_role")
+}
+
+model token {
+  id          String   @id @default(uuid())
+  user_id     Int
+  token       String
+  expires_at  DateTime
+  created_at  DateTime @default(now())
+  modified_at DateTime @updatedAt
+  user        user     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+}
+
+model role {
+  id    Int @id @default(autoincrement())
+  name  String
+  users user[]
+}
+
+enum ads_request_status {
+  g_i             @map("Đã gửi")
+  ng__            @map("Đồng ý")
+  Kh_ng_ch_p_nh_n @map("Không chấp nhận")
+  h_y_b_          @map("Đã hủy bỏ")
+}
+
+enum report_status {
+  M_i       @map("Mới")
+  ang_x__l_ @map("Đang xử lí")
+  x__l_     @map("Đã xử lí")
+}
+
+enum target_type {
+  Panel
+  Location
 }
