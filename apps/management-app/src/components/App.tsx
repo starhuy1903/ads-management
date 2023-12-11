@@ -8,6 +8,7 @@ import { useAppSelector } from '@/store';
 import { useGetProfileQuery } from '@/store/api/userApiSlice';
 import { checkRole } from '@/store/slice/userSlice';
 import AdsLocation from './Authenticated/AdsLocation';
+import AdsPanel from './Authenticated/AdsPanel';
 import AdsPermission from './Authenticated/AdsPermission';
 import CreateAdsPermission from './Authenticated/CreateAdsPermission';
 import CreateEditing from './Authenticated/CreateEditing';
@@ -78,6 +79,10 @@ const officerRoutes = createBrowserRouter([
       {
         path: 'locations',
         element: <AdsLocation />,
+      },
+      {
+        path: 'panels',
+        element: <AdsPanel />,
       },
       {
         path: 'locations/edit',
