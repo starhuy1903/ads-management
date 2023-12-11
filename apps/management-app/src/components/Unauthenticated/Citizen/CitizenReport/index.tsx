@@ -92,24 +92,27 @@ export default function CitizenReport() {
     onChangeDesc(a);
   };
 
+  const handleAddImage = useCallback(
+    (file: File) => setValue('imageFiles', [...formValue.imageFiles, file]),
+    [formValue.imageFiles, setValue],
+  );
+
   const handleUpdateImage = useCallback(
     (file: File | null) => {
       if (!file) {
         return;
       }
 
-      setValue('imageFiles', [...formValue.imageFiles, file]);
-
       // TODO: crop image
-      // dispatch(
-      //   showModal(ModalKey.CROP_IMAGE, {
-      //     image: file,
-      //     onSubmit: () => {},
-      //     onModalClose: () => {},
-      //   }),
-      // );
+      dispatch(
+        showModal(ModalKey.CROP_IMAGE, {
+          image: file,
+          aspect: 16 / 9,
+          onSubmit: handleAddImage,
+        }),
+      );
     },
-    [formValue.imageFiles, setValue],
+    [dispatch, handleAddImage],
   );
 
   const handleDeleteImage = useCallback(
@@ -260,8 +263,9 @@ export default function CitizenReport() {
         <FormControl>
           <FormLabel sx={{ mb: 1 }}>Upload image</FormLabel>
           <Stack direction="row" spacing={2}>
-            {formValue.imageFiles.map((image) => (
+            {formValue.imageFiles.map((image, index) => (
               <ImagePreview
+                key={index}
                 image={image}
                 disabled={submitting}
                 onDeleteImage={handleDeleteImage}

@@ -101,9 +101,6 @@ dependencies:
   framer-motion:
     specifier: 10.15.2
     version: 10.15.2(react-dom@18.2.0)(react@18.2.0)
-  get-orientation:
-    specifier: 1.1.2
-    version: 1.1.2
   mapbox-gl:
     specifier: 3.0.0
     version: 3.0.0
@@ -128,15 +125,15 @@ dependencies:
   react-dropzone:
     specifier: 14.2.3
     version: 14.2.3(react@18.2.0)
-  react-easy-crop:
-    specifier: 5.0.2
-    version: 5.0.2(react-dom@18.2.0)(react@18.2.0)
   react-hook-form:
     specifier: 7.46.1
     version: 7.46.1(react@18.2.0)
   react-hot-toast:
     specifier: ^2.4.1
     version: 2.4.1(csstype@3.1.2)(react-dom@18.2.0)(react@18.2.0)
+  react-image-crop:
+    specifier: 11.0.1
+    version: 11.0.1(react@18.2.0)
   react-map-gl:
     specifier: 7.1.6
     version: 7.1.6(mapbox-gl@3.0.0)(react-dom@18.2.0)(react@18.2.0)
@@ -9204,14 +9201,6 @@ packages:
       has-proto: 1.0.1
       has-symbols: 1.0.3
 
-  /get-orientation@1.1.2:
-    resolution: {integrity: sha512-/pViTfifW+gBbh/RnlFYHINvELT9Znt+SYyDKAUL6uV6By019AK/s+i9XP4jSwq7lwP38Fd8HVeTxym3+hkwmQ==}
-    dependencies:
-      stream-parser: 0.3.1
-    transitivePeerDependencies:
-      - supports-color
-    dev: false
-
   /get-package-type@0.1.0:
     resolution: {integrity: sha512-pjzuKtY64GYfWizNAJ0fr9VqttZkNiK2iS430LtIHzjBEr6bX8Am2zm4sW4Ro5wjWW5cAlRL1qAMTcXbjNAO2Q==}
     engines: {node: '>=8.0.0'}
@@ -11519,10 +11508,6 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
-  /normalize-wheel@1.0.1:
-    resolution: {integrity: sha512-1OnlAPZ3zgrk8B91HyRj+eVv+kS5u+Z0SCsak6Xil/kmgEia50ga7zfkumayonZrImffAxPU/5WcyGhzetHNPA==}
-    dev: false
-
   /npm-run-path@2.0.2:
     resolution: {integrity: sha512-lJxZYlT4DW/bRUtFh1MQIWqmLwQfAxnqWG4HhEdjMlkrJYnJn0Jrr2u3mgxqaWsdiBc76TYkTG/mhrnYTuzfHw==}
     engines: {node: '>=4'}
@@ -12737,18 +12722,6 @@ packages:
       react: 18.2.0
     dev: false
 
-  /react-easy-crop@5.0.2(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-j4A/0s0v/Gx5YGXvw3SOFIMmRk5YCdob2ABL5cD00Q9HQPKIz6tkCYLdj0RMO0REPtCAOsZ2ZZLI6fUofiDP6w==}
-    peerDependencies:
-      react: '>=16.4.0'
-      react-dom: '>=16.4.0'
-    dependencies:
-      normalize-wheel: 1.0.1
-      react: 18.2.0
-      react-dom: 18.2.0(react@18.2.0)
-      tslib: 2.0.1
-    dev: false
-
   /react-hook-form@7.46.1(react@18.2.0):
     resolution: {integrity: sha512-0GfI31LRTBd5tqbXMGXT1Rdsv3rnvy0FjEk8Gn9/4tp6+s77T7DPZuGEpBRXOauL+NhyGT5iaXzdIM2R6F/E+w==}
     engines: {node: '>=12.22.0'}
@@ -12770,6 +12743,14 @@ packages:
       react-dom: 18.2.0(react@18.2.0)
     transitivePeerDependencies:
       - csstype
+    dev: false
+
+  /react-image-crop@11.0.1(react@18.2.0):
+    resolution: {integrity: sha512-rPXi9iJWoSZP0RWNhevoyAHvNz2ZElQilWE89AWXXRM9MKQUws5J9D0gfpuDOJBtUocirbWUyDcdNPAggP2AYQ==}
+    peerDependencies:
+      react: '>=16.13.1'
+    dependencies:
+      react: 18.2.0
     dev: false
 
   /react-is@16.13.1:
@@ -13676,14 +13657,6 @@ packages:
       internal-slot: 1.0.5
     dev: true
 
-  /stream-parser@0.3.1:
-    resolution: {integrity: sha512-bJ/HgKq41nlKvlhccD5kaCr/P+Hu0wPNKPJOH7en+YrJu/9EgqUF+88w5Jb6KNcjOFMhfX4B2asfeAtIGuHObQ==}
-    dependencies:
-      debug: 2.6.9
-    transitivePeerDependencies:
-      - supports-color
-    dev: false
-
   /streamsearch@1.1.0:
     resolution: {integrity: sha512-Mcc5wHehp9aXz1ax6bZUyY5afg9u2rv5cqQI3mRrYkGC8rW2hM02jWuwjtL++LS5qinSyhj2QfLyNsuc+VsExg==}
     engines: {node: '>=10.0.0'}
@@ -14254,10 +14227,6 @@ packages:
 
   /tslib@1.14.1:
     resolution: {integrity: sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==}
-
-  /tslib@2.0.1:
-    resolution: {integrity: sha512-SgIkNheinmEBgx1IUNirK0TUD4X9yjjBRTqqjggWCU3pUEqIk3/Uwl3yRixYKT6WjQuGiwDv4NomL3wqRCj+CQ==}
-    dev: false
 
   /tslib@2.5.3:
     resolution: {integrity: sha512-mSxlJJwl3BMEQCUNnxXBU9jP4JBktcEGhURcPR6VQVlnP0FdDEsIaz0C35dXNGLyRfrATNofF0F5p2KPxQgB+w==}
