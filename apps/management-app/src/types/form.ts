@@ -17,6 +17,7 @@ export type AdsPanelResponse = {
   id: number;
   panelType: string;
   location: {
+    id?: number;
     address: string;
     ward: string;
     commue: string;

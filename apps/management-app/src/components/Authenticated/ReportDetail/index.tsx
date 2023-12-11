@@ -6,26 +6,8 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
+import { DetailTextField } from '@/components/Common/DetailTextField';
 import { formatDateTime } from '@/utils/format-date';
-
-function ReportField({
-  label,
-  value,
-}: {
-  label: string;
-  value: string | number;
-}) {
-  return (
-    <TextField
-      label={label}
-      fullWidth
-      InputProps={{
-        readOnly: true,
-      }}
-      value={value}
-    />
-  );
-}
 
 export default function ReportDetail() {
   const report = {
@@ -74,7 +56,7 @@ export default function ReportDetail() {
   return (
     <Box>
       <Typography variant="h4" sx={{ mb: 2 }}>
-        Report details #{report?.id}
+        Report Details #{report?.id}
       </Typography>
       <Box
         component="form"
@@ -92,26 +74,26 @@ export default function ReportDetail() {
             Report information
           </Typography>
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-            <ReportField label="ID" value={report?.id} />
+            <DetailTextField label="ID" value={report?.id} />
 
-            <ReportField label="Type" value={report?.type} />
+            <DetailTextField label="Type" value={report?.type} />
 
-            <ReportField
+            <DetailTextField
               label="Object"
               value={`${report?.targetType === 'panel' ? 'Panel' : 'Location'}`}
             />
 
-            <ReportField
+            <DetailTextField
               label="Created"
               value={formatDateTime(report?.createdTime)}
             />
 
-            <ReportField
+            <DetailTextField
               label="Modified"
               value={formatDateTime(report?.modifiedTime)}
             />
 
-            <ReportField label="Status" value={report?.status} />
+            <DetailTextField label="Status" value={report?.status} />
           </Stack>
 
           {/* Advertising Location/Panel */}
@@ -119,34 +101,44 @@ export default function ReportDetail() {
             {report?.targetType === 'panel' ? 'Panel' : 'Location'}
           </Typography>
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-            <ReportField label="ID" value={report?.target?.id} />
+            <DetailTextField label="ID" value={report?.target?.id} />
 
-            <ReportField label="Panel type" value={report?.target?.panelType} />
+            <DetailTextField
+              label="Panel type"
+              value={report?.target?.panelType}
+            />
 
-            <ReportField label="Width" value={report?.target?.width} />
+            <DetailTextField label="Width" value={report?.target?.width} />
 
-            <ReportField label="Height" value={report?.target?.height} />
+            <DetailTextField label="Height" value={report?.target?.height} />
 
-            <ReportField label="Quantity" value={report?.target?.quantity} />
+            <DetailTextField
+              label="Quantity"
+              value={report?.target?.quantity}
+            />
           </Stack>
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-            <ReportField
+            <DetailTextField
               label="Address"
               value={report?.target?.location?.address}
             />
-            <ReportField label="Ward" value={report?.target?.location?.ward} />
 
-            <ReportField
+            <DetailTextField
+              label="Ward"
+              value={report?.target?.location?.ward}
+            />
+
+            <DetailTextField
               label="District"
               value={report?.target?.location?.commue}
             />
 
-            <ReportField
+            <DetailTextField
               label="Position type"
               value={report?.target?.location?.positionType}
             />
 
-            <ReportField
+            <DetailTextField
               label="Advertising type"
               value={report?.target?.location?.adsType}
             />
@@ -157,11 +149,11 @@ export default function ReportDetail() {
             Reporter information
           </Typography>
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-            <ReportField label="Full name" value={report?.fullname} />
+            <DetailTextField label="Full name" value={report?.fullname} />
 
-            <ReportField label="Email" value={report?.email} />
+            <DetailTextField label="Email" value={report?.email} />
 
-            <ReportField label="Phone" value={report?.phone} />
+            <DetailTextField label="Phone" value={report?.phone} />
           </Stack>
           <TextField
             label="Content"

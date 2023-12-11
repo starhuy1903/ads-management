@@ -215,7 +215,7 @@ export default function ReportTable() {
   return (
     <Box>
       <Typography variant="h4" sx={{ mb: 2 }}>
-        List of reports
+        List of Reports
       </Typography>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="advertising points">

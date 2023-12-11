@@ -140,7 +140,7 @@ export default function AdsPanel() {
   return (
     <Box>
       <Typography variant="h4" sx={{ mb: 2 }}>
-        List of advertising panels
+        List of Advertising Panels
       </Typography>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="advertising points">
@@ -151,14 +151,7 @@ export default function AdsPanel() {
               <TableCell align="center">Address</TableCell>
               <TableCell align="center">Ward</TableCell>
               <TableCell align="center">District</TableCell>
-              <TableCell align="center">Width</TableCell>
-              <TableCell align="center">Height</TableCell>
-              <TableCell align="center">Quantity</TableCell>
-              <TableCell align="center">Position type</TableCell>
-              <TableCell align="center">Advertising type</TableCell>
-              <TableCell align="center">Image</TableCell>
               <TableCell align="center">Company email</TableCell>
-              <TableCell align="center">Company phone</TableCell>
               <TableCell align="center">Started</TableCell>
               <TableCell align="center">Ended</TableCell>
               <TableCell align="center">Created</TableCell>
@@ -175,22 +168,8 @@ export default function AdsPanel() {
                 <TableCell align="center">{row?.location?.address}</TableCell>
                 <TableCell align="center">{row?.location?.ward}</TableCell>
                 <TableCell align="center">{row?.location?.commue}</TableCell>
-                <TableCell align="center">{row?.width}</TableCell>
-                <TableCell align="center">{row?.height}</TableCell>
-                <TableCell align="center">{row?.quantity}</TableCell>
-                <TableCell align="center">
-                  {row?.location?.positionType}
-                </TableCell>
-                <TableCell>{row?.location?.adsType}</TableCell>
-                <TableCell align="center">
-                  <img
-                    src={row?.imageUrl}
-                    alt="advertising"
-                    style={{ width: '100px', height: '100px' }}
-                  />
-                </TableCell>
+
                 <TableCell align="center">{row?.company?.email}</TableCell>
-                <TableCell align="center">{row?.company?.phone}</TableCell>
                 <TableCell align="center">
                   {formatDate(row?.company?.createdContractDate)}
                 </TableCell>

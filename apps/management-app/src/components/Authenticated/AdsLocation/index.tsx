@@ -95,7 +95,7 @@ export default function AdsLocation() {
   return (
     <Box>
       <Typography variant="h4" sx={{ mb: 2 }}>
-        List of advertising locations
+        List of Advertising Locations
       </Typography>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="advertising points">
