@@ -8,6 +8,7 @@ import { PrismaModule } from '../../prisma/prisma.module';
 import { ConfigModule } from '@nestjs/config';
 import { PanelModule } from '../../panel/panel.module';
 import { LocationModule } from '../../location/location.module';
+import { ReportModule } from '../../report/report.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { LocationModule } from '../../location/location.module';
     PrismaModule,
     PanelModule,
     LocationModule,
+    ReportModule,
   ],
   controllers: [AppController],
   providers: [AppService],
