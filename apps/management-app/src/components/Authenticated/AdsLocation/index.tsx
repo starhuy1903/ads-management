@@ -17,13 +17,13 @@ export default function AdsLocation() {
   const rows: AdsLocationResponse[] = [
     {
       id: 1,
-      address: 'Đồng Khởi - Nguyễn Du (Sở Văn hóa và Thể thao)',
-      ward: 'Bến Nghé',
+      address: 'Dong Khoi - Nguyen Du (Department of Culture and Sports)',
+      ward: 'Ben Nghe',
       commue: '1',
       lat: 10.777,
       long: 106.666,
-      positionType: 'Đất công/Công viên/Hành lang an toàn giao thông',
-      adsType: 'Quảng cáo thương mại',
+      positionType: 'Public land/Park/Traffic safety corridor',
+      adsType: 'Commercial advertising',
       imageUrl:
         'https://piximus.net/media2/46719/cool-advertising-that-gets-straight-to-the-point-20.jpg',
       isPlanning: true,
@@ -32,13 +32,13 @@ export default function AdsLocation() {
     },
     {
       id: 2,
-      address: 'Đồng Khởi - Nguyễn Du (Sở Văn hóa và Thể thao)',
-      ward: 'Bến Nghé',
+      address: 'Dong Khoi - Nguyen Du (Department of Culture and Sports)',
+      ward: 'Ben Nghe',
       commue: '1',
       lat: 10.777,
       long: 106.666,
-      positionType: 'Đất công/Công viên/Hành lang an toàn giao thông',
-      adsType: 'Quảng cáo thương mại',
+      positionType: 'Public land/Park/Traffic safety corridor',
+      adsType: 'Commercial advertising',
       imageUrl:
         'https://piximus.net/media2/46719/cool-advertising-that-gets-straight-to-the-point-20.jpg',
       isPlanning: true,
@@ -47,13 +47,13 @@ export default function AdsLocation() {
     },
     {
       id: 3,
-      address: 'Đồng Khởi - Nguyễn Du (Sở Văn hóa và Thể thao)',
-      ward: 'Bến Nghé',
+      address: 'Dong Khoi - Nguyen Du (Department of Culture and Sports)',
+      ward: 'Ben Nghe',
       commue: '1',
       lat: 10.777,
       long: 106.666,
-      positionType: 'Đất công/Công viên/Hành lang an toàn giao thông',
-      adsType: 'Quảng cáo thương mại',
+      positionType: 'Public land/Park/Traffic safety corridor',
+      adsType: 'Commercial advertising',
       imageUrl:
         'https://piximus.net/media2/46719/cool-advertising-that-gets-straight-to-the-point-20.jpg',
       isPlanning: true,
@@ -62,13 +62,13 @@ export default function AdsLocation() {
     },
     {
       id: 4,
-      address: 'Đồng Khởi - Nguyễn Du (Sở Văn hóa và Thể thao)',
-      ward: 'Bến Nghé',
+      address: 'Dong Khoi - Nguyen Du (Department of Culture and Sports)',
+      ward: 'Ben Nghe',
       commue: '1',
       lat: 10.777,
       long: 106.666,
-      positionType: 'Đất công/Công viên/Hành lang an toàn giao thông',
-      adsType: 'Quảng cáo thương mại',
+      positionType: 'Public land/Park/Traffic safety corridor',
+      adsType: 'Commercial advertising',
       imageUrl:
         'https://piximus.net/media2/46719/cool-advertising-that-gets-straight-to-the-point-20.jpg',
       isPlanning: true,
@@ -77,13 +77,13 @@ export default function AdsLocation() {
     },
     {
       id: 5,
-      address: 'Đồng Khởi - Nguyễn Du (Sở Văn hóa và Thể thao)',
-      ward: 'Bến Nghé',
+      address: 'Dong Khoi - Nguyen Du (Department of Culture and Sports)',
+      ward: 'Ben Nghe',
       commue: '1',
       lat: 10.777,
       long: 106.666,
-      positionType: 'Đất công/Công viên/Hành lang an toàn giao thông',
-      adsType: 'Quảng cáo thương mại',
+      positionType: 'Public land/Park/Traffic safety corridor',
+      adsType: 'Commercial advertising',
       imageUrl:
         'https://piximus.net/media2/46719/cool-advertising-that-gets-straight-to-the-point-20.jpg',
       isPlanning: true,
@@ -95,24 +95,24 @@ export default function AdsLocation() {
   return (
     <Box>
       <Typography variant="h4" sx={{ mb: 2 }}>
-        Danh sách điểm đặt quảng cáo
+        List of advertising locations
       </Typography>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="advertising points">
           <TableHead>
             <TableRow>
               <TableCell align="center">ID</TableCell>
-              <TableCell align="center">Địa chỉ</TableCell>
-              <TableCell align="center">Phường</TableCell>
-              <TableCell align="center">Quận</TableCell>
-              <TableCell align="center">Loại vị trí</TableCell>
-              <TableCell align="center">Hình thức</TableCell>
-              <TableCell align="center">Hình ảnh</TableCell>
-              <TableCell align="center">Vĩ độ</TableCell>
-              <TableCell align="center">Kinh độ</TableCell>
-              <TableCell align="center">Quy hoạch</TableCell>
-              <TableCell align="center">Thời điểm tạo</TableCell>
-              <TableCell align="center">Thời điểm chỉnh sửa</TableCell>
+              <TableCell align="center">Address</TableCell>
+              <TableCell align="center">Ward</TableCell>
+              <TableCell align="center">District</TableCell>
+              <TableCell align="center">Position type</TableCell>
+              <TableCell align="center">Advertising type</TableCell>
+              <TableCell align="center">Image</TableCell>
+              <TableCell align="center">Latitude</TableCell>
+              <TableCell align="center">Longitude</TableCell>
+              <TableCell align="center">Planned</TableCell>
+              <TableCell align="center">Created</TableCell>
+              <TableCell align="center">Modified</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -141,7 +141,7 @@ export default function AdsLocation() {
                 <TableCell align="center">{row?.lat}</TableCell>
                 <TableCell align="center">{row?.long}</TableCell>
                 <TableCell align="center">{`${
-                  row?.isPlanning ? 'Đã quy hoạch' : 'Chưa quy hoạch'
+                  row?.isPlanning ? 'Yes' : 'No'
                 }`}</TableCell>
                 <TableCell align="center">
                   {formatDateTime(row?.createdTime)}

@@ -55,22 +55,22 @@ function Sidebar({ open, handleOnClose }: SidebarProps) {
         >
           <NavGroupWrapper title="Management">
             <NavItem
-              title="Điểm đặt quảng cáo"
+              title="Locations"
               icon={<CategoryOutlinedIcon />}
               href="/locations"
             />
             <NavItem
-              title="Bảng quảng cáo"
+              title="Panels"
               icon={<CategoryOutlinedIcon />}
               href="/panels"
             />
             <NavItem
-              title="Báo cáo"
+              title="Reports"
               icon={<CategoryOutlinedIcon />}
               href="/reports"
             />
             <NavItem
-              title="Cấp phép quảng cáo"
+              title="Permissions"
               icon={<CategoryOutlinedIcon />}
               href="/permissions"
             />

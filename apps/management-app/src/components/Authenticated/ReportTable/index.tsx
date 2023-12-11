@@ -17,24 +17,24 @@ export default function ReportTable() {
   const rows: ReportResponse[] = [
     {
       id: 1,
-      type: 'Đóng góp ý kiến',
-      fullname: 'Nguyễn Văn A',
+      type: 'Opinion contribution',
+      fullname: 'Nguyen Van A',
       email: 'nva@gmail.com',
       phone: '0123456789',
       content:
-        'Bảng quảng cáo đèn quá sáng, gây cảm giác khó chịu cho người dân xung quanh.',
-      status: 'Đang xử lý',
+        'The light of advertising board is too bright, causing discomfort to surrounding people.',
+      status: 'Processing',
       imageUrls: [],
       targetType: 'panel',
       target: {
         id: 3,
-        panelType: 'Trụ, cụm pano',
+        panelType: 'Pillar, panel cluster',
         location: {
-          address: 'Đồng Khởi - Nguyễn Du (Sở Văn hóa và Thể thao)',
-          ward: 'Bến Nghé',
+          address: 'Dong Khoi - Nguyen Du (Department of Culture and Sports)',
+          ward: 'Ben Nghe',
           commue: '1',
-          positionType: 'Đất công/Công viên/Hành lang an toàn giao thông',
-          adsType: 'Quảng cáo thương mại',
+          positionType: 'Public land/Park/Traffic safety corridor',
+          adsType: 'Commercial advertising',
         },
         width: 2.5,
         height: 10,
@@ -56,24 +56,24 @@ export default function ReportTable() {
     },
     {
       id: 2,
-      type: 'Đóng góp ý kiến',
-      fullname: 'Nguyễn Văn A',
+      type: 'Opinion contribution',
+      fullname: 'Nguyen Van A',
       email: 'nva@gmail.com',
       phone: '0123456789',
       content:
-        'Bảng quảng cáo đèn quá sáng, gây cảm giác khó chịu cho người dân xung quanh.',
-      status: 'Đang xử lý',
+        'The light of advertising board is too bright, causing discomfort to surrounding people.',
+      status: 'Processing',
       imageUrls: [],
       targetType: 'panel',
       target: {
         id: 3,
-        panelType: 'Trụ, cụm pano',
+        panelType: 'Pillar, panel cluster',
         location: {
-          address: 'Đồng Khởi - Nguyễn Du (Sở Văn hóa và Thể thao)',
-          ward: 'Bến Nghé',
+          address: 'Dong Khoi - Nguyen Du (Department of Culture and Sports)',
+          ward: 'Ben Nghe',
           commue: '1',
-          positionType: 'Đất công/Công viên/Hành lang an toàn giao thông',
-          adsType: 'Quảng cáo thương mại',
+          positionType: 'Public land/Park/Traffic safety corridor',
+          adsType: 'Commercial advertising',
         },
         width: 2.5,
         height: 10,
@@ -95,24 +95,24 @@ export default function ReportTable() {
     },
     {
       id: 3,
-      type: 'Đóng góp ý kiến',
-      fullname: 'Nguyễn Văn A',
+      type: 'Opinion contribution',
+      fullname: 'Nguyen Van A',
       email: 'nva@gmail.com',
       phone: '0123456789',
       content:
-        'Bảng quảng cáo đèn quá sáng, gây cảm giác khó chịu cho người dân xung quanh.',
-      status: 'Đang xử lý',
+        'The light of advertising board is too bright, causing discomfort to surrounding people.',
+      status: 'Processing',
       imageUrls: [],
       targetType: 'panel',
       target: {
         id: 3,
-        panelType: 'Trụ, cụm pano',
+        panelType: 'Pillar, panel cluster',
         location: {
-          address: 'Đồng Khởi - Nguyễn Du (Sở Văn hóa và Thể thao)',
-          ward: 'Bến Nghé',
+          address: 'Dong Khoi - Nguyen Du (Department of Culture and Sports)',
+          ward: 'Ben Nghe',
           commue: '1',
-          positionType: 'Đất công/Công viên/Hành lang an toàn giao thông',
-          adsType: 'Quảng cáo thương mại',
+          positionType: 'Public land/Park/Traffic safety corridor',
+          adsType: 'Commercial advertising',
         },
         width: 2.5,
         height: 10,
@@ -134,24 +134,24 @@ export default function ReportTable() {
     },
     {
       id: 4,
-      type: 'Đóng góp ý kiến',
-      fullname: 'Nguyễn Văn A',
+      type: 'Opinion contribution',
+      fullname: 'Nguyen Van A',
       email: 'nva@gmail.com',
       phone: '0123456789',
       content:
-        'Bảng quảng cáo đèn quá sáng, gây cảm giác khó chịu cho người dân xung quanh.',
-      status: 'Đang xử lý',
+        'The light of advertising board is too bright, causing discomfort to surrounding people.',
+      status: 'Processing',
       imageUrls: [],
       targetType: 'panel',
       target: {
         id: 3,
-        panelType: 'Trụ, cụm pano',
+        panelType: 'Pillar, panel cluster',
         location: {
-          address: 'Đồng Khởi - Nguyễn Du (Sở Văn hóa và Thể thao)',
-          ward: 'Bến Nghé',
+          address: 'Dong Khoi - Nguyen Du (Department of Culture and Sports)',
+          ward: 'Ben Nghe',
           commue: '1',
-          positionType: 'Đất công/Công viên/Hành lang an toàn giao thông',
-          adsType: 'Quảng cáo thương mại',
+          positionType: 'Public land/Park/Traffic safety corridor',
+          adsType: 'Commercial advertising',
         },
         width: 2.5,
         height: 10,
@@ -173,24 +173,24 @@ export default function ReportTable() {
     },
     {
       id: 5,
-      type: 'Đóng góp ý kiến',
-      fullname: 'Nguyễn Văn A',
+      type: 'Opinion contribution',
+      fullname: 'Nguyen Van A',
       email: 'nva@gmail.com',
       phone: '0123456789',
       content:
-        'Bảng quảng cáo đèn quá sáng, gây cảm giác khó chịu cho người dân xung quanh.',
-      status: 'Đang xử lý',
+        'The light of advertising board is too bright, causing discomfort to surrounding people.',
+      status: 'Processing',
       imageUrls: [],
       targetType: 'panel',
       target: {
         id: 3,
-        panelType: 'Trụ, cụm pano',
+        panelType: 'Pillar, panel cluster',
         location: {
-          address: 'Đồng Khởi - Nguyễn Du (Sở Văn hóa và Thể thao)',
-          ward: 'Bến Nghé',
+          address: 'Dong Khoi - Nguyen Du (Department of Culture and Sports)',
+          ward: 'Ben Nghe',
           commue: '1',
-          positionType: 'Đất công/Công viên/Hành lang an toàn giao thông',
-          adsType: 'Quảng cáo thương mại',
+          positionType: 'Public land/Park/Traffic safety corridor',
+          adsType: 'Commercial advertising',
         },
         width: 2.5,
         height: 10,
@@ -215,20 +215,21 @@ export default function ReportTable() {
   return (
     <Box>
       <Typography variant="h4" sx={{ mb: 2 }}>
-        Danh sách bảng quảng cáo
+        List of reports
       </Typography>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="advertising points">
           <TableHead>
             <TableRow>
               <TableCell align="center">ID</TableCell>
-              <TableCell align="center">Hình thức</TableCell>
-              <TableCell align="center">Người gửi</TableCell>
+              <TableCell align="center">Type</TableCell>
+              <TableCell align="center">Name</TableCell>
               <TableCell align="center">Email</TableCell>
-              <TableCell align="center">Số điện thoại</TableCell>
-              <TableCell align="center">Nội dung</TableCell>
-              <TableCell align="center">Thời điểm tạo</TableCell>
-              <TableCell align="center">Thời điểm chỉnh sửa</TableCell>
+              <TableCell align="center">Phone</TableCell>
+              <TableCell align="center">Content</TableCell>
+              <TableCell align="center">Created</TableCell>
+              <TableCell align="center">Modified</TableCell>
+              <TableCell align="center">Status</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -248,6 +249,7 @@ export default function ReportTable() {
                 <TableCell align="center">
                   {formatDateTime(row?.modifiedTime)}
                 </TableCell>
+                <TableCell align="center">{row?.status}</TableCell>
               </TableRow>
             ))}
           </TableBody>

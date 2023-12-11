@@ -55,7 +55,6 @@ export type ReportResponse = {
 
 export type AdsPermissionResponse = {
   id: number;
-  type: string;
   reason: string;
   status: string;
   panel: AdsPanelResponse;

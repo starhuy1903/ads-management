@@ -11,22 +11,21 @@ import {
 } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { AdsPermissionResponse } from '@/types/form';
-import { formatDate, formatDateTime } from '@/utils/format-date';
+import { formatDateTime } from '@/utils/format-date';
 
 export default function AdsPermission() {
   const rows: AdsPermissionResponse[] = [
     {
       id: 1,
-      type: 'Cấp phép bảng quảng cáo',
       panel: {
         id: 2,
-        panelType: 'Trụ, cụm pano',
+        panelType: 'Pillar, panel cluster',
         location: {
-          address: 'Đồng Khởi - Nguyễn Du (Sở Văn hóa và Thể thao)',
-          ward: 'Bến Nghé',
+          address: 'Dong Khoi - Nguyen Du (Department of Culture and Sports)',
+          ward: 'Ben Nghe',
           commue: '1',
-          positionType: 'Đất công/Công viên/Hành lang an toàn giao thông',
-          adsType: 'Quảng cáo thương mại',
+          positionType: 'Public land/Park/Traffic safety corridor',
+          adsType: 'Commercial advertising',
         },
         width: 2.5,
         height: 10,
@@ -42,23 +41,22 @@ export default function AdsPermission() {
         createdTime: '2023-12-08T11:30:53.945Z',
         modifiedTime: '2023-12-08T11:30:53.945Z',
       },
-      reason: 'Quảng cáo sản phẩm dịch vụ cho công ty',
-      status: 'Đã duyệt',
+      reason: 'Advertise products and services for the company',
+      status: 'Approved',
       createdTime: '2023-12-08T11:30:53.945Z',
       modifiedTime: '2023-12-08T11:30:53.945Z',
     },
     {
       id: 2,
-      type: 'Cấp phép bảng quảng cáo',
       panel: {
         id: 2,
-        panelType: 'Trụ, cụm pano',
+        panelType: 'Pillar, panel cluster',
         location: {
-          address: 'Đồng Khởi - Nguyễn Du (Sở Văn hóa và Thể thao)',
-          ward: 'Bến Nghé',
+          address: 'Dong Khoi - Nguyen Du (Department of Culture and Sports)',
+          ward: 'Ben Nghe',
           commue: '1',
-          positionType: 'Đất công/Công viên/Hành lang an toàn giao thông',
-          adsType: 'Quảng cáo thương mại',
+          positionType: 'Public land/Park/Traffic safety corridor',
+          adsType: 'Commercial advertising',
         },
         width: 2.5,
         height: 10,
@@ -74,23 +72,22 @@ export default function AdsPermission() {
         createdTime: '2023-12-08T11:30:53.945Z',
         modifiedTime: '2023-12-08T11:30:53.945Z',
       },
-      reason: 'Quảng cáo sản phẩm dịch vụ cho công ty',
-      status: 'Đã duyệt',
+      reason: 'Advertise products and services for the company',
+      status: 'Approved',
       createdTime: '2023-12-08T11:30:53.945Z',
       modifiedTime: '2023-12-08T11:30:53.945Z',
     },
     {
       id: 3,
-      type: 'Cấp phép bảng quảng cáo',
       panel: {
         id: 2,
-        panelType: 'Trụ, cụm pano',
+        panelType: 'Pillar, panel cluster',
         location: {
-          address: 'Đồng Khởi - Nguyễn Du (Sở Văn hóa và Thể thao)',
-          ward: 'Bến Nghé',
+          address: 'Dong Khoi - Nguyen Du (Department of Culture and Sports)',
+          ward: 'Ben Nghe',
           commue: '1',
-          positionType: 'Đất công/Công viên/Hành lang an toàn giao thông',
-          adsType: 'Quảng cáo thương mại',
+          positionType: 'Public land/Park/Traffic safety corridor',
+          adsType: 'Commercial advertising',
         },
         width: 2.5,
         height: 10,
@@ -106,23 +103,22 @@ export default function AdsPermission() {
         createdTime: '2023-12-08T11:30:53.945Z',
         modifiedTime: '2023-12-08T11:30:53.945Z',
       },
-      reason: 'Quảng cáo sản phẩm dịch vụ cho công ty',
-      status: 'Đã duyệt',
+      reason: 'Advertise products and services for the company',
+      status: 'Approved',
       createdTime: '2023-12-08T11:30:53.945Z',
       modifiedTime: '2023-12-08T11:30:53.945Z',
     },
     {
       id: 4,
-      type: 'Cấp phép bảng quảng cáo',
       panel: {
         id: 2,
-        panelType: 'Trụ, cụm pano',
+        panelType: 'Pillar, panel cluster',
         location: {
-          address: 'Đồng Khởi - Nguyễn Du (Sở Văn hóa và Thể thao)',
-          ward: 'Bến Nghé',
+          address: 'Dong Khoi - Nguyen Du (Department of Culture and Sports)',
+          ward: 'Ben Nghe',
           commue: '1',
-          positionType: 'Đất công/Công viên/Hành lang an toàn giao thông',
-          adsType: 'Quảng cáo thương mại',
+          positionType: 'Public land/Park/Traffic safety corridor',
+          adsType: 'Commercial advertising',
         },
         width: 2.5,
         height: 10,
@@ -138,23 +134,22 @@ export default function AdsPermission() {
         createdTime: '2023-12-08T11:30:53.945Z',
         modifiedTime: '2023-12-08T11:30:53.945Z',
       },
-      reason: 'Quảng cáo sản phẩm dịch vụ cho công ty',
-      status: 'Đã duyệt',
+      reason: 'Advertise products and services for the company',
+      status: 'Approved',
       createdTime: '2023-12-08T11:30:53.945Z',
       modifiedTime: '2023-12-08T11:30:53.945Z',
     },
     {
       id: 5,
-      type: 'Cấp phép bảng quảng cáo',
       panel: {
         id: 2,
-        panelType: 'Trụ, cụm pano',
+        panelType: 'Pillar, panel cluster',
         location: {
-          address: 'Đồng Khởi - Nguyễn Du (Sở Văn hóa và Thể thao)',
-          ward: 'Bến Nghé',
+          address: 'Dong Khoi - Nguyen Du (Department of Culture and Sports)',
+          ward: 'Ben Nghe',
           commue: '1',
-          positionType: 'Đất công/Công viên/Hành lang an toàn giao thông',
-          adsType: 'Quảng cáo thương mại',
+          positionType: 'Public land/Park/Traffic safety corridor',
+          adsType: 'Commercial advertising',
         },
         width: 2.5,
         height: 10,
@@ -170,8 +165,8 @@ export default function AdsPermission() {
         createdTime: '2023-12-08T11:30:53.945Z',
         modifiedTime: '2023-12-08T11:30:53.945Z',
       },
-      reason: 'Quảng cáo sản phẩm dịch vụ cho công ty',
-      status: 'Đã duyệt',
+      reason: 'Advertise products and services for the company',
+      status: 'Approved',
       createdTime: '2023-12-08T11:30:53.945Z',
       modifiedTime: '2023-12-08T11:30:53.945Z',
     },
@@ -180,21 +175,21 @@ export default function AdsPermission() {
   return (
     <Box>
       <Typography variant="h4" sx={{ mb: 2 }}>
-        Danh sách cấp phép bảng quảng cáo
+        List of advertising panel licensing request
       </Typography>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="advertising points">
           <TableHead>
             <TableRow>
               <TableCell align="center">ID</TableCell>
-              <TableCell align="center">Loại cấp phép</TableCell>
-              <TableCell align="center">Loại bảng quảng cáo</TableCell>
-              <TableCell align="center">Địa chỉ</TableCell>
-              <TableCell align="center">Phường</TableCell>
-              <TableCell align="center">Quận</TableCell>
-              <TableCell align="center">Trạng thái</TableCell>
-              <TableCell align="center">Thời điểm tạo</TableCell>
-              <TableCell align="center">Thời điểm chỉnh sửa</TableCell>
+              <TableCell align="center">Advertising type</TableCell>
+              <TableCell align="center">Address</TableCell>
+              <TableCell align="center">Ward</TableCell>
+              <TableCell align="center">District</TableCell>
+              <TableCell align="center">Reason</TableCell>
+              <TableCell align="center">Created</TableCell>
+              <TableCell align="center">Modified</TableCell>
+              <TableCell align="center">Status</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -203,7 +198,6 @@ export default function AdsPermission() {
                 <TableCell align="center">
                   <Link to={`/panels/${row?.id}`}>{row?.id}</Link>
                 </TableCell>
-                <TableCell align="center">{row?.type}</TableCell>
                 <TableCell align="center">{row?.panel?.panelType}</TableCell>
                 <TableCell align="center">
                   {row?.panel?.location?.address}
@@ -221,6 +215,7 @@ export default function AdsPermission() {
                 <TableCell align="center">
                   {formatDateTime(row?.modifiedTime)}
                 </TableCell>
+                <TableCell align="center">{row?.status}</TableCell>
               </TableRow>
             ))}
           </TableBody>

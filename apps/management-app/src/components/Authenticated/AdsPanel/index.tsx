@@ -17,13 +17,13 @@ export default function AdsPanel() {
   const rows: AdsPanelResponse[] = [
     {
       id: 1,
-      panelType: 'Trụ, cụm pano',
+      panelType: 'Pillar, panel cluster',
       location: {
-        address: 'Đồng Khởi - Nguyễn Du (Sở Văn hóa và Thể thao)',
-        ward: 'Bến Nghé',
+        address: 'Dong Khoi - Nguyen Du (Department of Culture and Sports)',
+        ward: 'Ben Nghe',
         commue: '1',
-        positionType: 'Đất công/Công viên/Hành lang an toàn giao thông',
-        adsType: 'Quảng cáo thương mại',
+        positionType: 'Public land/Park/Traffic safety corridor',
+        adsType: 'Commercial advertising',
       },
       width: 2.5,
       height: 10,
@@ -41,13 +41,13 @@ export default function AdsPanel() {
     },
     {
       id: 2,
-      panelType: 'Trụ, cụm pano',
+      panelType: 'Pillar, panel cluster',
       location: {
-        address: 'Đồng Khởi - Nguyễn Du (Sở Văn hóa và Thể thao)',
-        ward: 'Bến Nghé',
+        address: 'Dong Khoi - Nguyen Du (Department of Culture and Sports)',
+        ward: 'Ben Nghe',
         commue: '1',
-        positionType: 'Đất công/Công viên/Hành lang an toàn giao thông',
-        adsType: 'Quảng cáo thương mại',
+        positionType: 'Public land/Park/Traffic safety corridor',
+        adsType: 'Commercial advertising',
       },
       width: 2.5,
       height: 10,
@@ -65,13 +65,13 @@ export default function AdsPanel() {
     },
     {
       id: 3,
-      panelType: 'Trụ, cụm pano',
+      panelType: 'Pillar, panel cluster',
       location: {
-        address: 'Đồng Khởi - Nguyễn Du (Sở Văn hóa và Thể thao)',
-        ward: 'Bến Nghé',
+        address: 'Dong Khoi - Nguyen Du (Department of Culture and Sports)',
+        ward: 'Ben Nghe',
         commue: '1',
-        positionType: 'Đất công/Công viên/Hành lang an toàn giao thông',
-        adsType: 'Quảng cáo thương mại',
+        positionType: 'Public land/Park/Traffic safety corridor',
+        adsType: 'Commercial advertising',
       },
       width: 2.5,
       height: 10,
@@ -89,13 +89,13 @@ export default function AdsPanel() {
     },
     {
       id: 4,
-      panelType: 'Trụ, cụm pano',
+      panelType: 'Pillar, panel cluster',
       location: {
-        address: 'Đồng Khởi - Nguyễn Du (Sở Văn hóa và Thể thao)',
-        ward: 'Bến Nghé',
+        address: 'Dong Khoi - Nguyen Du (Department of Culture and Sports)',
+        ward: 'Ben Nghe',
         commue: '1',
-        positionType: 'Đất công/Công viên/Hành lang an toàn giao thông',
-        adsType: 'Quảng cáo thương mại',
+        positionType: 'Public land/Park/Traffic safety corridor',
+        adsType: 'Commercial advertising',
       },
       width: 2.5,
       height: 10,
@@ -113,13 +113,13 @@ export default function AdsPanel() {
     },
     {
       id: 5,
-      panelType: 'Trụ, cụm pano',
+      panelType: 'Pillar, panel cluster',
       location: {
-        address: 'Đồng Khởi - Nguyễn Du (Sở Văn hóa và Thể thao)',
-        ward: 'Bến Nghé',
+        address: 'Dong Khoi - Nguyen Du (Department of Culture and Sports)',
+        ward: 'Ben Nghe',
         commue: '1',
-        positionType: 'Đất công/Công viên/Hành lang an toàn giao thông',
-        adsType: 'Quảng cáo thương mại',
+        positionType: 'Public land/Park/Traffic safety corridor',
+        adsType: 'Commercial advertising',
       },
       width: 2.5,
       height: 10,
@@ -140,29 +140,29 @@ export default function AdsPanel() {
   return (
     <Box>
       <Typography variant="h4" sx={{ mb: 2 }}>
-        Danh sách bảng quảng cáo
+        List of advertising panels
       </Typography>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="advertising points">
           <TableHead>
             <TableRow>
               <TableCell align="center">ID</TableCell>
-              <TableCell align="center">Loại bảng quảng cáo</TableCell>
-              <TableCell align="center">Địa chỉ</TableCell>
-              <TableCell align="center">Phường</TableCell>
-              <TableCell align="center">Quận</TableCell>
-              <TableCell align="center">Chiều rộng</TableCell>
-              <TableCell align="center">Chiều dài</TableCell>
-              <TableCell align="center">Số lượng</TableCell>
-              <TableCell align="center">Loại vị trí</TableCell>
-              <TableCell align="center">Hình thức quảng cáo</TableCell>
-              <TableCell align="center">Hình ảnh</TableCell>
-              <TableCell align="center">Email công ty</TableCell>
-              <TableCell align="center">Số điện thoại công ty</TableCell>
-              <TableCell align="center">Ngày tạo hợp đồng</TableCell>
-              <TableCell align="center">Ngày hết hạn hợp đồng</TableCell>
-              <TableCell align="center">Thời điểm tạo</TableCell>
-              <TableCell align="center">Thời điểm chỉnh sửa</TableCell>
+              <TableCell align="center">Panel type</TableCell>
+              <TableCell align="center">Address</TableCell>
+              <TableCell align="center">Ward</TableCell>
+              <TableCell align="center">District</TableCell>
+              <TableCell align="center">Width</TableCell>
+              <TableCell align="center">Height</TableCell>
+              <TableCell align="center">Quantity</TableCell>
+              <TableCell align="center">Position type</TableCell>
+              <TableCell align="center">Advertising type</TableCell>
+              <TableCell align="center">Image</TableCell>
+              <TableCell align="center">Company email</TableCell>
+              <TableCell align="center">Company phone</TableCell>
+              <TableCell align="center">Started</TableCell>
+              <TableCell align="center">Ended</TableCell>
+              <TableCell align="center">Created</TableCell>
+              <TableCell align="center">Modified</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
