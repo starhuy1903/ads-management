@@ -11,3 +11,14 @@ export function formatDateTime(date: string) {
 
   return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
 }
+
+// Format: "DD/MM/YYYY"
+export function formatDate(date: string) {
+  const dateObj = new Date(date);
+
+  const day = dateObj.getDate();
+  const month = dateObj.getMonth() + 1;
+  const year = dateObj.getFullYear();
+
+  return `${day}/${month}/${year}`;
+}

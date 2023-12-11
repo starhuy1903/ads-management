@@ -2,11 +2,15 @@ export type AdsLocationResponse = {
   id: string;
   address: string;
   ward: string;
-  district: string;
+  commue: string;
+  lat: number;
+  long: number;
   positionType: string;
   adsType: string;
-  image: string;
-  isZoning: string;
+  imageUrl: string;
+  isPlanning: boolean;
+  createdTime: string;
+  modifiedTime: string;
 };
 
 export type AdsPanelResponse = {
@@ -20,18 +24,28 @@ export type AdsPanelResponse = {
   quantity: number;
   positionType: string;
   adsType: string;
+  imageUrl: string;
+  companyEmail: string;
+  companyPhone: string;
+  createdContractDate: string;
+  expiredContractDate: string;
+  createdTime: string;
+  modifiedTime: string;
 };
 
 export type ReportResponse = {
   id: string;
-  reportType: string;
-  sentAt: string;
+  type: string;
   address: string;
   ward: string;
   district: string;
-  name: string;
+  fullname: string;
   email: string;
   phone: string;
   content: string;
-  images?: string[];
+  resolvedContent: string;
+  imageUrls: string[];
+  status: string;
+  createdTime: string;
+  modifiedTime: string;
 };
