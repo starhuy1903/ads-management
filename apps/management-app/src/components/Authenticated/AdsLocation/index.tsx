@@ -16,7 +16,7 @@ import { formatDateTime } from '@/utils/format-date';
 export default function AdsLocation() {
   const rows: AdsLocationResponse[] = [
     {
-      id: '1',
+      id: 1,
       address: 'Đồng Khởi - Nguyễn Du (Sở Văn hóa và Thể thao)',
       ward: 'Bến Nghé',
       commue: '1',
@@ -31,7 +31,7 @@ export default function AdsLocation() {
       modifiedTime: '2023-12-08T11:30:53.945Z',
     },
     {
-      id: '2',
+      id: 2,
       address: 'Đồng Khởi - Nguyễn Du (Sở Văn hóa và Thể thao)',
       ward: 'Bến Nghé',
       commue: '1',
@@ -46,7 +46,7 @@ export default function AdsLocation() {
       modifiedTime: '2023-12-08T11:30:53.945Z',
     },
     {
-      id: '3',
+      id: 3,
       address: 'Đồng Khởi - Nguyễn Du (Sở Văn hóa và Thể thao)',
       ward: 'Bến Nghé',
       commue: '1',
@@ -61,7 +61,7 @@ export default function AdsLocation() {
       modifiedTime: '2023-12-08T11:30:53.945Z',
     },
     {
-      id: '4',
+      id: 4,
       address: 'Đồng Khởi - Nguyễn Du (Sở Văn hóa và Thể thao)',
       ward: 'Bến Nghé',
       commue: '1',
@@ -76,7 +76,7 @@ export default function AdsLocation() {
       modifiedTime: '2023-12-08T11:30:53.945Z',
     },
     {
-      id: '5',
+      id: 5,
       address: 'Đồng Khởi - Nguyễn Du (Sở Văn hóa và Thể thao)',
       ward: 'Bến Nghé',
       commue: '1',
@@ -95,7 +95,7 @@ export default function AdsLocation() {
   return (
     <Box>
       <Typography variant="h4" sx={{ mb: 2 }}>
-        Danh sách điểm quảng cáo
+        Danh sách điểm đặt quảng cáo
       </Typography>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="advertising points">

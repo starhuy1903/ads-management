@@ -16,102 +16,122 @@ import { formatDate, formatDateTime } from '@/utils/format-date';
 export default function AdsPanel() {
   const rows: AdsPanelResponse[] = [
     {
-      id: '1',
+      id: 1,
       panelType: 'Trụ, cụm pano',
-      address: 'Đồng Khởi - Nguyễn Du (Sở Văn hóa và Thể thao)',
-      ward: 'Bến Nghé',
-      district: '1',
+      location: {
+        address: 'Đồng Khởi - Nguyễn Du (Sở Văn hóa và Thể thao)',
+        ward: 'Bến Nghé',
+        commue: '1',
+        positionType: 'Đất công/Công viên/Hành lang an toàn giao thông',
+        adsType: 'Quảng cáo thương mại',
+      },
       width: 2.5,
       height: 10,
       quantity: 1,
-      positionType: 'Đất công/Công viên/Hành lang an toàn giao thông',
-      adsType: 'Quảng cáo thương mại',
       imageUrl:
         'https://mgg.vn/wp-content/uploads/2018/12/blackpink-nhom-nhac-kpop-dai-dien-dong-hanh-cung-shopee.png',
-      companyEmail: 'shopee@gmail.com',
-      companyPhone: '0123456789',
-      createdContractDate: '2023-12-08T11:30:53.945Z',
-      expiredContractDate: '2024-01-08T11:30:53.945Z',
+      company: {
+        email: 'shopee@gmail.com',
+        phone: '0123456789',
+        createdContractDate: '2023-12-08T11:30:53.945Z',
+        expiredContractDate: '2024-01-08T11:30:53.945Z',
+      },
       createdTime: '2023-12-08T11:30:53.945Z',
       modifiedTime: '2023-12-08T11:30:53.945Z',
     },
     {
-      id: '2',
+      id: 2,
       panelType: 'Trụ, cụm pano',
-      address: 'Đồng Khởi - Nguyễn Du (Sở Văn hóa và Thể thao)',
-      ward: 'Bến Nghé',
-      district: '1',
+      location: {
+        address: 'Đồng Khởi - Nguyễn Du (Sở Văn hóa và Thể thao)',
+        ward: 'Bến Nghé',
+        commue: '1',
+        positionType: 'Đất công/Công viên/Hành lang an toàn giao thông',
+        adsType: 'Quảng cáo thương mại',
+      },
       width: 2.5,
       height: 10,
       quantity: 1,
-      positionType: 'Đất công/Công viên/Hành lang an toàn giao thông',
-      adsType: 'Quảng cáo thương mại',
       imageUrl:
         'https://mgg.vn/wp-content/uploads/2018/12/blackpink-nhom-nhac-kpop-dai-dien-dong-hanh-cung-shopee.png',
-      companyEmail: 'shopee@gmail.com',
-      companyPhone: '0123456789',
-      createdContractDate: '2023-12-08T11:30:53.945Z',
-      expiredContractDate: '2024-01-08T11:30:53.945Z',
+      company: {
+        email: 'shopee@gmail.com',
+        phone: '0123456789',
+        createdContractDate: '2023-12-08T11:30:53.945Z',
+        expiredContractDate: '2024-01-08T11:30:53.945Z',
+      },
       createdTime: '2023-12-08T11:30:53.945Z',
       modifiedTime: '2023-12-08T11:30:53.945Z',
     },
     {
-      id: '3',
+      id: 3,
       panelType: 'Trụ, cụm pano',
-      address: 'Đồng Khởi - Nguyễn Du (Sở Văn hóa và Thể thao)',
-      ward: 'Bến Nghé',
-      district: '1',
+      location: {
+        address: 'Đồng Khởi - Nguyễn Du (Sở Văn hóa và Thể thao)',
+        ward: 'Bến Nghé',
+        commue: '1',
+        positionType: 'Đất công/Công viên/Hành lang an toàn giao thông',
+        adsType: 'Quảng cáo thương mại',
+      },
       width: 2.5,
       height: 10,
       quantity: 1,
-      positionType: 'Đất công/Công viên/Hành lang an toàn giao thông',
-      adsType: 'Quảng cáo thương mại',
       imageUrl:
         'https://mgg.vn/wp-content/uploads/2018/12/blackpink-nhom-nhac-kpop-dai-dien-dong-hanh-cung-shopee.png',
-      companyEmail: 'shopee@gmail.com',
-      companyPhone: '0123456789',
-      createdContractDate: '2023-12-08T11:30:53.945Z',
-      expiredContractDate: '2024-01-08T11:30:53.945Z',
+      company: {
+        email: 'shopee@gmail.com',
+        phone: '0123456789',
+        createdContractDate: '2023-12-08T11:30:53.945Z',
+        expiredContractDate: '2024-01-08T11:30:53.945Z',
+      },
       createdTime: '2023-12-08T11:30:53.945Z',
       modifiedTime: '2023-12-08T11:30:53.945Z',
     },
     {
-      id: '4',
+      id: 4,
       panelType: 'Trụ, cụm pano',
-      address: 'Đồng Khởi - Nguyễn Du (Sở Văn hóa và Thể thao)',
-      ward: 'Bến Nghé',
-      district: '1',
+      location: {
+        address: 'Đồng Khởi - Nguyễn Du (Sở Văn hóa và Thể thao)',
+        ward: 'Bến Nghé',
+        commue: '1',
+        positionType: 'Đất công/Công viên/Hành lang an toàn giao thông',
+        adsType: 'Quảng cáo thương mại',
+      },
       width: 2.5,
       height: 10,
       quantity: 1,
-      positionType: 'Đất công/Công viên/Hành lang an toàn giao thông',
-      adsType: 'Quảng cáo thương mại',
       imageUrl:
         'https://mgg.vn/wp-content/uploads/2018/12/blackpink-nhom-nhac-kpop-dai-dien-dong-hanh-cung-shopee.png',
-      companyEmail: 'shopee@gmail.com',
-      companyPhone: '0123456789',
-      createdContractDate: '2023-12-08T11:30:53.945Z',
-      expiredContractDate: '2024-01-08T11:30:53.945Z',
+      company: {
+        email: 'shopee@gmail.com',
+        phone: '0123456789',
+        createdContractDate: '2023-12-08T11:30:53.945Z',
+        expiredContractDate: '2024-01-08T11:30:53.945Z',
+      },
       createdTime: '2023-12-08T11:30:53.945Z',
       modifiedTime: '2023-12-08T11:30:53.945Z',
     },
     {
-      id: '5',
+      id: 5,
       panelType: 'Trụ, cụm pano',
-      address: 'Đồng Khởi - Nguyễn Du (Sở Văn hóa và Thể thao)',
-      ward: 'Bến Nghé',
-      district: '1',
+      location: {
+        address: 'Đồng Khởi - Nguyễn Du (Sở Văn hóa và Thể thao)',
+        ward: 'Bến Nghé',
+        commue: '1',
+        positionType: 'Đất công/Công viên/Hành lang an toàn giao thông',
+        adsType: 'Quảng cáo thương mại',
+      },
       width: 2.5,
       height: 10,
       quantity: 1,
-      positionType: 'Đất công/Công viên/Hành lang an toàn giao thông',
-      adsType: 'Quảng cáo thương mại',
       imageUrl:
         'https://mgg.vn/wp-content/uploads/2018/12/blackpink-nhom-nhac-kpop-dai-dien-dong-hanh-cung-shopee.png',
-      companyEmail: 'shopee@gmail.com',
-      companyPhone: '0123456789',
-      createdContractDate: '2023-12-08T11:30:53.945Z',
-      expiredContractDate: '2024-01-08T11:30:53.945Z',
+      company: {
+        email: 'shopee@gmail.com',
+        phone: '0123456789',
+        createdContractDate: '2023-12-08T11:30:53.945Z',
+        expiredContractDate: '2024-01-08T11:30:53.945Z',
+      },
       createdTime: '2023-12-08T11:30:53.945Z',
       modifiedTime: '2023-12-08T11:30:53.945Z',
     },
@@ -152,14 +172,16 @@ export default function AdsPanel() {
                   <Link to={`/panels/${row?.id}`}>{row?.id}</Link>
                 </TableCell>
                 <TableCell align="center">{row?.panelType}</TableCell>
-                <TableCell align="center">{row?.address}</TableCell>
-                <TableCell align="center">{row?.ward}</TableCell>
-                <TableCell align="center">{row?.district}</TableCell>
+                <TableCell align="center">{row?.location?.address}</TableCell>
+                <TableCell align="center">{row?.location?.ward}</TableCell>
+                <TableCell align="center">{row?.location?.commue}</TableCell>
                 <TableCell align="center">{row?.width}</TableCell>
                 <TableCell align="center">{row?.height}</TableCell>
                 <TableCell align="center">{row?.quantity}</TableCell>
-                <TableCell align="center">{row?.positionType}</TableCell>
-                <TableCell>{row?.adsType}</TableCell>
+                <TableCell align="center">
+                  {row?.location?.positionType}
+                </TableCell>
+                <TableCell>{row?.location?.adsType}</TableCell>
                 <TableCell align="center">
                   <img
                     src={row?.imageUrl}
@@ -167,13 +189,13 @@ export default function AdsPanel() {
                     style={{ width: '100px', height: '100px' }}
                   />
                 </TableCell>
-                <TableCell align="center">{row?.companyEmail}</TableCell>
-                <TableCell align="center">{row?.companyPhone}</TableCell>
+                <TableCell align="center">{row?.company?.email}</TableCell>
+                <TableCell align="center">{row?.company?.phone}</TableCell>
                 <TableCell align="center">
-                  {formatDate(row?.createdContractDate)}
+                  {formatDate(row?.company?.createdContractDate)}
                 </TableCell>
                 <TableCell align="center">
-                  {formatDate(row?.expiredContractDate)}
+                  {formatDate(row?.company?.expiredContractDate)}
                 </TableCell>
                 <TableCell align="center">
                   {formatDateTime(row?.createdTime)}
