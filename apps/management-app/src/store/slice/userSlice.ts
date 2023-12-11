@@ -2,7 +2,7 @@ import { PayloadAction, createSelector, createSlice } from '@reduxjs/toolkit';
 import { UserRole } from '@/constants/user';
 import { UserSliceType } from '@/types/store/user';
 import { RootState } from '..';
-import { LoginResponse } from '../../types/user';
+import { LoginResponse, UserProfile } from '../../types/user';
 
 const initialState = {
   profile: {
@@ -34,8 +34,8 @@ export const userSlice = createSlice({
       localStorage.setItem('refreshToken', action.payload.refreshToken);
     },
 
-    setProfile: (state, action: PayloadAction<LoginResponse>) => {
-      state.profile = action.payload.user;
+    setProfile: (state, action: PayloadAction<UserProfile>) => {
+      state.profile = action.payload;
     },
 
     logOut: (state) => {
