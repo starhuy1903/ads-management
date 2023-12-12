@@ -3,9 +3,11 @@ import { TextField } from '@mui/material';
 export function DetailTextField({
   label,
   value,
+  disabled = false,
 }: {
-  label: string;
-  value: string | number | undefined;
+  label?: string;
+  value?: string | number | undefined;
+  disabled?: boolean;
 }) {
   return (
     <TextField
@@ -15,6 +17,7 @@ export function DetailTextField({
         readOnly: true,
       }}
       value={value}
+      disabled={disabled}
     />
   );
 }

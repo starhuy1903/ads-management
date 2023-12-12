@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Paper,
   Table,
   TableBody,
@@ -179,9 +180,28 @@ export default function AdsPermission() {
 
   return (
     <Box>
-      <Typography variant="h4" sx={{ mb: 2 }}>
-        List of Licensing Request
-      </Typography>
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+        }}
+      >
+        <Typography variant="h4" sx={{ mb: 2 }}>
+          List of Licensing Request
+        </Typography>
+
+        <Button
+          variant="contained"
+          component={Link}
+          to="/permissions/new"
+          sx={{
+            color: 'white',
+          }}
+        >
+          Create
+        </Button>
+      </Box>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="advertising points">
           <TableHead>
