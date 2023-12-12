@@ -1,7 +1,7 @@
 {
   "name": "apps/main-api",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/main-api",
+  "sourceRoot": "apps/main-api/src",
   "projectType": "application",
   "targets": {
     "build": {
@@ -31,10 +31,10 @@
       },
       "configurations": {
         "development": {
-          "buildTarget": "main-api:build:development"
+          "buildTarget": "apps/main-api:build:development"
         },
         "production": {
-          "buildTarget": "main-api:build:production"
+          "buildTarget": "apps/main-api:build:production"
         }
       }
     },

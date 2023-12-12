@@ -11,7 +11,7 @@ type ModalPayload = {
 };
 
 type ModalOptions = {
-  onModalClose: ((...args: any[]) => void) | null;
+  onModalClose?: ((...args: any[]) => void) | null;
   [key: string]: any;
 };
 

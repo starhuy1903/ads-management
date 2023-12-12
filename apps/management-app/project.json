@@ -12,6 +12,9 @@
         "outputPath": "dist/apps/management-app"
       },
       "configurations": {
+        "mock": {
+          "mode": "mock"
+        },
         "development": {
           "mode": "development"
         },
@@ -27,6 +30,10 @@
         "buildTarget": "management-app:build"
       },
       "configurations": {
+        "mock": {
+          "buildTarget": "management-app:build:mock",
+          "hmr": true
+        },
         "development": {
           "buildTarget": "management-app:build:development",
           "hmr": true
