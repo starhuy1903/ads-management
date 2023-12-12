@@ -17,6 +17,7 @@ export default function AdsPermission() {
   const rows: AdsPermissionResponse[] = [
     {
       id: 1,
+      type: 'Licensing request',
       panel: {
         id: 2,
         panelType: 'Pillar, panel cluster',
@@ -48,6 +49,7 @@ export default function AdsPermission() {
     },
     {
       id: 2,
+      type: 'Licensing request',
       panel: {
         id: 2,
         panelType: 'Pillar, panel cluster',
@@ -79,6 +81,7 @@ export default function AdsPermission() {
     },
     {
       id: 3,
+      type: 'Licensing request',
       panel: {
         id: 2,
         panelType: 'Pillar, panel cluster',
@@ -110,6 +113,7 @@ export default function AdsPermission() {
     },
     {
       id: 4,
+      type: 'Licensing request',
       panel: {
         id: 2,
         panelType: 'Pillar, panel cluster',
@@ -141,6 +145,7 @@ export default function AdsPermission() {
     },
     {
       id: 5,
+      type: 'Licensing request',
       panel: {
         id: 2,
         panelType: 'Pillar, panel cluster',
@@ -175,18 +180,19 @@ export default function AdsPermission() {
   return (
     <Box>
       <Typography variant="h4" sx={{ mb: 2 }}>
-        List of advertising panel licensing request
+        List of Licensing Request
       </Typography>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="advertising points">
           <TableHead>
             <TableRow>
               <TableCell align="center">ID</TableCell>
+              <TableCell align="center">Request type</TableCell>
               <TableCell align="center">Advertising type</TableCell>
+              <TableCell align="center">Quantity</TableCell>
               <TableCell align="center">Address</TableCell>
               <TableCell align="center">Ward</TableCell>
               <TableCell align="center">District</TableCell>
-              <TableCell align="center">Reason</TableCell>
               <TableCell align="center">Created</TableCell>
               <TableCell align="center">Modified</TableCell>
               <TableCell align="center">Status</TableCell>
@@ -196,9 +202,11 @@ export default function AdsPermission() {
             {rows.map((row: AdsPermissionResponse) => (
               <TableRow key={row?.id}>
                 <TableCell align="center">
-                  <Link to={`/panels/${row?.id}`}>{row?.id}</Link>
+                  <Link to={`/permissions/${row?.id}`}>{row?.id}</Link>
                 </TableCell>
+                <TableCell align="center">{row?.type}</TableCell>
                 <TableCell align="center">{row?.panel?.panelType}</TableCell>
+                <TableCell align="center">{row?.panel?.quantity}</TableCell>
                 <TableCell align="center">
                   {row?.panel?.location?.address}
                 </TableCell>
@@ -208,7 +216,6 @@ export default function AdsPermission() {
                 <TableCell align="center">
                   {row?.panel?.location?.commue}
                 </TableCell>
-                <TableCell align="center">{row?.reason}</TableCell>
                 <TableCell align="center">
                   {formatDateTime(row?.createdTime)}
                 </TableCell>

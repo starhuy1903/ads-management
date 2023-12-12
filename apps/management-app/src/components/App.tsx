@@ -12,6 +12,7 @@ import AdsLocationDetail from './Authenticated/AdsLocationDetail';
 import AdsPanel from './Authenticated/AdsPanel';
 import AdsPanelDetail from './Authenticated/AdsPanelDetail';
 import AdsPermission from './Authenticated/AdsPermission';
+import AdsPermissionDetail from './Authenticated/AdsPermissionDetail';
 import CreateAdsPermission from './Authenticated/CreateAdsPermission';
 import CreateEditing from './Authenticated/CreateEditing';
 import Home from './Authenticated/Home';
@@ -109,6 +110,10 @@ const officerRoutes = createBrowserRouter([
       {
         path: 'permissions',
         element: <AdsPermission />,
+      },
+      {
+        path: 'permissions/:permissionId',
+        element: <AdsPermissionDetail />,
       },
       {
         path: 'permissions/new',
