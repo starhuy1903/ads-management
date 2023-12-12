@@ -4,6 +4,8 @@ import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import { ThemeProvider } from '@mui/material/styles';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { StrictMode } from 'react';
 import * as ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
@@ -20,9 +22,11 @@ root.render(
   <StrictMode>
     <Provider store={store}>
       <ThemeProvider theme={defaultTheme}>
-        <CustomToaster />
-        <ModalContainer />
-        <App />
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <CustomToaster />
+          <ModalContainer />
+          <App />
+        </LocalizationProvider>
       </ThemeProvider>
     </Provider>
   </StrictMode>,
