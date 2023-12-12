@@ -5,8 +5,8 @@
   "bracketSpacing": true,
   "tabWidth": 2,
   "importOrder": [
-    "^@/(utils|store|hooks|types|constants|components)$",
-    "^@/(utils|store|hooks|types|constants|components)/(.*)$",
+    "^@/(utils|store|hooks|types|configurations|constants|components)$",
+    "^@/(utils|store|hooks|types|configurations|constants|components)/(.*)$",
     "^@/assets/(.*)$",
     "^[./]"
   ]

@@ -1,0 +1,91 @@
+Table panel { // Biển quảng cáo
+  id integer [primary key]
+  type_id ENUM // loại biển quảng cáo, FK panel_type
+  width number
+  height number
+  location_id integer // FK location
+  image_url string
+  create_contract_date Date
+  expired_contract_date Date
+  company_email string
+  company_number string
+  created_time Date
+  modified_time Date
+}
+
+Table panel_type { // Biển quảng cáo
+  id integer [primary key]
+  name string
+  created_time Date
+  modified_time Date
+}
+
+Table location { // Điểm đặt biển quảng cáo
+  id integer [primary key]
+  lat number
+  long number
+  isPlanning boolean // check quy hoạch
+  commue_id integer // FK đến commue
+  ward_id integer // FK đến ward
+  address string // địa chỉ cụ thể
+  type ENUM // loại vị trí
+  ads_type ENUM // loại quảng cáo
+  image_url string
+  created_time Date
+  modified_time Date
+}
+
+Table report {
+  id integer [primary key]
+  type ENUM // hình thức báo cáo
+  fullname string
+  email string
+  content string // dạng html rich text
+  image_url string[] // max length = 2
+  target_type ENUM // Báo cáo panel hoặc location
+  target_id integer // FK đến panel hoặc location
+  status ENUM // trạng thái Mới / Đang xử lí / Đã xử lí done / Pending
+  resolved_content string // dạng html rich text, cách xử lí cho báo cáo này (cán bộ điền)
+  created_time Date
+  modified_time Date
+}
+
+Table captcha { // autogenerate callback khi captcha work
+  id integer [primary key]
+  expired_time Date
+  content string
+  created_time Date
+  modified_time Date
+}
+
+Table commue { // Table quận tự có data, không thao tác ở bất kì đâu khác
+  id integer [primary key]
+  name string
+}
+
+Table Ward { // Table xã tự có data, không thao tác ở bất kì đâu khác
+  id integer [primary key]
+  name string
+  commue_id integer
+}
+
+Table ads_request { // yêu cầu chỉnh sửa hoặc cấp phép biển quảng cáo từ cán bộ xã/quận đến sở
+  id integer [primary key]
+  created_time Date
+  modified_time Date
+  type ENUM // edit hoặc cấp phép
+  reason string // dạng html rich text, chỉ có nếu type là edit
+  status ENUM // đã gửi / đồng ý / không chấp nhận / đã hủy bỏ
+  target_type ENUM // Báo cáo panel hoặc location
+  target_id integer // FK đến panel hoặc location
+  user_id integer // FK đến User
+}
+
+Ref: panel.location_id > location.id
+Ref: panel.type_id > panel_type.id
+Ref: location.commue_id > commue.id
+Ref: location.ward_id > Ward.id
+Ref: report.target_id > location.id
+Ref: report.target_id > panel.id
+Ref: ads_request.target_id > panel.id
+Ref: ads_request.target_id > location.id

@@ -21,7 +21,7 @@ import ReportDetail from './Authenticated/ReportDetail';
 import ReportTable from './Authenticated/ReportTable';
 import ResetPassword from './Authenticated/ResetPassword';
 import CenterLoading from './Common/CenterLoading';
-import PageLayout from './PageLayout';
+import PageLayout from './Common/Layout/PageLayout';
 import CitizenHome from './Unauthenticated/Citizen/CitizenHome';
 import CitizenReport from './Unauthenticated/Citizen/CitizenReport';
 import ForgotPassword from './Unauthenticated/ForgotPassword';

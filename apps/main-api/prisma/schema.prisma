@@ -1,0 +1,78 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model panel {
+  id                    Int        @id @default(autoincrement())
+  type                  panel_type @relation(fields: [type_id], references: [id])
+  type_id               Int
+  width                 Decimal
+  height                Decimal
+  location              location   @relation(fields: [location_id], references: [id])
+  location_id           Int
+  image_urls            String[]
+  create_contract_date  DateTime
+  expired_contract_date DateTime
+  company_email         String
+  company_number        String
+  created_time          DateTime   @default(now())
+  modified_time         DateTime   @updatedAt
+}
+
+model panel_type {
+  id    Int     @id @default(autoincrement())
+  name  String
+  panel panel[]
+}
+
+model location {
+  id            Int                @id @default(autoincrement())
+  lat           Decimal
+  long          Decimal
+  isPlanning    Boolean            @default(false)
+  district      district           @relation(fields: [district_id], references: [id])
+  district_id   Int
+  ward          ward               @relation(fields: [ward_id], references: [id])
+  ward_id       Int
+  full_address  String
+  type          location_type      @relation(fields: [type_id], references: [id])
+  type_id       Int
+  ad_type       advertisement_type @relation(fields: [ad_type_id], references: [id])
+  ad_type_id    Int
+  image_urls    String[]
+  created_time  DateTime           @default(now())
+  modified_time DateTime           @updatedAt
+  panel         panel[]
+}
+
+model location_type {
+  id       Int        @id @default(autoincrement())
+  name     String
+  location location[]
+}
+
+model advertisement_type {
+  id       Int        @id @default(autoincrement())
+  name     String
+  location location[]
+}
+
+model district {
+  id       Int        @id @default(autoincrement())
+  name     String
+  location location[]
+  ward     ward[]
+}
+
+model ward {
+  id          Int        @id @default(autoincrement())
+  name        String
+  district    district   @relation(fields: [district_id], references: [id])
+  district_id Int
+  location    location[]
+}
