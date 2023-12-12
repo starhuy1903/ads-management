@@ -8,17 +8,15 @@ import {
   FormLabel,
   MenuItem,
   Select,
-  Skeleton,
   Stack,
   TextField,
   Typography,
 } from '@mui/material';
-import { Editor } from '@tinymce/tinymce-react';
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useController, useForm } from 'react-hook-form';
-import { Editor as TinyMCEEditor } from 'tinymce';
 import { useAppDispatch } from '@/store';
 import DropFileContainer from '@/components/Common/DropFileContainer';
+import TinyEditor from '@/components/Common/TinyEditor';
 import { ModalKey } from '@/constants/modal';
 import { ImageFileConfig } from '@/constants/validation';
 import { showModal } from '@/store/slice/modal';
@@ -54,8 +52,6 @@ interface FormType {
 }
 
 export default function CitizenReport() {
-  const editorRef = useRef<TinyMCEEditor | null>(null);
-  const [editorMounted, setEditorMounted] = useState(false);
   const dispatch = useAppDispatch();
 
   const { handleSubmit, register, control, formState, setValue, watch } =
@@ -88,10 +84,6 @@ export default function CitizenReport() {
 
   const [submitting, setSubmitting] = useState(false);
 
-  const handleEditorChange = (a: string, _: TinyMCEEditor) => {
-    onChangeDesc(a);
-  };
-
   const handleAddImage = useCallback(
     (file: File) => setValue('imageFiles', [...formValue.imageFiles, file]),
     [formValue.imageFiles, setValue],
@@ -103,7 +95,6 @@ export default function CitizenReport() {
         return;
       }
 
-      // TODO: crop image
       dispatch(
         showModal(ModalKey.CROP_IMAGE, {
           image: file,
@@ -227,38 +218,12 @@ export default function CitizenReport() {
         </Stack>
         <FormControl fullWidth>
           <FormLabel>Description</FormLabel>
-          <Box>
-            <Editor
-              id="report-description-editor"
-              apiKey="kulkkatvrqim8ho9lhxqo5d0l4u80m68n44pbjphhlyzsy8n" // TODO: get from env
-              onInit={(evt, editor) => {
-                editorRef.current = editor;
-                setEditorMounted(true);
-              }}
-              initialValue=""
-              onEditorChange={handleEditorChange}
-              init={{
-                height: 400,
-                menubar: false,
-                plugins: [
-                  'advlist autolink lists link image charmap print preview anchor',
-                  'searchreplace visualblocks code fullscreen',
-                  'insertdatetime media table paste code help wordcount',
-                ],
-                toolbar:
-                  'undo redo | formatselect | ' +
-                  'bold italic backcolor | alignleft aligncenter ' +
-                  'alignright alignjustify | bullist numlist outdent indent | ' +
-                  'removeformat | help',
-                content_style:
-                  'body { font-family:"Roboto","Helvetica","Arial",sans-serif; font-size:14px }',
-              }}
-              disabled={submitting}
-            />
-            {!editorMounted && (
-              <Skeleton variant="rectangular" width="100%" height={400} />
-            )}
-          </Box>
+          <TinyEditor
+            value={descValue}
+            onChange={onChangeDesc}
+            disabled={submitting}
+            height={400}
+          />
         </FormControl>
         <FormControl>
           <FormLabel sx={{ mb: 1 }}>Upload image</FormLabel>
