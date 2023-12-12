@@ -1,4 +1,3 @@
-import AdbIcon from '@mui/icons-material/Adb';
 import {
   AppBar,
   Avatar,
@@ -7,18 +6,20 @@ import {
   IconButton,
   Menu,
   MenuItem,
-  Stack,
   Toolbar,
   Tooltip,
   Typography,
 } from '@mui/material';
 import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAppSelector } from '@/store';
 import { useLogoutMutation } from '@/store/api/userApiSlice';
+import Logo from '@/assets/images/app-logo.png';
 
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 export default function Header() {
+  const navigate = useNavigate();
   const isLoggedIn = useAppSelector((state) => state.user.isLoggedIn);
   const tokenId = useAppSelector((state) => state.user.token?.tokenId) || '';
   const [requestLogout] = useLogoutMutation();
@@ -48,24 +49,11 @@ export default function Header() {
       position="static"
       sx={{ background: 'transparent', boxShadow: 'none' }}
     >
-      <Container maxWidth="xl">
+      <Container maxWidth={false}>
         <Toolbar disableGutters sx={{ justifyContent: 'space-between' }}>
-          <Stack direction="row" alignItems="center">
-            <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
-            <Typography
-              variant="h6"
-              noWrap
-              component="a"
-              href="#"
-              sx={{
-                display: 'flex',
-                fontWeight: 700,
-                letterSpacing: '.3rem',
-              }}
-            >
-              LOGO
-            </Typography>
-          </Stack>
+          <Link to="/">
+            <img src={Logo} alt="app-logo" width={50} />
+          </Link>
 
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
@@ -89,11 +77,17 @@ export default function Header() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+              {isLoggedIn ? (
+                settings.map((setting) => (
+                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                    <Typography textAlign="center">{setting}</Typography>
+                  </MenuItem>
+                ))
+              ) : (
+                <MenuItem onClick={() => navigate('/login')}>
+                  <Typography textAlign="center">Log in</Typography>
                 </MenuItem>
-              ))}
+              )}
             </Menu>
           </Box>
         </Toolbar>
