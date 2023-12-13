@@ -1,11 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { CreateReportDto } from './dto/create-report.dto';
 import { UpdateReportDto } from './dto/update-report.dto';
-import { PrismaService } from '../prisma/prisma.service';
-import { ReportStatus } from '../constants/report';
+import { PrismaService } from '../../prisma/prisma.service';
+import { ReportStatus } from '../../constants/report';
 import { PageOptionsReportDto } from './dto/find-all-report.dto';
-import { TargetType } from '../constants/ads_request';
-import { Prisma } from '@prisma/client';
+import { TargetType } from '../../constants/ads_request';
 
 @Injectable()
 export class ReportService {
@@ -70,7 +69,7 @@ export class ReportService {
       }),
     ]);
     return {
-      data: result,
+      reports: result,
       totalPages: Math.ceil(totalCount / pageOptionsReportDto.take),
     };
   }

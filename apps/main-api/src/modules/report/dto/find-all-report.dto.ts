@@ -1,8 +1,8 @@
 import { Transform, Type } from 'class-transformer';
 import { IsArray, IsEnum, IsInt, IsOptional, Max, Min } from 'class-validator';
-import { Order } from '../../constants/order';
-import { ReportStatus } from '../../constants/report';
-import { TargetType } from '../../constants/ads_request';
+import { Order } from '../../../constants/order';
+import { ReportStatus } from '../../../constants/report';
+import { TargetType } from '../../../constants/ads_request';
 
 export class PageOptionsReportDto {
   @IsEnum(Order)

@@ -9,7 +9,7 @@ import {
   IsString,
   Min,
 } from 'class-validator';
-import { TargetType } from '../../constants/ads_request';
+import { TargetType } from '../../../constants/ads_request';
 
 export class CreateReportDto {
   @Type(() => Number)
@@ -37,7 +37,7 @@ export class CreateReportDto {
   imgUrls: string[];
 
   @IsEnum(TargetType)
-  @IsOptional()
+  @IsNotEmpty()
   readonly targetType?: TargetType;
 
   @Type(() => Number)

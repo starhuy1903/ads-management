@@ -1,6 +1,6 @@
 import { Transform, Type } from 'class-transformer';
 import { IsArray, IsEnum, IsInt, IsOptional, Max, Min } from 'class-validator';
-import { Order } from '../../constants/order';
+import { Order } from '../../../constants/order';
 
 export class PageOptionsLocationDto {
   @IsEnum(Order)

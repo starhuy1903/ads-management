@@ -6,9 +6,10 @@ import { MailModule } from '../../services/mail/mail.module';
 import { CustomResponseMiddleware } from '../../middlewares';
 import { PrismaModule } from '../../prisma/prisma.module';
 import { ConfigModule } from '@nestjs/config';
-import { PanelModule } from '../../panel/panel.module';
-import { LocationModule } from '../../location/location.module';
-import { ReportModule } from '../../report/report.module';
+import { PanelModule } from '../panel/panel.module';
+import { LocationModule } from '../location/location.module';
+import { ReportModule } from '../report/report.module';
+import { AdsRequestModule } from '../ads-request/ads-request.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { ReportModule } from '../../report/report.module';
     PanelModule,
     LocationModule,
     ReportModule,
+    AdsRequestModule,
   ],
   controllers: [AppController],
   providers: [AppService],

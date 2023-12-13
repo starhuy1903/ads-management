@@ -8,7 +8,7 @@ datasource db {
 }
 
 model panel {
-  id                    Int        @id @default(autoincrement())
+  id                    Int           @id @default(autoincrement())
   type_id               Int
   width                 Decimal
   height                Decimal
@@ -18,10 +18,11 @@ model panel {
   expired_contract_date DateTime
   company_email         String
   company_number        String
-  created_time          DateTime   @default(now())
-  modified_time         DateTime   @updatedAt
-  location              location   @relation(fields: [location_id], references: [id])
-  type                  panel_type @relation(fields: [type_id], references: [id])
+  created_time          DateTime      @default(now())
+  modified_time         DateTime      @updatedAt
+  ads_request           ads_request[]
+  location              location      @relation(fields: [location_id], references: [id])
+  type                  panel_type    @relation(fields: [type_id], references: [id])
   report                report[]
 }
 
@@ -44,6 +45,7 @@ model location {
   image_urls    String[]
   created_time  DateTime           @default(now())
   modified_time DateTime           @updatedAt
+  ads_request   ads_request[]
   ad_type       advertisement_type @relation(fields: [ad_type_id], references: [id])
   district      district           @relation(fields: [district_id], references: [id])
   type          location_type      @relation(fields: [type_id], references: [id])
@@ -81,15 +83,19 @@ model ward {
 
 model ads_request {
   id               Int              @id @default(autoincrement())
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @updatedAt
   type_id          Int
   reason           String
   status           String           @db.VarChar(255)
   target_type      String           @db.VarChar(255)
-  target_id        Int
   user_id          Int
-  createdAt        DateTime         @default(now())
-  updatedAt        DateTime         @updatedAt
+  location_id      Int?
+  panel_id         Int?
   ads_request_type ads_request_type @relation(fields: [type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_ads_request_adsrequesttype")
+  location         location?        @relation(fields: [location_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_ads_request_location")
+  panel            panel?           @relation(fields: [panel_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_ads_request_panel")
+  user             user             @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_ads_request_user")
 }
 
 model ads_request_type {
@@ -134,20 +140,20 @@ model token {
 }
 
 model user {
-  id               Int      @id @default(autoincrement())
-  email            String   @unique
-  password         String
-  first_name       String
-  last_name        String
-  phone_number     String
-  dob              DateTime
-  role_id          Int
-  account_verified Boolean  @default(false)
-  reset_password   Boolean  @default(false)
-  created_at       DateTime @default(now())
-  modified_at      DateTime
-  token            token[]
-  role             role     @relation(fields: [role_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_role")
+  id             Int           @id @default(autoincrement())
+  email          String        @unique
+  password       String
+  first_name     String
+  last_name      String
+  phone_number   String?
+  dob            DateTime?
+  role_id        Int
+  reset_password Boolean       @default(false)
+  created_at     DateTime      @default(now())
+  modified_at    DateTime
+  ads_request    ads_request[]
+  token          token[]
+  role           role          @relation(fields: [role_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_role")
 }
 
 model role {

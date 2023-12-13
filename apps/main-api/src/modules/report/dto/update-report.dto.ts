@@ -1,5 +1,5 @@
 import { IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator';
-import { ReportStatus } from '../../constants/report';
+import { ReportStatus } from '../../../constants/report';
 
 export class UpdateReportDto {
   @IsEnum(ReportStatus)
