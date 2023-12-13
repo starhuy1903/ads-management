@@ -1,4 +1,6 @@
+import Box from '@mui/material/Box';
 import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
@@ -31,14 +33,13 @@ const ControlledSelect = ({
         field: { onChange, onBlur, value },
         fieldState: { error },
       }) => (
-        <FormControl fullWidth>
-          <InputLabel id={id + '-label'}>{label}</InputLabel>
+        <FormControl sx={{ width: '100%' }}>
+          <FormLabel>{label}</FormLabel>
           <Select
             fullWidth
             labelId={id + '-label'}
             id={id}
             value={value}
-            label={label}
             onChange={onChange}
             onBlur={onBlur}
           >

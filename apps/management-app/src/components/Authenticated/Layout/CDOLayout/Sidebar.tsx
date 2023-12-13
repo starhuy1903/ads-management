@@ -1,4 +1,7 @@
 import CategoryOutlinedIcon from '@mui/icons-material/CategoryOutlined';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import SignpostIcon from '@mui/icons-material/Signpost';
+import ViewListIcon from '@mui/icons-material/ViewList';
 import { Box, Drawer, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import PerfectScrollbar from 'react-perfect-scrollbar';
@@ -54,23 +57,28 @@ function Sidebar({ open, handleOnClose }: SidebarProps) {
           }}
         >
           <NavGroupWrapper>
-            <NavItem title="Dashboard" href="/dashboard" />
+            <NavItem
+              title="Dashboard"
+              icon={<DashboardIcon />}
+              href="/dashboard"
+            />
           </NavGroupWrapper>
           <NavGroupWrapper title="General management">
             <NavItem
               title="Districts"
-              icon={<CategoryOutlinedIcon />}
+              icon={<SignpostIcon />}
               href="/districts"
             />
+            <NavItem title="Wards" icon={<SignpostIcon />} href="/wards" />
             <NavItem
-              title="Report"
-              icon={<CategoryOutlinedIcon />}
-              href="/reports"
+              title="Ads Types"
+              icon={<ViewListIcon />}
+              href="/ads-types"
             />
             <NavItem
-              title="Permissiondasdasd"
-              icon={<CategoryOutlinedIcon />}
-              href="/permissions"
+              title="Report Types"
+              icon={<ViewListIcon />}
+              href="/report-types"
             />
           </NavGroupWrapper>
         </PerfectScrollbar>

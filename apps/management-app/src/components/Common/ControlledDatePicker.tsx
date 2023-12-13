@@ -1,3 +1,5 @@
+import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
@@ -21,16 +23,13 @@ const ControlledDatePicker = ({
       control={control}
       name={name}
       render={({ field: { onChange, value } }) => (
-        <DatePicker
-          value={value}
-          label={label}
-          onChange={(date) => {
-            console.log(date);
-            console.log(date.format());
-            console.log(date.utc().format());
-            onChange(date);
-          }}
-        />
+        <FormControl fullWidth>
+          <FormLabel>{label}</FormLabel>
+          <DatePicker
+            value={value}
+            onChange={onChange}
+          />
+        </FormControl>
       )}
     />
   );

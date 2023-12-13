@@ -27,7 +27,7 @@ const DistrictsManagement = () => {
   return (
     <Box
       component="form"
-      onSubmit={handleSubmit((data) => console.log(data.date.format()))}
+      onSubmit={handleSubmit((data) => console.log(data))}
       sx={{ display: 'flex', flexDirection: 'column', rowGap: '16px' }}
     >
       <ControlledTextField control={control} name="name" />
