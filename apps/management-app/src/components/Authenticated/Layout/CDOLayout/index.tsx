@@ -2,11 +2,11 @@ import { Box, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
-import Header from './Header';
-import Main from './Main';
+import Header from '../OfficerLayout/Header';
+import Main from '../OfficerLayout/Main';
 import Sidebar from './Sidebar';
 
-function OfficerLayout() {
+function CDOLayout() {
   const theme = useTheme();
   const matchUpMd = useMediaQuery(theme.breakpoints.up('md'));
 
@@ -23,4 +23,4 @@ function OfficerLayout() {
     </Box>
   );
 }
-export default OfficerLayout;
+export default CDOLayout;
