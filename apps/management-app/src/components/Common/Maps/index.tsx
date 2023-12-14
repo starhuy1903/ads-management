@@ -13,7 +13,7 @@ import Map, {
 import { configs } from '@/configurations';
 import SearchBar from './SearchBar';
 
-export default function Maps() {
+export default function Maps({ children }: { children: React.ReactNode }) {
   const [showPopup, setShowPopup] = useState<boolean>(true);
   const markerRef = useRef<mapboxgl.Marker>();
 
@@ -45,7 +45,7 @@ export default function Maps() {
       />
       <NavigationControl position="bottom-left" />
       {/* <ScaleControl position="bottom-left" /> */}
-
+      {children}
       <Marker
         longitude={-100}
         latitude={40}
