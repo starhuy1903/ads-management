@@ -11,10 +11,11 @@ import AdsLocation from './Authenticated/AdsLocation';
 import AdsLocationDetail from './Authenticated/AdsLocationDetail';
 import AdsLocationEditing from './Authenticated/AdsLocationEditing';
 import AdsPanel from './Authenticated/AdsPanel';
+import AdsPanelCreating from './Authenticated/AdsPanelCreating';
 import AdsPanelDetail from './Authenticated/AdsPanelDetail';
+import AdsPanelEditing from './Authenticated/AdsPanelEditing';
 import AdsPermission from './Authenticated/AdsPermission';
 import AdsPermissionDetail from './Authenticated/AdsPermissionDetail';
-import CreateAdsPermission from './Authenticated/CreateAdsPermission';
 import Home from './Authenticated/Home';
 import OfficerLayout from './Authenticated/Layout/OfficerLayout';
 import ReportDetail from './Authenticated/ReportDetail';
@@ -88,6 +89,10 @@ const officerRoutes = createBrowserRouter([
         element: <AdsLocationDetail />,
       },
       {
+        path: 'locations/:locationId/edit',
+        element: <AdsLocationEditing />,
+      },
+      {
         path: 'panels',
         element: <AdsPanel />,
       },
@@ -96,8 +101,12 @@ const officerRoutes = createBrowserRouter([
         element: <AdsPanelDetail />,
       },
       {
-        path: 'locations/:locationId/edit',
-        element: <AdsLocationEditing />,
+        path: 'panels/create',
+        element: <AdsPanelCreating />,
+      },
+      {
+        path: 'panels/:panelId/edit',
+        element: <AdsPanelEditing />,
       },
       {
         path: 'reports',
@@ -114,10 +123,6 @@ const officerRoutes = createBrowserRouter([
       {
         path: 'permissions/:permissionId',
         element: <AdsPermissionDetail />,
-      },
-      {
-        path: 'permissions/new',
-        element: <CreateAdsPermission />,
       },
     ],
   },

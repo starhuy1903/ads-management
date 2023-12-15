@@ -10,7 +10,7 @@ export default function AdsPermissionDetail() {
     type: 'Licensing request',
     panel: {
       id: 3,
-      panelType: 'Pillar, panel cluster',
+      panelType: 'Pillar/Panel cluster',
       location: {
         id: 1,
         address: 'Dong Khoi - Nguyen Du (Department of Culture and Sports)',
@@ -27,8 +27,8 @@ export default function AdsPermissionDetail() {
       company: {
         email: 'shopee@gmail.com',
         phone: '0123456789',
-        createdContractDate: '2023-12-08T11:30:53.945Z',
-        expiredContractDate: '2024-01-08T11:30:53.945Z',
+        createdContractDate: '2023-12-01',
+        expiredContractDate: '2024-01-01',
       },
       createdTime: '2023-12-08T11:30:53.945Z',
       modifiedTime: '2023-12-08T11:30:53.945Z',

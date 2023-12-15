@@ -4,33 +4,33 @@ import { ReadOnlyTextField } from '@/components/Common/ReadOnlyTextField';
 import { AdsPanelResponse } from '@/types/form';
 import { formatDate, formatDateTime } from '@/utils/format-date';
 
-export default function AdsPanelDetail() {
-  const panel: AdsPanelResponse = {
-    id: 3,
-    panelType: 'Pillar, panel cluster',
-    location: {
-      id: 1,
-      address: 'Dong Khoi - Nguyen Du (Department of Culture and Sports)',
-      ward: 'Ben Nghe',
-      commue: '1',
-      positionType: 'Public land/Park/Traffic safety corridor',
-      adsType: 'Commercial advertising',
-    },
-    width: 2.5,
-    height: 10,
-    quantity: 1,
-    imageUrl:
-      'https://mgg.vn/wp-content/uploads/2018/12/blackpink-nhom-nhac-kpop-dai-dien-dong-hanh-cung-shopee.png',
-    company: {
-      email: 'shopee@gmail.com',
-      phone: '0123456789',
-      createdContractDate: '2023-12-08T11:30:53.945Z',
-      expiredContractDate: '2024-01-08T11:30:53.945Z',
-    },
-    createdTime: '2023-12-08T11:30:53.945Z',
-    modifiedTime: '2023-12-08T11:30:53.945Z',
-  };
+const panel: AdsPanelResponse = {
+  id: 3,
+  panelType: 'Pillar/Panel cluster',
+  location: {
+    id: 1,
+    address: 'Dong Khoi - Nguyen Du (Department of Culture and Sports)',
+    ward: 'Ben Nghe',
+    commue: '1',
+    positionType: 'Public land/Park/Traffic safety corridor',
+    adsType: 'Commercial advertising',
+  },
+  width: 2.5,
+  height: 10,
+  quantity: 1,
+  imageUrl:
+    'https://cdn.tuoitrethudo.com.vn/stores/news_dataimages/ngovuongtuan/122021/06/14/711e32670b0f625bf1252c028017da66.png?rt=20211206144254',
+  company: {
+    email: 'shopee@gmail.com',
+    phone: '0123456789',
+    createdContractDate: '2023-12-01',
+    expiredContractDate: '2024-01-01',
+  },
+  createdTime: '2023-12-08T11:30:53.945Z',
+  modifiedTime: '2023-12-08T11:30:53.945Z',
+};
 
+export default function AdsPanelDetail() {
   return (
     <Box>
       <BackButton />
@@ -48,6 +48,35 @@ export default function AdsPanelDetail() {
         }}
       >
         <Stack spacing={2}>
+          <Typography variant="h6" sx={{ mb: 2 }}>
+            Location
+          </Typography>
+          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+            <ReadOnlyTextField label="ID" value={panel?.location?.id} />
+
+            <ReadOnlyTextField
+              label="Address"
+              value={panel?.location?.address}
+            />
+
+            <ReadOnlyTextField label="Ward" value={panel?.location?.ward} />
+
+            <ReadOnlyTextField
+              label="District"
+              value={panel?.location?.commue}
+            />
+
+            <ReadOnlyTextField
+              label="Position type"
+              value={panel?.location?.positionType}
+            />
+
+            <ReadOnlyTextField
+              label="Advertising type"
+              value={panel?.location?.adsType}
+            />
+          </Stack>
+
           <Typography variant="h6" sx={{ mb: 2 }}>
             Panel
           </Typography>
@@ -77,35 +106,6 @@ export default function AdsPanelDetail() {
             Image
           </Typography>
           <img src={panel?.imageUrl} alt="panel" loading="lazy" width={650} />
-
-          <Typography variant="h6" sx={{ mb: 2 }}>
-            Location
-          </Typography>
-          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-            <ReadOnlyTextField label="ID" value={panel?.location?.id} />
-
-            <ReadOnlyTextField
-              label="Address"
-              value={panel?.location?.address}
-            />
-
-            <ReadOnlyTextField label="Ward" value={panel?.location?.ward} />
-
-            <ReadOnlyTextField
-              label="District"
-              value={panel?.location?.commue}
-            />
-
-            <ReadOnlyTextField
-              label="Position type"
-              value={panel?.location?.positionType}
-            />
-
-            <ReadOnlyTextField
-              label="Advertising type"
-              value={panel?.location?.adsType}
-            />
-          </Stack>
 
           <Typography variant="h6" sx={{ mb: 2 }}>
             Company

@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Paper,
   Table,
   TableBody,
@@ -9,6 +10,7 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
+import { Link } from 'react-router-dom';
 import { Edit, Info } from '@/components/Common/Icons';
 import { AdsPanelResponse } from '@/types/form';
 import { formatDate, formatDateTime } from '@/utils/format-date';
@@ -17,7 +19,7 @@ export default function AdsPanel() {
   const rows: AdsPanelResponse[] = [
     {
       id: 1,
-      panelType: 'Pillar, panel cluster',
+      panelType: 'Pillar/Panel cluster',
       location: {
         address: 'Dong Khoi - Nguyen Du (Department of Culture and Sports)',
         ward: 'Ben Nghe',
@@ -29,19 +31,19 @@ export default function AdsPanel() {
       height: 10,
       quantity: 1,
       imageUrl:
-        'https://mgg.vn/wp-content/uploads/2018/12/blackpink-nhom-nhac-kpop-dai-dien-dong-hanh-cung-shopee.png',
+        'https://cdn.tuoitrethudo.com.vn/stores/news_dataimages/ngovuongtuan/122021/06/14/711e32670b0f625bf1252c028017da66.png?rt=20211206144254',
       company: {
         email: 'shopee@gmail.com',
         phone: '0123456789',
-        createdContractDate: '2023-12-08T11:30:53.945Z',
-        expiredContractDate: '2024-01-08T11:30:53.945Z',
+        createdContractDate: '2023-12-01',
+        expiredContractDate: '2024-01-01',
       },
       createdTime: '2023-12-08T11:30:53.945Z',
       modifiedTime: '2023-12-08T11:30:53.945Z',
     },
     {
       id: 2,
-      panelType: 'Pillar, panel cluster',
+      panelType: 'Pillar/Panel cluster',
       location: {
         address: 'Dong Khoi - Nguyen Du (Department of Culture and Sports)',
         ward: 'Ben Nghe',
@@ -53,19 +55,19 @@ export default function AdsPanel() {
       height: 10,
       quantity: 1,
       imageUrl:
-        'https://mgg.vn/wp-content/uploads/2018/12/blackpink-nhom-nhac-kpop-dai-dien-dong-hanh-cung-shopee.png',
+        'https://cdn.tuoitrethudo.com.vn/stores/news_dataimages/ngovuongtuan/122021/06/14/711e32670b0f625bf1252c028017da66.png?rt=20211206144254',
       company: {
         email: 'shopee@gmail.com',
         phone: '0123456789',
-        createdContractDate: '2023-12-08T11:30:53.945Z',
-        expiredContractDate: '2024-01-08T11:30:53.945Z',
+        createdContractDate: '2023-12-01',
+        expiredContractDate: '2024-01-01',
       },
       createdTime: '2023-12-08T11:30:53.945Z',
       modifiedTime: '2023-12-08T11:30:53.945Z',
     },
     {
       id: 3,
-      panelType: 'Pillar, panel cluster',
+      panelType: 'Pillar/Panel cluster',
       location: {
         address: 'Dong Khoi - Nguyen Du (Department of Culture and Sports)',
         ward: 'Ben Nghe',
@@ -77,19 +79,19 @@ export default function AdsPanel() {
       height: 10,
       quantity: 1,
       imageUrl:
-        'https://mgg.vn/wp-content/uploads/2018/12/blackpink-nhom-nhac-kpop-dai-dien-dong-hanh-cung-shopee.png',
+        'https://cdn.tuoitrethudo.com.vn/stores/news_dataimages/ngovuongtuan/122021/06/14/711e32670b0f625bf1252c028017da66.png?rt=20211206144254',
       company: {
         email: 'shopee@gmail.com',
         phone: '0123456789',
-        createdContractDate: '2023-12-08T11:30:53.945Z',
-        expiredContractDate: '2024-01-08T11:30:53.945Z',
+        createdContractDate: '2023-12-01',
+        expiredContractDate: '2024-01-01',
       },
       createdTime: '2023-12-08T11:30:53.945Z',
       modifiedTime: '2023-12-08T11:30:53.945Z',
     },
     {
       id: 4,
-      panelType: 'Pillar, panel cluster',
+      panelType: 'Pillar/Panel cluster',
       location: {
         address: 'Dong Khoi - Nguyen Du (Department of Culture and Sports)',
         ward: 'Ben Nghe',
@@ -101,19 +103,19 @@ export default function AdsPanel() {
       height: 10,
       quantity: 1,
       imageUrl:
-        'https://mgg.vn/wp-content/uploads/2018/12/blackpink-nhom-nhac-kpop-dai-dien-dong-hanh-cung-shopee.png',
+        'https://cdn.tuoitrethudo.com.vn/stores/news_dataimages/ngovuongtuan/122021/06/14/711e32670b0f625bf1252c028017da66.png?rt=20211206144254',
       company: {
         email: 'shopee@gmail.com',
         phone: '0123456789',
-        createdContractDate: '2023-12-08T11:30:53.945Z',
-        expiredContractDate: '2024-01-08T11:30:53.945Z',
+        createdContractDate: '2023-12-01',
+        expiredContractDate: '2024-01-01',
       },
       createdTime: '2023-12-08T11:30:53.945Z',
       modifiedTime: '2023-12-08T11:30:53.945Z',
     },
     {
       id: 5,
-      panelType: 'Pillar, panel cluster',
+      panelType: 'Pillar/Panel cluster',
       location: {
         address: 'Dong Khoi - Nguyen Du (Department of Culture and Sports)',
         ward: 'Ben Nghe',
@@ -125,12 +127,12 @@ export default function AdsPanel() {
       height: 10,
       quantity: 1,
       imageUrl:
-        'https://mgg.vn/wp-content/uploads/2018/12/blackpink-nhom-nhac-kpop-dai-dien-dong-hanh-cung-shopee.png',
+        'https://cdn.tuoitrethudo.com.vn/stores/news_dataimages/ngovuongtuan/122021/06/14/711e32670b0f625bf1252c028017da66.png?rt=20211206144254',
       company: {
         email: 'shopee@gmail.com',
         phone: '0123456789',
-        createdContractDate: '2023-12-08T11:30:53.945Z',
-        expiredContractDate: '2024-01-08T11:30:53.945Z',
+        createdContractDate: '2023-12-01',
+        expiredContractDate: '2024-01-01',
       },
       createdTime: '2023-12-08T11:30:53.945Z',
       modifiedTime: '2023-12-08T11:30:53.945Z',
@@ -139,9 +141,29 @@ export default function AdsPanel() {
 
   return (
     <Box>
-      <Typography variant="h4" sx={{ mb: 2 }}>
-        List of Advertising Panels
-      </Typography>
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+        }}
+      >
+        <Typography variant="h4" sx={{ mb: 2 }}>
+          List of Advertising Panels
+        </Typography>
+
+        <Button
+          variant="contained"
+          component={Link}
+          to="/panels/create"
+          sx={{
+            color: 'white',
+          }}
+        >
+          Create
+        </Button>
+      </Box>
+
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="advertising points">
           <TableHead>

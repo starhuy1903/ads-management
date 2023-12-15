@@ -1,6 +1,5 @@
 import {
   Box,
-  Button,
   Paper,
   Table,
   TableBody,
@@ -10,7 +9,6 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
-import { Link } from 'react-router-dom';
 import { Delete, Info } from '@/components/Common/Icons';
 import { AdsPermissionResponse } from '@/types/form';
 import { formatDateTime } from '@/utils/format-date';
@@ -23,7 +21,7 @@ export default function AdsPermission() {
       type: 'Licensing request',
       panel: {
         id: 2,
-        panelType: 'Pillar, panel cluster',
+        panelType: 'Pillar/Panel cluster',
         location: {
           address: 'Dong Khoi - Nguyen Du (Department of Culture and Sports)',
           ward: 'Ben Nghe',
@@ -39,8 +37,8 @@ export default function AdsPermission() {
         company: {
           email: 'shopee@gmail.com',
           phone: '0123456789',
-          createdContractDate: '2023-12-08T11:30:53.945Z',
-          expiredContractDate: '2024-01-08T11:30:53.945Z',
+          createdContractDate: '2023-12-01',
+          expiredContractDate: '2024-01-01',
         },
         createdTime: '2023-12-08T11:30:53.945Z',
         modifiedTime: '2023-12-08T11:30:53.945Z',
@@ -55,7 +53,7 @@ export default function AdsPermission() {
       type: 'Licensing request',
       panel: {
         id: 2,
-        panelType: 'Pillar, panel cluster',
+        panelType: 'Pillar/Panel cluster',
         location: {
           address: 'Dong Khoi - Nguyen Du (Department of Culture and Sports)',
           ward: 'Ben Nghe',
@@ -71,8 +69,8 @@ export default function AdsPermission() {
         company: {
           email: 'shopee@gmail.com',
           phone: '0123456789',
-          createdContractDate: '2023-12-08T11:30:53.945Z',
-          expiredContractDate: '2024-01-08T11:30:53.945Z',
+          createdContractDate: '2023-12-01',
+          expiredContractDate: '2024-01-01',
         },
         createdTime: '2023-12-08T11:30:53.945Z',
         modifiedTime: '2023-12-08T11:30:53.945Z',
@@ -87,7 +85,7 @@ export default function AdsPermission() {
       type: 'Licensing request',
       panel: {
         id: 2,
-        panelType: 'Pillar, panel cluster',
+        panelType: 'Pillar/Panel cluster',
         location: {
           address: 'Dong Khoi - Nguyen Du (Department of Culture and Sports)',
           ward: 'Ben Nghe',
@@ -103,8 +101,8 @@ export default function AdsPermission() {
         company: {
           email: 'shopee@gmail.com',
           phone: '0123456789',
-          createdContractDate: '2023-12-08T11:30:53.945Z',
-          expiredContractDate: '2024-01-08T11:30:53.945Z',
+          createdContractDate: '2023-12-01',
+          expiredContractDate: '2024-01-01',
         },
         createdTime: '2023-12-08T11:30:53.945Z',
         modifiedTime: '2023-12-08T11:30:53.945Z',
@@ -119,7 +117,7 @@ export default function AdsPermission() {
       type: 'Licensing request',
       panel: {
         id: 2,
-        panelType: 'Pillar, panel cluster',
+        panelType: 'Pillar/Panel cluster',
         location: {
           address: 'Dong Khoi - Nguyen Du (Department of Culture and Sports)',
           ward: 'Ben Nghe',
@@ -135,8 +133,8 @@ export default function AdsPermission() {
         company: {
           email: 'shopee@gmail.com',
           phone: '0123456789',
-          createdContractDate: '2023-12-08T11:30:53.945Z',
-          expiredContractDate: '2024-01-08T11:30:53.945Z',
+          createdContractDate: '2023-12-01',
+          expiredContractDate: '2024-01-01',
         },
         createdTime: '2023-12-08T11:30:53.945Z',
         modifiedTime: '2023-12-08T11:30:53.945Z',
@@ -151,7 +149,7 @@ export default function AdsPermission() {
       type: 'Licensing request',
       panel: {
         id: 2,
-        panelType: 'Pillar, panel cluster',
+        panelType: 'Pillar/Panel cluster',
         location: {
           address: 'Dong Khoi - Nguyen Du (Department of Culture and Sports)',
           ward: 'Ben Nghe',
@@ -167,8 +165,8 @@ export default function AdsPermission() {
         company: {
           email: 'shopee@gmail.com',
           phone: '0123456789',
-          createdContractDate: '2023-12-08T11:30:53.945Z',
-          expiredContractDate: '2024-01-08T11:30:53.945Z',
+          createdContractDate: '2023-12-01',
+          expiredContractDate: '2024-01-01',
         },
         createdTime: '2023-12-08T11:30:53.945Z',
         modifiedTime: '2023-12-08T11:30:53.945Z',
@@ -196,28 +194,10 @@ export default function AdsPermission() {
 
   return (
     <Box>
-      <Box
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-        }}
-      >
-        <Typography variant="h4" sx={{ mb: 2 }}>
-          List of Licensing Request
-        </Typography>
+      <Typography variant="h4" sx={{ mb: 2 }}>
+        List of Requests
+      </Typography>
 
-        <Button
-          variant="contained"
-          component={Link}
-          to="/permissions/new"
-          sx={{
-            color: 'white',
-          }}
-        >
-          Create
-        </Button>
-      </Box>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="advertising points">
           <TableHead>

@@ -142,7 +142,7 @@ export default function AdsLocationEditing() {
     <Box>
       <BackButton />
       <Typography variant="h4" sx={{ my: 2 }}>
-        Edit Location #{location?.id}
+        Create Location Editing Request
       </Typography>
       <Box
         component="form"
@@ -159,6 +159,11 @@ export default function AdsLocationEditing() {
       >
         <Typography variant="h6">Location</Typography>
         <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+          <FormControl fullWidth>
+            <FormLabel htmlFor="lat">ID</FormLabel>
+            <ReadOnlyTextField value={location?.id} disabled />
+          </FormControl>
+
           <FormControl fullWidth>
             <FormLabel htmlFor="lat">Address</FormLabel>
             <ReadOnlyTextField value={location?.address} disabled />

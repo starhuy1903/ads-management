@@ -127,11 +127,11 @@ interface PermissionFormType {
   imageFiles: File[];
   companyEmail: string;
   companyPhone: string;
-  createdContractDate: Date;
-  expiredContractDate: Date;
+  createdContractDate: string;
+  expiredContractDate: string;
 }
 
-export default function CreateAdsPermission() {
+export default function AdsPanelCreating() {
   const dispatch = useAppDispatch();
 
   const { handleSubmit, register, control, formState, setValue, watch } =
@@ -148,8 +148,8 @@ export default function CreateAdsPermission() {
         imageFiles: [],
         companyEmail: '',
         companyPhone: '',
-        createdContractDate: new Date(),
-        expiredContractDate: new Date(),
+        createdContractDate: new Date().toISOString().split('T')[0],
+        expiredContractDate: new Date().toISOString().split('T')[0],
       },
     });
 
@@ -336,47 +336,45 @@ export default function CreateAdsPermission() {
             </FormHelperText>
           </FormControl>
 
-          <FormControl fullWidth error={!!formError.height}>
-            <FormLabel htmlFor="height">Height</FormLabel>
-            <TextField
-              type="number"
-              {...register('height', {
-                required: 'The height is required.',
-                validate: (value) => {
-                  if (value < 1) {
-                    return 'The height must be greater than 0.';
-                  }
-                  return true;
-                },
-              })}
-              id="height"
-              error={!!formError.height}
-              aria-describedby="height-helper-text"
-            />
-            <FormHelperText id="height-helper-text">
-              {formError.height?.message}
-            </FormHelperText>
-          </FormControl>
-
           <FormControl fullWidth error={!!formError.width}>
             <FormLabel htmlFor="width">Width</FormLabel>
             <TextField
               type="number"
               {...register('width', {
                 required: 'The width is required.',
-                validate: (value) => {
-                  if (value < 1) {
-                    return 'The width must be greater than 0.';
-                  }
-                  return true;
+                min: {
+                  value: 0,
+                  message: 'The width must be greater than 0.',
                 },
               })}
               id="width"
               error={!!formError.width}
               aria-describedby="width-helper-text"
+              inputProps={{ min: 0 }}
             />
             <FormHelperText id="width-helper-text">
               {formError.width?.message}
+            </FormHelperText>
+          </FormControl>
+
+          <FormControl fullWidth error={!!formError.height}>
+            <FormLabel htmlFor="height">Height</FormLabel>
+            <TextField
+              type="number"
+              {...register('height', {
+                required: 'The height is required.',
+                min: {
+                  value: 0,
+                  message: 'The height must be greater than 0.',
+                },
+              })}
+              id="height"
+              error={!!formError.height}
+              aria-describedby="height-helper-text"
+              inputProps={{ min: 0 }}
+            />
+            <FormHelperText id="height-helper-text">
+              {formError.height?.message}
             </FormHelperText>
           </FormControl>
 
@@ -386,18 +384,11 @@ export default function CreateAdsPermission() {
               type="number"
               {...register('quantity', {
                 required: 'The quantity is required.',
-                validate: (value) => {
-                  if (value < 1) {
-                    return 'The quantity must be greater than 0.';
-                  } else if (value > 3) {
-                    return 'The quantity must be less than 3.';
-                  }
-                  return true;
-                },
               })}
               id="quantity"
               error={!!formError.quantity}
               aria-describedby="quantity-helper-text"
+              inputProps={{ min: 1, max: 3 }}
             />
             <FormHelperText id="quantity-helper-text">
               {formError.quantity?.message}
