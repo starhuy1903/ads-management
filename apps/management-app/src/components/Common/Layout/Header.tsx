@@ -10,11 +10,14 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppSelector } from '@/store';
 import { useLogoutMutation } from '@/store/api/userApiSlice';
 import Logo from '@/assets/images/app-logo.png';
+import SearchBar from './SearchBar';
+import CloseIcon from '@mui/icons-material/Close';
+import { hideModal } from '@/store/slice/modal';
 
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
@@ -22,6 +25,12 @@ export default function Header() {
   const navigate = useNavigate();
   const isLoggedIn = useAppSelector((state) => state.user.isLoggedIn);
   const tokenId = useAppSelector((state) => state.user.token?.tokenId) || '';
+  const displaySidebar = useAppSelector((state) => state.sidebar);
+
+  const handleCloseSidebar = useCallback(() => {
+    hideModal();
+  }, [])
+  
   const [requestLogout] = useLogoutMutation();
 
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
@@ -51,10 +60,20 @@ export default function Header() {
     >
       <Container maxWidth={false}>
         <Toolbar disableGutters sx={{ justifyContent: 'space-between' }}>
-          <Link to="/">
-            <img src={Logo} alt="app-logo" width={50} />
-          </Link>
-
+          <Box display="flex" flexDirection="row" gap={2} alignItems="center">
+            <Link to="/">
+              <img src={Logo} alt="app-logo" width={36} height={36} />
+            </Link>
+            <SearchBar />
+            {displaySidebar ? (
+              <Box 
+                sx={{ cursor: "pointer"}}
+                onClick={handleCloseSidebar}
+              >
+                <CloseIcon />
+              </Box>
+            ) : null}
+          </Box>
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>

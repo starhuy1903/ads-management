@@ -8,22 +8,32 @@ import Map, {
   Marker,
   NavigationControl,
   Popup,
-  ScaleControl,
 } from 'react-map-gl';
 import { configs } from '@/configurations';
-import SearchBar from './SearchBar';
+import { useAppDispatch } from '@/store';
+import { showSidebar } from '@/store/slice/sidebar';
+import { SidebarKey } from '@/constants/sidebar';
 
-export default function Maps({ children }: { children: React.ReactNode }) {
+export default function Maps({ children }: { children?: React.ReactNode }) {
   const [showPopup, setShowPopup] = useState<boolean>(true);
+  
   const markerRef = useRef<mapboxgl.Marker>();
+  
+  const dispatch = useAppDispatch();
+  
+  const handleViewDetailAd = useCallback(() => {
+    dispatch(showSidebar(SidebarKey.AD_DETAIL, {
+      children: 'huhu'
+    }))
+  }, [dispatch]);
 
   // const popup = useMemo(() => {
   //   return mapboxgl.Popup().setText('Hello world!');
   // }, []);
 
-  const togglePopup = useCallback(() => {
-    markerRef.current?.togglePopup();
-  }, []);
+  // const togglePopup = useCallback(() => {
+  //   markerRef.current?.togglePopup();
+  // }, []);
 
   return (
     <Map
@@ -56,9 +66,9 @@ export default function Maps({ children }: { children: React.ReactNode }) {
         <Avatar
           sx={{ bgcolor: 'blue', width: 20, height: 20, fontSize: '12px' }}
           children="BC"
+          onClick={handleViewDetailAd}
         />
       </Marker>
-      <SearchBar />
       {showPopup && (
         <Popup
           longitude={-100}

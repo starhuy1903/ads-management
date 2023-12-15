@@ -1,7 +1,7 @@
 import { Box } from '@mui/material';
 import { useState } from 'react';
 import Maps from '@/components/Common/Maps';
-import Sidebar from './Sidebar';
+import SidebarContainer from '@/components/Common/Sidebar';
 
 export default function CitizenHome() {
   const [openSidebar, setOpenSidebar] = useState(false);
@@ -15,7 +15,7 @@ export default function CitizenHome() {
       zIndex={-1}
       display="flex"
     >
-      <Sidebar open={openSidebar} onOpen={setOpenSidebar} />
+      <SidebarContainer open={openSidebar} onOpen={setOpenSidebar} />
       <Maps />
     </Box>
   );
