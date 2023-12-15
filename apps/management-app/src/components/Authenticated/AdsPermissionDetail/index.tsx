@@ -1,4 +1,5 @@
 import { Box, Stack, TextField, Typography } from '@mui/material';
+import { BackButton } from '@/components/Common/Buttons';
 import { DetailTextField } from '@/components/Common/DetailTextField';
 import { AdsPermissionResponse } from '@/types/form';
 import { formatDate, formatDateTime } from '@/utils/format-date';
@@ -40,7 +41,8 @@ export default function AdsPermissionDetail() {
 
   return (
     <Box>
-      <Typography variant="h4" sx={{ mb: 2 }}>
+      <BackButton />
+      <Typography variant="h4" sx={{ my: 2 }}>
         Permission Details #{permission?.id}
       </Typography>
       <Box

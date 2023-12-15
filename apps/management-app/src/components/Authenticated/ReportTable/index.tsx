@@ -10,6 +10,7 @@ import {
   Typography,
 } from '@mui/material';
 import { Link } from 'react-router-dom';
+import { Info } from '@/components/Common/Icons';
 import { ReportResponse } from '@/types/form';
 import { formatDateTime } from '@/utils/format-date';
 
@@ -230,14 +231,13 @@ export default function ReportTable() {
               <TableCell align="center">Created</TableCell>
               <TableCell align="center">Modified</TableCell>
               <TableCell align="center">Status</TableCell>
+              <TableCell align="center"></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {rows.map((row: ReportResponse) => (
               <TableRow key={row?.id}>
-                <TableCell align="center">
-                  <Link to={`/reports/${row?.id}`}>{row?.id}</Link>
-                </TableCell>
+                <TableCell align="center">{row?.id}</TableCell>
                 <TableCell align="center">{row?.type}</TableCell>
                 <TableCell align="center">{row?.fullname}</TableCell>
                 <TableCell align="center">{row?.email}</TableCell>
@@ -250,6 +250,9 @@ export default function ReportTable() {
                   {formatDateTime(row?.modifiedTime)}
                 </TableCell>
                 <TableCell align="center">{row?.status}</TableCell>
+                <TableCell>
+                  <Info link={`/reports/${row?.id}`} />
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>

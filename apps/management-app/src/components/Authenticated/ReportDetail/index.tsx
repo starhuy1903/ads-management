@@ -6,6 +6,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
+import { BackButton } from '@/components/Common/Buttons';
 import { DetailTextField } from '@/components/Common/DetailTextField';
 import { formatDateTime } from '@/utils/format-date';
 
@@ -55,7 +56,8 @@ export default function ReportDetail() {
 
   return (
     <Box>
-      <Typography variant="h4" sx={{ mb: 2 }}>
+      <BackButton />
+      <Typography variant="h4" sx={{ my: 2 }}>
         Report Details #{report?.id}
       </Typography>
       <Box

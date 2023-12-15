@@ -9,7 +9,7 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Info } from '@/components/Common/Icons';
 import { AdsLocationResponse } from '@/types/form';
 import { formatDateTime } from '@/utils/format-date';
 
@@ -115,9 +115,7 @@ export default function AdsLocation() {
           <TableBody>
             {rows.map((row: AdsLocationResponse) => (
               <TableRow key={row?.id}>
-                <TableCell align="center">
-                  <Link to={`/locations/${row?.id}`}>{row?.id}</Link>
-                </TableCell>
+                <TableCell align="center">{row?.id}</TableCell>
                 <TableCell align="center">{row?.address}</TableCell>
                 <TableCell align="center">{row?.ward}</TableCell>
                 <TableCell align="center">{row?.commue}</TableCell>
@@ -131,6 +129,9 @@ export default function AdsLocation() {
                 </TableCell>
                 <TableCell align="center">
                   {formatDateTime(row?.modifiedTime)}
+                </TableCell>
+                <TableCell>
+                  <Info link={`/locations/${row?.id}`} />
                 </TableCell>
               </TableRow>
             ))}

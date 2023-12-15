@@ -2,7 +2,6 @@ import { DevTool } from '@hookform/devtools';
 import {
   Box,
   Button,
-  Container,
   FormControl,
   FormHelperText,
   FormLabel,
@@ -15,6 +14,7 @@ import {
 import { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useAppDispatch } from '@/store';
+import { BackButton } from '@/components/Common/Buttons';
 import { DetailTextField } from '@/components/Common/DetailTextField';
 import DropFileContainer from '@/components/Common/DropFileContainer';
 import ImagePreview from '@/components/Unauthenticated/Citizen/CitizenReport/ImagePreview';
@@ -23,6 +23,7 @@ import { ModalKey } from '@/constants/modal';
 import { ImageFileConfig } from '@/constants/validation';
 import { showModal } from '@/store/slice/modal';
 import { AdsLocationResponse } from '@/types/form';
+import { showSuccess } from '@/utils/toast';
 
 const PanelTypes = [
   {
@@ -231,11 +232,13 @@ export default function CreateAdsPermission() {
     setSubmitting(true);
     console.log(data);
     setSubmitting(false);
+    showSuccess('Create request successfully!');
   };
 
   return (
     <Box>
-      <Typography variant="h4" sx={{ mb: 2 }}>
+      <BackButton />
+      <Typography variant="h4" sx={{ my: 2 }}>
         Create Panel Licensing Request
       </Typography>
       <Box
@@ -351,7 +354,7 @@ export default function CreateAdsPermission() {
               aria-describedby="panelType-helper-text"
             >
               {PanelTypes.map((type) => (
-                <MenuItem key={type.id} value={type.id}>
+                <MenuItem key={type.id} value={type.value}>
                   {type.value}
                 </MenuItem>
               ))}

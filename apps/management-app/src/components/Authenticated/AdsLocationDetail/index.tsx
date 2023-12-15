@@ -1,4 +1,5 @@
 import { Box, Stack, Typography } from '@mui/material';
+import { BackButton } from '@/components/Common/Buttons';
 import { DetailTextField } from '@/components/Common/DetailTextField';
 import { formatDateTime } from '@/utils/format-date';
 
@@ -21,7 +22,8 @@ export default function AdsLocationDetail() {
 
   return (
     <Box>
-      <Typography variant="h4" sx={{ mb: 2 }}>
+      <BackButton />
+      <Typography variant="h4" sx={{ my: 2 }}>
         Advertising Location Details #{location?.id}
       </Typography>
       <Box

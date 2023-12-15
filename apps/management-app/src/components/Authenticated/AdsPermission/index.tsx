@@ -11,8 +11,10 @@ import {
   Typography,
 } from '@mui/material';
 import { Link } from 'react-router-dom';
+import { Delete, Info } from '@/components/Common/Icons';
 import { AdsPermissionResponse } from '@/types/form';
 import { formatDateTime } from '@/utils/format-date';
+import { showError, showSuccess } from '@/utils/toast';
 
 export default function AdsPermission() {
   const rows: AdsPermissionResponse[] = [
@@ -76,7 +78,7 @@ export default function AdsPermission() {
         modifiedTime: '2023-12-08T11:30:53.945Z',
       },
       reason: 'Advertise products and services for the company',
-      status: 'Approved',
+      status: 'Processing',
       createdTime: '2023-12-08T11:30:53.945Z',
       modifiedTime: '2023-12-08T11:30:53.945Z',
     },
@@ -140,7 +142,7 @@ export default function AdsPermission() {
         modifiedTime: '2023-12-08T11:30:53.945Z',
       },
       reason: 'Advertise products and services for the company',
-      status: 'Approved',
+      status: 'Processing',
       createdTime: '2023-12-08T11:30:53.945Z',
       modifiedTime: '2023-12-08T11:30:53.945Z',
     },
@@ -177,6 +179,20 @@ export default function AdsPermission() {
       modifiedTime: '2023-12-08T11:30:53.945Z',
     },
   ];
+
+  const handleDelete = (id: number) => {
+    const confirm = window.confirm('Are you sure to delete this request?');
+
+    if (confirm) {
+      try {
+        // Call API to delete
+        showSuccess(`Delete request #${id} successfully!`);
+      } catch (error) {
+        console.log(error);
+        showError(`Delete request #${id} failed!`);
+      }
+    }
+  };
 
   return (
     <Box>
@@ -216,14 +232,13 @@ export default function AdsPermission() {
               <TableCell align="center">Created</TableCell>
               <TableCell align="center">Modified</TableCell>
               <TableCell align="center">Status</TableCell>
+              <TableCell align="center"></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {rows.map((row: AdsPermissionResponse) => (
               <TableRow key={row?.id}>
-                <TableCell align="center">
-                  <Link to={`/permissions/${row?.id}`}>{row?.id}</Link>
-                </TableCell>
+                <TableCell align="center">{row?.id}</TableCell>
                 <TableCell align="center">{row?.type}</TableCell>
                 <TableCell align="center">{row?.panel?.panelType}</TableCell>
                 <TableCell align="center">{row?.panel?.quantity}</TableCell>
@@ -243,6 +258,13 @@ export default function AdsPermission() {
                   {formatDateTime(row?.modifiedTime)}
                 </TableCell>
                 <TableCell align="center">{row?.status}</TableCell>
+                <TableCell>
+                  <Info link={`/permissions/${row?.id}`} />
+
+                  {row?.status !== 'Approved' && (
+                    <Delete onClick={() => handleDelete(row?.id)} />
+                  )}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>

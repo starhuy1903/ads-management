@@ -9,7 +9,7 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Info } from '@/components/Common/Icons';
 import { AdsPanelResponse } from '@/types/form';
 import { formatDate, formatDateTime } from '@/utils/format-date';
 
@@ -156,19 +156,17 @@ export default function AdsPanel() {
               <TableCell align="center">Ended</TableCell>
               <TableCell align="center">Created</TableCell>
               <TableCell align="center">Modified</TableCell>
+              <TableCell align="center"></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {rows.map((row: AdsPanelResponse) => (
               <TableRow key={row?.id}>
-                <TableCell align="center">
-                  <Link to={`/panels/${row?.id}`}>{row?.id}</Link>
-                </TableCell>
+                <TableCell align="center">{row?.id}</TableCell>
                 <TableCell align="center">{row?.panelType}</TableCell>
                 <TableCell align="center">{row?.location?.address}</TableCell>
                 <TableCell align="center">{row?.location?.ward}</TableCell>
                 <TableCell align="center">{row?.location?.commue}</TableCell>
-
                 <TableCell align="center">{row?.company?.email}</TableCell>
                 <TableCell align="center">
                   {formatDate(row?.company?.createdContractDate)}
@@ -181,6 +179,9 @@ export default function AdsPanel() {
                 </TableCell>
                 <TableCell align="center">
                   {formatDateTime(row?.modifiedTime)}
+                </TableCell>
+                <TableCell>
+                  <Info link={`/panels/${row?.id}`} />
                 </TableCell>
               </TableRow>
             ))}
