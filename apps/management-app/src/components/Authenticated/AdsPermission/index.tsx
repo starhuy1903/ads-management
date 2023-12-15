@@ -259,11 +259,19 @@ export default function AdsPermission() {
                 </TableCell>
                 <TableCell align="center">{row?.status}</TableCell>
                 <TableCell>
-                  <Info link={`/permissions/${row?.id}`} />
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      gap: 2,
+                      height: '100%',
+                    }}
+                  >
+                    <Info link={`/permissions/${row?.id}`} />
 
-                  {row?.status !== 'Approved' && (
-                    <Delete onClick={() => handleDelete(row?.id)} />
-                  )}
+                    {row?.status !== 'Approved' && (
+                      <Delete onClick={() => handleDelete(row?.id)} />
+                    )}
+                  </Box>
                 </TableCell>
               </TableRow>
             ))}

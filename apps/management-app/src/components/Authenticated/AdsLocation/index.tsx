@@ -9,7 +9,7 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
-import { Info } from '@/components/Common/Icons';
+import { Edit, Info } from '@/components/Common/Icons';
 import { AdsLocationResponse } from '@/types/form';
 import { formatDateTime } from '@/utils/format-date';
 
@@ -110,6 +110,7 @@ export default function AdsLocation() {
               <TableCell align="center">Planned</TableCell>
               <TableCell align="center">Created</TableCell>
               <TableCell align="center">Modified</TableCell>
+              <TableCell align="center"></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -131,7 +132,15 @@ export default function AdsLocation() {
                   {formatDateTime(row?.modifiedTime)}
                 </TableCell>
                 <TableCell>
-                  <Info link={`/locations/${row?.id}`} />
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      gap: 2,
+                    }}
+                  >
+                    <Info link={`/locations/${row?.id}`} />
+                    <Edit link={`/locations/${row?.id}/edit`} />
+                  </Box>
                 </TableCell>
               </TableRow>
             ))}

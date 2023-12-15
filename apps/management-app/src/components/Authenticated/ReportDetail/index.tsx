@@ -7,7 +7,7 @@ import {
   Typography,
 } from '@mui/material';
 import { BackButton } from '@/components/Common/Buttons';
-import { DetailTextField } from '@/components/Common/DetailTextField';
+import { ReadOnlyTextField } from '@/components/Common/ReadOnlyTextField';
 import { formatDateTime } from '@/utils/format-date';
 
 export default function ReportDetail() {
@@ -76,26 +76,26 @@ export default function ReportDetail() {
             Report information
           </Typography>
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-            <DetailTextField label="ID" value={report?.id} />
+            <ReadOnlyTextField label="ID" value={report?.id} />
 
-            <DetailTextField label="Type" value={report?.type} />
+            <ReadOnlyTextField label="Type" value={report?.type} />
 
-            <DetailTextField
+            <ReadOnlyTextField
               label="Object"
               value={`${report?.targetType === 'panel' ? 'Panel' : 'Location'}`}
             />
 
-            <DetailTextField
+            <ReadOnlyTextField
               label="Created"
               value={formatDateTime(report?.createdTime)}
             />
 
-            <DetailTextField
+            <ReadOnlyTextField
               label="Modified"
               value={formatDateTime(report?.modifiedTime)}
             />
 
-            <DetailTextField label="Status" value={report?.status} />
+            <ReadOnlyTextField label="Status" value={report?.status} />
           </Stack>
 
           {/* Advertising Location/Panel */}
@@ -103,44 +103,44 @@ export default function ReportDetail() {
             {report?.targetType === 'panel' ? 'Panel' : 'Location'}
           </Typography>
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-            <DetailTextField label="ID" value={report?.target?.id} />
+            <ReadOnlyTextField label="ID" value={report?.target?.id} />
 
-            <DetailTextField
+            <ReadOnlyTextField
               label="Panel type"
               value={report?.target?.panelType}
             />
 
-            <DetailTextField label="Width" value={report?.target?.width} />
+            <ReadOnlyTextField label="Width" value={report?.target?.width} />
 
-            <DetailTextField label="Height" value={report?.target?.height} />
+            <ReadOnlyTextField label="Height" value={report?.target?.height} />
 
-            <DetailTextField
+            <ReadOnlyTextField
               label="Quantity"
               value={report?.target?.quantity}
             />
           </Stack>
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-            <DetailTextField
+            <ReadOnlyTextField
               label="Address"
               value={report?.target?.location?.address}
             />
 
-            <DetailTextField
+            <ReadOnlyTextField
               label="Ward"
               value={report?.target?.location?.ward}
             />
 
-            <DetailTextField
+            <ReadOnlyTextField
               label="District"
               value={report?.target?.location?.commue}
             />
 
-            <DetailTextField
+            <ReadOnlyTextField
               label="Position type"
               value={report?.target?.location?.positionType}
             />
 
-            <DetailTextField
+            <ReadOnlyTextField
               label="Advertising type"
               value={report?.target?.location?.adsType}
             />
@@ -151,11 +151,11 @@ export default function ReportDetail() {
             Reporter information
           </Typography>
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-            <DetailTextField label="Full name" value={report?.fullname} />
+            <ReadOnlyTextField label="Full name" value={report?.fullname} />
 
-            <DetailTextField label="Email" value={report?.email} />
+            <ReadOnlyTextField label="Email" value={report?.email} />
 
-            <DetailTextField label="Phone" value={report?.phone} />
+            <ReadOnlyTextField label="Phone" value={report?.phone} />
           </Stack>
           <TextField
             label="Content"

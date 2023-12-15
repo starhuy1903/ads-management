@@ -1,6 +1,6 @@
 import { TextField } from '@mui/material';
 
-export function DetailTextField({
+export function ReadOnlyTextField({
   label,
   value,
   disabled = false,

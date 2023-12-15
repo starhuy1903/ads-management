@@ -15,8 +15,8 @@ import { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useAppDispatch } from '@/store';
 import { BackButton } from '@/components/Common/Buttons';
-import { DetailTextField } from '@/components/Common/DetailTextField';
 import DropFileContainer from '@/components/Common/DropFileContainer';
+import { ReadOnlyTextField } from '@/components/Common/ReadOnlyTextField';
 import ImagePreview from '@/components/Unauthenticated/Citizen/CitizenReport/ImagePreview';
 import UploadImageCard from '@/components/Unauthenticated/Citizen/CitizenReport/UploadImageCard';
 import { ModalKey } from '@/constants/modal';
@@ -26,46 +26,16 @@ import { AdsLocationResponse } from '@/types/form';
 import { showSuccess } from '@/utils/toast';
 
 const PanelTypes = [
-  {
-    id: 1,
-    value: 'Trụ bảng hiflex',
-  },
-  {
-    id: 2,
-    value: 'Trụ màn hình điện tử LED',
-  },
-  {
-    id: 3,
-    value: 'Trụ hộp đèn',
-  },
-  {
-    id: 4,
-    value: 'Bảng hiflex ốp tường',
-  },
-  {
-    id: 5,
-    value: 'Màn hình điện tử ốp tường',
-  },
-  {
-    id: 6,
-    value: 'Trụ treo băng rôn dọc',
-  },
-  {
-    id: 7,
-    value: 'Trụ treo băng rôn ngang',
-  },
-  {
-    id: 8,
-    value: 'Trụ/Cụm pano',
-  },
-  {
-    id: 9,
-    value: 'Cổng chào',
-  },
-  {
-    id: 10,
-    value: 'Trung tâm thương mại',
-  },
+  'Hiflex table pillar',
+  'LED electronic screen pillar',
+  'Light box pillar',
+  'Hiflex wall panels',
+  'Wall mounted electronic screen',
+  'Vertical banner hanger',
+  'Horizontal banner hanger',
+  'Pillar/Panel cluster',
+  'Welcome gate',
+  'Shopping mall',
 ];
 
 const rows: AdsLocationResponse[] = [
@@ -171,7 +141,7 @@ export default function CreateAdsPermission() {
         type: 1,
         reason: '',
         panelType: '',
-        locationId: 1,
+        locationId: rows[0].id,
         width: 0,
         height: 0,
         quantity: 0,
@@ -269,6 +239,7 @@ export default function CreateAdsPermission() {
                 id="locationId"
                 {...register('locationId')}
                 aria-describedby="locationId-helper-text"
+                defaultValue={rows[0].id}
               >
                 {rows.map((row) => (
                   <MenuItem key={row.id} value={row.id}>
@@ -283,7 +254,7 @@ export default function CreateAdsPermission() {
 
             <FormControl fullWidth>
               <FormLabel htmlFor="ward">Ward</FormLabel>
-              <DetailTextField
+              <ReadOnlyTextField
                 value={
                   rows.find((row) => row.id === formValue.locationId)?.ward
                 }
@@ -293,7 +264,7 @@ export default function CreateAdsPermission() {
 
             <FormControl fullWidth>
               <FormLabel htmlFor="district">District</FormLabel>
-              <DetailTextField
+              <ReadOnlyTextField
                 value={
                   rows.find((row) => row.id === formValue.locationId)?.commue
                 }
@@ -303,7 +274,7 @@ export default function CreateAdsPermission() {
 
             <FormControl fullWidth>
               <FormLabel htmlFor="lat">Latitude</FormLabel>
-              <DetailTextField
+              <ReadOnlyTextField
                 value={rows.find((row) => row.id === formValue.locationId)?.lat}
                 disabled
               />
@@ -311,7 +282,7 @@ export default function CreateAdsPermission() {
 
             <FormControl fullWidth>
               <FormLabel htmlFor="long">Longtitude</FormLabel>
-              <DetailTextField
+              <ReadOnlyTextField
                 value={
                   rows.find((row) => row.id === formValue.locationId)?.long
                 }
@@ -323,7 +294,7 @@ export default function CreateAdsPermission() {
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
             <FormControl fullWidth>
               <FormLabel htmlFor="positionType">Position type</FormLabel>
-              <DetailTextField
+              <ReadOnlyTextField
                 value={
                   rows.find((row) => row.id === formValue.locationId)
                     ?.positionType
@@ -334,7 +305,7 @@ export default function CreateAdsPermission() {
 
             <FormControl fullWidth>
               <FormLabel htmlFor="adsType">Ads type</FormLabel>
-              <DetailTextField
+              <ReadOnlyTextField
                 value={
                   rows.find((row) => row.id === formValue.locationId)?.adsType
                 }
@@ -347,15 +318,16 @@ export default function CreateAdsPermission() {
         <Typography variant="h6">Panel</Typography>
         <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
           <FormControl fullWidth error={!!formError.panelType}>
-            <FormLabel htmlFor="reportType">Panel type</FormLabel>
+            <FormLabel htmlFor="panelType">Panel type</FormLabel>
             <Select
               id="panelType"
               {...register('panelType')}
               aria-describedby="panelType-helper-text"
+              defaultValue={PanelTypes[0]}
             >
               {PanelTypes.map((type) => (
-                <MenuItem key={type.id} value={type.value}>
-                  {type.value}
+                <MenuItem key={type} value={type}>
+                  {type}
                 </MenuItem>
               ))}
             </Select>

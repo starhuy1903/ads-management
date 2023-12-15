@@ -9,12 +9,12 @@ import { useGetProfileQuery } from '@/store/api/userApiSlice';
 import { checkRole } from '@/store/slice/userSlice';
 import AdsLocation from './Authenticated/AdsLocation';
 import AdsLocationDetail from './Authenticated/AdsLocationDetail';
+import AdsLocationEditing from './Authenticated/AdsLocationEditing';
 import AdsPanel from './Authenticated/AdsPanel';
 import AdsPanelDetail from './Authenticated/AdsPanelDetail';
 import AdsPermission from './Authenticated/AdsPermission';
 import AdsPermissionDetail from './Authenticated/AdsPermissionDetail';
 import CreateAdsPermission from './Authenticated/CreateAdsPermission';
-import CreateEditing from './Authenticated/CreateEditing';
 import Home from './Authenticated/Home';
 import OfficerLayout from './Authenticated/Layout/OfficerLayout';
 import ReportDetail from './Authenticated/ReportDetail';
@@ -96,8 +96,8 @@ const officerRoutes = createBrowserRouter([
         element: <AdsPanelDetail />,
       },
       {
-        path: 'locations/edit',
-        element: <CreateEditing />,
+        path: 'locations/:locationId/edit',
+        element: <AdsLocationEditing />,
       },
       {
         path: 'reports',

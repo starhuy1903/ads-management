@@ -1,6 +1,6 @@
 import { Box, Stack, TextField, Typography } from '@mui/material';
 import { BackButton } from '@/components/Common/Buttons';
-import { DetailTextField } from '@/components/Common/DetailTextField';
+import { ReadOnlyTextField } from '@/components/Common/ReadOnlyTextField';
 import { AdsPermissionResponse } from '@/types/form';
 import { formatDate, formatDateTime } from '@/utils/format-date';
 
@@ -60,21 +60,21 @@ export default function AdsPermissionDetail() {
             Information
           </Typography>
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-            <DetailTextField label="ID" value={permission?.id} />
+            <ReadOnlyTextField label="ID" value={permission?.id} />
 
-            <DetailTextField label="Type" value={permission?.type} />
+            <ReadOnlyTextField label="Type" value={permission?.type} />
 
-            <DetailTextField
+            <ReadOnlyTextField
               label="Created"
               value={formatDateTime(permission?.createdTime)}
             />
 
-            <DetailTextField
+            <ReadOnlyTextField
               label="Modified"
               value={formatDateTime(permission?.modifiedTime)}
             />
 
-            <DetailTextField label="Status" value={permission?.status} />
+            <ReadOnlyTextField label="Status" value={permission?.status} />
           </Stack>
 
           <TextField
@@ -90,28 +90,31 @@ export default function AdsPermissionDetail() {
             Panel
           </Typography>
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-            <DetailTextField label="ID" value={permission?.panel?.id} />
+            <ReadOnlyTextField label="ID" value={permission?.panel?.id} />
 
-            <DetailTextField
+            <ReadOnlyTextField
               label="Panel type"
               value={permission?.panel?.panelType}
             />
 
-            <DetailTextField label="Width" value={permission?.panel?.width} />
+            <ReadOnlyTextField label="Width" value={permission?.panel?.width} />
 
-            <DetailTextField label="Height" value={permission?.panel?.height} />
+            <ReadOnlyTextField
+              label="Height"
+              value={permission?.panel?.height}
+            />
 
-            <DetailTextField
+            <ReadOnlyTextField
               label="Quantity"
               value={permission?.panel?.quantity}
             />
 
-            <DetailTextField
+            <ReadOnlyTextField
               label="Created"
               value={formatDateTime(permission?.panel?.createdTime)}
             />
 
-            <DetailTextField
+            <ReadOnlyTextField
               label="Modified"
               value={formatDateTime(permission?.panel?.modifiedTime)}
             />
@@ -131,32 +134,32 @@ export default function AdsPermissionDetail() {
             Location
           </Typography>
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-            <DetailTextField
+            <ReadOnlyTextField
               label="ID"
               value={permission?.panel?.location?.id}
             />
 
-            <DetailTextField
+            <ReadOnlyTextField
               label="Address"
               value={permission?.panel?.location?.address}
             />
 
-            <DetailTextField
+            <ReadOnlyTextField
               label="Ward"
               value={permission?.panel?.location?.ward}
             />
 
-            <DetailTextField
+            <ReadOnlyTextField
               label="District"
               value={permission?.panel?.location?.commue}
             />
 
-            <DetailTextField
+            <ReadOnlyTextField
               label="Position type"
               value={permission?.panel?.location?.positionType}
             />
 
-            <DetailTextField
+            <ReadOnlyTextField
               label="Advertising type"
               value={permission?.panel?.location?.adsType}
             />
@@ -166,24 +169,24 @@ export default function AdsPermissionDetail() {
             Company
           </Typography>
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-            <DetailTextField
+            <ReadOnlyTextField
               label="Email"
               value={permission?.panel?.company?.email}
             />
 
-            <DetailTextField
+            <ReadOnlyTextField
               label="Phone"
               value={permission?.panel?.company?.phone}
             />
 
-            <DetailTextField
+            <ReadOnlyTextField
               label="Created contract date"
               value={formatDate(
                 permission?.panel?.company?.createdContractDate,
               )}
             />
 
-            <DetailTextField
+            <ReadOnlyTextField
               label="Expired contract date"
               value={formatDate(
                 permission?.panel?.company?.expiredContractDate,

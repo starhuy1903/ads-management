@@ -1,6 +1,6 @@
 import { Box, Stack, Typography } from '@mui/material';
 import { BackButton } from '@/components/Common/Buttons';
-import { DetailTextField } from '@/components/Common/DetailTextField';
+import { ReadOnlyTextField } from '@/components/Common/ReadOnlyTextField';
 import { formatDateTime } from '@/utils/format-date';
 
 export default function AdsLocationDetail() {
@@ -41,19 +41,19 @@ export default function AdsLocationDetail() {
             Information
           </Typography>
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-            <DetailTextField label="ID" value={location?.id} />
+            <ReadOnlyTextField label="ID" value={location?.id} />
 
-            <DetailTextField
+            <ReadOnlyTextField
               label="Created"
               value={formatDateTime(location?.createdTime)}
             />
 
-            <DetailTextField
+            <ReadOnlyTextField
               label="Modified"
               value={formatDateTime(location?.modifiedTime)}
             />
 
-            <DetailTextField
+            <ReadOnlyTextField
               label="Planned"
               value={location?.isPlanning ? 'Yes' : 'No'}
             />
@@ -63,27 +63,27 @@ export default function AdsLocationDetail() {
             Location
           </Typography>
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-            <DetailTextField label="Address" value={location?.address} />
+            <ReadOnlyTextField label="Address" value={location?.address} />
 
-            <DetailTextField label="Ward" value={location?.ward} />
+            <ReadOnlyTextField label="District" value={location?.commue} />
 
-            <DetailTextField label="District" value={location?.commue} />
+            <ReadOnlyTextField label="Ward" value={location?.ward} />
 
-            <DetailTextField label="Latitude" value={location?.lat} />
+            <ReadOnlyTextField label="Latitude" value={location?.lat} />
 
-            <DetailTextField label="Longitude" value={location?.long} />
+            <ReadOnlyTextField label="Longitude" value={location?.long} />
           </Stack>
 
           <Typography variant="h6" sx={{ mb: 2 }}>
             Classification
           </Typography>
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-            <DetailTextField
+            <ReadOnlyTextField
               label="Position type"
               value={location?.positionType}
             />
 
-            <DetailTextField
+            <ReadOnlyTextField
               label="Advertising type"
               value={location?.adsType}
             />

@@ -9,7 +9,7 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
-import { Info } from '@/components/Common/Icons';
+import { Edit, Info } from '@/components/Common/Icons';
 import { AdsPanelResponse } from '@/types/form';
 import { formatDate, formatDateTime } from '@/utils/format-date';
 
@@ -181,7 +181,15 @@ export default function AdsPanel() {
                   {formatDateTime(row?.modifiedTime)}
                 </TableCell>
                 <TableCell>
-                  <Info link={`/panels/${row?.id}`} />
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      gap: 2,
+                    }}
+                  >
+                    <Info link={`/panels/${row?.id}`} />
+                    <Edit link={`/panels/${row?.id}/edit`} />
+                  </Box>
                 </TableCell>
               </TableRow>
             ))}

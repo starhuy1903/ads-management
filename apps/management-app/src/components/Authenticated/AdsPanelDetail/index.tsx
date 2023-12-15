@@ -1,6 +1,6 @@
 import { Box, Stack, Typography } from '@mui/material';
 import { BackButton } from '@/components/Common/Buttons';
-import { DetailTextField } from '@/components/Common/DetailTextField';
+import { ReadOnlyTextField } from '@/components/Common/ReadOnlyTextField';
 import { AdsPanelResponse } from '@/types/form';
 import { formatDate, formatDateTime } from '@/utils/format-date';
 
@@ -52,22 +52,22 @@ export default function AdsPanelDetail() {
             Panel
           </Typography>
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-            <DetailTextField label="ID" value={panel?.id} />
+            <ReadOnlyTextField label="ID" value={panel?.id} />
 
-            <DetailTextField label="Panel type" value={panel?.panelType} />
+            <ReadOnlyTextField label="Panel type" value={panel?.panelType} />
 
-            <DetailTextField label="Width" value={panel?.width} />
+            <ReadOnlyTextField label="Width" value={panel?.width} />
 
-            <DetailTextField label="Height" value={panel?.height} />
+            <ReadOnlyTextField label="Height" value={panel?.height} />
 
-            <DetailTextField label="Quantity" value={panel?.quantity} />
+            <ReadOnlyTextField label="Quantity" value={panel?.quantity} />
 
-            <DetailTextField
+            <ReadOnlyTextField
               label="Created"
               value={formatDateTime(panel?.createdTime)}
             />
 
-            <DetailTextField
+            <ReadOnlyTextField
               label="Modified"
               value={formatDateTime(panel?.modifiedTime)}
             />
@@ -82,20 +82,26 @@ export default function AdsPanelDetail() {
             Location
           </Typography>
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-            <DetailTextField label="ID" value={panel?.location?.id} />
+            <ReadOnlyTextField label="ID" value={panel?.location?.id} />
 
-            <DetailTextField label="Address" value={panel?.location?.address} />
+            <ReadOnlyTextField
+              label="Address"
+              value={panel?.location?.address}
+            />
 
-            <DetailTextField label="Ward" value={panel?.location?.ward} />
+            <ReadOnlyTextField label="Ward" value={panel?.location?.ward} />
 
-            <DetailTextField label="District" value={panel?.location?.commue} />
+            <ReadOnlyTextField
+              label="District"
+              value={panel?.location?.commue}
+            />
 
-            <DetailTextField
+            <ReadOnlyTextField
               label="Position type"
               value={panel?.location?.positionType}
             />
 
-            <DetailTextField
+            <ReadOnlyTextField
               label="Advertising type"
               value={panel?.location?.adsType}
             />
@@ -105,16 +111,16 @@ export default function AdsPanelDetail() {
             Company
           </Typography>
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-            <DetailTextField label="Email" value={panel?.company?.email} />
+            <ReadOnlyTextField label="Email" value={panel?.company?.email} />
 
-            <DetailTextField label="Phone" value={panel?.company?.phone} />
+            <ReadOnlyTextField label="Phone" value={panel?.company?.phone} />
 
-            <DetailTextField
+            <ReadOnlyTextField
               label="Created contract date"
               value={formatDate(panel?.company?.createdContractDate)}
             />
 
-            <DetailTextField
+            <ReadOnlyTextField
               label="Expired contract date"
               value={formatDate(panel?.company?.expiredContractDate)}
             />
