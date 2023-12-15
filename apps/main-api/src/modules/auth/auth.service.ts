@@ -1,22 +1,22 @@
 import {
+  BadRequestException,
   ForbiddenException,
   HttpException,
   HttpStatus,
   Injectable,
 } from '@nestjs/common';
 import { PrismaService } from '../../services/prisma/prisma.service';
-import { ResetPasswordDto, SignInDto, CreateUserDto } from './dto';
+import { SignInDto, CreateUserDto } from './dto';
 import * as argon from 'argon2';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { JwtService } from '@nestjs/jwt';
 import { ITokenPayload } from './interfaces/ITokenPayload';
-// import { MailService } from '../mail/mail.service';
-// import { ScheduleMailReq, SchedulePriority } from '../proto/mail-schedule.pb';
-import moment from 'moment-timezone';
 
 import dayjs from 'dayjs';
 
-import { user } from '@prisma/client';
+import { UserRole, user } from '@prisma/client';
+import { SendMailTemplateDto } from '../../services/mail/mail.dto';
+import { MailService } from '../../services/mail/mail.service';
 
 const getAccessExpiry = () => dayjs().add(5, 's').toDate();
 const getRefreshExpiry = () => dayjs().add(1, 'd').toDate();
@@ -25,7 +25,8 @@ const getRefreshExpiry = () => dayjs().add(1, 'd').toDate();
 export class AuthService {
   constructor(
     private prismaService: PrismaService,
-    private jwtService: JwtService, // private readonly mailService: MailService,
+    private jwtService: JwtService,
+    private readonly mailService: MailService,
   ) {}
 
   async createUser(dto: CreateUserDto) {
@@ -46,21 +47,13 @@ export class AuthService {
       );
     }
 
-    // Validate role_id
-    const role = await this.prismaService.role.findUnique({
-      where: {
-        id: dto.role_id,
-      },
-    });
-
-    if (!role) {
-      throw new HttpException(
-        {
-          success: false,
-          message: 'Invalid role',
-        },
-        HttpStatus.BAD_REQUEST,
-      );
+    // Validate role
+    const role = dto.role as UserRole;
+    if (!Object.values(UserRole).includes(role)) {
+      throw new BadRequestException({
+        success: false,
+        message: 'Invalid user role',
+      });
     }
 
     // Hash password
@@ -73,7 +66,7 @@ export class AuthService {
           password: password,
           first_name: dto.first_name,
           last_name: dto.last_name,
-          role_id: role.id,
+          role: role,
         },
       });
 
@@ -105,8 +98,16 @@ export class AuthService {
   }
 
   async handeleSignIn(user: user) {
-    const { refreshToken } = await this.getJwtRefreshToken(user.id, user.email);
-    const { accessToken } = await this.getJwtAccessToken(user.id, user.email);
+    const { refreshToken } = await this.getJwtRefreshToken(
+      user.id,
+      user.email,
+      user.role,
+    );
+    const { accessToken } = await this.getJwtAccessToken(
+      user.id,
+      user.email,
+      user.role,
+    );
 
     try {
       const hash = await argon.hash(refreshToken);
@@ -134,7 +135,7 @@ export class AuthService {
           last_name: user.last_name,
           phone_number: user.phone_number,
           dob: user.dob,
-          role_id: user.role_id,
+          role: user.role,
         },
       };
     } catch (err) {
@@ -298,7 +299,7 @@ export class AuthService {
     if (!user) {
       throw new ForbiddenException({
         success: false,
-        message: 'User not found',
+        message: 'Invalid email',
       });
     }
 
@@ -316,36 +317,38 @@ export class AuthService {
     const { verificationToken } = await this.getJwtVerificationToken(
       user.id,
       user.email,
+      user.role,
     );
 
     // Generate verification link
     const verificationLink = `http://localhost:3000/reset-password?token=${verificationToken}`; // Replace with frontend url
 
     // Send verification email with token
-    // Todo: Send email
-    // const templateData = {
-    //   fullname: user.name,
-    //   link: verificationLink,
-    // };
-    // const data: ScheduleMailReq = {
-    //   name: 'Send mail verify account',
-    //   priority: SchedulePriority.normal,
-    //   time: moment().format(),
-    //   maxRetry: 3,
-    //   mailInfo: {
-    //     toAddresses: [user.email],
-    //     ccAddresses: [user.email],
-    //     bccAddresses: [user.email],
-    //     template: 'change_password_request',
-    //     templateData: JSON.stringify(templateData),
-    //   },
-    // };
-    // await this.mailService.scheduleMail(data).toPromise();
-
-    // Currently returning verification link for testing
-    return {
-      verificationLink,
+    const templateData = {
+      fullname: user.first_name + ' ' + user.last_name,
+      link: verificationLink,
     };
+
+    const userEmail = user.email;
+    const data: SendMailTemplateDto = {
+      toAddresses: [userEmail],
+      ccAddresses: [userEmail],
+      bccAddresses: [userEmail],
+      template: 'change_password_request',
+      templateData: JSON.stringify(templateData),
+    };
+
+    try {
+      await this.mailService.sendEmailTemplate(data);
+    } catch (err) {
+      throw new HttpException(
+        {
+          success: false,
+          message: 'Forgot password email failed to send',
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   async resetPassword(userId: number, newPassword: string) {
@@ -390,8 +393,8 @@ export class AuthService {
     };
   }
 
-  public async getJwtRefreshToken(sub: number, email: string) {
-    const payload: ITokenPayload = { sub, email };
+  public async getJwtRefreshToken(sub: number, email: string, role: string) {
+    const payload: ITokenPayload = { sub, email, role };
     const refreshToken = await this.jwtService.signAsync(payload, {
       secret: process.env.JWT_RT_SECRET,
       expiresIn: process.env.JWT_RT_EXPIRES,
@@ -401,8 +404,8 @@ export class AuthService {
     };
   }
 
-  async getJwtAccessToken(sub: number, email: string) {
-    const payload: ITokenPayload = { sub, email };
+  async getJwtAccessToken(sub: number, email: string, role: string) {
+    const payload: ITokenPayload = { sub, email, role };
     const accessToken = await this.jwtService.signAsync(payload, {
       secret: process.env.JWT_AT_SECRET,
       expiresIn: process.env.JWT_AT_EXPIRES,
@@ -412,8 +415,8 @@ export class AuthService {
     };
   }
 
-  async getJwtVerificationToken(sub: number, email: string) {
-    const payload: ITokenPayload = { sub, email };
+  async getJwtVerificationToken(sub: number, email: string, role: string) {
+    const payload: ITokenPayload = { sub, email, role };
     const verificationToken = await this.jwtService.signAsync(payload, {
       secret: process.env.JWT_VT_SECRET,
       expiresIn: process.env.JWT_VT_EXPIRES,
@@ -427,11 +430,13 @@ export class AuthService {
     const { accessToken } = await this.getJwtAccessToken(
       payload.sub,
       payload.email,
+      payload.role,
     );
 
     const { refreshToken: newRefreshToken } = await this.getJwtRefreshToken(
       payload.sub,
       payload.email,
+      payload.role,
     );
 
     const hash = await argon.hash(newRefreshToken);

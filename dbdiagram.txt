@@ -89,7 +89,7 @@ Table user { // User - Các phân hệ Cán bộ
   last_name string
   phone_number string
   dob Datetime
-  role ENUM // [Ward officer - Cán bộ Phường, District officer - Cán bộ Quận, Department officer - Cán bộ Sở]
+  role ENUM // [WARD_OFFICER - Cán bộ Phường, DISTRICT_OFFICER - Cán bộ Quận, DEPARTMENT_OFFICER - Cán bộ Sở]
   account_verified Boolean // Đã xác thực tài khoản
   reset_password Boolean // Đang reset mật khẩu
   created_at Datetime

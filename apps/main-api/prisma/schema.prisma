@@ -8,7 +8,7 @@ datasource db {
 }
 
 model panel {
-  id                    Int        @id @default(autoincrement())
+  id                    Int           @id @default(autoincrement())
   type_id               Int
   width                 Decimal
   height                Decimal
@@ -18,10 +18,11 @@ model panel {
   expired_contract_date DateTime
   company_email         String
   company_number        String
-  created_time          DateTime   @default(now())
-  modified_time         DateTime   @updatedAt
-  location              location   @relation(fields: [location_id], references: [id])
-  type                  panel_type @relation(fields: [type_id], references: [id])
+  created_time          DateTime      @default(now())
+  modified_time         DateTime      @updatedAt
+  ads_request           ads_request[]
+  location              location      @relation(fields: [location_id], references: [id])
+  type                  panel_type    @relation(fields: [type_id], references: [id])
   report                report[]
 }
 
@@ -44,6 +45,7 @@ model location {
   image_urls    String[]
   created_time  DateTime           @default(now())
   modified_time DateTime           @updatedAt
+  ads_request   ads_request[]
   ad_type       advertisement_type @relation(fields: [ad_type_id], references: [id])
   district      district           @relation(fields: [district_id], references: [id])
   type          location_type      @relation(fields: [type_id], references: [id])
@@ -85,11 +87,15 @@ model ads_request {
   reason           String
   status           String           @db.VarChar(255)
   target_type      String           @db.VarChar(255)
-  target_id        Int
   user_id          Int
+  location_id      Int?
+  panel_id         Int?
   createdAt        DateTime         @default(now())
   updatedAt        DateTime
   ads_request_type ads_request_type @relation(fields: [type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_ads_request_adsrequesttype")
+  location         location?        @relation(fields: [location_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_ads_request_location")
+  panel            panel?           @relation(fields: [panel_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_ads_request_panel")
+  user             user             @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_ads_request_user")
 }
 
 model ads_request_type {
@@ -124,19 +130,19 @@ model report_type {
 }
 
 model user {
-  id               Int      @id @default(autoincrement())
-  email            String   @unique
-  password         String
-  first_name       String
-  last_name        String
-  phone_number     String?
-  dob              DateTime?
-  role_id          Int
-  reset_password   Boolean  @default(false)
-  created_at       DateTime @default(now())
-  modified_at      DateTime @updatedAt
-  tokens           token[]
-  role             role     @relation(fields: [role_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_user_role")
+  id             Int           @id @default(autoincrement())
+  email          String        @unique
+  password       String
+  first_name     String
+  last_name      String
+  phone_number   String?
+  dob            DateTime?
+  reset_password Boolean       @default(false)
+  created_at     DateTime      @default(now())
+  modified_at    DateTime      @updatedAt
+  role           UserRole      @default(WARD_OFFICER)
+  ads_request    ads_request[]
+  tokens         token[]
 }
 
 model token {
@@ -149,26 +155,8 @@ model token {
   user        user     @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }
 
-model role {
-  id    Int @id @default(autoincrement())
-  name  String
-  users user[]
-}
-
-enum ads_request_status {
-  g_i             @map("Đã gửi")
-  ng__            @map("Đồng ý")
-  Kh_ng_ch_p_nh_n @map("Không chấp nhận")
-  h_y_b_          @map("Đã hủy bỏ")
-}
-
-enum report_status {
-  M_i       @map("Mới")
-  ang_x__l_ @map("Đang xử lí")
-  x__l_     @map("Đã xử lí")
-}
-
-enum target_type {
-  Panel
-  Location
+enum UserRole {
+  WARD_OFFICER
+  DISTRICT_OFFICER
+  DEPARTMENT_OFFICER
 }

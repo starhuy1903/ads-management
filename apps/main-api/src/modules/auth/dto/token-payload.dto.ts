@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, IsNumber } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class TokenPayloadDto {
   @IsNumber()
@@ -8,6 +8,10 @@ export class TokenPayloadDto {
   @IsEmail()
   @IsNotEmpty()
   email: string;
+
+  @IsString()
+  @IsNotEmpty()
+  role: string;
 
   @IsNumber()
   iat?: number;
