@@ -33,8 +33,10 @@ export const modalSlice = createSlice({
         ...action.payload,
       }),
     },
-    hideModal: (state) => {
-      state.displayModal = null;
+    hideModal: (state, action: PayloadAction<any>) => {
+      if (action.payload === state.displayModal) {
+        state.displayModal = null;
+      }
     },
   },
 });

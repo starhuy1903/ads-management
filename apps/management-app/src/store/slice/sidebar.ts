@@ -34,8 +34,14 @@ export const sidebarSlice = createSlice({
         ...action.payload,
       })
     },
-    hideSidebar: (state) => {
-      state.displaySidebar = null;
+    hideSidebar: {
+      prepare: () => ({
+        payload: { displaySidebar: null },
+      }),
+      reducer: (state) => ({
+        displaySidebar: null,
+        onSidebarClose: state.onSidebarClose,
+      })
     },
   },
 });

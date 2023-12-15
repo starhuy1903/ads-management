@@ -17,7 +17,7 @@ import { useLogoutMutation } from '@/store/api/userApiSlice';
 import Logo from '@/assets/images/app-logo.png';
 import SearchBar from './SearchBar';
 import CloseIcon from '@mui/icons-material/Close';
-import { hideModal } from '@/store/slice/modal';
+import { hideSidebar } from '@/store/slice/sidebar';
 
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
@@ -27,21 +27,20 @@ export default function Header() {
   const tokenId = useAppSelector((state) => state.user.token?.tokenId) || '';
   const displaySidebar = useAppSelector((state) => state.sidebar);
 
-  const handleCloseSidebar = useCallback(() => {
-    hideModal();
-  }, [])
   
   const [requestLogout] = useLogoutMutation();
 
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
-  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
+  const handleOpenUserMenu = useCallback((event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
-  };
+  }, []);
 
-  const handleCloseUserMenu = () => {
+  const handleCloseUserMenu = useCallback(() => {
     setAnchorElUser(null);
-  };
+  }, []);
+
+  const handleHideSidebar = useCallback(() => hideSidebar(), []);
 
   const handleLogout = async () => {
     try {
@@ -66,9 +65,9 @@ export default function Header() {
             </Link>
             <SearchBar />
             {displaySidebar ? (
-              <Box 
+              <Box
                 sx={{ cursor: "pointer"}}
-                onClick={handleCloseSidebar}
+                onClick={handleHideSidebar}
               >
                 <CloseIcon />
               </Box>
