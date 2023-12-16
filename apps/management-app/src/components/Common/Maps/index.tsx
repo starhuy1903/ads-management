@@ -18,12 +18,11 @@ export default function Maps({ children }: { children?: React.ReactNode }) {
   const [showPopup, setShowPopup] = useState<boolean>(true);
   
   const markerRef = useRef<mapboxgl.Marker>();
-  
   const dispatch = useAppDispatch();
   
   const handleViewDetailAd = useCallback(() => {
     dispatch(showSidebar(SidebarKey.AD_DETAIL, {
-      children: 'huhu'
+      sidebarId: 1, // todo: remove mock
     }))
   }, [dispatch]);
 
@@ -46,14 +45,15 @@ export default function Maps({ children }: { children?: React.ReactNode }) {
       style={{ width: '100%', height: '100%', zIndex: 1 }}
       mapStyle="mapbox://styles/mapbox/streets-v9"
       mapboxAccessToken={configs.mapBox}
+      logoPosition='bottom-right'
     >
-      <FullscreenControl position="bottom-left" />
+      <FullscreenControl position="bottom-right" />
       <GeolocateControl
         positionOptions={{ enableHighAccuracy: true }}
         trackUserLocation={true}
-        position="bottom-left"
+        position="bottom-right"
       />
-      <NavigationControl position="bottom-left" />
+      <NavigationControl position="bottom-right" />
       {/* <ScaleControl position="bottom-left" /> */}
       {children}
       <Marker

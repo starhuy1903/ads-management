@@ -25,7 +25,7 @@ export default function Header() {
   const navigate = useNavigate();
   const isLoggedIn = useAppSelector((state) => state.user.isLoggedIn);
   const tokenId = useAppSelector((state) => state.user.token?.tokenId) || '';
-  const displaySidebar = useAppSelector((state) => state.sidebar);
+  const { displaySidebar } = useAppSelector((state) => state.sidebar);
 
   
   const [requestLogout] = useLogoutMutation();

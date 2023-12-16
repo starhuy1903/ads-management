@@ -8,12 +8,7 @@ const sidebarsMap: { [sidebarKey: string]: any } = {
   [SidebarKey.AD_DETAIL]: AdDetail,
 }
 
-interface SidebarProps {
-  open: boolean;
-  onOpen: (value: boolean) => void;
-}
-
-export default function SidebarContainer({ open, onOpen }: SidebarProps) {
+export default function SidebarContainer({ style }: { style?: React.CSSProperties }) {
   const { displaySidebar, ...rest } = useAppSelector(
     (state) => state.sidebar,
   );
@@ -26,7 +21,7 @@ export default function SidebarContainer({ open, onOpen }: SidebarProps) {
     const sidebarProps = {
       ...rest
     }
-  
+
     const DisplayedSidebar = sidebarsMap[displaySidebar];
     return <DisplayedSidebar {...sidebarProps} />;
   }
@@ -34,12 +29,11 @@ export default function SidebarContainer({ open, onOpen }: SidebarProps) {
   return (
     <motion.div
       initial={{ x: displaySidebar ? '-100%' : '0%' }}
-      style={{ height: '100%', zIndex: 1, width: displaySidebar ? 410 : 0 }}
+      style={{ zIndex: 1, width: displaySidebar ? 360 : 0, ...style }}
     >
       <Box
         position="relative"
         height="100%"
-        paddingTop={8}
         sx={{ background: 'white' }}
       >
         {renderSidebarContent()}
