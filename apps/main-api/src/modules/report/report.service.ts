@@ -5,33 +5,60 @@ import { PrismaService } from '../../prisma/prisma.service';
 import { ReportStatus } from '../../constants/report';
 import { PageOptionsReportDto } from './dto/find-all-report.dto';
 import { TargetType } from '../../constants/ads_request';
+import {
+  EUploadFolder,
+  uploadFilesFromFirebase,
+} from '../../services/files/upload';
+import { deleteFilesFromFirebase } from '../../services/files/delete';
 
 @Injectable()
 export class ReportService {
   constructor(private prismaService: PrismaService) {}
-  async create(createReportDto: CreateReportDto) {
-    let data: any = {
-      email: createReportDto.email,
-      target_type: createReportDto.targetType,
-      report_type: { connect: { id: createReportDto.typeId } },
-      image_url: createReportDto.imgUrls,
-      content: createReportDto.content,
-      fullname: createReportDto.fullName,
-      resolved_content: '',
-      status: ReportStatus.NEW,
-    };
-    if (createReportDto.targetType == TargetType.LOCATION) {
-      data.location = { connect: { id: createReportDto.locationId } };
-    } else {
-      data.panel = { connect: { id: createReportDto.panelId } };
+  async create(
+    createReportDto: CreateReportDto,
+    images?: Express.Multer.File[],
+  ) {
+    let imageUrls = [];
+    try {
+      if (images.length) {
+        const uploadImagesData = await uploadFilesFromFirebase(
+          images,
+          EUploadFolder.report,
+        );
+        if (!uploadImagesData.success) {
+          throw new Error('Failed to upload images!');
+        }
+        imageUrls = uploadImagesData.urls;
+      }
+
+      const data = {
+        email: createReportDto.email,
+        target_type: createReportDto.targetType,
+        report_type: { connect: { id: createReportDto.typeId } },
+        image_url: imageUrls,
+        content: createReportDto.content,
+        fullname: createReportDto.fullName,
+        resolved_content: '',
+        status: ReportStatus.NEW,
+        location: undefined,
+        panel: undefined,
+      };
+      if (createReportDto.targetType == TargetType.LOCATION) {
+        data.location = { connect: { id: createReportDto.locationId } };
+      } else {
+        data.panel = { connect: { id: createReportDto.panelId } };
+      }
+      return await this.prismaService.report.create({
+        data,
+      });
+    } catch (error) {
+      if (imageUrls) await deleteFilesFromFirebase(imageUrls);
+      throw new Error(error);
     }
-    return await this.prismaService.report.create({
-      data,
-    });
   }
 
   async findAll(pageOptionsReportDto: PageOptionsReportDto) {
-    let conditions: any = {
+    const conditions = {
       orderBy: [
         {
           createdAt: pageOptionsReportDto.order,
@@ -41,6 +68,8 @@ export class ReportService {
         type_id: pageOptionsReportDto.typeId,
         target_type: pageOptionsReportDto.targetType,
         status: pageOptionsReportDto.status,
+        location: undefined,
+        panel: undefined,
       },
     };
 

@@ -8,29 +8,46 @@ import {
   Delete,
   Query,
   Res,
+  UseInterceptors,
+  HttpStatus,
+  ParseFilePipeBuilder,
+  UploadedFiles,
 } from '@nestjs/common';
 import { ReportService } from './report.service';
 import { CreateReportDto } from './dto/create-report.dto';
 import { UpdateReportDto } from './dto/update-report.dto';
 import { PageOptionsReportDto } from './dto/find-all-report.dto';
 import { CustomResponse } from '../../middlewares';
+import { FilesInterceptor } from '@nestjs/platform-express';
+import { FILE_TYPES_REGEX } from '../../constants/images';
 
 @Controller('reports')
 export class ReportController {
   constructor(private readonly reportService: ReportService) {}
 
   @Post()
+  @UseInterceptors(FilesInterceptor('images', 2))
   async create(
     @Body() createReportDto: CreateReportDto,
     @Res() res: CustomResponse,
+    @UploadedFiles(
+      new ParseFilePipeBuilder()
+        .addFileTypeValidator({
+          fileType: FILE_TYPES_REGEX,
+        })
+        .build({
+          fileIsRequired: false,
+        }),
+    )
+    images?: Express.Multer.File[],
   ) {
     try {
-      const response = await this.reportService.create(createReportDto);
+      const response = await this.reportService.create(createReportDto, images);
       return res.success({ data: response });
     } catch (error) {
       return res.error({
         statusCode: 500,
-        message: error.message || 'Internal Server Error',
+        message: error.message,
       });
     }
   }
@@ -46,7 +63,7 @@ export class ReportController {
     } catch (error) {
       return res.error({
         statusCode: 500,
-        message: error.message || 'Internal Server Error',
+        message: error.message,
       });
     }
   }
@@ -59,7 +76,7 @@ export class ReportController {
     } catch (error) {
       return res.error({
         statusCode: 500,
-        message: error.message || 'Internal Server Error',
+        message: error.message,
       });
     }
   }
@@ -79,7 +96,7 @@ export class ReportController {
     } catch (error) {
       return res.error({
         statusCode: 500,
-        message: error.message || 'Internal Server Error',
+        message: error.message,
       });
     }
   }
@@ -92,7 +109,7 @@ export class ReportController {
     } catch (error) {
       return res.error({
         statusCode: 500,
-        message: error.message || 'Internal Server Error',
+        message: error.message,
       });
     }
   }
