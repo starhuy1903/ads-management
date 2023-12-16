@@ -5,19 +5,19 @@ Table panel { // Biển quảng cáo
   height number
   location_id integer // FK location
   image_url string
-  create_contract_date Date
-  expired_contract_date Date
+  create_contract_date Datetime
+  expired_contract_date Datetime
   company_email string
   company_number string
-  created_time Date
-  modified_time Date
+  created_time Datetime
+  modified_time Datetime
 }
 
 Table panel_type { // Biển quảng cáo
   id integer [primary key]
   name string
-  created_time Date
-  modified_time Date
+  created_time Datetime
+  modified_time Datetime
 }
 
 Table location { // Điểm đặt biển quảng cáo
@@ -25,14 +25,14 @@ Table location { // Điểm đặt biển quảng cáo
   lat number
   long number
   isPlanning boolean // check quy hoạch
-  commue_id integer // FK đến commue
+  district_id integer // FK đến district
   ward_id integer // FK đến ward
   address string // địa chỉ cụ thể
   type ENUM // loại vị trí
   ads_type ENUM // loại quảng cáo
   image_url string
-  created_time Date
-  modified_time Date
+  created_time Datetime
+  modified_time Datetime
 }
 
 Table report {
@@ -46,46 +46,72 @@ Table report {
   target_id integer // FK đến panel hoặc location
   status ENUM // trạng thái Mới / Đang xử lí / Đã xử lí done / Pending
   resolved_content string // dạng html rich text, cách xử lí cho báo cáo này (cán bộ điền)
-  created_time Date
-  modified_time Date
+  created_time Datetime
+  modified_time Datetime
 }
 
 Table captcha { // autogenerate callback khi captcha work
   id integer [primary key]
-  expired_time Date
+  expired_time Datetime
   content string
-  created_time Date
-  modified_time Date
+  created_time Datetime
+  modified_time Datetime
 }
 
-Table commue { // Table quận tự có data, không thao tác ở bất kì đâu khác
+Table district { // Table quận tự có data, không thao tác ở bất kì đâu khác
   id integer [primary key]
   name string
 }
 
-Table Ward { // Table xã tự có data, không thao tác ở bất kì đâu khác
+Table ward { // Table phường tự có data, không thao tác ở bất kì đâu khác
   id integer [primary key]
   name string
-  commue_id integer
+  district_id integer
 }
 
 Table ads_request { // yêu cầu chỉnh sửa hoặc cấp phép biển quảng cáo từ cán bộ xã/quận đến sở
   id integer [primary key]
-  created_time Date
-  modified_time Date
+  created_time Datetime
+  modified_time Datetime
   type ENUM // edit hoặc cấp phép
   reason string // dạng html rich text, chỉ có nếu type là edit
   status ENUM // đã gửi / đồng ý / không chấp nhận / đã hủy bỏ
   target_type ENUM // Báo cáo panel hoặc location
   target_id integer // FK đến panel hoặc location
+  user_id integer // FK đến user
+}
+
+Table user { // User - Các phân hệ Cán bộ
+  id integer [primary key]
+  email string [unique]
+  password string
+  first_name string
+  last_name string
+  phone_number string
+  dob Datetime
+  role ENUM // [WARD_OFFICER - Cán bộ Phường, DISTRICT_OFFICER - Cán bộ Quận, DEPARTMENT_OFFICER - Cán bộ Sở]
+  account_verified Boolean // Đã xác thực tài khoản
+  reset_password Boolean // Đang reset mật khẩu
+  created_at Datetime
+  modified_at Datetime
+}
+
+Table token { // Các refresh token của user
+  id string [primary key] // uuid
   user_id integer // FK đến User
+  token string
+  expires_at Datetime
+  created_at Datetime
+  modified_at Datetime
 }
 
 Ref: panel.location_id > location.id
 Ref: panel.type_id > panel_type.id
-Ref: location.commue_id > commue.id
-Ref: location.ward_id > Ward.id
+Ref: location.district_id > district.id
+Ref: location.ward_id > ward.id
 Ref: report.target_id > location.id
 Ref: report.target_id > panel.id
 Ref: ads_request.target_id > panel.id
 Ref: ads_request.target_id > location.id
+Ref: token.user_id > user.id
+Ref: ads_request.user_id > user.id

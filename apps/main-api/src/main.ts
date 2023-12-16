@@ -20,7 +20,7 @@ async function bootstrap() {
 
   const port = process.env.API_PORT || 8194;
   await app.listen(port);
-  Logger.log(`🚀 Application is running on: ${port} `);
+  Logger.log(`🚀 Application is running on port: ${port} `);
 }
 
 bootstrap();
