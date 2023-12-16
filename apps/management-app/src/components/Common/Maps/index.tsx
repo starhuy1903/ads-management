@@ -1,5 +1,5 @@
 import { Avatar } from '@mui/material';
-import mapboxgl from 'mapbox-gl';
+// import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { useCallback, useMemo, useRef, useState } from 'react';
 import Map, {
@@ -22,7 +22,7 @@ export default function Maps() {
   // }, []);
 
   const togglePopup = useCallback(() => {
-    markerRef.current?.togglePopup();
+    // markerRef.current?.togglePopup();
   }, []);
 
   return (
@@ -51,7 +51,7 @@ export default function Maps() {
         latitude={40}
         anchor="center"
         // popup={popup}
-        ref={markerRef}
+        // ref={markerRef}
       >
         <Avatar
           sx={{ bgcolor: 'blue', width: 20, height: 20, fontSize: '12px' }}
