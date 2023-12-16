@@ -9,15 +9,18 @@ import { useGetProfileQuery } from '@/store/api/userApiSlice';
 import { checkRole } from '@/store/slice/userSlice';
 import AdsLocation from './Authenticated/AdsLocation';
 import AdsPermission from './Authenticated/AdsPermission';
+import DistrictsManagement from './Authenticated/CDO/DistrictsManagement';
 import CreateAdsPermission from './Authenticated/CreateAdsPermission';
 import CreateEditing from './Authenticated/CreateEditing';
+import Dashboard from './Authenticated/Dashboard';
 import Home from './Authenticated/Home';
+import CDOLayout from './Authenticated/Layout/CDOLayout';
 import OfficerLayout from './Authenticated/Layout/OfficerLayout';
 import ReportDetail from './Authenticated/ReportDetail';
 import ReportTable from './Authenticated/ReportTable';
 import ResetPassword from './Authenticated/ResetPassword';
 import CenterLoading from './Common/CenterLoading';
-import PageLayout from './PageLayout';
+import PageLayout from './Common/Layout/PageLayout';
 import CitizenHome from './Unauthenticated/Citizen/CitizenHome';
 import CitizenReport from './Unauthenticated/Citizen/CitizenReport';
 import ForgotPassword from './Unauthenticated/ForgotPassword';
@@ -29,7 +32,16 @@ import Verify from './Unauthenticated/Verify';
 const CDORoutes = createBrowserRouter([
   {
     path: '/',
+    element: <CDOLayout />,
     children: [
+      {
+        path: 'dashboard',
+        element: <Dashboard />,
+      },
+      {
+        path: 'districts',
+        element: <DistrictsManagement />,
+      },
       {
         path: 'locations',
         element: <div>Ads location</div>,
@@ -62,7 +74,15 @@ const CDORoutes = createBrowserRouter([
         path: 'accounts',
         element: <div>Officer accounts</div>,
       },
+      {
+        index: true,
+        element: <Navigate to={`/dashboard`} />,
+      },
     ],
+  },
+  {
+    path: '*',
+    element: <Navigate to={`/`} />,
   },
 ]);
 

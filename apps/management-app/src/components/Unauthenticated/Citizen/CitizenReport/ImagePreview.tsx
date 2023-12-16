@@ -1,5 +1,6 @@
 import CloseSharpIcon from '@mui/icons-material/CloseSharp';
 import { Box } from '@mui/material';
+import { useMemo } from 'react';
 
 interface ImagePreviewProps {
   image: File | null;
@@ -12,9 +13,17 @@ export default function ImagePreview({
   onDeleteImage,
   disabled = false,
 }: ImagePreviewProps) {
+  const renderedImg = useMemo(() => {
+    if (image) {
+      return URL.createObjectURL(image);
+    }
+    return '';
+  }, [image]);
+
   if (!image) {
     return null;
   }
+
   return (
     <Box
       height={180}
@@ -26,7 +35,7 @@ export default function ImagePreview({
       sx={{ opacity: disabled ? 0.5 : 1 }}
     >
       <img
-        src={URL.createObjectURL(image)}
+        src={renderedImg}
         alt=""
         style={{ objectFit: 'cover', width: '100%', height: '100%' }}
       />
