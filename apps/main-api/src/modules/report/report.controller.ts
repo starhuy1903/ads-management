@@ -9,7 +9,6 @@ import {
   Query,
   Res,
   UseInterceptors,
-  HttpStatus,
   ParseFilePipeBuilder,
   UploadedFiles,
 } from '@nestjs/common';
