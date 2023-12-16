@@ -17,7 +17,7 @@
       "responses": [
         {
           "uuid": "e7e723ad-70f7-4caf-bb63-c09ad95679b0",
-          "body": "{\n  \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoiY2hpaGllbjIwMDJAZ21haWwuY29tIiwiaWF0IjoxNjk2MjM4Njc4LCJleHAiOjE2OTYyMzg2OTN9.Z2aiXDTpFdyjF92AfN4-G-59apIYMJuCismrjSIeUkI\",\n  \"refreshToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoiY2hpaGllbjIwMDJAZ21haWwuY29tIiwiaWF0IjoxNjk2MjM4Njc4LCJleHAiOjE2OTYzMjUwNzh9.KIM3giDL-oVD41LcGb8DruolZpI77HQ0UQge4dI8SL4\",\n  \"tokenId\": \"dff20586-9521-428a-8551-b5ddf6096efa\",\n  \"accessTokenExpires\": \"2023-10-02T09:24:43.514Z\",\n  \"user\": {\n    \"id\": 1,\n    \"email\": \"chihien2002@gmail.com\",\n    \"name\": \"Trương Chí Hiển\",\n    \"role\": [\"\"]\n  }\n}",
+          "body": "{\n  \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoiY2hpaGllbjIwMDJAZ21haWwuY29tIiwiaWF0IjoxNjk2MjM4Njc4LCJleHAiOjE2OTYyMzg2OTN9.Z2aiXDTpFdyjF92AfN4-G-59apIYMJuCismrjSIeUkI\",\n  \"refreshToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoiY2hpaGllbjIwMDJAZ21haWwuY29tIiwiaWF0IjoxNjk2MjM4Njc4LCJleHAiOjE2OTYzMjUwNzh9.KIM3giDL-oVD41LcGb8DruolZpI77HQ0UQge4dI8SL4\",\n  \"tokenId\": \"dff20586-9521-428a-8551-b5ddf6096efa\",\n  \"accessTokenExpires\": \"2023-10-02T09:24:43.514Z\",\n  \"user\": {\n    \"id\": 1,\n    \"email\": \"chihien2002@gmail.com\",\n    \"name\": \"Trương Chí Hiển\",\n    \"role\": \"cdo\"\n  }\n}",
           "latency": 0,
           "statusCode": 200,
           "label": "",
@@ -181,11 +181,11 @@
       "type": "http",
       "documentation": "",
       "method": "get",
-      "endpoint": "api/auth/me",
+      "endpoint": "api/users/me",
       "responses": [
         {
           "uuid": "a3ab4ce3-7d5f-43fa-a89d-9703229d865f",
-          "body": "{\n  \"email\": \"huy@gmail.com\",\n  \"name\": \"Huy\"\n}",
+          "body": "{\n  \"email\": \"huy@gmail.com\",\n  \"name\": \"Huy\",\n  \"role\": \"cdo\"\n}",
           "latency": 0,
           "statusCode": 200,
           "label": "",
