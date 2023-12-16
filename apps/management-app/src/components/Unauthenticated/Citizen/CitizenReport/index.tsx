@@ -13,7 +13,9 @@ import {
   Typography,
 } from '@mui/material';
 import { useCallback, useState } from 'react';
-import { useController, useForm } from 'react-hook-form';
+import ReCAPTCHA from 'react-google-recaptcha';
+import { Controller, useController, useForm } from 'react-hook-form';
+import { configs } from '@/configurations';
 import { useAppDispatch } from '@/store';
 import DropFileContainer from '@/components/Common/DropFileContainer';
 import TinyEditor from '@/components/Common/TinyEditor';
@@ -49,6 +51,7 @@ interface FormType {
   reportType: number;
   description: string;
   imageFiles: File[];
+  captcha: string;
 }
 
 export default function CitizenReport() {
@@ -63,6 +66,7 @@ export default function CitizenReport() {
         phoneNumber: '',
         reportType: 1,
         imageFiles: [],
+        captcha: '',
       },
     });
   const { errors: formError } = formState;
@@ -247,6 +251,13 @@ export default function CitizenReport() {
             )}
           </Stack>
         </FormControl>
+        <Controller
+          control={control}
+          name="captcha"
+          render={({ field: { onChange } }) => (
+            <ReCAPTCHA sitekey={configs.reCAPTCHASiteKey} onChange={onChange} />
+          )}
+        />
         <Button
           variant="contained"
           color="primary"
