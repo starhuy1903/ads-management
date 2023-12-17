@@ -11,10 +11,15 @@ import {
 } from '../../services/files/upload';
 import { deleteFilesFromFirebase } from '../../services/files/delete';
 import { PageOptionsUserReportDto } from './dto/find-all-user-report.dto';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import { NotificationType } from '../../constants/notification';
 
 @Injectable()
 export class ReportService {
-  constructor(private prismaService: PrismaService) {}
+  constructor(
+    private prismaService: PrismaService,
+    private readonly eventEmitter: EventEmitter2,
+  ) {}
   async create(
     createReportDto: CreateReportDto,
     images?: Express.Multer.File[],
@@ -50,9 +55,18 @@ export class ReportService {
       } else {
         data.panel = { connect: { id: createReportDto.panelId } };
       }
-      return await this.prismaService.report.create({
+      const result = await this.prismaService.report.create({
         data,
       });
+
+      try {
+        this.eventEmitter.emit(NotificationType.new_report, { result });
+      } catch (notificationError) {
+        // silent
+        console.error('Fail to push notification!!!');
+      }
+
+      return result;
     } catch (error) {
       if (imageUrls) await deleteFilesFromFirebase(imageUrls);
       throw new Error(error);

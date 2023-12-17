@@ -11,6 +11,8 @@ import {
   UseInterceptors,
   ParseFilePipeBuilder,
   UploadedFiles,
+  Sse,
+  UseGuards,
 } from '@nestjs/common';
 import { ReportService } from './report.service';
 import { CreateReportDto } from './dto/create-report.dto';
@@ -20,10 +22,19 @@ import { CustomResponse } from '../../middlewares';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { FILE_TYPES_REGEX } from '../../constants/images';
 import { PageOptionsUserReportDto } from './dto/find-all-user-report.dto';
+import { fromEvent, map } from 'rxjs';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import { UserRole } from '@prisma/client';
+import { Roles } from '../auth/decorators';
+import { JwtGuard } from '../auth/guards';
+import { NotificationType } from '../../constants/notification';
 
 @Controller('reports')
 export class ReportController {
-  constructor(private readonly reportService: ReportService) {}
+  constructor(
+    private readonly reportService: ReportService,
+    private readonly eventEmitter: EventEmitter2,
+  ) {}
 
   @Post()
   @UseInterceptors(FilesInterceptor('images', 2))
@@ -83,6 +94,25 @@ export class ReportController {
         statusCode: 500,
         message: error.message,
       });
+    }
+  }
+
+  @Sse('/new-report/sse')
+  @UseGuards(JwtGuard)
+  @Roles(UserRole.WARD_OFFICER)
+  @Roles(UserRole.DISTRICT_OFFICER)
+  @Roles(UserRole.DEPARTMENT_OFFICER)
+  sseReport() {
+    try {
+      return fromEvent(this.eventEmitter, NotificationType.new_report).pipe(
+        map((data) => {
+          const report = data['result'];
+          return { data: report };
+        }),
+      );
+    } catch (error) {
+      console.error('Unexpected notification server error!');
+      return { data: null };
     }
   }
 

@@ -5,11 +5,13 @@ import { JwtModule } from '@nestjs/jwt';
 import { JwtRefreshStrategy, JwtStrategy, JwtVerifyStrategy } from './strategy';
 import { MailModule } from '../../services/mail/mail.module';
 import { RolesGuard } from './guards';
+import { PrismaService } from '../../prisma/prisma.service';
 
 @Module({
   imports: [JwtModule.register({}), MailModule],
   controllers: [AuthController],
   providers: [
+    PrismaService,
     AuthService,
     JwtStrategy,
     JwtRefreshStrategy,
