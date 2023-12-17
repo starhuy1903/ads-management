@@ -12,16 +12,23 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 import ReCAPTCHA from 'react-google-recaptcha';
-import { Controller, useController, useForm } from 'react-hook-form';
+import {
+  Controller,
+  SubmitHandler,
+  useController,
+  useForm,
+} from 'react-hook-form';
 import { configs } from '@/configurations';
 import { useAppDispatch } from '@/store';
 import DropFileContainer from '@/components/Common/DropFileContainer';
 import TinyEditor from '@/components/Common/TinyEditor';
 import { ModalKey } from '@/constants/modal';
 import { ImageFileConfig } from '@/constants/validation';
+import { useCreateReportMutation } from '@/store/api/reportApiSlice';
 import { showModal } from '@/store/slice/modal';
+import { ReportPayload } from '@/types/report';
 import ImagePreview from './ImagePreview';
 import UploadImageCard from './UploadImageCard';
 
@@ -44,21 +51,12 @@ const ReportTypes = [
   },
 ];
 
-interface FormType {
-  fullName: string;
-  email: string;
-  phoneNumber: string;
-  reportType: number;
-  description: string;
-  imageFiles: File[];
-  captcha: string;
-}
-
 export default function CitizenReport() {
   const dispatch = useAppDispatch();
+  const [createReport, { isLoading }] = useCreateReportMutation();
 
   const { handleSubmit, register, control, formState, setValue, watch } =
-    useForm<FormType>({
+    useForm<ReportPayload>({
       mode: 'onChange',
       defaultValues: {
         fullName: '',
@@ -85,8 +83,6 @@ export default function CitizenReport() {
     },
     defaultValue: '',
   });
-
-  const [submitting, setSubmitting] = useState(false);
 
   const handleAddImage = useCallback(
     (file: File) => setValue('imageFiles', [...formValue.imageFiles, file]),
@@ -128,10 +124,9 @@ export default function CitizenReport() {
     disabled: boolean;
   }) => <UploadImageCard open={open} disabled={disabled} />;
 
-  const onSubmit = (data: FormType) => {
-    setSubmitting(true);
+  const onSubmit: SubmitHandler<ReportPayload> = async (data) => {
     console.log(data);
-    setSubmitting(false);
+    const res = await createReport(data).unwrap();
   };
 
   return (
@@ -225,7 +220,7 @@ export default function CitizenReport() {
           <TinyEditor
             value={descValue}
             onChange={onChangeDesc}
-            disabled={submitting}
+            disabled={isLoading}
             height={400}
           />
         </FormControl>
@@ -236,7 +231,7 @@ export default function CitizenReport() {
               <ImagePreview
                 key={index}
                 image={image}
-                disabled={submitting}
+                disabled={isLoading}
                 onDeleteImage={handleDeleteImage}
               />
             ))}
@@ -245,7 +240,7 @@ export default function CitizenReport() {
                 onDropFile={handleUpdateImage}
                 acceptMIMETypes={ImageFileConfig.ACCEPTED_MINE_TYPES}
                 renderChildren={renderUpdateImageContainer}
-                disabled={submitting}
+                disabled={isLoading}
                 maxSize={ImageFileConfig.MAX_SIZE}
               />
             )}
@@ -254,6 +249,7 @@ export default function CitizenReport() {
         <Controller
           control={control}
           name="captcha"
+          rules={{ required: 'The captcha is required.' }}
           render={({ field: { onChange } }) => (
             <ReCAPTCHA sitekey={configs.reCAPTCHASiteKey} onChange={onChange} />
           )}
@@ -261,7 +257,7 @@ export default function CitizenReport() {
         <Button
           variant="contained"
           color="primary"
-          disabled={submitting}
+          disabled={isLoading}
           onClick={handleSubmit(onSubmit)}
           sx={{ mt: 4 }}
         >
