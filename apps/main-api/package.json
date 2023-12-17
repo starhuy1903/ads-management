@@ -1,0 +1,9 @@
+{
+  "name": "main-api",
+  "version": "0.0.0",
+  "license": "MIT",
+  "scripts": {
+    "build:prod": "pnpm i && npx prisma generate && npx nx build"
+  },
+  "private": true
+}

@@ -51,4 +51,8 @@ export class CreateReportDto {
   @Min(1)
   @IsOptional()
   readonly panelId?: number;
+
+  @IsNotEmpty()
+  @IsString()
+  readonly userUuid: string;
 }

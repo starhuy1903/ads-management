@@ -118,6 +118,7 @@ model report {
   resolved_content String
   createdAt        DateTime    @default(now())
   updatedAt        DateTime    @updatedAt
+  user_uuid        String      @db.VarChar(255)
   location         location?   @relation(fields: [location_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_report_location")
   panel            panel?      @relation(fields: [panel_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_report_panel")
   report_type      report_type @relation(fields: [type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_report_reporttype")
@@ -139,7 +140,7 @@ model user {
   dob            DateTime?
   reset_password Boolean       @default(false)
   created_at     DateTime      @default(now())
-  modified_at    DateTime      @updatedAt
+  modified_at    DateTime      @default(now()) @updatedAt
   role           UserRole      @default(WARD_OFFICER)
   ads_request    ads_request[]
   tokens         token[]

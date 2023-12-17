@@ -11,12 +11,16 @@ import { LocationModule } from '../location/location.module';
 import { ReportModule } from '../report/report.module';
 import { AdsRequestModule } from '../ads-request/ads-request.module';
 import { AuthModule } from '../auth/auth.module';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: '../.env',
+    }),
+    EventEmitterModule.forRoot({
+      global: true,
     }),
     MailModule,
     PrismaModule,
