@@ -22,38 +22,25 @@ import {
 } from 'react-hook-form';
 import { configs } from '@/configurations';
 import { useAppDispatch } from '@/store';
+import CenterLoading from '@/components/Common/CenterLoading';
 import DropFileContainer from '@/components/Common/DropFileContainer';
 import TinyEditor from '@/components/Common/TinyEditor';
 import { ModalKey } from '@/constants/modal';
 import { ImageFileConfig } from '@/constants/validation';
-import { useCreateReportMutation } from '@/store/api/reportApiSlice';
+import {
+  useCreateReportMutation,
+  useGetReportTypesQuery,
+} from '@/store/api/reportApiSlice';
 import { showModal } from '@/store/slice/modal';
 import { ReportPayload } from '@/types/report';
 import ImagePreview from './ImagePreview';
 import UploadImageCard from './UploadImageCard';
 
-const ReportTypes = [
-  {
-    id: 1,
-    value: 'Tố giác sai phạm',
-  },
-  {
-    id: 2,
-    value: 'Đăng ký nội dung',
-  },
-  {
-    id: 3,
-    value: 'Đóng góp ý kiến',
-  },
-  {
-    id: 4,
-    value: 'Giải đáp thắc mắc',
-  },
-];
-
 export default function CitizenReport() {
   const dispatch = useAppDispatch();
   const [createReport, { isLoading }] = useCreateReportMutation();
+  const { data: reportTypesData, isSuccess: hasReportTypesData } =
+    useGetReportTypesQuery();
 
   const { handleSubmit, register, control, formState, setValue, watch } =
     useForm<ReportPayload>({
@@ -128,6 +115,10 @@ export default function CitizenReport() {
     console.log(data);
     const res = await createReport(data).unwrap();
   };
+
+  if (!hasReportTypesData) {
+    return <CenterLoading />;
+  }
 
   return (
     <Container maxWidth="xl" sx={{ marginY: 8 }}>
@@ -204,7 +195,7 @@ export default function CitizenReport() {
               {...register('reportType')}
               aria-describedby="reportType-helper-text"
             >
-              {ReportTypes.map((type) => (
+              {reportTypesData.map((type) => (
                 <MenuItem key={type.id} value={type.id}>
                   {type.value}
                 </MenuItem>

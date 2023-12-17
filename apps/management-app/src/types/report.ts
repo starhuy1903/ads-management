@@ -17,3 +17,8 @@ export interface CreatedReport {
   imageFiles: File[];
   captcha: string;
 }
+
+export interface ReportType {
+  id: number;
+  value: string;
+}

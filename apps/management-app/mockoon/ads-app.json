@@ -2,7 +2,7 @@
   "uuid": "3f75ac6c-5dab-457e-949e-b206f2625508",
   "lastMigration": 32,
   "name": "Auth app",
-  "endpointPrefix": "",
+  "endpointPrefix": "api",
   "latency": 0,
   "port": 3000,
   "hostname": "",
@@ -13,7 +13,7 @@
       "type": "http",
       "documentation": "",
       "method": "post",
-      "endpoint": "api/auth/signin",
+      "endpoint": "auth/signin",
       "responses": [
         {
           "uuid": "e7e723ad-70f7-4caf-bb63-c09ad95679b0",
@@ -96,7 +96,7 @@
       "type": "http",
       "documentation": "",
       "method": "post",
-      "endpoint": "api/auth/signup",
+      "endpoint": "auth/signup",
       "responses": [
         {
           "uuid": "5044b22f-b456-482a-93f1-6e09e34e7aa8",
@@ -181,7 +181,7 @@
       "type": "http",
       "documentation": "",
       "method": "get",
-      "endpoint": "api/users/me",
+      "endpoint": "users/me",
       "responses": [
         {
           "uuid": "a3ab4ce3-7d5f-43fa-a89d-9703229d865f",
@@ -210,7 +210,7 @@
       "type": "http",
       "documentation": "",
       "method": "post",
-      "endpoint": "api/auth/logout",
+      "endpoint": "auth/logout",
       "responses": [
         {
           "uuid": "ad5d60c9-e2e2-4fe7-b270-4911d9fb6ab5",
@@ -288,7 +288,7 @@
       "type": "http",
       "documentation": "",
       "method": "post",
-      "endpoint": "api/auth/verify",
+      "endpoint": "auth/verify",
       "responses": [
         {
           "uuid": "c03acc3c-95b5-4cec-9f34-3e123c11d0ea",
@@ -352,7 +352,7 @@
       "type": "http",
       "documentation": "",
       "method": "post",
-      "endpoint": "api/auth/forgot-password",
+      "endpoint": "auth/forgot-password",
       "responses": [
         {
           "uuid": "ba4e447f-bd1a-4627-99b6-c90ee455f7cf",
@@ -443,7 +443,7 @@
       "type": "http",
       "documentation": "",
       "method": "post",
-      "endpoint": "api/auth/reset-password",
+      "endpoint": "auth/reset-password",
       "responses": [
         {
           "uuid": "10490394-9248-42a7-813d-e559b4dc1af3",
@@ -501,6 +501,35 @@
         }
       ],
       "responseMode": null
+    },
+    {
+      "uuid": "80740235-cefb-443a-9f05-9007eda80047",
+      "type": "http",
+      "documentation": "",
+      "method": "get",
+      "endpoint": "report-types",
+      "responses": [
+        {
+          "uuid": "779945b9-db56-4d0d-85db-acc470816879",
+          "body": "[\n  {\n    \"id\": 1,\n    \"value\": \"Tố giác sai phạm\"\n  },\n  {\n    \"id\": 2,\n    \"value\": \"Đăng ký nội dung\"\n  },\n  {\n    \"id\": 3,\n    \"value\": \"Đóng góp ý kiến\"\n  },\n  {\n    \"id\": 4,\n    \"value\": \"Giải đáp thắc mắc\"\n  }\n]",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null
     }
   ],
   "rootChildren": [
@@ -535,6 +564,10 @@
     {
       "type": "route",
       "uuid": "77160d18-9514-465f-947d-c4fea0466467"
+    },
+    {
+      "type": "route",
+      "uuid": "80740235-cefb-443a-9f05-9007eda80047"
     }
   ],
   "proxyMode": false,
