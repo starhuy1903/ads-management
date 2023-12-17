@@ -49,7 +49,6 @@ export default function CitizenReport() {
         fullName: '',
         email: '',
         phoneNumber: '',
-        reportType: 1,
         imageFiles: [],
         captcha: '',
       },
@@ -190,17 +189,26 @@ export default function CitizenReport() {
           </FormControl>
           <FormControl fullWidth error={!!formError.reportType}>
             <FormLabel htmlFor="reportType">Report Type</FormLabel>
-            <Select
-              id="reportType"
-              {...register('reportType')}
-              aria-describedby="reportType-helper-text"
-            >
-              {reportTypesData.map((type) => (
-                <MenuItem key={type.id} value={type.id}>
-                  {type.value}
-                </MenuItem>
-              ))}
-            </Select>
+            <Controller
+              control={control}
+              name="reportType"
+              defaultValue={reportTypesData[0].id}
+              rules={{ required: 'Please select a report type.' }}
+              render={({ field: { onChange, value } }) => (
+                <Select
+                  value={value}
+                  id="reportType"
+                  onChange={onChange}
+                  aria-describedby="reportType-helper-text"
+                >
+                  {reportTypesData.map((type) => (
+                    <MenuItem key={type.id} value={type.id}>
+                      {type.value}
+                    </MenuItem>
+                  ))}
+                </Select>
+              )}
+            />
             <FormHelperText id="reportType-helper-text">
               {formError.reportType?.message}
             </FormHelperText>
