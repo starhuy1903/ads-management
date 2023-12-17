@@ -97,17 +97,46 @@ export class ReportController {
     }
   }
 
-  @Sse('/new-report/sse')
+  @Sse('/officer/sse/:userId')
   @UseGuards(JwtGuard)
   @Roles(UserRole.WARD_OFFICER)
   @Roles(UserRole.DISTRICT_OFFICER)
   @Roles(UserRole.DEPARTMENT_OFFICER)
-  sseReport() {
+  sseCreateNewReport(@Param() params: { userId: string }) {
+    const { userId } = params;
     try {
       return fromEvent(this.eventEmitter, NotificationType.new_report).pipe(
         map((data) => {
           const report = data['result'];
-          return { data: report };
+          // eslint-disable-next-line no-constant-condition
+          if (true)
+            //TODO: check report belong to officer based on officer id
+            return { data: report, type: NotificationType.new_report };
+          else return null;
+        }),
+      );
+    } catch (error) {
+      console.error('Unexpected notification server error!');
+      return { data: null };
+    }
+  }
+
+  @Sse('/user/sse/:userUuid')
+  sseUpdateStatusReport(@Param() params: { userUuid: string }) {
+    const { userUuid } = params;
+    try {
+      return fromEvent(
+        this.eventEmitter,
+        NotificationType.update_status_report,
+      ).pipe(
+        map((data) => {
+          const report = data['result'];
+          if (report?.user_uuid === userUuid)
+            return {
+              data: report,
+              type: NotificationType.update_status_report,
+            };
+          else return null;
         }),
       );
     } catch (error) {

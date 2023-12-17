@@ -7,7 +7,7 @@ import { PrismaService } from '../../services/prisma/prisma.service';
 @Injectable()
 export class PanelService {
   constructor(private prismaService: PrismaService) {}
-  create(createPanelDto: CreatePanelDto) {
+  async create(createPanelDto: CreatePanelDto) {
     return 'This action adds a new panel';
   }
 
@@ -75,7 +75,7 @@ export class PanelService {
     };
   }
 
-  findOne(id: number) {
+  async findOne(id: number) {
     return this.prismaService.panel.findFirst({
       where: {
         id: id,
@@ -83,11 +83,11 @@ export class PanelService {
     });
   }
 
-  update(id: number, updatePanelDto: UpdatePanelDto) {
+  async update(id: number, updatePanelDto: UpdatePanelDto) {
     return `This action updates a #${id} panel`;
   }
 
-  remove(id: number) {
+  async remove(id: number) {
     return `This action removes a #${id} panel`;
   }
 }
