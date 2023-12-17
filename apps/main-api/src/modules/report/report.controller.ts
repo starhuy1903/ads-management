@@ -19,6 +19,7 @@ import { PageOptionsReportDto } from './dto/find-all-report.dto';
 import { CustomResponse } from '../../middlewares';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { FILE_TYPES_REGEX } from '../../constants/images';
+import { PageOptionsUserReportDto } from './dto/find-all-user-report.dto';
 
 @Controller('reports')
 export class ReportController {
@@ -58,6 +59,24 @@ export class ReportController {
   ) {
     try {
       const reports = await this.reportService.findAll(pageOptionsReportDto);
+      return res.success({ data: reports });
+    } catch (error) {
+      return res.error({
+        statusCode: 500,
+        message: error.message,
+      });
+    }
+  }
+
+  @Get('/get-me')
+  async findAllUserReport(
+    @Query() pageOptionsUserReportDto: PageOptionsUserReportDto,
+    @Res() res: CustomResponse,
+  ) {
+    try {
+      const reports = await this.reportService.findAllUserReport(
+        pageOptionsUserReportDto,
+      );
       return res.success({ data: reports });
     } catch (error) {
       return res.error({

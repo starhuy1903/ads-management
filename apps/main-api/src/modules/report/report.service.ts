@@ -10,6 +10,7 @@ import {
   uploadFilesFromFirebase,
 } from '../../services/files/upload';
 import { deleteFilesFromFirebase } from '../../services/files/delete';
+import { PageOptionsUserReportDto } from './dto/find-all-user-report.dto';
 
 @Injectable()
 export class ReportService {
@@ -38,6 +39,7 @@ export class ReportService {
         image_url: imageUrls,
         content: createReportDto.content,
         fullname: createReportDto.fullName,
+        user_uuid: createReportDto.userUuid,
         resolved_content: '',
         status: ReportStatus.NEW,
         location: undefined,
@@ -129,5 +131,38 @@ export class ReportService {
         id: id,
       },
     });
+  }
+
+  async findAllUserReport(pageOptionsUserReportDto: PageOptionsUserReportDto) {
+    const conditions = {
+      orderBy: [
+        {
+          createdAt: pageOptionsUserReportDto.order,
+        },
+      ],
+      where: {
+        type_id: pageOptionsUserReportDto.typeId,
+        target_type: pageOptionsUserReportDto.targetType,
+        status: pageOptionsUserReportDto.status,
+        user_uuid: pageOptionsUserReportDto.userUuid,
+        location: undefined,
+        panel: undefined,
+      },
+    };
+
+    const [result, totalCount] = await Promise.all([
+      this.prismaService.report.findMany({
+        ...conditions,
+        skip: pageOptionsUserReportDto.skip,
+        take: pageOptionsUserReportDto.take,
+      }),
+      this.prismaService.report.count({
+        ...conditions,
+      }),
+    ]);
+    return {
+      reports: result,
+      totalPages: Math.ceil(totalCount / pageOptionsUserReportDto.take),
+    };
   }
 }
