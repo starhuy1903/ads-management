@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateReportDto } from './dto/create-report.dto';
 import { UpdateReportDto } from './dto/update-report.dto';
-import { PrismaService } from '../../prisma/prisma.service';
+import { PrismaService } from '../../services/prisma/prisma.service';
 import { ReportStatus } from '../../constants/report';
 import { PageOptionsReportDto } from './dto/find-all-report.dto';
 import { TargetType } from '../../constants/ads_request';

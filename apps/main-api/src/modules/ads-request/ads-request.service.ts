@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateAdsRequestDto } from './dto/create-ads-request.dto';
 import { UpdateAdsRequestDto } from './dto/update-ads-request.dto';
 import { AdsRequestStatus, TargetType } from '../../constants/ads_request';
-import { PrismaService } from '../../prisma/prisma.service';
+import { PrismaService } from '../../services/prisma/prisma.service';
 import { PageOptionsAdsRequestDto } from './dto/find-all-ads-request.dto';
 
 @Injectable()

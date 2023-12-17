@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreatePanelDto } from './dto/create-panel.dto';
 import { UpdatePanelDto } from './dto/update-panel.dto';
 import { PageOptionsPanelDto } from './dto/find-all-panel.dto';
-import { PrismaService } from '../../prisma/prisma.service';
+import { PrismaService } from '../../services/prisma/prisma.service';
 
 @Injectable()
 export class PanelService {
