@@ -12,6 +12,9 @@ import { ReportModule } from '../report/report.module';
 import { AdsRequestModule } from '../ads-request/ads-request.module';
 import { AuthModule } from '../auth/auth.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
+import { ReportTypeModule } from '../report-type/report-type.module';
+import { LocationTypeModule } from '../location-type/location-type.module';
+import { PanelTypeModule } from '../panel-type/panel-type.module';
 
 @Module({
   imports: [
@@ -29,6 +32,9 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
     ReportModule,
     AdsRequestModule,
     AuthModule,
+    ReportTypeModule,
+    LocationTypeModule,
+    PanelTypeModule,
   ],
   controllers: [AppController],
   providers: [AppService],

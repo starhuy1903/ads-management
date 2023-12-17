@@ -280,6 +280,105 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Thông tin các loại report (report_type)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{LOCAL_URL}}/api/report-types?typeId=1&take=10&order=desc",
+					"host": [
+						"{{LOCAL_URL}}"
+					],
+					"path": [
+						"api",
+						"report-types"
+					],
+					"query": [
+						{
+							"key": "typeId",
+							"value": "1",
+							"description": "optional"
+						},
+						{
+							"key": "take",
+							"value": "10",
+							"description": "optional"
+						},
+						{
+							"key": "order",
+							"value": "desc",
+							"description": "optional"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Thông tin các loại location (location_type)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{LOCAL_URL}}/api/location-types?typeId=1&take=10&order=desc",
+					"host": [
+						"{{LOCAL_URL}}"
+					],
+					"path": [
+						"api",
+						"location-types"
+					],
+					"query": [
+						{
+							"key": "typeId",
+							"value": "1"
+						},
+						{
+							"key": "take",
+							"value": "10"
+						},
+						{
+							"key": "order",
+							"value": "desc"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Thông tin các loại panel (panel_type)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{LOCAL_URL}}/api/panel-types?typeId=1&take=10&order=desc",
+					"host": [
+						"{{LOCAL_URL}}"
+					],
+					"path": [
+						"api",
+						"panel-types"
+					],
+					"query": [
+						{
+							"key": "typeId",
+							"value": "1"
+						},
+						{
+							"key": "take",
+							"value": "10"
+						},
+						{
+							"key": "order",
+							"value": "desc"
+						}
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }
