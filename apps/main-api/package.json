@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "build:prod": "pnpm i && npx prisma generate && npx nx build"
+    "build:prod": "cd .. && cd .. && pnpm i && cd apps && cd main-api && npx prisma generate && npx nx build"
   },
   "private": true
 }
