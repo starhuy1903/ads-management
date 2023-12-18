@@ -63,8 +63,22 @@ export class AdsRequestService {
         include: {
           ads_request_type: true,
           user: true,
-          location: true,
-          panel: true,
+          location: {
+            include: {
+              district: true,
+              ward: true,
+            },
+          },
+          panel: {
+            include: {
+              location: {
+                include: {
+                  district: true,
+                  ward: true,
+                },
+              },
+            },
+          },
         },
         ...conditions,
         skip: pageOptionsAdsRequestDto.skip,
@@ -85,8 +99,22 @@ export class AdsRequestService {
       include: {
         ads_request_type: true,
         user: true,
-        location: true,
-        panel: true,
+        location: {
+          include: {
+            district: true,
+            ward: true,
+          },
+        },
+        panel: {
+          include: {
+            location: {
+              include: {
+                district: true,
+                ward: true,
+              },
+            },
+          },
+        },
       },
       where: {
         id: id,

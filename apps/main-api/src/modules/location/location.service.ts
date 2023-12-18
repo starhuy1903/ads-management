@@ -30,6 +30,9 @@ export class LocationService {
         include: {
           panel: true,
           type: true,
+          ad_type: true,
+          district: true,
+          ward: true,
         },
         ...conditions,
         skip: pageOptionsLocationDto.skip,
@@ -50,6 +53,9 @@ export class LocationService {
       include: {
         panel: true,
         type: true,
+        ad_type: true,
+        district: true,
+        ward: true,
       },
       where: {
         id: id,
