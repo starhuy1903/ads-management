@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { yupResolver } from '@hookform/resolvers/yup';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Box from '@mui/material/Box';
@@ -58,7 +59,7 @@ const DistrictsDetail = () => {
   const handleUpdateDistrict = useCallback(
     handleSubmit(async (data: FormData) => {
       try {
-        await updateDistrict(data).unwrap();
+        await updateDistrict({ id: parseInt(id!), data }).unwrap();
         showSuccess('District updated');
         reset(data);
       } catch (error) {
@@ -74,7 +75,6 @@ const DistrictsDetail = () => {
 
   const handleDeleteDistrict = useCallback(async () => {
     try {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       await deleteDistricts([parseInt(id!)]).unwrap();
       showSuccess('District deleted');
       navigate(-1);

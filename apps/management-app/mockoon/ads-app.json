@@ -852,7 +852,7 @@
       "type": "http",
       "documentation": "",
       "method": "put",
-      "endpoint": "api/districts",
+      "endpoint": "api/districts/:id",
       "responses": [
         {
           "uuid": "b74f7870-fb0d-498f-8d4b-85e084dae7c0",

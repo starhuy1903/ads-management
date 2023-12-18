@@ -32,8 +32,15 @@ export const generalManagementApiSlice = apiSlice.injectEndpoints({
     createDistrict: build.mutation<MessageResponse, DistrictDto>({
       query: (arg) => ({ url: '/districts', method: 'POST', body: arg }),
     }),
-    updateDistrict: build.mutation<MessageResponse, DistrictDto>({
-      query: (arg) => ({ url: '/districts', method: 'PUT', body: arg }),
+    updateDistrict: build.mutation<
+      MessageResponse,
+      { id: number; data: DistrictDto }
+    >({
+      query: (arg) => ({
+        url: `/districts/${arg.id}`,
+        method: 'PUT',
+        body: arg.data,
+      }),
     }),
     deleteDistricts: build.mutation<MessageResponse, Array<number>>({
       query: (arg) => ({
@@ -60,8 +67,12 @@ export const generalManagementApiSlice = apiSlice.injectEndpoints({
     createWard: build.mutation<MessageResponse, WardDto>({
       query: (arg) => ({ url: '/wards', method: 'POST', body: arg }),
     }),
-    updateWard: build.mutation<MessageResponse, WardDto>({
-      query: (arg) => ({ url: '/wards', method: 'PUT', body: arg }),
+    updateWard: build.mutation<MessageResponse, { id: number; data: WardDto }>({
+      query: (arg) => ({
+        url: `/wards/${arg.id}`,
+        method: 'PUT',
+        body: arg.data,
+      }),
     }),
     deleteWards: build.mutation<MessageResponse, Array<number>>({
       query: (arg) => ({
@@ -88,8 +99,15 @@ export const generalManagementApiSlice = apiSlice.injectEndpoints({
     createPanelType: build.mutation<MessageResponse, PanelTypeDto>({
       query: (arg) => ({ url: '/panelTypes', method: 'POST', body: arg }),
     }),
-    updatePanelType: build.mutation<MessageResponse, PanelTypeDto>({
-      query: (arg) => ({ url: '/panelTypes', method: 'PUT', body: arg }),
+    updatePanelType: build.mutation<
+      MessageResponse,
+      { id: number; data: PanelTypeDto }
+    >({
+      query: (arg) => ({
+        url: `/panelTypes/${arg.id}`,
+        method: 'PUT',
+        body: arg.data,
+      }),
     }),
     deletePanelTypes: build.mutation<MessageResponse, Array<number>>({
       query: (arg) => ({
@@ -116,8 +134,15 @@ export const generalManagementApiSlice = apiSlice.injectEndpoints({
     createReportType: build.mutation<MessageResponse, ReportTypeDto>({
       query: (arg) => ({ url: '/reportTypes', method: 'POST', body: arg }),
     }),
-    updateReportType: build.mutation<MessageResponse, ReportTypeDto>({
-      query: (arg) => ({ url: '/reportTypes', method: 'PUT', body: arg }),
+    updateReportType: build.mutation<
+      MessageResponse,
+      { id: number; data: ReportTypeDto }
+    >({
+      query: (arg) => ({
+        url: `/reportTypes/${arg.id}`,
+        method: 'PUT',
+        body: arg.data,
+      }),
     }),
     deleteReportTypes: build.mutation<MessageResponse, Array<number>>({
       query: (arg) => ({

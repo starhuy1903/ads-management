@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { yupResolver } from '@hookform/resolvers/yup';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Box from '@mui/material/Box';
@@ -58,7 +59,7 @@ const ReportTypesDetail = () => {
   const handleUpdateReportType = useCallback(
     handleSubmit(async (data: FormData) => {
       try {
-        await updateReportType(data).unwrap();
+        await updateReportType({ id: parseInt(id!), data }).unwrap();
         showSuccess('Report type updated');
         reset(data);
       } catch (error) {
@@ -74,7 +75,6 @@ const ReportTypesDetail = () => {
 
   const handleDeleteReportType = useCallback(async () => {
     try {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       await deleteReportTypes([parseInt(id!)]).unwrap();
       showSuccess('Report type deleted');
       navigate(-1);

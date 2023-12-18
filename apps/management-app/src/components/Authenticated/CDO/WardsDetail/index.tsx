@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { yupResolver } from '@hookform/resolvers/yup';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Box from '@mui/material/Box';
@@ -28,7 +29,7 @@ const WardsDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const [getWard, {isError}] = useLazyGetWardByIdQuery();
+  const [getWard, { isError }] = useLazyGetWardByIdQuery();
 
   useEffect(() => {
     if (isError) navigate(-1);
@@ -68,7 +69,7 @@ const WardsDetail = () => {
   const handleUpdateWard = useCallback(
     handleSubmit(async (data: FormData) => {
       try {
-        await updateWard(data).unwrap();
+        await updateWard({ id: parseInt(id!), data }).unwrap();
         showSuccess('Ward updated');
         reset(data);
       } catch (error) {
@@ -84,7 +85,6 @@ const WardsDetail = () => {
 
   const handleDeleteWard = useCallback(async () => {
     try {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       await deleteWards([parseInt(id!)]).unwrap();
       showSuccess('Ward deleted');
       navigate(-1);

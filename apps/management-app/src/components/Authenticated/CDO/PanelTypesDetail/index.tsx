@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { yupResolver } from '@hookform/resolvers/yup';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Box from '@mui/material/Box';
@@ -58,7 +59,7 @@ const PanelTypesDetail = () => {
   const handleUpdatePanelType = useCallback(
     handleSubmit(async (data: FormData) => {
       try {
-        await updatePanelType(data).unwrap();
+        await updatePanelType({ id: parseInt(id!), data }).unwrap();
         showSuccess('Panel type updated');
         reset(data);
       } catch (error) {
@@ -74,7 +75,6 @@ const PanelTypesDetail = () => {
 
   const handleDeletePanelType = useCallback(async () => {
     try {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       await deletePanelTypes([parseInt(id!)]).unwrap();
       showSuccess('Panel type deleted');
       navigate(-1);
