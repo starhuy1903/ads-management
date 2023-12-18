@@ -501,6 +501,492 @@
         }
       ],
       "responseMode": null
+    },
+    {
+      "uuid": "8a8d36e7-0fdb-4557-b6ba-baba876bdb32",
+      "type": "http",
+      "documentation": "",
+      "method": "get",
+      "endpoint": "api/districts",
+      "responses": [
+        {
+          "uuid": "017d9a09-afb1-4ac6-a07c-9c0d7d0e142a",
+          "body": "{\n  \"rowsCount\": 22,\n  \"data\": [\n    {\n      \"id\": 1,\n      \"name\": \"Thành Phố Thủ Đức\"\n    },\n    {\n      \"id\": 2,\n      \"name\": \"Huyện Cần Giờ\"\n    },\n    {\n      \"id\": 3,\n      \"name\": \"Huyện Nhà Bè\"\n    },\n    {\n      \"id\": 4,\n      \"name\": \"Huyện Bình Chánh\"\n    },\n    {\n      \"id\": 5,\n      \"name\": \"Quận Bình Thạnh\"\n    },\n    {\n      \"id\": 6,\n      \"name\": \"Quận Gò Vấp\"\n    },\n    {\n      \"id\": 7,\n      \"name\": \"Huyện Củ Chi\"\n    },\n    {\n      \"id\": 8,\n      \"name\": \"Huyện Hóc Môn\"\n    },\n    {\n      \"id\": 9,\n      \"name\": \"Quận Bình Tân\"\n    },\n    {\n      \"id\": 25,\n      \"name\": \"Quận Phú Nhuận\"\n    }\n  ]\n}",
+          "latency": 500,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "query",
+              "modifier": "page",
+              "value": "1",
+              "invert": false,
+              "operator": "equals"
+            },
+            {
+              "target": "query",
+              "modifier": "limit",
+              "value": "10",
+              "invert": false,
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "AND",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        },
+        {
+          "uuid": "e35a9414-73aa-4655-a76d-f64f17b77b91",
+          "body": "{\n  \"rowsCount\": 22,\n  \"data\": [\n    {\n      \"id\": 11,\n      \"name\": \"Quận Tân Phú\"\n    },\n    {\n      \"id\": 12,\n      \"name\": \"Quận Tân Bình\"\n    },\n    {\n      \"id\": 13,\n      \"name\": \"Quận 12\"\n    },\n    {\n      \"id\": 14,\n      \"name\": \"Quận 11\"\n    },\n    {\n      \"id\": 15,\n      \"name\": \"Quận 10\"\n    },\n    {\n      \"id\": 16,\n      \"name\": \"Quận 8\"\n    },\n    {\n      \"id\": 17,\n      \"name\": \"Quận 7\"\n    },\n    {\n      \"id\": 18,\n      \"name\": \"Quận 6\"\n    },\n    {\n      \"id\": 19,\n      \"name\": \"Quận 5\"\n    },\n    {\n      \"id\": 20,\n      \"name\": \"Quận 4\"\n    }\n  ]\n}",
+          "latency": 500,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "query",
+              "modifier": "page",
+              "value": "2",
+              "invert": false,
+              "operator": "equals"
+            },
+            {
+              "target": "query",
+              "modifier": "limit",
+              "value": "10",
+              "invert": false,
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "AND",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
+        },
+        {
+          "uuid": "9ebbe3ec-a071-4a2a-8a2c-51b948752a7e",
+          "body": "{\n  \"rowsCount\": 22,\n  \"data\": [\n    {\n      \"id\": 21,\n      \"name\": \"Quận 3\"\n    },\n    {\n      \"id\": 22,\n      \"name\": \"Quận 1\"\n    }\n  ]\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "query",
+              "modifier": "page",
+              "value": "3",
+              "invert": false,
+              "operator": "equals"
+            },
+            {
+              "target": "query",
+              "modifier": "limit",
+              "value": "10",
+              "invert": false,
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
+        },
+        {
+          "uuid": "1d2247d0-8bcb-4bb4-b9c6-9b76fc0f400f",
+          "body": "{\n  \"rowsCount\": 22,\n  \"data\": [\n    {\n      \"id\": 1,\n      \"name\": \"Thành Phố Thủ Đức\"\n    },\n    {\n      \"id\": 2,\n      \"name\": \"Huyện Cần Giờ\"\n    },\n    {\n      \"id\": 3,\n      \"name\": \"Huyện Nhà Bè\"\n    },\n    {\n      \"id\": 4,\n      \"name\": \"Huyện Bình Chánh\"\n    },\n    {\n      \"id\": 5,\n      \"name\": \"Quận Bình Thạnh\"\n    },\n    {\n      \"id\": 6,\n      \"name\": \"Quận Gò Vấp\"\n    },\n    {\n      \"id\": 7,\n      \"name\": \"Huyện Củ Chi\"\n    },\n    {\n      \"id\": 8,\n      \"name\": \"Huyện Hóc Môn\"\n    },\n    {\n      \"id\": 9,\n      \"name\": \"Quận Bình Tân\"\n    },\n    {\n      \"id\": 10,\n      \"name\": \"Quận Phú Nhuận\"\n    },\n    {\n      \"id\": 11,\n      \"name\": \"Quận Tân Phú\"\n    },\n    {\n      \"id\": 12,\n      \"name\": \"Quận Tân Bình\"\n    },\n    {\n      \"id\": 13,\n      \"name\": \"Quận 12\"\n    },\n    {\n      \"id\": 14,\n      \"name\": \"Quận 11\"\n    },\n    {\n      \"id\": 15,\n      \"name\": \"Quận 10\"\n    },\n    {\n      \"id\": 16,\n      \"name\": \"Quận 8\"\n    },\n    {\n      \"id\": 17,\n      \"name\": \"Quận 7\"\n    },\n    {\n      \"id\": 18,\n      \"name\": \"Quận 6\"\n    },\n    {\n      \"id\": 19,\n      \"name\": \"Quận 5\"\n    },\n    {\n      \"id\": 20,\n      \"name\": \"Quận 4\"\n    },\n    {\n      \"id\": 21,\n      \"name\": \"Quận 3\"\n    },\n    {\n      \"id\": 22,\n      \"name\": \"Quận 1\"\n    }\n  ]\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "query",
+              "modifier": "page",
+              "value": "",
+              "invert": false,
+              "operator": "null"
+            },
+            {
+              "target": "query",
+              "modifier": "limit",
+              "value": "",
+              "invert": false,
+              "operator": "null"
+            }
+          ],
+          "rulesOperator": "AND",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null
+    },
+    {
+      "uuid": "ab36dc25-74a2-4d5f-ae87-9ae2ceffc017",
+      "type": "http",
+      "documentation": "",
+      "method": "get",
+      "endpoint": "api/wards",
+      "responses": [
+        {
+          "uuid": "bf46491c-f77c-434a-99b1-1f38e0ab6078",
+          "body": "{\n  \"rowsCount\": 10,\n  \"data\": [\n    {\n      \"id\": 1,\n      \"name\": \"Phường An Khánh\",\n      \"district_id\": 1,\n      \"district\": \"Thành Phố Thủ Đức\"\n    },\n    {\n      \"id\": 2,\n      \"name\": \"Phường Bình Trưng Tây\",\n      \"district_id\": 1,\n      \"district\": \"Thành Phố Thủ Đức\"\n    },\n    {\n      \"id\": 3,\n      \"name\": \"Phường Bình Trưng Đông\",\n      \"district_id\": 1,\n      \"district\": \"Thành Phố Thủ Đức\"\n    },\n    {\n      \"id\": 4,\n      \"name\": \"Phường An Phú\",\n      \"district_id\": 1,\n      \"district\": \"Thành Phố Thủ Đức\"\n    },\n    {\n      \"id\": 5,\n      \"name\": \"Phường Thảo Điền\",\n      \"district_id\": 1,\n      \"district\": \"Thành Phố Thủ Đức\"\n    },\n    {\n      \"id\": 6,\n      \"name\": \"Phường Phú Hữu\",\n      \"district_id\": 1,\n      \"district\": \"Thành Phố Thủ Đức\"\n    },\n    {\n      \"id\": 7,\n      \"name\": \"Phường Phước Bình\",\n      \"district_id\": 1,\n      \"district\": \"Thành Phố Thủ Đức\"\n    },\n    {\n      \"id\": 8,\n      \"name\": \"Phường Long Trường\",\n      \"district_id\": 1,\n      \"district\": \"Thành Phố Thủ Đức\"\n    },\n    {\n      \"id\": 9,\n      \"name\": \"Phường Long Phước\",\n      \"district_id\": 1,\n      \"district\": \"Thành Phố Thủ Đức\"\n    },\n    {\n      \"id\": 10,\n      \"name\": \"Phường Trường Thạnh\",\n      \"district_id\": 1,\n      \"district\": \"Thành Phố Thủ Đức\"\n    }\n  ]\n}",
+          "latency": 500,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null
+    },
+    {
+      "uuid": "153cecf9-4a2b-4bac-b48c-a4a2e7b70340",
+      "type": "http",
+      "documentation": "",
+      "method": "get",
+      "endpoint": "api/districts/:id",
+      "responses": [
+        {
+          "uuid": "2bf6cb6e-49d5-40ff-a8b3-489410d0378a",
+          "body": "{\n  \"id\": {{urlParam 'id'}},\n  \"name\": \"some name\"\n}",
+          "latency": 500,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null
+    },
+    {
+      "uuid": "54d441e5-be5f-43bb-870d-5df9268d6e0d",
+      "type": "http",
+      "documentation": "",
+      "method": "get",
+      "endpoint": "api/wards/:id",
+      "responses": [
+        {
+          "uuid": "d0420b5e-5222-45be-a1ae-572fd5fd7bc9",
+          "body": "{\n  \"id\": {{urlParam 'id'}},\n  \"name\": \"some name\",\n  \"district_id\": 1,\n  \"district\": \"Thành phố Thủ Đức\"\n}",
+          "latency": 500,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null
+    },
+    {
+      "uuid": "4e95cc5f-b3b1-4a5d-9c63-cb3464efac35",
+      "type": "http",
+      "documentation": "",
+      "method": "post",
+      "endpoint": "api/districts",
+      "responses": [
+        {
+          "uuid": "f1e7cdc5-a3bf-4ca6-9afa-59b74a4e0e0a",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 201,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        },
+        {
+          "uuid": "fc8a7652-c8ee-4b3f-ad93-e9534711d5e6",
+          "body": "{\n  \"status\": 400,\n  \"message\": \"district exist\"\n}",
+          "latency": 0,
+          "statusCode": 400,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "name",
+              "value": "exist",
+              "invert": false,
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null
+    },
+    {
+      "uuid": "28a72dd2-797c-407b-ba9b-abfa9cc78fc9",
+      "type": "http",
+      "documentation": "",
+      "method": "post",
+      "endpoint": "api/wards",
+      "responses": [
+        {
+          "uuid": "5c5b2e6a-c984-473e-9048-17b17a95da14",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 201,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        },
+        {
+          "uuid": "58e29c95-e9cd-4aed-9c41-dbfcfb6ec491",
+          "body": "{\n  \"status\": 400,\n  \"message\": \"ward exist\"\n}",
+          "latency": 0,
+          "statusCode": 400,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "name",
+              "value": "exist",
+              "invert": false,
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null
+    },
+    {
+      "uuid": "d9593ce8-9df7-4f3f-ad02-3ccec4ef9c9e",
+      "type": "http",
+      "documentation": "",
+      "method": "put",
+      "endpoint": "api/districts",
+      "responses": [
+        {
+          "uuid": "b74f7870-fb0d-498f-8d4b-85e084dae7c0",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 201,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        },
+        {
+          "uuid": "698ce114-81e9-4f56-befa-64c20267ae3d",
+          "body": "{\n  \"status\": 400,\n  \"message\": \"district exist\"\n}",
+          "latency": 0,
+          "statusCode": 400,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "name",
+              "value": "exist",
+              "invert": false,
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null
+    },
+    {
+      "uuid": "5b1781ba-0bf4-4e96-a6fb-f9f7fbb69423",
+      "type": "http",
+      "documentation": "",
+      "method": "put",
+      "endpoint": "api/wards",
+      "responses": [
+        {
+          "uuid": "b437cffe-8911-4c32-a9cd-39d43b18c0fc",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 201,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        },
+        {
+          "uuid": "80779aba-9d2b-4692-97aa-449e5e28554a",
+          "body": "{\n  \"status\": 400,\n  \"message\": \"ward exist\"\n}",
+          "latency": 0,
+          "statusCode": 400,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "name",
+              "value": "exist",
+              "invert": false,
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null
+    },
+    {
+      "uuid": "beb320a9-25a1-4765-ab85-fdfe3f550999",
+      "type": "http",
+      "documentation": "",
+      "method": "delete",
+      "endpoint": "api/districts",
+      "responses": [
+        {
+          "uuid": "844e2ad9-9114-432a-85fa-29f938d9840e",
+          "body": "",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null
     }
   ],
   "rootChildren": [
@@ -535,6 +1021,42 @@
     {
       "type": "route",
       "uuid": "77160d18-9514-465f-947d-c4fea0466467"
+    },
+    {
+      "type": "route",
+      "uuid": "8a8d36e7-0fdb-4557-b6ba-baba876bdb32"
+    },
+    {
+      "type": "route",
+      "uuid": "ab36dc25-74a2-4d5f-ae87-9ae2ceffc017"
+    },
+    {
+      "type": "route",
+      "uuid": "153cecf9-4a2b-4bac-b48c-a4a2e7b70340"
+    },
+    {
+      "type": "route",
+      "uuid": "54d441e5-be5f-43bb-870d-5df9268d6e0d"
+    },
+    {
+      "type": "route",
+      "uuid": "4e95cc5f-b3b1-4a5d-9c63-cb3464efac35"
+    },
+    {
+      "type": "route",
+      "uuid": "28a72dd2-797c-407b-ba9b-abfa9cc78fc9"
+    },
+    {
+      "type": "route",
+      "uuid": "d9593ce8-9df7-4f3f-ad02-3ccec4ef9c9e"
+    },
+    {
+      "type": "route",
+      "uuid": "5b1781ba-0bf4-4e96-a6fb-f9f7fbb69423"
+    },
+    {
+      "type": "route",
+      "uuid": "beb320a9-25a1-4765-ab85-fdfe3f550999"
     }
   ],
   "proxyMode": false,
