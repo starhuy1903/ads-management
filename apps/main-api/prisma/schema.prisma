@@ -18,12 +18,18 @@ model panel {
   expired_contract_date DateTime
   company_email         String
   company_number        String
+  status        PanelStatus        @default(DRAFT)
   created_time          DateTime      @default(now())
   modified_time         DateTime      @updatedAt
   ads_request           ads_request[]
   location              location      @relation(fields: [location_id], references: [id], onDelete: Cascade)
   type                  panel_type    @relation(fields: [type_id], references: [id], onDelete: Cascade)
   report                report[]
+}
+
+enum PanelStatus {
+  DRAFT
+  APPROVED
 }
 
 model panel_type {
