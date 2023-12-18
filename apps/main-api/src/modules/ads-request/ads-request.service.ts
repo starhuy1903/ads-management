@@ -9,12 +9,14 @@ import { PageOptionsAdsRequestDto } from './dto/find-all-ads-request.dto';
 export class AdsRequestService {
   constructor(private prismaService: PrismaService) {}
   async create(createAdsRequestDto: CreateAdsRequestDto) {
-    let data: any = {
+    const data = {
       user: { connect: { id: createAdsRequestDto.userId } },
       target_type: createAdsRequestDto.targetType,
       ads_request_type: { connect: { id: createAdsRequestDto.typeId } },
       reason: createAdsRequestDto.reason,
       status: AdsRequestStatus.SENT,
+      location: undefined,
+      panel: undefined,
     };
     if (createAdsRequestDto.targetType == TargetType.LOCATION) {
       data.location = { connect: { id: createAdsRequestDto.locationId } };
@@ -27,7 +29,7 @@ export class AdsRequestService {
   }
 
   async findAll(pageOptionsAdsRequestDto: PageOptionsAdsRequestDto) {
-    let conditions: any = {
+    const conditions = {
       orderBy: [
         {
           createdAt: pageOptionsAdsRequestDto.order,
@@ -37,6 +39,8 @@ export class AdsRequestService {
         type_id: pageOptionsAdsRequestDto.typeId,
         target_type: pageOptionsAdsRequestDto.targetType,
         status: pageOptionsAdsRequestDto.status,
+        location: undefined,
+        panel: undefined,
       },
     };
 
