@@ -8,20 +8,22 @@ datasource db {
 }
 
 model panel {
-  id                    Int        @id @default(autoincrement())
-  type                  panel_type @relation(fields: [type_id], references: [id])
+  id                    Int           @id @default(autoincrement())
   type_id               Int
   width                 Decimal
   height                Decimal
-  location              location   @relation(fields: [location_id], references: [id])
   location_id           Int
   image_urls            String[]
   create_contract_date  DateTime
   expired_contract_date DateTime
   company_email         String
   company_number        String
-  created_time          DateTime   @default(now())
-  modified_time         DateTime   @updatedAt
+  created_time          DateTime      @default(now())
+  modified_time         DateTime      @updatedAt
+  ads_request           ads_request[]
+  location              location      @relation(fields: [location_id], references: [id], onDelete: Cascade)
+  type                  panel_type    @relation(fields: [type_id], references: [id], onDelete: Cascade)
+  report                report[]
 }
 
 model panel_type {
@@ -35,19 +37,21 @@ model location {
   lat           Decimal
   long          Decimal
   isPlanning    Boolean            @default(false)
-  district      district           @relation(fields: [district_id], references: [id])
   district_id   Int
-  ward          ward               @relation(fields: [ward_id], references: [id])
   ward_id       Int
   full_address  String
-  type          location_type      @relation(fields: [type_id], references: [id])
   type_id       Int
-  ad_type       advertisement_type @relation(fields: [ad_type_id], references: [id])
   ad_type_id    Int
   image_urls    String[]
   created_time  DateTime           @default(now())
   modified_time DateTime           @updatedAt
+  ads_request   ads_request[]
+  ad_type       advertisement_type @relation(fields: [ad_type_id], references: [id], onDelete: Cascade)
+  district      district           @relation(fields: [district_id], references: [id], onDelete: Cascade)
+  type          location_type      @relation(fields: [type_id], references: [id], onDelete: Cascade)
+  ward          ward               @relation(fields: [ward_id], references: [id], onDelete: Cascade)
   panel         panel[]
+  report        report[]
 }
 
 model location_type {
@@ -72,7 +76,88 @@ model district {
 model ward {
   id          Int        @id @default(autoincrement())
   name        String
-  district    district   @relation(fields: [district_id], references: [id])
   district_id Int
   location    location[]
+  district    district   @relation(fields: [district_id], references: [id], onDelete: Cascade)
+}
+
+model ads_request {
+  id               Int              @id @default(autoincrement())
+  type_id          Int
+  reason           String
+  status           String           @db.VarChar(255)
+  target_type      String           @db.VarChar(255)
+  user_id          Int
+  location_id      Int?
+  panel_id         Int?
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+  ads_request_type ads_request_type @relation(fields: [type_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_ads_request_adsrequesttype")
+  location         location?        @relation(fields: [location_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_ads_request_location")
+  panel            panel?           @relation(fields: [panel_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_ads_request_panel")
+  user             user             @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_ads_request_user")
+}
+
+model ads_request_type {
+  id          Int           @id @default(autoincrement())
+  name        String?       @db.VarChar(255)
+  ads_request ads_request[]
+}
+
+model report {
+  id               Int         @id @default(autoincrement())
+  type_id          Int
+  fullname         String      @db.VarChar(255)
+  email            String      @db.VarChar(255)
+  content          String
+  image_url        String[]    @db.VarChar(255)
+  target_type      String      @db.VarChar(255)
+  location_id      Int?
+  panel_id         Int?
+  status           String      @db.VarChar(255)
+  resolved_content String
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @updatedAt
+  user_uuid        String      @db.VarChar(255)
+  location         location?   @relation(fields: [location_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_report_location")
+  panel            panel?      @relation(fields: [panel_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_report_panel")
+  report_type      report_type @relation(fields: [type_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_report_reporttype")
+}
+
+model report_type {
+  id     Int      @id @default(autoincrement())
+  name   String?  @db.VarChar(255)
+  report report[]
+}
+
+model user {
+  id             Int           @id @default(autoincrement())
+  email          String        @unique
+  password       String
+  first_name     String
+  last_name      String
+  phone_number   String?
+  dob            DateTime?
+  reset_password Boolean       @default(false)
+  created_at     DateTime      @default(now())
+  modified_at    DateTime      @default(now()) @updatedAt
+  role           UserRole      @default(WARD_OFFICER)
+  ads_request    ads_request[]
+  tokens         token[]
+}
+
+model token {
+  id          String   @id @default(uuid())
+  user_id     Int
+  token       String
+  expires_at  DateTime
+  created_at  DateTime @default(now())
+  modified_at DateTime @updatedAt
+  user        user     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+}
+
+enum UserRole {
+  WARD_OFFICER
+  DISTRICT_OFFICER
+  DEPARTMENT_OFFICER
 }
