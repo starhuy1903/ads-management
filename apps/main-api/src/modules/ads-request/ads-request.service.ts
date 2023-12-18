@@ -60,6 +60,12 @@ export class AdsRequestService {
 
     const [result, totalCount] = await Promise.all([
       this.prismaService.ads_request.findMany({
+        include: {
+          ads_request_type: true,
+          user: true,
+          location: true,
+          panel: true,
+        },
         ...conditions,
         skip: pageOptionsAdsRequestDto.skip,
         take: pageOptionsAdsRequestDto.take,
@@ -76,6 +82,12 @@ export class AdsRequestService {
 
   findOne(id: number) {
     return this.prismaService.ads_request.findFirst({
+      include: {
+        ads_request_type: true,
+        user: true,
+        location: true,
+        panel: true,
+      },
       where: {
         id: id,
       },
