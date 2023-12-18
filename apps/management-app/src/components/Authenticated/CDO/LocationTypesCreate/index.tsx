@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
 import ControlledTextField from '@/components/Common/ControlledTextField';
-import { useCreatePanelTypeMutation } from '@/store/api/generalManagementApiSlice';
+import { useCreateLocationTypeMutation } from '@/store/api/generalManagementApiSlice';
 import { isApiErrorResponse } from '@/store/api/helper';
 import { showError, showSuccess } from '@/utils/toast';
 import StaticActionBar from '../StaticActionBar';
@@ -16,13 +16,13 @@ interface FormData {
   name: string;
 }
 
-const PanelTypesCreate = () => {
+const LocationTypesCreate = () => {
   const navigate = useNavigate();
 
   const schema = useMemo(
     () =>
       yup.object({
-        name: yup.string().required("Panel type's name is required"),
+        name: yup.string().required("Location type's name is required"),
       }),
     [],
   );
@@ -40,13 +40,13 @@ const PanelTypesCreate = () => {
     },
   });
 
-  const [createPanelType] = useCreatePanelTypeMutation();
+  const [createLocationType] = useCreateLocationTypeMutation();
 
-  const handleCreatePanelType = useCallback(
+  const handleCreateLocationType = useCallback(
     handleSubmit(async (data: FormData) => {
       try {
-        await createPanelType(data).unwrap();
-        showSuccess('Panel type created');
+        await createLocationType(data).unwrap();
+        showSuccess('Location type created');
         reset();
       } catch (error) {
         showError(
@@ -54,7 +54,7 @@ const PanelTypesCreate = () => {
         );
       }
     }),
-    [createPanelType],
+    [createLocationType],
   );
 
   return (
@@ -73,9 +73,9 @@ const PanelTypesCreate = () => {
             variant="contained"
             disabled={!isDirty || !isValid}
             sx={{ color: (theme) => theme.palette.common.white }}
-            onClick={handleCreatePanelType}
+            onClick={handleCreateLocationType}
           >
-            Create panel type
+            Create location type
           </Button>
         </>
       }
@@ -87,4 +87,4 @@ const PanelTypesCreate = () => {
   );
 };
 
-export default PanelTypesCreate;
+export default LocationTypesCreate;

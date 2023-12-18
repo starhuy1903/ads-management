@@ -1,8 +1,11 @@
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import EditIcon from '@mui/icons-material/Edit';
+import EditLocationIcon from '@mui/icons-material/EditLocation';
 import EqualizerIcon from '@mui/icons-material/Equalizer';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+import PermMediaIcon from '@mui/icons-material/PermMedia';
+import ReportIcon from '@mui/icons-material/Report';
 import SignpostIcon from '@mui/icons-material/Signpost';
 import TaskIcon from '@mui/icons-material/Task';
 import VideoLabelIcon from '@mui/icons-material/VideoLabel';
@@ -83,12 +86,26 @@ function Sidebar({ open, handleOnClose }: SidebarProps) {
             />
             <NavItem
               title="Report Types"
-              icon={<ViewListIcon />}
+              icon={<ReportIcon />}
               href="/report-types"
+            />
+            <NavItem
+              title="Location Types"
+              icon={<EditLocationIcon />}
+              href="/location-types"
+            />
+            <NavItem
+              title="Advertisement Types"
+              icon={<PermMediaIcon />}
+              href="/ads-types"
             />
           </NavGroupWrapper>
           <NavGroupWrapper title="Panels Management">
-            <NavItem title="Space" icon={<LocationOnIcon />} href="/spaces" />
+            <NavItem
+              title="Location"
+              icon={<LocationOnIcon />}
+              href="/locations"
+            />
             <NavItem title="Panel" icon={<VideoLabelIcon />} href="/panels" />
           </NavGroupWrapper>
           <NavGroupWrapper title="Request Management">

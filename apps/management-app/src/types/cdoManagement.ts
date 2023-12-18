@@ -25,6 +25,16 @@ export type ReportType = {
   name: string;
 };
 
+export type AdsType = {
+  id: number;
+  name: string;
+};
+
+export type LocationType = {
+  id: number;
+  name: string;
+};
+
 export type GetListResult<T> = {
   rowsCount: number;
   data: Array<T>;
@@ -44,5 +54,13 @@ export type PanelTypeDto = {
 };
 
 export type ReportTypeDto = {
+  name: string;
+};
+
+export type LocationTypeDto = {
+  name: string;
+};
+
+export type AdsTypeDto = {
   name: string;
 };

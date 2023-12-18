@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
 import ControlledTextField from '@/components/Common/ControlledTextField';
-import { useCreatePanelTypeMutation } from '@/store/api/generalManagementApiSlice';
+import { useCreateAdsTypeMutation } from '@/store/api/generalManagementApiSlice';
 import { isApiErrorResponse } from '@/store/api/helper';
 import { showError, showSuccess } from '@/utils/toast';
 import StaticActionBar from '../StaticActionBar';
@@ -16,13 +16,13 @@ interface FormData {
   name: string;
 }
 
-const PanelTypesCreate = () => {
+const AdsTypesCreate = () => {
   const navigate = useNavigate();
 
   const schema = useMemo(
     () =>
       yup.object({
-        name: yup.string().required("Panel type's name is required"),
+        name: yup.string().required("Ads type's name is required"),
       }),
     [],
   );
@@ -40,13 +40,13 @@ const PanelTypesCreate = () => {
     },
   });
 
-  const [createPanelType] = useCreatePanelTypeMutation();
+  const [createAdsType] = useCreateAdsTypeMutation();
 
-  const handleCreatePanelType = useCallback(
+  const handleCreateAdsType = useCallback(
     handleSubmit(async (data: FormData) => {
       try {
-        await createPanelType(data).unwrap();
-        showSuccess('Panel type created');
+        await createAdsType(data).unwrap();
+        showSuccess('Advertisement type created');
         reset();
       } catch (error) {
         showError(
@@ -54,7 +54,7 @@ const PanelTypesCreate = () => {
         );
       }
     }),
-    [createPanelType],
+    [createAdsType],
   );
 
   return (
@@ -73,9 +73,9 @@ const PanelTypesCreate = () => {
             variant="contained"
             disabled={!isDirty || !isValid}
             sx={{ color: (theme) => theme.palette.common.white }}
-            onClick={handleCreatePanelType}
+            onClick={handleCreateAdsType}
           >
-            Create panel type
+            Create Advertisement Type
           </Button>
         </>
       }
@@ -87,4 +87,4 @@ const PanelTypesCreate = () => {
   );
 };
 
-export default PanelTypesCreate;
+export default AdsTypesCreate;

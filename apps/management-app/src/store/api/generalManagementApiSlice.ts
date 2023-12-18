@@ -1,7 +1,11 @@
 import {
+  AdsType,
+  AdsTypeDto,
   District,
   DistrictDto,
   GetListResult,
+  LocationType,
+  LocationTypeDto,
   MessageResponse,
   PanelType,
   PanelTypeDto,
@@ -151,6 +155,76 @@ export const generalManagementApiSlice = apiSlice.injectEndpoints({
         body: { ids: arg },
       }),
     }),
+    getLocationTypes: build.query<
+      GetListResult<LocationType>,
+      { page?: number; limit?: number }
+    >({
+      query: (arg) => ({
+        url: `/locationTypes`,
+        params: {
+          page: arg.page || undefined,
+          limit: arg.limit || undefined,
+        },
+      }),
+    }),
+    getLocationTypeById: build.query<LocationType, number>({
+      query: (id) => `/locationTypes/${id}`,
+    }),
+    createLocationType: build.mutation<MessageResponse, LocationTypeDto>({
+      query: (arg) => ({ url: '/locationTypes', method: 'POST', body: arg }),
+    }),
+    updateLocationType: build.mutation<
+      MessageResponse,
+      { id: number; data: LocationTypeDto }
+    >({
+      query: (arg) => ({
+        url: `/locationTypes/${arg.id}`,
+        method: 'PUT',
+        body: arg.data,
+      }),
+    }),
+    deleteLocationTypes: build.mutation<MessageResponse, Array<number>>({
+      query: (arg) => ({
+        url: '/locationTypes',
+        method: 'DELETE',
+        body: { ids: arg },
+      }),
+    }),
+    getAdsTypes: build.query<
+      GetListResult<AdsType>,
+      { page?: number; limit?: number }
+    >({
+      query: (arg) => ({
+        url: `/adsTypes`,
+        params: {
+          page: arg.page || undefined,
+          limit: arg.limit || undefined,
+        },
+      }),
+    }),
+    getAdsTypeById: build.query<AdsType, number>({
+      query: (id) => `/adsTypes/${id}`,
+    }),
+    createAdsType: build.mutation<MessageResponse, AdsTypeDto>({
+      query: (arg) => ({ url: '/adsTypes', method: 'POST', body: arg }),
+    }),
+    updateAdsType: build.mutation<
+      MessageResponse,
+      { id: number; data: AdsTypeDto }
+    >({
+      query: (arg) => ({
+        url: `/adsTypes/${arg.id}`,
+        method: 'PUT',
+        body: arg.data,
+      }),
+    }),
+    deleteAdsTypes: build.mutation<MessageResponse, Array<number>>({
+      query: (arg) => ({
+        url: '/adsTypes',
+        method: 'DELETE',
+        body: { ids: arg },
+      }),
+    }),
   }),
 });
 
@@ -180,4 +254,16 @@ export const {
   useCreateReportTypeMutation,
   useUpdateReportTypeMutation,
   useDeleteReportTypesMutation,
+  useGetLocationTypesQuery,
+  useGetLocationTypeByIdQuery,
+  useLazyGetLocationTypeByIdQuery,
+  useCreateLocationTypeMutation,
+  useUpdateLocationTypeMutation,
+  useDeleteLocationTypesMutation,
+  useGetAdsTypesQuery,
+  useGetAdsTypeByIdQuery,
+  useLazyGetAdsTypeByIdQuery,
+  useCreateAdsTypeMutation,
+  useUpdateAdsTypeMutation,
+  useDeleteAdsTypesMutation,
 } = generalManagementApiSlice;

@@ -75,7 +75,7 @@ const ReportTypesCreate = () => {
             sx={{ color: (theme) => theme.palette.common.white }}
             onClick={handleCreateReportType}
           >
-            Create reportType
+            Create report type
           </Button>
         </>
       }

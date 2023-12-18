@@ -9,9 +9,15 @@ import { useGetProfileQuery } from '@/store/api/userApiSlice';
 import { checkRole } from '@/store/slice/userSlice';
 import AdsLocation from './Authenticated/AdsLocation';
 import AdsPermission from './Authenticated/AdsPermission';
+import AdsTypesCreate from './Authenticated/CDO/AdsTypesCreate';
+import AdsTypesDetail from './Authenticated/CDO/AdsTypesDetail';
+import AdsTypesListView from './Authenticated/CDO/AdsTypesListView';
 import DistrictsCreate from './Authenticated/CDO/DistrictsCreate';
 import DistrictsDetail from './Authenticated/CDO/DistrictsDetail';
 import DistrictsListView from './Authenticated/CDO/DistrictsListView';
+import LocationTypesCreate from './Authenticated/CDO/LocationTypesCreate';
+import LocationTypesDetail from './Authenticated/CDO/LocationTypesDetail';
+import LocationTypesListView from './Authenticated/CDO/LocationTypesListView';
 import PanelTypesCreate from './Authenticated/CDO/PanelTypesCreate';
 import PanelTypesDetail from './Authenticated/CDO/PanelTypesDetail';
 import PanelTypesListView from './Authenticated/CDO/PanelTypesListView';
@@ -96,6 +102,30 @@ const CDORoutes = createBrowserRouter([
       {
         path: 'report-types/:id',
         element: <ReportTypesDetail />,
+      },
+      {
+        path: 'ads-types',
+        element: <AdsTypesListView />,
+      },
+      {
+        path: 'ads-types/create',
+        element: <AdsTypesCreate />,
+      },
+      {
+        path: 'ads-types/:id',
+        element: <AdsTypesDetail />,
+      },
+      {
+        path: 'location-types',
+        element: <LocationTypesListView />,
+      },
+      {
+        path: 'location-types/create',
+        element: <LocationTypesCreate />,
+      },
+      {
+        path: 'location-types/:id',
+        element: <LocationTypesDetail />,
       },
       {
         path: 'locations',
