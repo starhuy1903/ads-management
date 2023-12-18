@@ -29,6 +29,7 @@ export class LocationService {
       this.prismaService.location.findMany({
         include: {
           panel: true,
+          type: true,
         },
         ...conditions,
         skip: pageOptionsLocationDto.skip,
@@ -46,6 +47,10 @@ export class LocationService {
 
   findOne(id: number) {
     return this.prismaService.location.findFirst({
+      include: {
+        panel: true,
+        type: true,
+      },
       where: {
         id: id,
       },

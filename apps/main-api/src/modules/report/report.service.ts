@@ -105,6 +105,11 @@ export class ReportService {
 
     const [result, totalCount] = await Promise.all([
       this.prismaService.report.findMany({
+        include: {
+          report_type: true,
+          location: true,
+          panel: true,
+        },
         ...conditions,
         skip: pageOptionsReportDto.skip,
         take: pageOptionsReportDto.take,
@@ -121,6 +126,11 @@ export class ReportService {
 
   findOne(id: number) {
     return this.prismaService.report.findFirst({
+      include: {
+        report_type: true,
+        location: true,
+        panel: true,
+      },
       where: {
         id: id,
       },
@@ -166,6 +176,11 @@ export class ReportService {
 
     const [result, totalCount] = await Promise.all([
       this.prismaService.report.findMany({
+        include: {
+          report_type: true,
+          location: true,
+          panel: true,
+        },
         ...conditions,
         skip: pageOptionsUserReportDto.skip,
         take: pageOptionsUserReportDto.take,

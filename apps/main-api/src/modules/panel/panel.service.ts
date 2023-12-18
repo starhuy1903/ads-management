@@ -28,6 +28,10 @@ export class PanelService {
     };
     const [result, totalCount] = await Promise.all([
       this.prismaService.panel.findMany({
+        include: {
+          type: true,
+          location: true,
+        },
         ...conditions,
         skip: pageOptionsPanelDto.skip,
         take: pageOptionsPanelDto.take,
@@ -61,6 +65,10 @@ export class PanelService {
     };
     const [result, totalCount] = await Promise.all([
       this.prismaService.panel.findMany({
+        include: {
+          type: true,
+          location: true,
+        },
         ...conditions,
         skip: pageOptionsPanelDto.skip,
         take: pageOptionsPanelDto.take,
@@ -77,6 +85,10 @@ export class PanelService {
 
   async findOne(id: number) {
     return this.prismaService.panel.findFirst({
+      include: {
+        type: true,
+        location: true,
+      },
       where: {
         id: id,
       },
