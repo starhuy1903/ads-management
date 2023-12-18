@@ -18,7 +18,7 @@ model panel {
   expired_contract_date DateTime
   company_email         String
   company_number        String
-  status        PanelStatus        @default(DRAFT)
+  status                PanelStatus   @default(DRAFT)
   created_time          DateTime      @default(now())
   modified_time         DateTime      @updatedAt
   ads_request           ads_request[]
@@ -88,26 +88,25 @@ model ward {
 }
 
 model ads_request {
-  id               Int              @id @default(autoincrement())
-  type_id          Int
-  reason           String
-  status           String           @db.VarChar(255)
-  target_type      String           @db.VarChar(255)
-  user_id          Int
-  location_id      Int?
-  panel_id         Int?
-  createdAt        DateTime         @default(now())
-  updatedAt        DateTime         @updatedAt
-  ads_request_type ads_request_type @relation(fields: [type_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_ads_request_adsrequesttype")
-  location         location?        @relation(fields: [location_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_ads_request_location")
-  panel            panel?           @relation(fields: [panel_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_ads_request_panel")
-  user             user             @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_ads_request_user")
+  id          Int            @id @default(autoincrement())
+  type        AdsRequestType @default(UPDATE_DATA)
+  reason      String
+  status      String         @db.VarChar(255)
+  target_type String         @db.VarChar(255)
+  user_id     Int
+  location_id Int?
+  panel_id    Int?
+  new_data    String?
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  location    location?      @relation(fields: [location_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_ads_request_location")
+  panel       panel?         @relation(fields: [panel_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_ads_request_panel")
+  user        user           @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_ads_request_user")
 }
 
-model ads_request_type {
-  id          Int           @id @default(autoincrement())
-  name        String?       @db.VarChar(255)
-  ads_request ads_request[]
+enum AdsRequestType {
+  UPDATE_DATA
+  APPROVED_PANEL
 }
 
 model report {

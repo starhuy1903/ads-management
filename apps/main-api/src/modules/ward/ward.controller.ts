@@ -10,33 +10,31 @@ import {
   Res,
   UseGuards,
 } from '@nestjs/common';
-import { LocationTypeService } from './location-type.service';
-import { CreateLocationTypeDto } from './dto/create-location-type.dto';
-import { UpdateLocationTypeDto } from './dto/update-location-type.dto';
-import { PageOptionsLocationTypeDto } from './dto/find-all-location-type.dto';
+import { WardService } from './ward.service';
+import { CreateWardDto } from './dto/create-ward.dto';
+import { UpdateWardDto } from './dto/update-ward.dto';
+import { PageOptionsWardDto } from './dto/find-all-ward.dto';
 import { CustomResponse } from '../../middlewares'; // Import your CustomResponse type
+import { JwtGuard } from '../auth/guards';
 import { UserRole } from '@prisma/client';
 import { Roles } from '../auth/decorators';
-import { JwtGuard } from '../auth/guards';
 
-@Controller('location-types')
-export class LocationTypeController {
-  constructor(private readonly locationTypeService: LocationTypeService) {}
+@Controller('wards')
+export class WardController {
+  constructor(private readonly wardService: WardService) {}
 
   @Post()
   @UseGuards(JwtGuard)
   @Roles(UserRole.DEPARTMENT_OFFICER)
   async create(
-    @Body() createLocationTypeDto: CreateLocationTypeDto,
+    @Body() createWardDto: CreateWardDto,
     @Res() res: CustomResponse,
   ) {
     try {
-      const locationType = await this.locationTypeService.create(
-        createLocationTypeDto,
-      );
+      const Ward = await this.wardService.create(createWardDto);
       return res.success({
-        data: locationType,
-        message: 'LocationType created successfully',
+        data: Ward,
+        message: 'Ward created successfully',
       });
     } catch (error) {
       return res.error({
@@ -47,15 +45,32 @@ export class LocationTypeController {
   }
 
   @Get()
+  @UseGuards(JwtGuard)
+  @Roles(UserRole.DEPARTMENT_OFFICER)
   async findAll(
-    @Query() pageOptionsLocationTypeDto: PageOptionsLocationTypeDto,
+    @Query() pageOptionsWardDto: PageOptionsWardDto,
     @Res() res: CustomResponse,
   ) {
     try {
-      const locationTypes = await this.locationTypeService.findAll(
-        pageOptionsLocationTypeDto,
+      const Wards = await this.wardService.findAll(
+        pageOptionsWardDto,
       );
-      return res.success({ data: locationTypes });
+      return res.success({ data: Wards });
+    } catch (error) {
+      return res.error({
+        statusCode: 500,
+        message: error.message || 'Internal Server Error',
+      });
+    }
+  }
+
+  @Get(':id')
+  @UseGuards(JwtGuard)
+  @Roles(UserRole.DEPARTMENT_OFFICER)
+  async findOne(@Param('id') id: string, @Res() res: CustomResponse) {
+    try {
+      const ward = await this.wardService.findOne(Number(id));
+      return res.success({ data: ward });
     } catch (error) {
       return res.error({
         statusCode: 500,
@@ -69,17 +84,17 @@ export class LocationTypeController {
   @Roles(UserRole.DEPARTMENT_OFFICER)
   async update(
     @Param('id') id: string,
-    @Body() updateLocationTypeDto: UpdateLocationTypeDto,
+    @Body() updateWardDto: UpdateWardDto,
     @Res() res: CustomResponse,
   ) {
     try {
-      const updatedLocationType = await this.locationTypeService.update(
+      const updatedWard = await this.wardService.update(
         +id,
-        updateLocationTypeDto,
+        updateWardDto,
       );
       return res.success({
-        data: updatedLocationType,
-        message: 'LocationType updated successfully',
+        data: updatedWard,
+        message: 'Ward updated successfully',
       });
     } catch (error) {
       return res.error({
@@ -94,8 +109,8 @@ export class LocationTypeController {
   @Roles(UserRole.DEPARTMENT_OFFICER)
   async remove(@Param('id') id: string, @Res() res: CustomResponse) {
     try {
-      await this.locationTypeService.remove(+id);
-      return res.success({ message: 'LocationType deleted successfully' });
+      await this.wardService.remove(+id);
+      return res.success({ message: 'Ward deleted successfully' });
     } catch (error) {
       return res.error({
         statusCode: 500,

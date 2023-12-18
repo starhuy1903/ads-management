@@ -12,7 +12,7 @@ export class AdsRequestService {
     const data = {
       user: { connect: { id: createAdsRequestDto.userId } },
       target_type: createAdsRequestDto.targetType,
-      ads_request_type: { connect: { id: createAdsRequestDto.typeId } },
+      type: createAdsRequestDto.type,
       reason: createAdsRequestDto.reason,
       status: AdsRequestStatus.SENT,
       location: undefined,
@@ -36,7 +36,7 @@ export class AdsRequestService {
         },
       ],
       where: {
-        type_id: pageOptionsAdsRequestDto.typeId,
+        type: pageOptionsAdsRequestDto.type,
         target_type: pageOptionsAdsRequestDto.targetType,
         status: pageOptionsAdsRequestDto.status,
         location: undefined,
@@ -61,7 +61,6 @@ export class AdsRequestService {
     const [result, totalCount] = await Promise.all([
       this.prismaService.ads_request.findMany({
         include: {
-          ads_request_type: true,
           user: true,
           location: true,
           panel: true,
@@ -83,7 +82,6 @@ export class AdsRequestService {
   findOne(id: number) {
     return this.prismaService.ads_request.findFirst({
       include: {
-        ads_request_type: true,
         user: true,
         location: true,
         panel: true,

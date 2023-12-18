@@ -1,0 +1,452 @@
+{
+	"info": {
+		"_postman_id": "4761e287-9491-4fff-8d3a-1914c5b16657",
+		"name": "CDO (Cán bộ sở)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18634609"
+	},
+	"item": [
+		{
+			"name": "Thông tin tất cả district",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjYsImVtYWlsIjoidGVzdEBnbWFpbC5jb20iLCJyb2xlIjoiREVQQVJUTUVOVF9PRkZJQ0VSIiwiaWF0IjoxNzAyOTE2MTMzLCJleHAiOjE3MDI5MTY0MzN9.ykQbP2-aQQJ36P0QienmdejWiB8Addqrvu2CcESYY-Q",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{LOCAL_URL}}/api/districts?take=10&order=desc&page=1",
+					"host": [
+						"{{LOCAL_URL}}"
+					],
+					"path": [
+						"api",
+						"districts"
+					],
+					"query": [
+						{
+							"key": "take",
+							"value": "10"
+						},
+						{
+							"key": "order",
+							"value": "desc",
+							"description": "optional"
+						},
+						{
+							"key": "page",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Thông tin tất cả ads_request",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjYsImVtYWlsIjoidGVzdEBnbWFpbC5jb20iLCJyb2xlIjoiREVQQVJUTUVOVF9PRkZJQ0VSIiwiaWF0IjoxNzAyOTE4MjUxLCJleHAiOjE3MDI5MTg1NTF9.TvfmGBOFX489XHqQypGySelpOJNe8IyAcjGApDg_eVM",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{LOCAL_URL}}/api/ads-requests?take=10&order=desc&page=1",
+					"host": [
+						"{{LOCAL_URL}}"
+					],
+					"path": [
+						"api",
+						"ads-requests"
+					],
+					"query": [
+						{
+							"key": "take",
+							"value": "10"
+						},
+						{
+							"key": "order",
+							"value": "desc",
+							"description": "optional"
+						},
+						{
+							"key": "page",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Thông tin 1 ads_request",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjYsImVtYWlsIjoidGVzdEBnbWFpbC5jb20iLCJyb2xlIjoiREVQQVJUTUVOVF9PRkZJQ0VSIiwiaWF0IjoxNzAyOTE4MjUxLCJleHAiOjE3MDI5MTg1NTF9.TvfmGBOFX489XHqQypGySelpOJNe8IyAcjGApDg_eVM",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{LOCAL_URL}}/api/ads-requests/2",
+					"host": [
+						"{{LOCAL_URL}}"
+					],
+					"path": [
+						"api",
+						"ads-requests",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cập nhật status ads-request",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjYsImVtYWlsIjoidGVzdEBnbWFpbC5jb20iLCJyb2xlIjoiREVQQVJUTUVOVF9PRkZJQ0VSIiwiaWF0IjoxNzAyOTE4MjUxLCJleHAiOjE3MDI5MTg1NTF9.TvfmGBOFX489XHqQypGySelpOJNe8IyAcjGApDg_eVM",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"status\": \"Đồng ý\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{LOCAL_URL}}/api/ads-requests/1",
+					"host": [
+						"{{LOCAL_URL}}"
+					],
+					"path": [
+						"api",
+						"ads-requests",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Thông tin tất cả ward",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjYsImVtYWlsIjoidGVzdEBnbWFpbC5jb20iLCJyb2xlIjoiREVQQVJUTUVOVF9PRkZJQ0VSIiwiaWF0IjoxNzAyOTE3MTUzLCJleHAiOjE3MDI5MTc0NTN9.84ZAaWzJaGGIvn17rDKxBEiQLPqC0LqhGJ_KB2UoyYE",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{LOCAL_URL}}/api/wards?take=10&order=desc&page=1",
+					"host": [
+						"{{LOCAL_URL}}"
+					],
+					"path": [
+						"api",
+						"wards"
+					],
+					"query": [
+						{
+							"key": "take",
+							"value": "10"
+						},
+						{
+							"key": "order",
+							"value": "desc",
+							"description": "optional"
+						},
+						{
+							"key": "page",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Thông tin 1 ward",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjYsImVtYWlsIjoidGVzdEBnbWFpbC5jb20iLCJyb2xlIjoiREVQQVJUTUVOVF9PRkZJQ0VSIiwiaWF0IjoxNzAyOTE3MTUzLCJleHAiOjE3MDI5MTc0NTN9.84ZAaWzJaGGIvn17rDKxBEiQLPqC0LqhGJ_KB2UoyYE",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{LOCAL_URL}}/api/wards/2",
+					"host": [
+						"{{LOCAL_URL}}"
+					],
+					"path": [
+						"api",
+						"wards",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Tạo ward",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjYsImVtYWlsIjoidGVzdEBnbWFpbC5jb20iLCJyb2xlIjoiREVQQVJUTUVOVF9PRkZJQ0VSIiwiaWF0IjoxNzAyOTE3MTUzLCJleHAiOjE3MDI5MTc0NTN9.84ZAaWzJaGGIvn17rDKxBEiQLPqC0LqhGJ_KB2UoyYE",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Ward test 1\",\n    \"districtId\": 1\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{LOCAL_URL}}/api/wards",
+					"host": [
+						"{{LOCAL_URL}}"
+					],
+					"path": [
+						"api",
+						"wards"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cập nhật wards",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjYsImVtYWlsIjoidGVzdEBnbWFpbC5jb20iLCJyb2xlIjoiREVQQVJUTUVOVF9PRkZJQ0VSIiwiaWF0IjoxNzAyOTE3MTUzLCJleHAiOjE3MDI5MTc0NTN9.84ZAaWzJaGGIvn17rDKxBEiQLPqC0LqhGJ_KB2UoyYE",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"test\",\n    \"districtId\": 2\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{LOCAL_URL}}/api/wards/1",
+					"host": [
+						"{{LOCAL_URL}}"
+					],
+					"path": [
+						"api",
+						"wards",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Xóa wards",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjYsImVtYWlsIjoidGVzdEBnbWFpbC5jb20iLCJyb2xlIjoiREVQQVJUTUVOVF9PRkZJQ0VSIiwiaWF0IjoxNzAyOTE3MTUzLCJleHAiOjE3MDI5MTc0NTN9.84ZAaWzJaGGIvn17rDKxBEiQLPqC0LqhGJ_KB2UoyYE",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{LOCAL_URL}}/api/wards/323",
+					"host": [
+						"{{LOCAL_URL}}"
+					],
+					"path": [
+						"api",
+						"wards",
+						"323"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Thông tin 1 district",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjYsImVtYWlsIjoidGVzdEBnbWFpbC5jb20iLCJyb2xlIjoiREVQQVJUTUVOVF9PRkZJQ0VSIiwiaWF0IjoxNzAyOTE2MTMzLCJleHAiOjE3MDI5MTY0MzN9.ykQbP2-aQQJ36P0QienmdejWiB8Addqrvu2CcESYY-Q",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{LOCAL_URL}}/api/districts/2",
+					"host": [
+						"{{LOCAL_URL}}"
+					],
+					"path": [
+						"api",
+						"districts",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Tạo district",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjYsImVtYWlsIjoidGVzdEBnbWFpbC5jb20iLCJyb2xlIjoiREVQQVJUTUVOVF9PRkZJQ0VSIiwiaWF0IjoxNzAyOTE3MTUzLCJleHAiOjE3MDI5MTc0NTN9.84ZAaWzJaGGIvn17rDKxBEiQLPqC0LqhGJ_KB2UoyYE",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Quận test 1\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{LOCAL_URL}}/api/districts",
+					"host": [
+						"{{LOCAL_URL}}"
+					],
+					"path": [
+						"api",
+						"districts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cập nhật district",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"test\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{LOCAL_URL}}/api/districts/1",
+					"host": [
+						"{{LOCAL_URL}}"
+					],
+					"path": [
+						"api",
+						"districts",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Xóa district",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{LOCAL_URL}}/api/districts/1",
+					"host": [
+						"{{LOCAL_URL}}"
+					],
+					"path": [
+						"api",
+						"districts",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
