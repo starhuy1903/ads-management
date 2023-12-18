@@ -23,7 +23,7 @@ node_modules
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
-!.vscode/AuthDemo.code-workspace
+!.vscode/*.code-workspace
 
 # misc
 /.sass-cache
@@ -38,3 +38,5 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+
+.env

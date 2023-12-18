@@ -3,6 +3,7 @@ import { getStorage } from 'firebase-admin/storage';
 export enum EUploadFolder {
   location = 'location',
   panel = 'panel',
+  report = 'report',
 }
 
 /**

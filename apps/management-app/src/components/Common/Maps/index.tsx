@@ -1,5 +1,5 @@
 import { Avatar } from '@mui/material';
-import mapboxgl from 'mapbox-gl';
+// import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { useCallback, useMemo, useRef, useState } from 'react';
 import Map, {
@@ -8,22 +8,33 @@ import Map, {
   Marker,
   NavigationControl,
   Popup,
-  ScaleControl,
 } from 'react-map-gl';
 import { configs } from '@/configurations';
-import SearchBar from './SearchBar';
+import { useAppDispatch } from '@/store';
+import { SidebarKey } from '@/constants/sidebar';
+import { showSidebar } from '@/store/slice/sidebar';
 
-export default function Maps() {
+export default function Maps({ children }: { children?: React.ReactNode }) {
   const [showPopup, setShowPopup] = useState<boolean>(true);
+
   const markerRef = useRef<mapboxgl.Marker>();
+  const dispatch = useAppDispatch();
+
+  const handleViewDetailAd = useCallback(() => {
+    dispatch(
+      showSidebar(SidebarKey.AD_DETAIL, {
+        sidebarId: 1, // todo: remove mock
+      }),
+    );
+  }, [dispatch]);
 
   // const popup = useMemo(() => {
   //   return mapboxgl.Popup().setText('Hello world!');
   // }, []);
 
-  const togglePopup = useCallback(() => {
-    markerRef.current?.togglePopup();
-  }, []);
+  // const togglePopup = useCallback(() => {
+  //   markerRef.current?.togglePopup();
+  // }, []);
 
   return (
     <Map
@@ -36,29 +47,30 @@ export default function Maps() {
       style={{ width: '100%', height: '100%', zIndex: 1 }}
       mapStyle="mapbox://styles/mapbox/streets-v9"
       mapboxAccessToken={configs.mapBox}
+      logoPosition="bottom-right"
     >
-      <FullscreenControl position="bottom-left" />
+      <FullscreenControl position="bottom-right" />
       <GeolocateControl
         positionOptions={{ enableHighAccuracy: true }}
         trackUserLocation={true}
-        position="bottom-left"
+        position="bottom-right"
       />
-      <NavigationControl position="bottom-left" />
+      <NavigationControl position="bottom-right" />
       {/* <ScaleControl position="bottom-left" /> */}
-
+      {children}
       <Marker
         longitude={-100}
         latitude={40}
         anchor="center"
         // popup={popup}
-        ref={markerRef}
+        // ref={markerRef}
       >
         <Avatar
           sx={{ bgcolor: 'blue', width: 20, height: 20, fontSize: '12px' }}
           children="BC"
+          onClick={handleViewDetailAd}
         />
       </Marker>
-      <SearchBar />
       {showPopup && (
         <Popup
           longitude={-100}

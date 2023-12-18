@@ -16,7 +16,10 @@ import AdsPanelDetail from './Authenticated/AdsPanelDetail';
 import AdsPanelEditing from './Authenticated/AdsPanelEditing';
 import AdsPermission from './Authenticated/AdsPermission';
 import AdsPermissionDetail from './Authenticated/AdsPermissionDetail';
+import DistrictsManagement from './Authenticated/CDO/DistrictsManagement';
+import Dashboard from './Authenticated/Dashboard';
 import Home from './Authenticated/Home';
+import CDOLayout from './Authenticated/Layout/CDOLayout';
 import OfficerLayout from './Authenticated/Layout/OfficerLayout';
 import ReportDetail from './Authenticated/ReportDetail';
 import ReportResponse from './Authenticated/ReportResponse';
@@ -35,7 +38,16 @@ import Verify from './Unauthenticated/Verify';
 const CDORoutes = createBrowserRouter([
   {
     path: '/',
+    element: <CDOLayout />,
     children: [
+      {
+        path: 'dashboard',
+        element: <Dashboard />,
+      },
+      {
+        path: 'districts',
+        element: <DistrictsManagement />,
+      },
       {
         path: 'locations',
         element: <div>Ads location</div>,
@@ -68,7 +80,15 @@ const CDORoutes = createBrowserRouter([
         path: 'accounts',
         element: <div>Officer accounts</div>,
       },
+      {
+        index: true,
+        element: <Navigate to={`/dashboard`} />,
+      },
     ],
+  },
+  {
+    path: '*',
+    element: <Navigate to={`/`} />,
   },
 ]);
 

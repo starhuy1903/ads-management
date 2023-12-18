@@ -1,0 +1,384 @@
+{
+	"info": {
+		"_postman_id": "bde2b120-ca8b-44b2-ba9e-91bc2f7fa1ed",
+		"name": "Crew (Dân)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18634609"
+	},
+	"item": [
+		{
+			"name": "Thông tin tất cả panels",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{LOCAL_URL}}/api/panels?typeId=1&take=10&order=desc&districts=1&wards=1",
+					"host": [
+						"{{LOCAL_URL}}"
+					],
+					"path": [
+						"api",
+						"panels"
+					],
+					"query": [
+						{
+							"key": "typeId",
+							"value": "1",
+							"description": "optional"
+						},
+						{
+							"key": "take",
+							"value": "10",
+							"description": "optional"
+						},
+						{
+							"key": "order",
+							"value": "desc",
+							"description": "optional"
+						},
+						{
+							"key": "districts",
+							"value": "1",
+							"description": "optional"
+						},
+						{
+							"key": "wards",
+							"value": "1",
+							"description": "optional"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Thông tin các panels của 1 location",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{LOCAL_URL}}/api/locations/5/panels?typeId=1&take=10&order=desc&districts=1&wards=1",
+					"host": [
+						"{{LOCAL_URL}}"
+					],
+					"path": [
+						"api",
+						"locations",
+						"5",
+						"panels"
+					],
+					"query": [
+						{
+							"key": "typeId",
+							"value": "1",
+							"description": "optional"
+						},
+						{
+							"key": "take",
+							"value": "10",
+							"description": "optional"
+						},
+						{
+							"key": "order",
+							"value": "desc",
+							"description": "optional"
+						},
+						{
+							"key": "districts",
+							"value": "1",
+							"description": "optional"
+						},
+						{
+							"key": "wards",
+							"value": "1",
+							"description": "optional"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Thông tin tất cả locations",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{LOCAL_URL}}/api/locations?typeId=1&take=10&order=desc&districts=1&wards=1",
+					"host": [
+						"{{LOCAL_URL}}"
+					],
+					"path": [
+						"api",
+						"locations"
+					],
+					"query": [
+						{
+							"key": "typeId",
+							"value": "1"
+						},
+						{
+							"key": "take",
+							"value": "10"
+						},
+						{
+							"key": "order",
+							"value": "desc"
+						},
+						{
+							"key": "districts",
+							"value": "1"
+						},
+						{
+							"key": "wards",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Thông tin 1 panel",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{LOCAL_URL}}/api/panels/2",
+					"host": [
+						"{{LOCAL_URL}}"
+					],
+					"path": [
+						"api",
+						"panels",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Gửi report",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "recaptcha-token",
+						"value": "123456789",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "typeId",
+							"value": "1",
+							"description": "loại report, ref của report_types",
+							"type": "text"
+						},
+						{
+							"key": "images",
+							"description": "Max 2 ảnh, png/jpg/jpeg",
+							"type": "file",
+							"src": [
+								"/Users/mac/Workspace/Company/Pixelcent/TestImage/pg-mkt-img-3.jpeg",
+								"/Users/mac/Workspace/Company/Pixelcent/TestImage/pg-mkt-img-4.jpeg"
+							]
+						},
+						{
+							"key": "fullName",
+							"value": "Thong",
+							"type": "text"
+						},
+						{
+							"key": "targetType",
+							"value": "Location",
+							"type": "text"
+						},
+						{
+							"key": "content",
+							"value": "<p>Biển quảng cáo này quá xấu lần 4</p>",
+							"type": "text"
+						},
+						{
+							"key": "locationId",
+							"value": "5",
+							"description": "Nếu targetType = Location. Ref của location",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "adfas@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "userUuid",
+							"value": "2412341234-asfasdfasdf",
+							"description": "Không có kí tự đặt biệt",
+							"type": "text"
+						},
+						{
+							"key": "panelId",
+							"value": "",
+							"description": "Nếu targetType = Panel. Ref của panel",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "{{LOCAL_URL}}/api/reports",
+					"host": [
+						"{{LOCAL_URL}}"
+					],
+					"path": [
+						"api",
+						"reports"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Xem lại báo cáo đã gửi",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{LOCAL_URL}}/api/reports/get-me?typeId=1&take=10&order=desc&userUuid=thongnguyen0123",
+					"host": [
+						"{{LOCAL_URL}}"
+					],
+					"path": [
+						"api",
+						"reports",
+						"get-me"
+					],
+					"query": [
+						{
+							"key": "typeId",
+							"value": "1",
+							"description": "optional"
+						},
+						{
+							"key": "take",
+							"value": "10",
+							"description": "optional"
+						},
+						{
+							"key": "order",
+							"value": "desc",
+							"description": "optional"
+						},
+						{
+							"key": "userUuid",
+							"value": "thongnguyen0123",
+							"description": "lấy từ localStorage"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Thông tin các loại report (report_type)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{LOCAL_URL}}/api/report-types?typeId=1&take=10&order=desc",
+					"host": [
+						"{{LOCAL_URL}}"
+					],
+					"path": [
+						"api",
+						"report-types"
+					],
+					"query": [
+						{
+							"key": "typeId",
+							"value": "1",
+							"description": "optional"
+						},
+						{
+							"key": "take",
+							"value": "10",
+							"description": "optional"
+						},
+						{
+							"key": "order",
+							"value": "desc",
+							"description": "optional"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Thông tin các loại location (location_type)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{LOCAL_URL}}/api/location-types?typeId=1&take=10&order=desc",
+					"host": [
+						"{{LOCAL_URL}}"
+					],
+					"path": [
+						"api",
+						"location-types"
+					],
+					"query": [
+						{
+							"key": "typeId",
+							"value": "1"
+						},
+						{
+							"key": "take",
+							"value": "10"
+						},
+						{
+							"key": "order",
+							"value": "desc"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Thông tin các loại panel (panel_type)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{LOCAL_URL}}/api/panel-types?typeId=1&take=10&order=desc",
+					"host": [
+						"{{LOCAL_URL}}"
+					],
+					"path": [
+						"api",
+						"panel-types"
+					],
+					"query": [
+						{
+							"key": "typeId",
+							"value": "1"
+						},
+						{
+							"key": "take",
+							"value": "10"
+						},
+						{
+							"key": "order",
+							"value": "desc"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

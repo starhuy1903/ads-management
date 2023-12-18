@@ -1,16 +1,11 @@
-import { Button } from '@mui/material';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
-import { useAppDispatch } from '@/store';
-import { ModalKey } from '@/constants/modal';
 import { isApiErrorResponse } from '@/store/api/helper';
 import { useLoginMutation } from '@/store/api/userApiSlice';
-import { showModal } from '@/store/slice/modal';
 import { CredentialPayload } from '@/types/user';
 import { showError } from '@/utils/toast';
 
 export default function Login() {
-  const dispatch = useAppDispatch();
   const [requestLogin, { isLoading }] = useLoginMutation();
 
   const {
@@ -32,9 +27,6 @@ export default function Login() {
     <div className="w-full h-screen flex justify-center items-center bg-white">
       <div className="bg-gray-100 px-12 py-20 rounded-lg">
         <div className="text-center">
-          <Button onClick={() => dispatch(showModal(ModalKey.CREATE_CATEGORY))}>
-            Open Modal
-          </Button>
           <h1 className="text-3xl font-bold text-[#101828] mb-2">
             Log in to your account
           </h1>
@@ -95,22 +87,6 @@ export default function Login() {
           </div>
 
           <div className="flex items-center justify-between">
-            <div className="flex items-center">
-              <div className="h-5">
-                <input
-                  id="remember"
-                  aria-describedby="remember"
-                  type="checkbox"
-                  className="w-4 h-4 border border-gray-300 rounded bg-gray-50"
-                />
-              </div>
-              <div className="ml-2 text-sm">
-                <label htmlFor="remember" className="text-black ">
-                  Remember for 30 days
-                </label>
-              </div>
-            </div>
-
             <Link
               to="/forgot-password"
               className="text-sm font-bold text-[#7F56D9] hover:underline dark:text-primary-500"
