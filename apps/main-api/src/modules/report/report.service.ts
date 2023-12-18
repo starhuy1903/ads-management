@@ -107,8 +107,22 @@ export class ReportService {
       this.prismaService.report.findMany({
         include: {
           report_type: true,
-          location: true,
-          panel: true,
+          location: {
+            include: {
+              district: true,
+              ward: true,
+            },
+          },
+          panel: {
+            include: {
+              location: {
+                include: {
+                  district: true,
+                  ward: true,
+                },
+              },
+            },
+          },
         },
         ...conditions,
         skip: pageOptionsReportDto.skip,
@@ -128,8 +142,22 @@ export class ReportService {
     return this.prismaService.report.findFirst({
       include: {
         report_type: true,
-        location: true,
-        panel: true,
+        location: {
+          include: {
+            district: true,
+            ward: true,
+          },
+        },
+        panel: {
+          include: {
+            location: {
+              include: {
+                district: true,
+                ward: true,
+              },
+            },
+          },
+        },
       },
       where: {
         id: id,
@@ -178,8 +206,22 @@ export class ReportService {
       this.prismaService.report.findMany({
         include: {
           report_type: true,
-          location: true,
-          panel: true,
+          location: {
+            include: {
+              district: true,
+              ward: true,
+            },
+          },
+          panel: {
+            include: {
+              location: {
+                include: {
+                  district: true,
+                  ward: true,
+                },
+              },
+            },
+          },
         },
         ...conditions,
         skip: pageOptionsUserReportDto.skip,

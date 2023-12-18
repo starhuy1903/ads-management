@@ -62,8 +62,22 @@ export class AdsRequestService {
       this.prismaService.ads_request.findMany({
         include: {
           user: true,
-          location: true,
-          panel: true,
+          location: {
+            include: {
+              district: true,
+              ward: true,
+            },
+          },
+          panel: {
+            include: {
+              location: {
+                include: {
+                  district: true,
+                  ward: true,
+                },
+              },
+            },
+          },
         },
         ...conditions,
         skip: pageOptionsAdsRequestDto.skip,
@@ -83,8 +97,22 @@ export class AdsRequestService {
     return this.prismaService.ads_request.findFirst({
       include: {
         user: true,
-        location: true,
-        panel: true,
+        location: {
+          include: {
+            district: true,
+            ward: true,
+          },
+        },
+        panel: {
+          include: {
+            location: {
+              include: {
+                district: true,
+                ward: true,
+              },
+            },
+          },
+        },
       },
       where: {
         id: id,
