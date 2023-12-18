@@ -144,8 +144,8 @@ export default function AdsPanel() {
       <Box
         sx={{
           display: 'flex',
-          alignItems: 'center',
           justifyContent: 'space-between',
+          alignItems: 'center',
         }}
       >
         <Typography variant="h4" sx={{ mb: 2 }}>

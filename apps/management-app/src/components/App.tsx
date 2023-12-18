@@ -19,6 +19,7 @@ import AdsPermissionDetail from './Authenticated/AdsPermissionDetail';
 import Home from './Authenticated/Home';
 import OfficerLayout from './Authenticated/Layout/OfficerLayout';
 import ReportDetail from './Authenticated/ReportDetail';
+import ReportResponse from './Authenticated/ReportResponse';
 import ReportTable from './Authenticated/ReportTable';
 import ResetPassword from './Authenticated/ResetPassword';
 import CenterLoading from './Common/CenterLoading';
@@ -115,6 +116,10 @@ const officerRoutes = createBrowserRouter([
       {
         path: 'reports/:reportId',
         element: <ReportDetail />,
+      },
+      {
+        path: 'reports/:reportId/response',
+        element: <ReportResponse />,
       },
       {
         path: 'permissions',

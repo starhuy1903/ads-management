@@ -1,6 +1,6 @@
 import { Box, Stack, Typography } from '@mui/material';
 import { BackButton } from '@/components/Common/Buttons';
-import { ReadOnlyTextField } from '@/components/Common/ReadOnlyTextField';
+import { ReadOnlyTextField } from '@/components/Common/FormComponents';
 import { AdsPanelResponse } from '@/types/form';
 import { formatDate, formatDateTime } from '@/utils/format-date';
 
@@ -41,90 +41,77 @@ export default function AdsPanelDetail() {
         component="form"
         autoComplete="off"
         sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 2,
           bgcolor: 'white',
           p: 4,
           borderRadius: 1,
           boxShadow: 1,
         }}
       >
-        <Stack spacing={2}>
-          <Typography variant="h6" sx={{ mb: 2 }}>
-            Location
-          </Typography>
-          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-            <ReadOnlyTextField label="ID" value={panel?.location?.id} />
+        <Typography variant="h6">Location</Typography>
+        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+          <ReadOnlyTextField label="ID" value={panel?.location?.id} />
 
-            <ReadOnlyTextField
-              label="Address"
-              value={panel?.location?.address}
-            />
+          <ReadOnlyTextField label="Address" value={panel?.location?.address} />
 
-            <ReadOnlyTextField label="Ward" value={panel?.location?.ward} />
+          <ReadOnlyTextField label="Ward" value={panel?.location?.ward} />
 
-            <ReadOnlyTextField
-              label="District"
-              value={panel?.location?.commue}
-            />
+          <ReadOnlyTextField label="District" value={panel?.location?.commue} />
 
-            <ReadOnlyTextField
-              label="Position type"
-              value={panel?.location?.positionType}
-            />
+          <ReadOnlyTextField
+            label="Position type"
+            value={panel?.location?.positionType}
+          />
 
-            <ReadOnlyTextField
-              label="Advertising type"
-              value={panel?.location?.adsType}
-            />
-          </Stack>
+          <ReadOnlyTextField
+            label="Advertising type"
+            value={panel?.location?.adsType}
+          />
+        </Stack>
 
-          <Typography variant="h6" sx={{ mb: 2 }}>
-            Panel
-          </Typography>
-          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-            <ReadOnlyTextField label="ID" value={panel?.id} />
+        <Typography variant="h6">Panel</Typography>
+        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+          <ReadOnlyTextField label="ID" value={panel?.id} />
 
-            <ReadOnlyTextField label="Panel type" value={panel?.panelType} />
+          <ReadOnlyTextField label="Panel type" value={panel?.panelType} />
 
-            <ReadOnlyTextField label="Width" value={panel?.width} />
+          <ReadOnlyTextField label="Width" value={panel?.width} />
 
-            <ReadOnlyTextField label="Height" value={panel?.height} />
+          <ReadOnlyTextField label="Height" value={panel?.height} />
 
-            <ReadOnlyTextField label="Quantity" value={panel?.quantity} />
+          <ReadOnlyTextField label="Quantity" value={panel?.quantity} />
 
-            <ReadOnlyTextField
-              label="Created"
-              value={formatDateTime(panel?.createdTime)}
-            />
+          <ReadOnlyTextField
+            label="Created"
+            value={formatDateTime(panel?.createdTime)}
+          />
 
-            <ReadOnlyTextField
-              label="Modified"
-              value={formatDateTime(panel?.modifiedTime)}
-            />
-          </Stack>
+          <ReadOnlyTextField
+            label="Modified"
+            value={formatDateTime(panel?.modifiedTime)}
+          />
+        </Stack>
 
-          <Typography variant="h6" sx={{ mb: 2 }}>
-            Image
-          </Typography>
-          <img src={panel?.imageUrl} alt="panel" loading="lazy" width={650} />
+        <Typography variant="h6">Image</Typography>
+        <img src={panel?.imageUrl} alt="panel" loading="lazy" width={650} />
 
-          <Typography variant="h6" sx={{ mb: 2 }}>
-            Company
-          </Typography>
-          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-            <ReadOnlyTextField label="Email" value={panel?.company?.email} />
+        <Typography variant="h6">Company</Typography>
+        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+          <ReadOnlyTextField label="Email" value={panel?.company?.email} />
 
-            <ReadOnlyTextField label="Phone" value={panel?.company?.phone} />
+          <ReadOnlyTextField label="Phone" value={panel?.company?.phone} />
 
-            <ReadOnlyTextField
-              label="Created contract date"
-              value={formatDate(panel?.company?.createdContractDate)}
-            />
+          <ReadOnlyTextField
+            label="Created contract date"
+            value={formatDate(panel?.company?.createdContractDate)}
+          />
 
-            <ReadOnlyTextField
-              label="Expired contract date"
-              value={formatDate(panel?.company?.expiredContractDate)}
-            />
-          </Stack>
+          <ReadOnlyTextField
+            label="Expired contract date"
+            value={formatDate(panel?.company?.expiredContractDate)}
+          />
         </Stack>
       </Box>
     </Box>

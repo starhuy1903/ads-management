@@ -1,6 +1,6 @@
 import { Box, Stack, TextField, Typography } from '@mui/material';
 import { BackButton } from '@/components/Common/Buttons';
-import { ReadOnlyTextField } from '@/components/Common/ReadOnlyTextField';
+import { ReadOnlyTextField } from '@/components/Common/FormComponents';
 import { AdsPermissionResponse } from '@/types/form';
 import { formatDate, formatDateTime } from '@/utils/format-date';
 

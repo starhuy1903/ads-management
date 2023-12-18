@@ -1,6 +1,6 @@
 import { Box, Stack, Typography } from '@mui/material';
 import { BackButton } from '@/components/Common/Buttons';
-import { ReadOnlyTextField } from '@/components/Common/ReadOnlyTextField';
+import { ReadOnlyTextField } from '@/components/Common/FormComponents';
 import { formatDateTime } from '@/utils/format-date';
 
 export default function AdsLocationDetail() {
@@ -30,75 +30,68 @@ export default function AdsLocationDetail() {
         component="form"
         autoComplete="off"
         sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 2,
           bgcolor: 'white',
           p: 4,
           borderRadius: 1,
           boxShadow: 1,
         }}
       >
-        <Stack spacing={2}>
-          <Typography variant="h6" sx={{ mb: 2 }}>
-            Information
-          </Typography>
-          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-            <ReadOnlyTextField label="ID" value={location?.id} />
+        <Typography variant="h6">Information</Typography>
+        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+          <ReadOnlyTextField label="ID" value={location?.id} />
 
-            <ReadOnlyTextField
-              label="Created"
-              value={formatDateTime(location?.createdTime)}
-            />
+          <ReadOnlyTextField
+            label="Created"
+            value={formatDateTime(location?.createdTime)}
+          />
 
-            <ReadOnlyTextField
-              label="Modified"
-              value={formatDateTime(location?.modifiedTime)}
-            />
+          <ReadOnlyTextField
+            label="Modified"
+            value={formatDateTime(location?.modifiedTime)}
+          />
 
-            <ReadOnlyTextField
-              label="Planned"
-              value={location?.isPlanning ? 'Yes' : 'No'}
-            />
-          </Stack>
-
-          <Typography variant="h6" sx={{ mb: 2 }}>
-            Location
-          </Typography>
-          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-            <ReadOnlyTextField label="Address" value={location?.address} />
-
-            <ReadOnlyTextField label="District" value={location?.commue} />
-
-            <ReadOnlyTextField label="Ward" value={location?.ward} />
-
-            <ReadOnlyTextField label="Latitude" value={location?.lat} />
-
-            <ReadOnlyTextField label="Longitude" value={location?.long} />
-          </Stack>
-
-          <Typography variant="h6" sx={{ mb: 2 }}>
-            Classification
-          </Typography>
-          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-            <ReadOnlyTextField
-              label="Position type"
-              value={location?.positionType}
-            />
-
-            <ReadOnlyTextField
-              label="Advertising type"
-              value={location?.adsType}
-            />
-          </Stack>
-
-          <Typography variant="h6" sx={{ mb: 2 }}>
-            Image
-          </Typography>
-          <img
-            src={location?.imageUrl}
-            alt="location"
-            loading="lazy"
-            width={650}
+          <ReadOnlyTextField
+            label="Planned"
+            value={location?.isPlanning ? 'Yes' : 'No'}
           />
         </Stack>
+
+        <Typography variant="h6">Location</Typography>
+        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+          <ReadOnlyTextField label="Address" value={location?.address} />
+
+          <ReadOnlyTextField label="District" value={location?.commue} />
+
+          <ReadOnlyTextField label="Ward" value={location?.ward} />
+
+          <ReadOnlyTextField label="Latitude" value={location?.lat} />
+
+          <ReadOnlyTextField label="Longitude" value={location?.long} />
+        </Stack>
+
+        <Typography variant="h6">Classification</Typography>
+        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+          <ReadOnlyTextField
+            label="Position type"
+            value={location?.positionType}
+          />
+
+          <ReadOnlyTextField
+            label="Advertising type"
+            value={location?.adsType}
+          />
+        </Stack>
+
+        <Typography variant="h6">Image</Typography>
+        <img
+          src={location?.imageUrl}
+          alt="location"
+          loading="lazy"
+          width={650}
+        />
       </Box>
     </Box>
   );

@@ -16,7 +16,7 @@ import { useForm } from 'react-hook-form';
 import { useAppDispatch } from '@/store';
 import { BackButton } from '@/components/Common/Buttons';
 import DropFileContainer from '@/components/Common/DropFileContainer';
-import { ReadOnlyTextField } from '@/components/Common/ReadOnlyTextField';
+import { ReadOnlyTextField } from '@/components/Common/FormComponents';
 import ImagePreview from '@/components/Unauthenticated/Citizen/CitizenReport/ImagePreview';
 import UploadImageCard from '@/components/Unauthenticated/Citizen/CitizenReport/UploadImageCard';
 import { ModalKey } from '@/constants/modal';
@@ -224,96 +224,84 @@ export default function AdsPanelCreating() {
           boxShadow: 1,
         }}
       >
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 2,
-          }}
-        >
-          <Typography variant="h6">Choose location</Typography>
-          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-            <FormControl fullWidth error={!!formError.locationId}>
-              <FormLabel htmlFor="locationId">Location</FormLabel>
-              <Select
-                id="locationId"
-                {...register('locationId')}
-                aria-describedby="locationId-helper-text"
-                defaultValue={rows[0].id}
-              >
-                {rows.map((row) => (
-                  <MenuItem key={row.id} value={row.id}>
-                    {row.address}
-                  </MenuItem>
-                ))}
-              </Select>
-              <FormHelperText id="locationId-helper-text">
-                {formError.locationId?.message}
-              </FormHelperText>
-            </FormControl>
+        <Typography variant="h6">Choose location</Typography>
+        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+          <FormControl fullWidth error={!!formError.locationId}>
+            <FormLabel htmlFor="locationId">Location</FormLabel>
+            <Select
+              id="locationId"
+              {...register('locationId')}
+              aria-describedby="locationId-helper-text"
+              defaultValue={rows[0].id}
+            >
+              {rows.map((row) => (
+                <MenuItem key={row.id} value={row.id}>
+                  {row.address}
+                </MenuItem>
+              ))}
+            </Select>
+            <FormHelperText id="locationId-helper-text">
+              {formError.locationId?.message}
+            </FormHelperText>
+          </FormControl>
 
-            <FormControl fullWidth>
-              <FormLabel htmlFor="ward">Ward</FormLabel>
-              <ReadOnlyTextField
-                value={
-                  rows.find((row) => row.id === formValue.locationId)?.ward
-                }
-                disabled
-              />
-            </FormControl>
+          <FormControl fullWidth>
+            <FormLabel htmlFor="ward">Ward</FormLabel>
+            <ReadOnlyTextField
+              value={rows.find((row) => row.id === formValue.locationId)?.ward}
+              disabled
+            />
+          </FormControl>
 
-            <FormControl fullWidth>
-              <FormLabel htmlFor="district">District</FormLabel>
-              <ReadOnlyTextField
-                value={
-                  rows.find((row) => row.id === formValue.locationId)?.commue
-                }
-                disabled
-              />
-            </FormControl>
+          <FormControl fullWidth>
+            <FormLabel htmlFor="district">District</FormLabel>
+            <ReadOnlyTextField
+              value={
+                rows.find((row) => row.id === formValue.locationId)?.commue
+              }
+              disabled
+            />
+          </FormControl>
 
-            <FormControl fullWidth>
-              <FormLabel htmlFor="lat">Latitude</FormLabel>
-              <ReadOnlyTextField
-                value={rows.find((row) => row.id === formValue.locationId)?.lat}
-                disabled
-              />
-            </FormControl>
+          <FormControl fullWidth>
+            <FormLabel htmlFor="lat">Latitude</FormLabel>
+            <ReadOnlyTextField
+              value={rows.find((row) => row.id === formValue.locationId)?.lat}
+              disabled
+            />
+          </FormControl>
 
-            <FormControl fullWidth>
-              <FormLabel htmlFor="long">Longtitude</FormLabel>
-              <ReadOnlyTextField
-                value={
-                  rows.find((row) => row.id === formValue.locationId)?.long
-                }
-                disabled
-              />
-            </FormControl>
-          </Stack>
+          <FormControl fullWidth>
+            <FormLabel htmlFor="long">Longtitude</FormLabel>
+            <ReadOnlyTextField
+              value={rows.find((row) => row.id === formValue.locationId)?.long}
+              disabled
+            />
+          </FormControl>
+        </Stack>
 
-          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-            <FormControl fullWidth>
-              <FormLabel htmlFor="positionType">Position type</FormLabel>
-              <ReadOnlyTextField
-                value={
-                  rows.find((row) => row.id === formValue.locationId)
-                    ?.positionType
-                }
-                disabled
-              />
-            </FormControl>
+        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+          <FormControl fullWidth>
+            <FormLabel htmlFor="positionType">Position type</FormLabel>
+            <ReadOnlyTextField
+              value={
+                rows.find((row) => row.id === formValue.locationId)
+                  ?.positionType
+              }
+              disabled
+            />
+          </FormControl>
 
-            <FormControl fullWidth>
-              <FormLabel htmlFor="adsType">Ads type</FormLabel>
-              <ReadOnlyTextField
-                value={
-                  rows.find((row) => row.id === formValue.locationId)?.adsType
-                }
-                disabled
-              />
-            </FormControl>
-          </Stack>
-        </Box>
+          <FormControl fullWidth>
+            <FormLabel htmlFor="adsType">Ads type</FormLabel>
+            <ReadOnlyTextField
+              value={
+                rows.find((row) => row.id === formValue.locationId)?.adsType
+              }
+              disabled
+            />
+          </FormControl>
+        </Stack>
 
         <Typography variant="h6">Panel</Typography>
         <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
@@ -419,107 +407,99 @@ export default function AdsPanelCreating() {
           </Stack>
         </FormControl>
 
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 2,
-          }}
-        >
-          <Typography variant="h6">Company</Typography>
-          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-            <FormControl fullWidth error={!!formError.companyEmail}>
-              <FormLabel htmlFor="companyEmail">Email</FormLabel>
-              <TextField
-                {...register('companyEmail', {
-                  required: 'The company email is required.',
-                })}
-                id="companyEmail"
-                placeholder="company@gmail.com"
-                error={!!formError.companyEmail}
-                aria-describedby="companyEmail-helper-text"
-              />
-              <FormHelperText id="companyEmail-helper-text">
-                {formError.companyEmail?.message}
-              </FormHelperText>
-            </FormControl>
-
-            <FormControl fullWidth error={!!formError.companyPhone}>
-              <FormLabel htmlFor="companyPhone">Phone</FormLabel>
-              <TextField
-                {...register('companyPhone', {
-                  required: 'The company phone is required.',
-                })}
-                id="companyPhone"
-                placeholder="0123456789"
-                error={!!formError.companyPhone}
-                aria-describedby="companyPhone-helper-text"
-              />
-              <FormHelperText id="companyPhone-helper-text">
-                {formError.companyPhone?.message}
-              </FormHelperText>
-            </FormControl>
-
-            <FormControl fullWidth error={!!formError.createdContractDate}>
-              <FormLabel htmlFor="createdContractDate">
-                Created contract date
-              </FormLabel>
-              <TextField
-                type="date"
-                {...register('createdContractDate', {
-                  required: 'The created contract date is required.',
-                })}
-                id="createdContractDate"
-                error={!!formError.createdContractDate}
-                aria-describedby="createdContractDate-helper-text"
-              />
-              <FormHelperText id="createdContractDate-helper-text">
-                {formError.createdContractDate?.message}
-              </FormHelperText>
-            </FormControl>
-
-            <FormControl fullWidth error={!!formError.expiredContractDate}>
-              <FormLabel htmlFor="expiredContractDate">
-                Expired contract date
-              </FormLabel>
-              <TextField
-                type="date"
-                {...register('expiredContractDate', {
-                  required: 'The expired contract date is required.',
-                  validate: (value) => {
-                    if (value < formValue.createdContractDate) {
-                      return 'The expired contract date must be after the created contract date.';
-                    }
-                    return true;
-                  },
-                })}
-                id="expiredContractDate"
-                error={!!formError.expiredContractDate}
-                aria-describedby="expiredContractDate-helper-text"
-              />
-              <FormHelperText id="expiredContractDate-helper-text">
-                {formError.expiredContractDate?.message}
-              </FormHelperText>
-            </FormControl>
-          </Stack>
-
-          <FormControl fullWidth error={!!formError.reason}>
-            <FormLabel htmlFor="reason">Reason</FormLabel>
+        <Typography variant="h6">Company</Typography>
+        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+          <FormControl fullWidth error={!!formError.companyEmail}>
+            <FormLabel htmlFor="companyEmail">Email</FormLabel>
             <TextField
-              {...register('reason', {
-                required: 'The reason is required.',
+              {...register('companyEmail', {
+                required: 'The company email is required.',
               })}
-              id="reason"
-              error={!!formError.reason}
-              aria-describedby="reason-helper-text"
-              multiline
-              rows={4}
+              id="companyEmail"
+              placeholder="company@gmail.com"
+              error={!!formError.companyEmail}
+              aria-describedby="companyEmail-helper-text"
             />
-            <FormHelperText id="reason-helper-text">
-              {formError.reason?.message}
+            <FormHelperText id="companyEmail-helper-text">
+              {formError.companyEmail?.message}
             </FormHelperText>
           </FormControl>
-        </Box>
+
+          <FormControl fullWidth error={!!formError.companyPhone}>
+            <FormLabel htmlFor="companyPhone">Phone</FormLabel>
+            <TextField
+              {...register('companyPhone', {
+                required: 'The company phone is required.',
+              })}
+              id="companyPhone"
+              placeholder="0123456789"
+              error={!!formError.companyPhone}
+              aria-describedby="companyPhone-helper-text"
+            />
+            <FormHelperText id="companyPhone-helper-text">
+              {formError.companyPhone?.message}
+            </FormHelperText>
+          </FormControl>
+
+          <FormControl fullWidth error={!!formError.createdContractDate}>
+            <FormLabel htmlFor="createdContractDate">
+              Created contract date
+            </FormLabel>
+            <TextField
+              type="date"
+              {...register('createdContractDate', {
+                required: 'The created contract date is required.',
+              })}
+              id="createdContractDate"
+              error={!!formError.createdContractDate}
+              aria-describedby="createdContractDate-helper-text"
+            />
+            <FormHelperText id="createdContractDate-helper-text">
+              {formError.createdContractDate?.message}
+            </FormHelperText>
+          </FormControl>
+
+          <FormControl fullWidth error={!!formError.expiredContractDate}>
+            <FormLabel htmlFor="expiredContractDate">
+              Expired contract date
+            </FormLabel>
+            <TextField
+              type="date"
+              {...register('expiredContractDate', {
+                required: 'The expired contract date is required.',
+                validate: (value) => {
+                  if (value < formValue.createdContractDate) {
+                    return 'The expired contract date must be after the created contract date.';
+                  }
+                  return true;
+                },
+              })}
+              id="expiredContractDate"
+              error={!!formError.expiredContractDate}
+              aria-describedby="expiredContractDate-helper-text"
+            />
+            <FormHelperText id="expiredContractDate-helper-text">
+              {formError.expiredContractDate?.message}
+            </FormHelperText>
+          </FormControl>
+        </Stack>
+
+        <FormControl fullWidth error={!!formError.reason}>
+          <FormLabel htmlFor="reason">Reason</FormLabel>
+          <TextField
+            {...register('reason', {
+              required: 'The reason is required.',
+            })}
+            id="reason"
+            error={!!formError.reason}
+            aria-describedby="reason-helper-text"
+            multiline
+            rows={4}
+          />
+          <FormHelperText id="reason-helper-text">
+            {formError.reason?.message}
+          </FormHelperText>
+        </FormControl>
 
         <Button
           variant="contained"
@@ -530,6 +510,7 @@ export default function AdsPanelCreating() {
         >
           Submit request
         </Button>
+
         <DevTool control={control} />
       </Box>
     </Box>

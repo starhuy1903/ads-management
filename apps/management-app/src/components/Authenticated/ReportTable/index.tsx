@@ -9,8 +9,7 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
-import { Link } from 'react-router-dom';
-import { Info } from '@/components/Common/Icons';
+import { Info, Response } from '@/components/Common/Icons';
 import { ReportResponse } from '@/types/form';
 import { formatDateTime } from '@/utils/format-date';
 
@@ -24,7 +23,7 @@ export default function ReportTable() {
       phone: '0123456789',
       content:
         'The light of advertising board is too bright, causing discomfort to surrounding people.',
-      status: 'Processing',
+      status: 'New',
       imageUrls: [],
       targetType: 'panel',
       target: {
@@ -63,7 +62,7 @@ export default function ReportTable() {
       phone: '0123456789',
       content:
         'The light of advertising board is too bright, causing discomfort to surrounding people.',
-      status: 'Processing',
+      status: 'New',
       imageUrls: [],
       targetType: 'panel',
       target: {
@@ -251,7 +250,15 @@ export default function ReportTable() {
                 </TableCell>
                 <TableCell align="center">{row?.status}</TableCell>
                 <TableCell>
-                  <Info link={`/reports/${row?.id}`} />
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      gap: 2,
+                    }}
+                  >
+                    <Info link={`/reports/${row?.id}`} />
+                    <Response link={`/reports/${row?.id}/response`} />
+                  </Box>
                 </TableCell>
               </TableRow>
             ))}

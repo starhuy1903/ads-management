@@ -1,13 +1,15 @@
 import {
   Box,
+  Button,
   ImageList,
   ImageListItem,
   Stack,
   TextField,
   Typography,
 } from '@mui/material';
+import { Link } from 'react-router-dom';
 import { BackButton } from '@/components/Common/Buttons';
-import { ReadOnlyTextField } from '@/components/Common/ReadOnlyTextField';
+import { ReadOnlyTextField } from '@/components/Common/FormComponents';
 import { formatDateTime } from '@/utils/format-date';
 
 export default function ReportDetail() {
@@ -195,12 +197,24 @@ export default function ReportDetail() {
           </Typography>
 
           {report?.resolvedContent === '' ? (
-            <Typography
-              variant="body1"
-              sx={{ mb: 2, fontStyle: 'italic', color: 'gray' }}
-            >
-              Not processed yet.
-            </Typography>
+            <>
+              <Typography
+                variant="body1"
+                sx={{ mb: 2, fontStyle: 'italic', color: 'gray' }}
+              >
+                Not processed yet.
+              </Typography>
+
+              <Link to={`/reports/${report?.id}/response`}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  sx={{ mt: 2, color: 'white' }}
+                >
+                  Respond to report
+                </Button>
+              </Link>
+            </>
           ) : (
             <TextField
               label="Response content"

@@ -16,7 +16,7 @@ import { useForm } from 'react-hook-form';
 import { useAppDispatch } from '@/store';
 import { BackButton } from '@/components/Common/Buttons';
 import DropFileContainer from '@/components/Common/DropFileContainer';
-import { ReadOnlyTextField } from '@/components/Common/ReadOnlyTextField';
+import { ReadOnlyTextField } from '@/components/Common/FormComponents';
 import ImagePreview from '@/components/Unauthenticated/Citizen/CitizenReport/ImagePreview';
 import UploadImageCard from '@/components/Unauthenticated/Citizen/CitizenReport/UploadImageCard';
 import { ModalKey } from '@/constants/modal';
