@@ -54,6 +54,7 @@ function Sidebar({ open, handleOnClose }: SidebarProps) {
           }}
         >
           <NavGroupWrapper title="Management">
+            <NavItem title="Home" icon={<CategoryOutlinedIcon />} href="/" />
             <NavItem
               title="Locations"
               icon={<CategoryOutlinedIcon />}
