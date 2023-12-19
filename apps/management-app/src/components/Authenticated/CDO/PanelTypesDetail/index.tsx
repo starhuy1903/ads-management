@@ -75,7 +75,7 @@ const PanelTypesDetail = () => {
 
   const handleDeletePanelType = useCallback(async () => {
     try {
-      await deletePanelTypes([parseInt(id!)]).unwrap();
+      await deletePanelTypes(parseInt(id!)).unwrap();
       showSuccess('Panel type deleted');
       navigate(-1);
     } catch (error) {

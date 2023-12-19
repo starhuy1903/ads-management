@@ -964,7 +964,7 @@
       "type": "http",
       "documentation": "",
       "method": "delete",
-      "endpoint": "api/districts",
+      "endpoint": "api/districts/:id",
       "responses": [
         {
           "uuid": "844e2ad9-9114-432a-85fa-29f938d9840e",
@@ -982,6 +982,152 @@
           "disableTemplating": false,
           "fallbackTo404": false,
           "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null
+    },
+    {
+      "uuid": "f5d2bc90-ca46-41f1-862f-8d0cc9d1dabe",
+      "type": "http",
+      "documentation": "",
+      "method": "get",
+      "endpoint": "api/ads-requests",
+      "responses": [
+        {
+          "uuid": "5402b72a-09f3-49f1-8b37-ce5cdd1f859e",
+          "body": "{\n  \"rowsCount\": 1,\n  \"data\": [\n    {\n      \"id\": 1,\n      \"reason\": \"bla bla bla\",\n      \"location\": \"address\",\n      \"location_id\": 1,\n      \"user_id\" : 1,\n      \"createdAt\" : \"12/19/2023\",\n      \"updatedAt\" : \"12/19/2023\"\n    }\n  ]\n}",
+          "latency": 500,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "query",
+              "modifier": "page",
+              "value": "1",
+              "invert": false,
+              "operator": "equals"
+            },
+            {
+              "target": "query",
+              "modifier": "limit",
+              "value": "10",
+              "invert": false,
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "AND",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        },
+        {
+          "uuid": "e4c1c195-c4d6-4127-9dde-76b5b562555c",
+          "body": "{\n  \"rowsCount\": 22,\n  \"data\": [\n    {\n      \"id\": 11,\n      \"name\": \"Quận Tân Phú\"\n    },\n    {\n      \"id\": 12,\n      \"name\": \"Quận Tân Bình\"\n    },\n    {\n      \"id\": 13,\n      \"name\": \"Quận 12\"\n    },\n    {\n      \"id\": 14,\n      \"name\": \"Quận 11\"\n    },\n    {\n      \"id\": 15,\n      \"name\": \"Quận 10\"\n    },\n    {\n      \"id\": 16,\n      \"name\": \"Quận 8\"\n    },\n    {\n      \"id\": 17,\n      \"name\": \"Quận 7\"\n    },\n    {\n      \"id\": 18,\n      \"name\": \"Quận 6\"\n    },\n    {\n      \"id\": 19,\n      \"name\": \"Quận 5\"\n    },\n    {\n      \"id\": 20,\n      \"name\": \"Quận 4\"\n    }\n  ]\n}",
+          "latency": 500,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "query",
+              "modifier": "page",
+              "value": "2",
+              "invert": false,
+              "operator": "equals"
+            },
+            {
+              "target": "query",
+              "modifier": "limit",
+              "value": "10",
+              "invert": false,
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "AND",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
+        },
+        {
+          "uuid": "40722a97-36e8-45c0-8217-f3a6cca55176",
+          "body": "{\n  \"rowsCount\": 22,\n  \"data\": [\n    {\n      \"id\": 21,\n      \"name\": \"Quận 3\"\n    },\n    {\n      \"id\": 22,\n      \"name\": \"Quận 1\"\n    }\n  ]\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "query",
+              "modifier": "page",
+              "value": "3",
+              "invert": false,
+              "operator": "equals"
+            },
+            {
+              "target": "query",
+              "modifier": "limit",
+              "value": "10",
+              "invert": false,
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
+        },
+        {
+          "uuid": "fc72ec08-fde3-484f-9efd-67d9aaff8763",
+          "body": "{\n  \"rowsCount\": 22,\n  \"data\": [\n    {\n      \"id\": 1,\n      \"name\": \"Thành Phố Thủ Đức\"\n    },\n    {\n      \"id\": 2,\n      \"name\": \"Huyện Cần Giờ\"\n    },\n    {\n      \"id\": 3,\n      \"name\": \"Huyện Nhà Bè\"\n    },\n    {\n      \"id\": 4,\n      \"name\": \"Huyện Bình Chánh\"\n    },\n    {\n      \"id\": 5,\n      \"name\": \"Quận Bình Thạnh\"\n    },\n    {\n      \"id\": 6,\n      \"name\": \"Quận Gò Vấp\"\n    },\n    {\n      \"id\": 7,\n      \"name\": \"Huyện Củ Chi\"\n    },\n    {\n      \"id\": 8,\n      \"name\": \"Huyện Hóc Môn\"\n    },\n    {\n      \"id\": 9,\n      \"name\": \"Quận Bình Tân\"\n    },\n    {\n      \"id\": 10,\n      \"name\": \"Quận Phú Nhuận\"\n    },\n    {\n      \"id\": 11,\n      \"name\": \"Quận Tân Phú\"\n    },\n    {\n      \"id\": 12,\n      \"name\": \"Quận Tân Bình\"\n    },\n    {\n      \"id\": 13,\n      \"name\": \"Quận 12\"\n    },\n    {\n      \"id\": 14,\n      \"name\": \"Quận 11\"\n    },\n    {\n      \"id\": 15,\n      \"name\": \"Quận 10\"\n    },\n    {\n      \"id\": 16,\n      \"name\": \"Quận 8\"\n    },\n    {\n      \"id\": 17,\n      \"name\": \"Quận 7\"\n    },\n    {\n      \"id\": 18,\n      \"name\": \"Quận 6\"\n    },\n    {\n      \"id\": 19,\n      \"name\": \"Quận 5\"\n    },\n    {\n      \"id\": 20,\n      \"name\": \"Quận 4\"\n    },\n    {\n      \"id\": 21,\n      \"name\": \"Quận 3\"\n    },\n    {\n      \"id\": 22,\n      \"name\": \"Quận 1\"\n    }\n  ]\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "query",
+              "modifier": "page",
+              "value": "",
+              "invert": false,
+              "operator": "null"
+            },
+            {
+              "target": "query",
+              "modifier": "limit",
+              "value": "",
+              "invert": false,
+              "operator": "null"
+            }
+          ],
+          "rulesOperator": "AND",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
           "crudKey": "id",
           "callbacks": []
         }
@@ -1057,6 +1203,10 @@
     {
       "type": "route",
       "uuid": "beb320a9-25a1-4765-ab85-fdfe3f550999"
+    },
+    {
+      "type": "route",
+      "uuid": "f5d2bc90-ca46-41f1-862f-8d0cc9d1dabe"
     }
   ],
   "proxyMode": false,

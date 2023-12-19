@@ -1,14 +1,14 @@
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Fab from '@mui/material/Fab';
+import IconButton from '@mui/material/IconButton';
 import Skeleton from '@mui/material/Skeleton';
 import {
   GridColDef,
   GridRowsProp,
   GridRenderCellParams,
-  GridRowSelectionModel,
 } from '@mui/x-data-grid';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import {
   useDeletePanelTypesMutation,
@@ -18,6 +18,7 @@ import { isApiErrorResponse } from '@/store/api/helper';
 import { showError, showSuccess } from '@/utils/toast';
 import CustomDataGrid from '../CustomDatagrid';
 import CustomLink from '../CustomLink';
+import DeleteIconButton from '../DeleteIconButton';
 import StaticActionBar from '../StaticActionBar';
 
 const PanelTypesListView = () => {
@@ -25,7 +26,7 @@ const PanelTypesListView = () => {
 
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const { data, isLoading, isFetching } = useGetPanelTypesQuery({
+  const { data, isLoading, isFetching, refetch } = useGetPanelTypesQuery({
     page: parseInt(searchParams.get('page') || '1'),
     limit: 10,
   });
@@ -38,24 +39,7 @@ const PanelTypesListView = () => {
     );
   }, [data?.rowsCount, setRowCountState]);
 
-  const [selectedRow, setSelectedRow] = useState<GridRowSelectionModel>([]);
-
   const [deletePanelTypes] = useDeletePanelTypesMutation();
-
-  const handleDeletePanelTypes = useCallback(async () => {
-    if (data) {
-      try {
-        await deletePanelTypes(
-          selectedRow.map((e) => (typeof e === 'number' ? e : parseInt(e))),
-        ).unwrap();
-        showSuccess('Panel types deleted');
-      } catch (error) {
-        showError(
-          isApiErrorResponse(error) ? error.data?.message : 'Unknown error',
-        );
-      }
-    }
-  }, [data, deletePanelTypes, selectedRow]);
 
   const rows: GridRowsProp =
     data?.data || Array.from({ length: 10 }, (_, i) => ({ id: i }));
@@ -100,6 +84,19 @@ const PanelTypesListView = () => {
             />
           ),
         },
+        {
+          field: 'delete',
+          width: 50,
+          disableColumnMenu: true,
+          align: 'center',
+          sortable: false,
+          renderHeader: () => null,
+          renderCell: () => (
+            <IconButton disabled>
+              <DeleteIcon />
+            </IconButton>
+          ),
+        },
       ]
     : [
         {
@@ -123,35 +120,48 @@ const PanelTypesListView = () => {
             </CustomLink>
           ),
         },
+        {
+          field: 'delete',
+          width: 50,
+          disableColumnMenu: true,
+          align: 'center',
+          sortable: false,
+          renderHeader: () => null,
+          renderCell: (params: GridRenderCellParams) => (
+            <DeleteIconButton
+              onClick={async () => {
+                try {
+                  await deletePanelTypes(params.row.id).unwrap();
+                  await refetch();
+                  showSuccess('Panel type deleted');
+                } catch (error) {
+                  showError(
+                    isApiErrorResponse(error)
+                      ? error.data?.message
+                      : 'Unknown error',
+                  );
+                }
+              }}
+            />
+          ),
+        },
       ];
   return (
     <StaticActionBar
       actionBar={
-        <>
-          <Fab
-            color="primary"
-            size="medium"
-            onClick={() => navigate('/panel-types/create')}
-          >
-            <AddIcon sx={{ color: (theme) => theme.palette.common.white }} />
-          </Fab>
-          <Fab
-            color="error"
-            size="medium"
-            disabled={selectedRow.length < 1 || isLoading}
-            onClick={handleDeletePanelTypes}
-          >
-            <DeleteIcon sx={{ color: (theme) => theme.palette.common.white }} />
-          </Fab>
-        </>
+        <Fab
+          color="primary"
+          size="medium"
+          onClick={() => navigate('/panel-types/create')}
+        >
+          <AddIcon sx={{ color: (theme) => theme.palette.common.white }} />
+        </Fab>
       }
     >
       <CustomDataGrid
         rows={rows}
         columns={columns}
-        checkboxSelection={true}
-        onRowSelectionModelChange={(selected) => setSelectedRow(selected)}
-        rowSelectionModel={selectedRow}
+        disableRowSelectionOnClick
         rowCount={rowCountState}
         loading={isFetching}
         pageSizeOptions={[10]}

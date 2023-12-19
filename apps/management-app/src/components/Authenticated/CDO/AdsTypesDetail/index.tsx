@@ -75,7 +75,7 @@ const AdsTypesDetail = () => {
 
   const handleDeleteAdsType = useCallback(async () => {
     try {
-      await deleteAdsTypes([parseInt(id!)]).unwrap();
+      await deleteAdsTypes(parseInt(id!)).unwrap();
       showSuccess('Advertisement type deleted');
       navigate(-1);
     } catch (error) {

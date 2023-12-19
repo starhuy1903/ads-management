@@ -85,7 +85,7 @@ const WardsDetail = () => {
 
   const handleDeleteWard = useCallback(async () => {
     try {
-      await deleteWards([parseInt(id!)]).unwrap();
+      await deleteWards(parseInt(id!)).unwrap();
       showSuccess('Ward deleted');
       navigate(-1);
     } catch (error) {

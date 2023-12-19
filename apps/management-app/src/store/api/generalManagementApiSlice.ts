@@ -46,11 +46,10 @@ export const generalManagementApiSlice = apiSlice.injectEndpoints({
         body: arg.data,
       }),
     }),
-    deleteDistricts: build.mutation<MessageResponse, Array<number>>({
+    deleteDistricts: build.mutation<MessageResponse, number>({
       query: (arg) => ({
-        url: '/districts',
+        url: `/districts/${arg}`,
         method: 'DELETE',
-        body: { ids: arg },
       }),
     }),
     getWards: build.query<
@@ -78,11 +77,10 @@ export const generalManagementApiSlice = apiSlice.injectEndpoints({
         body: arg.data,
       }),
     }),
-    deleteWards: build.mutation<MessageResponse, Array<number>>({
+    deleteWards: build.mutation<MessageResponse, number>({
       query: (arg) => ({
-        url: '/wards',
+        url: `/wards/${arg}`,
         method: 'DELETE',
-        body: { ids: arg },
       }),
     }),
     getPanelTypes: build.query<
@@ -113,11 +111,10 @@ export const generalManagementApiSlice = apiSlice.injectEndpoints({
         body: arg.data,
       }),
     }),
-    deletePanelTypes: build.mutation<MessageResponse, Array<number>>({
+    deletePanelTypes: build.mutation<MessageResponse, number>({
       query: (arg) => ({
-        url: '/panelTypes',
+        url: `/panelTypes/${arg}`,
         method: 'DELETE',
-        body: { ids: arg },
       }),
     }),
     getReportTypes: build.query<
@@ -148,11 +145,10 @@ export const generalManagementApiSlice = apiSlice.injectEndpoints({
         body: arg.data,
       }),
     }),
-    deleteReportTypes: build.mutation<MessageResponse, Array<number>>({
+    deleteReportTypes: build.mutation<MessageResponse, number>({
       query: (arg) => ({
-        url: '/reportTypes',
+        url: `/reportTypes/${arg}`,
         method: 'DELETE',
-        body: { ids: arg },
       }),
     }),
     getLocationTypes: build.query<
@@ -183,11 +179,10 @@ export const generalManagementApiSlice = apiSlice.injectEndpoints({
         body: arg.data,
       }),
     }),
-    deleteLocationTypes: build.mutation<MessageResponse, Array<number>>({
+    deleteLocationTypes: build.mutation<MessageResponse, number>({
       query: (arg) => ({
-        url: '/locationTypes',
+        url: `/locationTypes/${arg}`,
         method: 'DELETE',
-        body: { ids: arg },
       }),
     }),
     getAdsTypes: build.query<
@@ -218,9 +213,9 @@ export const generalManagementApiSlice = apiSlice.injectEndpoints({
         body: arg.data,
       }),
     }),
-    deleteAdsTypes: build.mutation<MessageResponse, Array<number>>({
+    deleteAdsTypes: build.mutation<MessageResponse, number>({
       query: (arg) => ({
-        url: '/adsTypes',
+        url: `/adsTypes/${arg}`,
         method: 'DELETE',
         body: { ids: arg },
       }),

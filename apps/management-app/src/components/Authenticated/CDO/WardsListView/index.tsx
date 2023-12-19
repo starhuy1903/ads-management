@@ -1,14 +1,14 @@
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Fab from '@mui/material/Fab';
+import IconButton from '@mui/material/IconButton';
 import Skeleton from '@mui/material/Skeleton';
 import {
   GridColDef,
   GridRowsProp,
   GridRenderCellParams,
-  GridRowSelectionModel,
 } from '@mui/x-data-grid';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import {
   useDeleteWardsMutation,
@@ -18,6 +18,7 @@ import { isApiErrorResponse } from '@/store/api/helper';
 import { showError, showSuccess } from '@/utils/toast';
 import CustomDataGrid from '../CustomDatagrid';
 import CustomLink from '../CustomLink';
+import DeleteIconButton from '../DeleteIconButton';
 import StaticActionBar from '../StaticActionBar';
 
 const WardsListView = () => {
@@ -25,12 +26,10 @@ const WardsListView = () => {
 
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const { data, isLoading, isFetching } = useGetWardsQuery({
+  const { data, isLoading, isFetching, refetch } = useGetWardsQuery({
     page: parseInt(searchParams.get('page') || '1'),
     limit: 10,
   });
-
-  const [selectedRow, setSelectedRow] = useState<GridRowSelectionModel>([]);
 
   const [rowCountState, setRowCountState] = useState(data?.rowsCount || 0);
 
@@ -41,21 +40,6 @@ const WardsListView = () => {
   }, [data?.rowsCount, setRowCountState]);
 
   const [deleteWards] = useDeleteWardsMutation();
-
-  const handleDeleteWards = useCallback(async () => {
-    if (data) {
-      try {
-        await deleteWards(
-          selectedRow.map((e) => (typeof e === 'number' ? e : parseInt(e))),
-        ).unwrap();
-        showSuccess('Wards deleted');
-      } catch (error) {
-        showError(
-          isApiErrorResponse(error) ? error.data?.message : 'Unknown error',
-        );
-      }
-    }
-  }, [data, deleteWards, selectedRow]);
 
   const rows: GridRowsProp =
     data?.data || Array.from({ length: 10 }, (_, i) => ({ id: i }));
@@ -111,6 +95,19 @@ const WardsListView = () => {
             />
           ),
         },
+        {
+          field: 'delete',
+          width: 50,
+          disableColumnMenu: true,
+          align: 'center',
+          sortable: false,
+          renderHeader: () => null,
+          renderCell: () => (
+            <IconButton disabled>
+              <DeleteIcon />
+            </IconButton>
+          ),
+        },
       ]
     : [
         {
@@ -133,35 +130,48 @@ const WardsListView = () => {
             <CustomLink to={'/wards/' + params.row.id}>View details</CustomLink>
           ),
         },
+        {
+          field: 'delete',
+          width: 50,
+          disableColumnMenu: true,
+          align: 'center',
+          sortable: false,
+          renderHeader: () => null,
+          renderCell: (params: GridRenderCellParams) => (
+            <DeleteIconButton
+              onClick={async () => {
+                try {
+                  await deleteWards(params.row.id).unwrap();
+                  await refetch();
+                  showSuccess('Ward deleted');
+                } catch (error) {
+                  showError(
+                    isApiErrorResponse(error)
+                      ? error.data?.message
+                      : 'Unknown error',
+                  );
+                }
+              }}
+            />
+          ),
+        },
       ];
   return (
     <StaticActionBar
       actionBar={
-        <>
-          <Fab
-            color="primary"
-            size="medium"
-            onClick={() => navigate('/wards/create')}
-          >
-            <AddIcon sx={{ color: (theme) => theme.palette.common.white }} />
-          </Fab>
-          <Fab
-            color="error"
-            size="medium"
-            disabled={selectedRow.length < 1 || isLoading}
-            onClick={handleDeleteWards}
-          >
-            <DeleteIcon sx={{ color: (theme) => theme.palette.common.white }} />
-          </Fab>
-        </>
+        <Fab
+          color="primary"
+          size="medium"
+          onClick={() => navigate('/wards/create')}
+        >
+          <AddIcon sx={{ color: (theme) => theme.palette.common.white }} />
+        </Fab>
       }
     >
       <CustomDataGrid
         rows={rows}
         columns={columns}
-        checkboxSelection={true}
-        onRowSelectionModelChange={(selected) => setSelectedRow(selected)}
-        rowSelectionModel={selectedRow}
+        disableRowSelectionOnClick
         rowCount={rowCountState}
         loading={isFetching}
         pageSizeOptions={[10]}

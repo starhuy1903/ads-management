@@ -75,7 +75,7 @@ const ReportTypesDetail = () => {
 
   const handleDeleteReportType = useCallback(async () => {
     try {
-      await deleteReportTypes([parseInt(id!)]).unwrap();
+      await deleteReportTypes(parseInt(id!)).unwrap();
       showSuccess('Report type deleted');
       navigate(-1);
     } catch (error) {

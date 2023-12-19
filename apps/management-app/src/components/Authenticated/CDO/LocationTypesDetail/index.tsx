@@ -75,7 +75,7 @@ const LocationTypesDetail = () => {
 
   const handleDeleteLocationType = useCallback(async () => {
     try {
-      await deleteLocationTypes([parseInt(id!)]).unwrap();
+      await deleteLocationTypes(parseInt(id!)).unwrap();
       showSuccess('Location type deleted');
       navigate(-1);
     } catch (error) {

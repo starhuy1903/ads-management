@@ -75,7 +75,7 @@ const DistrictsDetail = () => {
 
   const handleDeleteDistrict = useCallback(async () => {
     try {
-      await deleteDistricts([parseInt(id!)]).unwrap();
+      await deleteDistricts(parseInt(id!)).unwrap();
       showSuccess('District deleted');
       navigate(-1);
     } catch (error) {
