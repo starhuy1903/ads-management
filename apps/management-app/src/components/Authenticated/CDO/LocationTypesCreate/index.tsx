@@ -2,7 +2,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import { useCallback, useMemo } from 'react';
+import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
@@ -16,16 +16,12 @@ interface FormData {
   name: string;
 }
 
+const schema = yup.object({
+  name: yup.string().required("Location type's name is required"),
+});
+
 const LocationTypesCreate = () => {
   const navigate = useNavigate();
-
-  const schema = useMemo(
-    () =>
-      yup.object({
-        name: yup.string().required("Location type's name is required"),
-      }),
-    [],
-  );
 
   const {
     control,
@@ -50,7 +46,9 @@ const LocationTypesCreate = () => {
         reset();
       } catch (error) {
         showError(
-          isApiErrorResponse(error) ? error.data?.message : 'Unknown error',
+          isApiErrorResponse(error)
+            ? error.data?.message
+            : 'Something went wrong',
         );
       }
     }),

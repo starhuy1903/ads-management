@@ -3,7 +3,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import * as yup from 'yup';
@@ -22,6 +22,10 @@ interface FormData {
   name: string;
 }
 
+const schema = yup.object({
+  name: yup.string().required("District's name is required"),
+});
+
 const DistrictsDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -31,14 +35,6 @@ const DistrictsDetail = () => {
   useEffect(() => {
     if (isError) navigate(-1);
   }, [isError, navigate]);
-
-  const schema = useMemo(
-    () =>
-      yup.object({
-        name: yup.string().required("District's name is required"),
-      }),
-    [],
-  );
 
   const {
     control,
@@ -64,7 +60,9 @@ const DistrictsDetail = () => {
         reset(data);
       } catch (error) {
         showError(
-          isApiErrorResponse(error) ? error.data?.message : 'Unknown error',
+          isApiErrorResponse(error)
+            ? error.data?.message
+            : 'Something went wrong',
         );
       }
     }),
@@ -80,7 +78,9 @@ const DistrictsDetail = () => {
       navigate(-1);
     } catch (error) {
       showError(
-        isApiErrorResponse(error) ? error.data?.message : 'Unknown error',
+        isApiErrorResponse(error)
+          ? error.data?.message
+          : 'Something went wrong',
       );
     }
   }, [deleteDistricts, id, navigate]);

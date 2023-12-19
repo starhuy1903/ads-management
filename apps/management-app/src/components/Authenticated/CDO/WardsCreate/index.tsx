@@ -2,7 +2,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import { useCallback, useMemo } from 'react';
+import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
@@ -20,8 +20,13 @@ import StaticActionBar from '../StaticActionBar';
 
 interface FormData {
   name: string;
-  district_id: number;
+  districtId: number;
 }
+
+const schema = yup.object({
+  name: yup.string().required("Ward's name is required"),
+  districtId: yup.number().required(),
+});
 
 const WardsCreate = () => {
   const navigate = useNavigate();
@@ -29,15 +34,6 @@ const WardsCreate = () => {
   const { data: districts } = useGetDistrictsQuery({});
 
   const [getDistricts] = useLazyGetDistrictsQuery();
-
-  const schema = useMemo(
-    () =>
-      yup.object({
-        name: yup.string().required("Ward's name is required"),
-        district_id: yup.number().required(),
-      }),
-    [],
-  );
 
   const {
     control,
@@ -51,7 +47,7 @@ const WardsCreate = () => {
       const districtsResult = await getDistricts({}, true).unwrap();
       return {
         name: '',
-        district_id: districtsResult.data[0].id,
+        districtId: districtsResult.data[0].id,
       };
     },
   });
@@ -61,12 +57,14 @@ const WardsCreate = () => {
   const handleCreateWard = useCallback(
     handleSubmit(async (data: FormData) => {
       try {
-        await createWard(data).unwrap();
+        await createWard({ ...data, district_id: data.districtId }).unwrap();
         showSuccess('Ward created');
         reset();
       } catch (error) {
         showError(
-          isApiErrorResponse(error) ? error.data?.message : 'Unknown error',
+          isApiErrorResponse(error)
+            ? error.data?.message
+            : 'Something went wrong',
         );
       }
     }),
@@ -115,7 +113,7 @@ const WardsCreate = () => {
             <ControlledTextField control={control} name="name" label="Name" />
             <ControlledSelect
               control={control}
-              name="district_id"
+              name="districtId"
               label="District"
               options={districts!.data!.map((e) => ({
                 value: e.id.toString(),

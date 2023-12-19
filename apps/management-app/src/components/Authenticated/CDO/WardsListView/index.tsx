@@ -148,7 +148,7 @@ const WardsListView = () => {
                   showError(
                     isApiErrorResponse(error)
                       ? error.data?.message
-                      : 'Unknown error',
+                      : 'Something went wrong',
                   );
                 }
               }}

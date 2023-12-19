@@ -25,8 +25,8 @@ export const generalManagementApiSlice = apiSlice.injectEndpoints({
       query: (arg) => ({
         url: `/districts`,
         params: {
-          page: arg.page || undefined,
-          limit: arg.limit || undefined,
+          page: arg.page,
+          limit: arg.limit,
         },
       }),
     }),
@@ -59,8 +59,8 @@ export const generalManagementApiSlice = apiSlice.injectEndpoints({
       query: (arg) => ({
         url: `/wards`,
         params: {
-          page: arg.page || undefined,
-          limit: arg.limit || undefined,
+          page: arg.page,
+          limit: arg.limit,
         },
       }),
     }),
@@ -90,8 +90,8 @@ export const generalManagementApiSlice = apiSlice.injectEndpoints({
       query: (arg) => ({
         url: `/panelTypes`,
         params: {
-          page: arg.page || undefined,
-          limit: arg.limit || undefined,
+          page: arg.page,
+          limit: arg.limit,
         },
       }),
     }),
@@ -124,8 +124,8 @@ export const generalManagementApiSlice = apiSlice.injectEndpoints({
       query: (arg) => ({
         url: `/reportTypes`,
         params: {
-          page: arg.page || undefined,
-          limit: arg.limit || undefined,
+          page: arg.page,
+          limit: arg.limit,
         },
       }),
     }),
@@ -158,8 +158,8 @@ export const generalManagementApiSlice = apiSlice.injectEndpoints({
       query: (arg) => ({
         url: `/locationTypes`,
         params: {
-          page: arg.page || undefined,
-          limit: arg.limit || undefined,
+          page: arg.page,
+          limit: arg.limit,
         },
       }),
     }),
@@ -192,8 +192,8 @@ export const generalManagementApiSlice = apiSlice.injectEndpoints({
       query: (arg) => ({
         url: `/adsTypes`,
         params: {
-          page: arg.page || undefined,
-          limit: arg.limit || undefined,
+          page: arg.page,
+          limit: arg.limit,
         },
       }),
     }),

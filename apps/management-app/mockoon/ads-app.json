@@ -908,7 +908,7 @@
       "type": "http",
       "documentation": "",
       "method": "put",
-      "endpoint": "api/wards",
+      "endpoint": "api/wards/:id",
       "responses": [
         {
           "uuid": "b437cffe-8911-4c32-a9cd-39d43b18c0fc",

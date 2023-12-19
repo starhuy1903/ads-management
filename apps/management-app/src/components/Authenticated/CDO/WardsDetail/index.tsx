@@ -3,7 +3,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import * as yup from 'yup';
@@ -22,8 +22,13 @@ import StaticActionBar from '../StaticActionBar';
 
 interface FormData {
   name: string;
-  district_id: number;
+  districtId: number;
 }
+
+const schema = yup.object({
+  name: yup.string().required("Ward's name is required"),
+  districtId: yup.number().required(),
+});
 
 const WardsDetail = () => {
   const { id } = useParams();
@@ -35,18 +40,7 @@ const WardsDetail = () => {
     if (isError) navigate(-1);
   }, [isError, navigate]);
 
-  const { data: districts, isLoading: districtsLoading } = useGetDistrictsQuery(
-    {},
-  );
-
-  const schema = useMemo(
-    () =>
-      yup.object({
-        name: yup.string().required("Ward's name is required"),
-        district_id: yup.number().required(),
-      }),
-    [],
-  );
+  const { data: districts } = useGetDistrictsQuery({});
 
   const {
     control,
@@ -59,8 +53,8 @@ const WardsDetail = () => {
     defaultValues: async () => {
       const ward = await getWard(parseInt(id!), true).unwrap();
       return ward
-        ? { name: ward.name, district_id: ward.district_id }
-        : { name: '', district_id: 0 };
+        ? { name: ward.name, districtId: ward.district_id }
+        : { name: '', districtId: 0 };
     },
   });
 
@@ -69,12 +63,17 @@ const WardsDetail = () => {
   const handleUpdateWard = useCallback(
     handleSubmit(async (data: FormData) => {
       try {
-        await updateWard({ id: parseInt(id!), data }).unwrap();
+        await updateWard({
+          id: parseInt(id!),
+          data: { ...data, district_id: data.districtId },
+        }).unwrap();
         showSuccess('Ward updated');
         reset(data);
       } catch (error) {
         showError(
-          isApiErrorResponse(error) ? error.data?.message : 'Unknown error',
+          isApiErrorResponse(error)
+            ? error.data?.message
+            : 'Something went wrong',
         );
       }
     }),
@@ -90,7 +89,9 @@ const WardsDetail = () => {
       navigate(-1);
     } catch (error) {
       showError(
-        isApiErrorResponse(error) ? error.data?.message : 'Unknown error',
+        isApiErrorResponse(error)
+          ? error.data?.message
+          : 'Something went wrong',
       );
     }
   }, [deleteWards, id, navigate]);
@@ -143,7 +144,7 @@ const WardsDetail = () => {
           rowGap: '16px',
         }}
       >
-        {isLoading || districtsLoading ? (
+        {isLoading || !districts ? (
           <>
             <FormInputSkeleton label="Name" />
             <FormInputSkeleton label="District" />
@@ -153,9 +154,9 @@ const WardsDetail = () => {
             <ControlledTextField control={control} name="name" label="Name" />
             <ControlledSelect
               control={control}
-              name="district_id"
+              name="districtId"
               label="District"
-              options={districts!.data!.map((e) => ({
+              options={districts.data.map((e) => ({
                 value: e.id.toString(),
                 label: e.name,
               }))}
