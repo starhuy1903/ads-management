@@ -3,7 +3,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import { useCallback, useEffect } from 'react';
+import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import * as yup from 'yup';
@@ -30,11 +30,7 @@ const DistrictsDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const [getDistrict, { isError }] = useLazyGetDistrictByIdQuery();
-
-  useEffect(() => {
-    if (isError) navigate(-1);
-  }, [isError, navigate]);
+  const [getDistrict] = useLazyGetDistrictByIdQuery();
 
   const {
     control,
@@ -45,8 +41,18 @@ const DistrictsDetail = () => {
     resolver: yupResolver(schema),
     mode: 'onChange',
     defaultValues: async () => {
-      const district = await getDistrict(parseInt(id!)).unwrap();
-      return district ? { name: district.name } : { name: '' };
+      try {
+        const district = await getDistrict(parseInt(id!), true).unwrap();
+        return district;
+      } catch (error) {
+        showError(
+          isApiErrorResponse(error) && error.status === 404
+            ? 'Detail not found'
+            : 'Something went wrong',
+        );
+        navigate('/districts', { replace: true });
+        return { name: '' };
+      }
     },
   });
 

@@ -3,7 +3,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import { useCallback, useEffect } from 'react';
+import { useCallback} from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import * as yup from 'yup';
@@ -30,11 +30,7 @@ const LocationTypesDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const [getLocationType, { isError }] = useLazyGetLocationTypeByIdQuery();
-
-  useEffect(() => {
-    if (isError) navigate(-1);
-  }, [isError, navigate]);
+  const [getLocationType] = useLazyGetLocationTypeByIdQuery();
 
   const {
     control,
@@ -45,8 +41,18 @@ const LocationTypesDetail = () => {
     resolver: yupResolver(schema),
     mode: 'onChange',
     defaultValues: async () => {
-      const locationType = await getLocationType(parseInt(id!)).unwrap();
-      return locationType ? { name: locationType.name } : { name: '' };
+      try {
+        const locationType = await getLocationType(parseInt(id!), true).unwrap();
+        return locationType;
+      } catch (error) {
+        showError(
+          isApiErrorResponse(error) && error.status === 404
+            ? 'Detail not found'
+            : 'Something went wrong',
+        );
+        navigate('/location-types', { replace: true });
+        return { name: '' };
+      }
     },
   });
 

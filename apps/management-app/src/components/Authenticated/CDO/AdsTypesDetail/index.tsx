@@ -3,7 +3,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import { useCallback, useEffect } from 'react';
+import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import * as yup from 'yup';
@@ -30,11 +30,7 @@ const AdsTypesDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const [getAdsType, { isError }] = useLazyGetAdsTypeByIdQuery();
-
-  useEffect(() => {
-    if (isError) navigate(-1);
-  }, [isError, navigate]);
+  const [getAdsType] = useLazyGetAdsTypeByIdQuery();
 
   const {
     control,
@@ -45,8 +41,18 @@ const AdsTypesDetail = () => {
     resolver: yupResolver(schema),
     mode: 'onChange',
     defaultValues: async () => {
-      const adsType = await getAdsType(parseInt(id!)).unwrap();
-      return adsType ? { name: adsType.name } : { name: '' };
+      try {
+        const adsType = await getAdsType(parseInt(id!), true).unwrap();
+        return adsType;
+      } catch (error) {
+        showError(
+          isApiErrorResponse(error) && error.status === 404
+            ? 'Detail not found'
+            : 'Something went wrong',
+        );
+        navigate('/ads-types', { replace: true });
+        return { name: '' };
+      }
     },
   });
 

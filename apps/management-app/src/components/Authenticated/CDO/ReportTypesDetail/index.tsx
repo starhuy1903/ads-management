@@ -3,7 +3,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import { useCallback, useEffect } from 'react';
+import { useCallback} from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import * as yup from 'yup';
@@ -30,11 +30,7 @@ const ReportTypesDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const [getReportType, { isError }] = useLazyGetReportTypeByIdQuery();
-
-  useEffect(() => {
-    if (isError) navigate(-1);
-  }, [isError, navigate]);
+  const [getReportType] = useLazyGetReportTypeByIdQuery();
 
   const {
     control,
@@ -45,8 +41,18 @@ const ReportTypesDetail = () => {
     resolver: yupResolver(schema),
     mode: 'onChange',
     defaultValues: async () => {
-      const reportType = await getReportType(parseInt(id!)).unwrap();
-      return reportType ? { name: reportType.name } : { name: '' };
+      try {
+        const reportType = await getReportType(parseInt(id!), true).unwrap();
+        return reportType;
+      } catch (error) {
+        showError(
+          isApiErrorResponse(error) && error.status === 404
+            ? 'Detail not found'
+            : 'Something went wrong',
+        );
+        navigate('/report-types', { replace: true });
+        return { name: '' };
+      }
     },
   });
 

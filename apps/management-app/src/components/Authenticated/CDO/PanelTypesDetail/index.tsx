@@ -3,7 +3,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import { useCallback, useEffect } from 'react';
+import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import * as yup from 'yup';
@@ -30,11 +30,7 @@ const PanelTypesDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const [getPanelType, { isError }] = useLazyGetPanelTypeByIdQuery();
-
-  useEffect(() => {
-    if (isError) navigate(-1);
-  }, [isError, navigate]);
+  const [getPanelType] = useLazyGetPanelTypeByIdQuery();
 
   const {
     control,
@@ -45,8 +41,18 @@ const PanelTypesDetail = () => {
     resolver: yupResolver(schema),
     mode: 'onChange',
     defaultValues: async () => {
-      const panelType = await getPanelType(parseInt(id!)).unwrap();
-      return panelType ? { name: panelType.name } : { name: '' };
+      try {
+        const panelType = await getPanelType(parseInt(id!), true).unwrap();
+        return panelType;
+      } catch (error) {
+        showError(
+          isApiErrorResponse(error) && error.status === 404
+            ? 'Detail not found'
+            : 'Something went wrong',
+        );
+        navigate('/panel-types', { replace: true });
+        return { name: '' };
+      }
     },
   });
 

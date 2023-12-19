@@ -3,7 +3,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import { useCallback, useEffect } from 'react';
+import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import * as yup from 'yup';
@@ -34,11 +34,7 @@ const WardsDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const [getWard, { isError }] = useLazyGetWardByIdQuery();
-
-  useEffect(() => {
-    if (isError) navigate(-1);
-  }, [isError, navigate]);
+  const [getWard] = useLazyGetWardByIdQuery();
 
   const { data: districts } = useGetDistrictsQuery({});
 
@@ -51,10 +47,18 @@ const WardsDetail = () => {
     resolver: yupResolver(schema),
     mode: 'onChange',
     defaultValues: async () => {
-      const ward = await getWard(parseInt(id!), true).unwrap();
-      return ward
-        ? { name: ward.name, districtId: ward.district_id }
-        : { name: '', districtId: 0 };
+      try {
+        const ward = await getWard(parseInt(id!), true).unwrap();
+        return { name: ward.name, districtId: ward.district_id };
+      } catch (error) {
+        showError(
+          isApiErrorResponse(error) && error.status === 404
+            ? 'Detail not found'
+            : 'Something went wrong',
+        );
+        navigate('/wards', { replace: true });
+        return { name: '', districtId: 0 };
+      }
     },
   });
 
