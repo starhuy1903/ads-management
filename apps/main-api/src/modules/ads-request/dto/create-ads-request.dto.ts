@@ -10,12 +10,11 @@ import {
   Min,
 } from 'class-validator';
 import { TargetType } from '../../../constants/ads_request';
+import { AdsRequestType } from '@prisma/client';
 export class CreateAdsRequestDto {
-  @Type(() => Number)
-  @IsInt()
-  @Min(1)
+  @IsEnum(AdsRequestType)
   @IsNotEmpty()
-  readonly typeId?: number;
+  readonly type?: AdsRequestType;
 
   @Type(() => Number)
   @IsInt()

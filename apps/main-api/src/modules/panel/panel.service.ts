@@ -30,7 +30,12 @@ export class PanelService {
       this.prismaService.panel.findMany({
         include: {
           type: true,
-          location: true,
+          location: {
+            include: {
+              district: true,
+              ward: true,
+            },
+          },
         },
         ...conditions,
         skip: pageOptionsPanelDto.skip,
@@ -67,7 +72,12 @@ export class PanelService {
       this.prismaService.panel.findMany({
         include: {
           type: true,
-          location: true,
+          location: {
+            include: {
+              district: true,
+              ward: true,
+            },
+          },
         },
         ...conditions,
         skip: pageOptionsPanelDto.skip,
@@ -87,7 +97,12 @@ export class PanelService {
     return this.prismaService.panel.findFirst({
       include: {
         type: true,
-        location: true,
+        location: {
+          include: {
+            district: true,
+            ward: true,
+          },
+        },
       },
       where: {
         id: id,

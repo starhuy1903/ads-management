@@ -10,31 +10,31 @@ import {
   Res,
   UseGuards,
 } from '@nestjs/common';
-import { AdsRequestService } from './ads-request.service';
-import { CreateAdsRequestDto } from './dto/create-ads-request.dto';
-import { UpdateAdsRequestDto } from './dto/update-ads-request.dto';
-import { PageOptionsAdsRequestDto } from './dto/find-all-ads-request.dto';
+import { DistrictService } from './district.service';
+import { CreateDistrictDto } from './dto/create-district.dto';
+import { UpdateDistrictDto } from './dto/update-district.dto';
+import { PageOptionsDistrictDto } from './dto/find-all-district.dto';
 import { CustomResponse } from '../../middlewares'; // Import your CustomResponse type
+import { JwtGuard } from '../auth/guards';
 import { UserRole } from '@prisma/client';
 import { Roles } from '../auth/decorators';
-import { JwtGuard } from '../auth/guards';
 
-@Controller('ads-requests')
-export class AdsRequestController {
-  constructor(private readonly adsRequestService: AdsRequestService) {}
+@Controller('districts')
+export class DistrictController {
+  constructor(private readonly districtService: DistrictService) {}
 
   @Post()
+  @UseGuards(JwtGuard)
+  @Roles(UserRole.DEPARTMENT_OFFICER)
   async create(
-    @Body() createAdsRequestDto: CreateAdsRequestDto,
+    @Body() createDistrictDto: CreateDistrictDto,
     @Res() res: CustomResponse,
   ) {
     try {
-      const adsRequest = await this.adsRequestService.create(
-        createAdsRequestDto,
-      );
+      const District = await this.districtService.create(createDistrictDto);
       return res.success({
-        data: adsRequest,
-        message: 'Ads request created successfully',
+        data: District,
+        message: 'District created successfully',
       });
     } catch (error) {
       return res.error({
@@ -48,14 +48,14 @@ export class AdsRequestController {
   @UseGuards(JwtGuard)
   @Roles(UserRole.DEPARTMENT_OFFICER)
   async findAll(
-    @Query() pageOptionsAdsRequestDto: PageOptionsAdsRequestDto,
+    @Query() pageOptionsDistrictDto: PageOptionsDistrictDto,
     @Res() res: CustomResponse,
   ) {
     try {
-      const adsRequests = await this.adsRequestService.findAll(
-        pageOptionsAdsRequestDto,
+      const Districts = await this.districtService.findAll(
+        pageOptionsDistrictDto,
       );
-      return res.success({ data: adsRequests });
+      return res.success({ data: Districts });
     } catch (error) {
       return res.error({
         statusCode: 500,
@@ -69,8 +69,8 @@ export class AdsRequestController {
   @Roles(UserRole.DEPARTMENT_OFFICER)
   async findOne(@Param('id') id: string, @Res() res: CustomResponse) {
     try {
-      const adsRequest = await this.adsRequestService.findOne(+id);
-      return res.success({ data: adsRequest });
+      const district = await this.districtService.findOne(Number(id));
+      return res.success({ data: district });
     } catch (error) {
       return res.error({
         statusCode: 500,
@@ -84,17 +84,17 @@ export class AdsRequestController {
   @Roles(UserRole.DEPARTMENT_OFFICER)
   async update(
     @Param('id') id: string,
-    @Body() updateAdsRequestDto: UpdateAdsRequestDto,
+    @Body() updateDistrictDto: UpdateDistrictDto,
     @Res() res: CustomResponse,
   ) {
     try {
-      const updatedAdsRequest = await this.adsRequestService.update(
+      const updatedDistrict = await this.districtService.update(
         +id,
-        updateAdsRequestDto,
+        updateDistrictDto,
       );
       return res.success({
-        data: updatedAdsRequest,
-        message: 'Ads request updated successfully',
+        data: updatedDistrict,
+        message: 'District updated successfully',
       });
     } catch (error) {
       return res.error({
@@ -105,10 +105,12 @@ export class AdsRequestController {
   }
 
   @Delete(':id')
+  @UseGuards(JwtGuard)
+  @Roles(UserRole.DEPARTMENT_OFFICER)
   async remove(@Param('id') id: string, @Res() res: CustomResponse) {
     try {
-      await this.adsRequestService.remove(+id);
-      return res.success({ message: 'Ads request deleted successfully' });
+      await this.districtService.remove(+id);
+      return res.success({ message: 'District deleted successfully' });
     } catch (error) {
       return res.error({
         statusCode: 500,

@@ -8,18 +8,24 @@ import {
   Delete,
   Query,
   Res,
+  UseGuards,
 } from '@nestjs/common';
 import { PanelTypeService } from './panel-type.service';
 import { CreatePanelTypeDto } from './dto/create-panel-type.dto';
 import { UpdatePanelTypeDto } from './dto/update-panel-type.dto';
 import { PageOptionsPanelTypeDto } from './dto/find-all-panel-type.dto';
 import { CustomResponse } from '../../middlewares'; // Import your CustomResponse type
+import { UserRole } from '@prisma/client';
+import { Roles } from '../auth/decorators';
+import { JwtGuard } from '../auth/guards';
 
 @Controller('panel-types')
 export class PanelTypeController {
   constructor(private readonly panelTypeService: PanelTypeService) {}
 
   @Post()
+  @UseGuards(JwtGuard)
+  @Roles(UserRole.DEPARTMENT_OFFICER)
   async create(
     @Body() createPanelTypeDto: CreatePanelTypeDto,
     @Res() res: CustomResponse,
@@ -59,6 +65,8 @@ export class PanelTypeController {
   }
 
   @Patch(':id')
+  @UseGuards(JwtGuard)
+  @Roles(UserRole.DEPARTMENT_OFFICER)
   async update(
     @Param('id') id: string,
     @Body() updatePanelTypeDto: UpdatePanelTypeDto,
@@ -82,6 +90,8 @@ export class PanelTypeController {
   }
 
   @Delete(':id')
+  @UseGuards(JwtGuard)
+  @Roles(UserRole.DEPARTMENT_OFFICER)
   async remove(@Param('id') id: string, @Res() res: CustomResponse) {
     try {
       await this.panelTypeService.remove(+id);

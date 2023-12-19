@@ -8,18 +8,24 @@ import {
   Delete,
   Query,
   Res,
+  UseGuards,
 } from '@nestjs/common';
 import { ReportTypeService } from './report-type.service';
 import { CreateReportTypeDto } from './dto/create-report-type.dto';
 import { UpdateReportTypeDto } from './dto/update-report-type.dto';
 import { PageOptionsReportTypeDto } from './dto/find-all-report-type.dto';
 import { CustomResponse } from '../../middlewares'; // Import your CustomResponse type
+import { UserRole } from '@prisma/client';
+import { Roles } from '../auth/decorators';
+import { JwtGuard } from '../auth/guards';
 
 @Controller('report-types')
 export class ReportTypeController {
   constructor(private readonly reportTypeService: ReportTypeService) {}
 
   @Post()
+  @UseGuards(JwtGuard)
+  @Roles(UserRole.DEPARTMENT_OFFICER)
   async create(
     @Body() createReportTypeDto: CreateReportTypeDto,
     @Res() res: CustomResponse,
@@ -59,6 +65,8 @@ export class ReportTypeController {
   }
 
   @Patch(':id')
+  @UseGuards(JwtGuard)
+  @Roles(UserRole.DEPARTMENT_OFFICER)
   async update(
     @Param('id') id: string,
     @Body() updateReportTypeDto: UpdateReportTypeDto,
@@ -82,6 +90,8 @@ export class ReportTypeController {
   }
 
   @Delete(':id')
+  @UseGuards(JwtGuard)
+  @Roles(UserRole.DEPARTMENT_OFFICER)
   async remove(@Param('id') id: string, @Res() res: CustomResponse) {
     try {
       await this.reportTypeService.remove(+id);

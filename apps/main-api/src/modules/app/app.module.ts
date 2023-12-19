@@ -15,6 +15,8 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
 import { ReportTypeModule } from '../report-type/report-type.module';
 import { LocationTypeModule } from '../location-type/location-type.module';
 import { PanelTypeModule } from '../panel-type/panel-type.module';
+import { DistrictModule } from '../district/district.module';
+import { WardModule } from '../ward/ward.module';
 
 @Module({
   imports: [
@@ -35,6 +37,8 @@ import { PanelTypeModule } from '../panel-type/panel-type.module';
     ReportTypeModule,
     LocationTypeModule,
     PanelTypeModule,
+    DistrictModule,
+    WardModule,
   ],
   controllers: [AppController],
   providers: [AppService],
