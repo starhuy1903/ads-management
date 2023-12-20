@@ -772,7 +772,7 @@
         {
           "uuid": "f1e7cdc5-a3bf-4ca6-9afa-59b74a4e0e0a",
           "body": "{}",
-          "latency": 0,
+          "latency": 5000,
           "statusCode": 201,
           "label": "",
           "headers": [],
@@ -791,7 +791,7 @@
         {
           "uuid": "fc8a7652-c8ee-4b3f-ad93-e9534711d5e6",
           "body": "{\n  \"status\": 400,\n  \"message\": \"district exist\"\n}",
-          "latency": 0,
+          "latency": 5000,
           "statusCode": 400,
           "label": "",
           "headers": [],
@@ -884,7 +884,7 @@
         {
           "uuid": "b74f7870-fb0d-498f-8d4b-85e084dae7c0",
           "body": "{}",
-          "latency": 0,
+          "latency": 2000,
           "statusCode": 201,
           "label": "",
           "headers": [],
@@ -903,7 +903,7 @@
         {
           "uuid": "698ce114-81e9-4f56-befa-64c20267ae3d",
           "body": "{\n  \"status\": 400,\n  \"message\": \"district exist\"\n}",
-          "latency": 0,
+          "latency": 2000,
           "statusCode": 400,
           "label": "",
           "headers": [],
@@ -996,7 +996,7 @@
         {
           "uuid": "844e2ad9-9114-432a-85fa-29f938d9840e",
           "body": "",
-          "latency": 0,
+          "latency": 2000,
           "statusCode": 200,
           "label": "",
           "headers": [],

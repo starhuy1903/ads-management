@@ -7,14 +7,17 @@ import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import * as yup from 'yup';
+import { useAppDispatch } from '@/store';
 import ControlledTextField from '@/components/Common/ControlledTextField';
+import { ModalKey } from '@/constants/modal';
 import {
   useDeleteDistrictsMutation,
   useLazyGetDistrictByIdQuery,
   useUpdateDistrictMutation,
 } from '@/store/api/generalManagementApiSlice';
 import { isApiErrorResponse } from '@/store/api/helper';
-import { showError, showSuccess } from '@/utils/toast';
+import { showModal } from '@/store/slice/modal';
+import { showError } from '@/utils/toast';
 import FormInputSkeleton from '../FormInputSkeleton';
 import StaticActionBar from '../StaticActionBar';
 
@@ -29,8 +32,9 @@ const schema = yup.object({
 const DistrictsDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
-  const [getDistrict] = useLazyGetDistrictByIdQuery();
+  const [getDistrict, { data }] = useLazyGetDistrictByIdQuery();
 
   const {
     control,
@@ -58,38 +62,45 @@ const DistrictsDetail = () => {
 
   const [updateDistrict] = useUpdateDistrictMutation();
 
-  const handleUpdateDistrict = useCallback(
-    handleSubmit(async (data: FormData) => {
-      try {
-        await updateDistrict({ id: parseInt(id!), data }).unwrap();
-        showSuccess('District updated');
-        reset(data);
-      } catch (error) {
-        showError(
-          isApiErrorResponse(error)
-            ? error.data?.message
-            : 'Something went wrong',
-        );
-      }
-    }),
-    [updateDistrict],
-  );
+  const handleUpdateDistrict = handleSubmit((data: FormData) => {
+    dispatch(
+      showModal(ModalKey.GENERAL, {
+        headerText: `Apply changes ?`,
+        onModalClose: () => null,
+        primaryButtonText: 'Confirm',
+        onClickPrimaryButton: async () => {
+          try {
+            dispatch(showModal(null));
+            await updateDistrict({ id: parseInt(id!), data }).unwrap();
+            reset(data);
+          } catch (error) {
+            /* empty */
+          }
+        },
+      }),
+    );
+  });
 
   const [deleteDistricts] = useDeleteDistrictsMutation();
 
   const handleDeleteDistrict = useCallback(async () => {
-    try {
-      await deleteDistricts(parseInt(id!)).unwrap();
-      showSuccess('District deleted');
-      navigate(-1);
-    } catch (error) {
-      showError(
-        isApiErrorResponse(error)
-          ? error.data?.message
-          : 'Something went wrong',
-      );
-    }
-  }, [deleteDistricts, id, navigate]);
+    dispatch(
+      showModal(ModalKey.GENERAL, {
+        headerText: `Delete ${data?.name} ?`,
+        onModalClose: () => null,
+        primaryButtonText: 'Confirm',
+        onClickPrimaryButton: async () => {
+          try {
+            dispatch(showModal(null));
+            await deleteDistricts(parseInt(id!)).unwrap();
+            navigate(-1);
+          } catch (error) {
+            /* empty */
+          }
+        },
+      }),
+    );
+  }, [data?.name, deleteDistricts, dispatch, id, navigate]);
 
   return (
     <StaticActionBar

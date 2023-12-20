@@ -3,18 +3,21 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import { useCallback} from 'react';
+import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import * as yup from 'yup';
+import { useAppDispatch } from '@/store';
 import ControlledTextField from '@/components/Common/ControlledTextField';
+import { ModalKey } from '@/constants/modal';
 import {
   useDeleteReportTypesMutation,
   useLazyGetReportTypeByIdQuery,
   useUpdateReportTypeMutation,
 } from '@/store/api/generalManagementApiSlice';
 import { isApiErrorResponse } from '@/store/api/helper';
-import { showError, showSuccess } from '@/utils/toast';
+import { showModal } from '@/store/slice/modal';
+import { showError } from '@/utils/toast';
 import FormInputSkeleton from '../FormInputSkeleton';
 import StaticActionBar from '../StaticActionBar';
 
@@ -29,8 +32,9 @@ const schema = yup.object({
 const ReportTypesDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
-  const [getReportType] = useLazyGetReportTypeByIdQuery();
+  const [getReportType, { data }] = useLazyGetReportTypeByIdQuery();
 
   const {
     control,
@@ -58,38 +62,45 @@ const ReportTypesDetail = () => {
 
   const [updateReportType] = useUpdateReportTypeMutation();
 
-  const handleUpdateReportType = useCallback(
-    handleSubmit(async (data: FormData) => {
-      try {
-        await updateReportType({ id: parseInt(id!), data }).unwrap();
-        showSuccess('Report type updated');
-        reset(data);
-      } catch (error) {
-        showError(
-          isApiErrorResponse(error)
-            ? error.data?.message
-            : 'Something went wrong',
-        );
-      }
-    }),
-    [updateReportType],
-  );
+  const handleUpdateReportType = handleSubmit((data: FormData) => {
+    dispatch(
+      showModal(ModalKey.GENERAL, {
+        headerText: `Apply changes ?`,
+        onModalClose: () => null,
+        primaryButtonText: 'Confirm',
+        onClickPrimaryButton: async () => {
+          try {
+            dispatch(showModal(null));
+            await updateReportType({ id: parseInt(id!), data }).unwrap();
+            reset(data);
+          } catch (error) {
+            /* empty */
+          }
+        },
+      }),
+    );
+  });
 
   const [deleteReportTypes] = useDeleteReportTypesMutation();
 
-  const handleDeleteReportType = useCallback(async () => {
-    try {
-      await deleteReportTypes(parseInt(id!)).unwrap();
-      showSuccess('Report type deleted');
-      navigate(-1);
-    } catch (error) {
-      showError(
-        isApiErrorResponse(error)
-          ? error.data?.message
-          : 'Something went wrong',
-      );
-    }
-  }, [deleteReportTypes, id, navigate]);
+  const handleDeleteReportType = useCallback(() => {
+    dispatch(
+      showModal(ModalKey.GENERAL, {
+        headerText: `Delete ${data?.name} ?`,
+        onModalClose: () => null,
+        primaryButtonText: 'Confirm',
+        onClickPrimaryButton: async () => {
+          try {
+            dispatch(showModal(null));
+            await deleteReportTypes(parseInt(id!)).unwrap();
+            navigate(-1);
+          } catch (error) {
+            /* empty */
+          }
+        },
+      }),
+    );
+  }, [data?.name, deleteReportTypes, dispatch, id, navigate]);
 
   return (
     <StaticActionBar

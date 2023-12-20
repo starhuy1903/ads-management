@@ -10,12 +10,13 @@ import {
 } from '@mui/x-data-grid';
 import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useAppDispatch } from '@/store';
+import { ModalKey } from '@/constants/modal';
 import {
   useDeleteWardsMutation,
   useGetWardsQuery,
 } from '@/store/api/generalManagementApiSlice';
-import { isApiErrorResponse } from '@/store/api/helper';
-import { showError, showSuccess } from '@/utils/toast';
+import { showModal } from '@/store/slice/modal';
 import CustomDataGrid from '../CustomDatagrid';
 import CustomLink from '../CustomLink';
 import DeleteIconButton from '../DeleteIconButton';
@@ -23,6 +24,7 @@ import StaticActionBar from '../StaticActionBar';
 
 const WardsListView = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -139,18 +141,23 @@ const WardsListView = () => {
           renderHeader: () => null,
           renderCell: (params: GridRenderCellParams) => (
             <DeleteIconButton
-              onClick={async () => {
-                try {
-                  await deleteWards(params.row.id).unwrap();
-                  await refetch();
-                  showSuccess('Ward deleted');
-                } catch (error) {
-                  showError(
-                    isApiErrorResponse(error)
-                      ? error.data?.message
-                      : 'Something went wrong',
-                  );
-                }
+              onClick={() => {
+                dispatch(
+                  showModal(ModalKey.GENERAL, {
+                    headerText: `Delete ${params.row.name} ?`,
+                    onModalClose: () => null,
+                    primaryButtonText: 'Confirm',
+                    onClickPrimaryButton: async () => {
+                      try {
+                        dispatch(showModal(null));
+                        await deleteWards(params.row.id).unwrap();
+                        await refetch();
+                      } catch (error) {
+                        /* empty */
+                      }
+                    },
+                  }),
+                );
               }}
             />
           ),

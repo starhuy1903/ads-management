@@ -3,18 +3,21 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import { useCallback} from 'react';
+import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import * as yup from 'yup';
+import { useAppDispatch } from '@/store';
 import ControlledTextField from '@/components/Common/ControlledTextField';
+import { ModalKey } from '@/constants/modal';
 import {
   useDeleteLocationTypesMutation,
   useLazyGetLocationTypeByIdQuery,
   useUpdateLocationTypeMutation,
 } from '@/store/api/generalManagementApiSlice';
 import { isApiErrorResponse } from '@/store/api/helper';
-import { showError, showSuccess } from '@/utils/toast';
+import { showModal } from '@/store/slice/modal';
+import { showError } from '@/utils/toast';
 import FormInputSkeleton from '../FormInputSkeleton';
 import StaticActionBar from '../StaticActionBar';
 
@@ -29,8 +32,9 @@ const schema = yup.object({
 const LocationTypesDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
-  const [getLocationType] = useLazyGetLocationTypeByIdQuery();
+  const [getLocationType, { data }] = useLazyGetLocationTypeByIdQuery();
 
   const {
     control,
@@ -42,7 +46,10 @@ const LocationTypesDetail = () => {
     mode: 'onChange',
     defaultValues: async () => {
       try {
-        const locationType = await getLocationType(parseInt(id!), true).unwrap();
+        const locationType = await getLocationType(
+          parseInt(id!),
+          true,
+        ).unwrap();
         return locationType;
       } catch (error) {
         showError(
@@ -58,38 +65,45 @@ const LocationTypesDetail = () => {
 
   const [updateLocationType] = useUpdateLocationTypeMutation();
 
-  const handleUpdateLocationType = useCallback(
-    handleSubmit(async (data: FormData) => {
-      try {
-        await updateLocationType({ id: parseInt(id!), data }).unwrap();
-        showSuccess('Location type updated');
-        reset(data);
-      } catch (error) {
-        showError(
-          isApiErrorResponse(error)
-            ? error.data?.message
-            : 'Something went wrong',
-        );
-      }
-    }),
-    [updateLocationType],
-  );
+  const handleUpdateLocationType = handleSubmit((data: FormData) => {
+    dispatch(
+      showModal(ModalKey.GENERAL, {
+        headerText: `Apply changes ?`,
+        onModalClose: () => null,
+        primaryButtonText: 'Confirm',
+        onClickPrimaryButton: async () => {
+          try {
+            dispatch(showModal(null));
+            await updateLocationType({ id: parseInt(id!), data }).unwrap();
+            reset(data);
+          } catch (error) {
+            /* empty */
+          }
+        },
+      }),
+    );
+  });
 
   const [deleteLocationTypes] = useDeleteLocationTypesMutation();
 
-  const handleDeleteLocationType = useCallback(async () => {
-    try {
-      await deleteLocationTypes(parseInt(id!)).unwrap();
-      showSuccess('Location type deleted');
-      navigate(-1);
-    } catch (error) {
-      showError(
-        isApiErrorResponse(error)
-          ? error.data?.message
-          : 'Something went wrong',
-      );
-    }
-  }, [deleteLocationTypes, id, navigate]);
+  const handleDeleteLocationType = useCallback(() => {
+    dispatch(
+      showModal(ModalKey.GENERAL, {
+        headerText: `Delete ${data?.name} ?`,
+        onModalClose: () => null,
+        primaryButtonText: 'Confirm',
+        onClickPrimaryButton: async () => {
+          try {
+            dispatch(showModal(null));
+            await deleteLocationTypes(parseInt(id!)).unwrap();
+            navigate(-1);
+          } catch (error) {
+            /* empty */
+          }
+        },
+      }),
+    );
+  }, [data?.name, deleteLocationTypes, dispatch, id, navigate]);
 
   return (
     <StaticActionBar

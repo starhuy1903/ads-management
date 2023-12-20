@@ -7,14 +7,17 @@ import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import * as yup from 'yup';
+import { useAppDispatch } from '@/store';
 import ControlledTextField from '@/components/Common/ControlledTextField';
+import { ModalKey } from '@/constants/modal';
 import {
   useDeleteAdsTypesMutation,
   useLazyGetAdsTypeByIdQuery,
   useUpdateAdsTypeMutation,
 } from '@/store/api/generalManagementApiSlice';
 import { isApiErrorResponse } from '@/store/api/helper';
-import { showError, showSuccess } from '@/utils/toast';
+import { showModal } from '@/store/slice/modal';
+import { showError } from '@/utils/toast';
 import FormInputSkeleton from '../FormInputSkeleton';
 import StaticActionBar from '../StaticActionBar';
 
@@ -29,8 +32,9 @@ const schema = yup.object({
 const AdsTypesDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
-  const [getAdsType] = useLazyGetAdsTypeByIdQuery();
+  const [getAdsType, { data }] = useLazyGetAdsTypeByIdQuery();
 
   const {
     control,
@@ -58,38 +62,46 @@ const AdsTypesDetail = () => {
 
   const [updateAdsType] = useUpdateAdsTypeMutation();
 
-  const handleUpdateAdsType = useCallback(
-    handleSubmit(async (data: FormData) => {
-      try {
-        await updateAdsType({ id: parseInt(id!), data }).unwrap();
-        showSuccess('Advertisement type updated');
-        reset(data);
-      } catch (error) {
-        showError(
-          isApiErrorResponse(error)
-            ? error.data?.message
-            : 'Something went wrong',
-        );
-      }
-    }),
-    [updateAdsType],
-  );
+  const handleUpdateAdsType = handleSubmit((data: FormData) => {
+    dispatch(
+      showModal(ModalKey.GENERAL, {
+        headerText: `Apply changes ?`,
+        onModalClose: () => null,
+        primaryButtonText: 'Confirm',
+        onClickPrimaryButton: async () => {
+          try {
+            dispatch(showModal(null));
+            await updateAdsType({ id: parseInt(id!), data }).unwrap();
+            reset(data);
+          } catch (error) {
+            /* empty */
+          }
+        },
+      }),
+    );
+  });
 
   const [deleteAdsTypes] = useDeleteAdsTypesMutation();
 
-  const handleDeleteAdsType = useCallback(async () => {
-    try {
-      await deleteAdsTypes(parseInt(id!)).unwrap();
-      showSuccess('Advertisement type deleted');
-      navigate(-1);
-    } catch (error) {
-      showError(
-        isApiErrorResponse(error)
-          ? error.data?.message
-          : 'Something went wrong',
-      );
-    }
-  }, [deleteAdsTypes, id, navigate]);
+  const handleDeleteAdsType = useCallback(() => {
+    dispatch(
+      showModal(ModalKey.GENERAL, {
+        headerText: `Delete ${data?.name} ?`,
+        onModalClose: () => null,
+        primaryButtonText: 'Confirm',
+        onClickPrimaryButton: async () => {
+          try {
+            dispatch(showModal(null));
+            await deleteAdsTypes(parseInt(id!)).unwrap();
+
+            navigate(-1);
+          } catch (error) {
+            /* empty */
+          }
+        },
+      }),
+    );
+  }, [data?.name, deleteAdsTypes, dispatch, id, navigate]);
 
   return (
     <StaticActionBar

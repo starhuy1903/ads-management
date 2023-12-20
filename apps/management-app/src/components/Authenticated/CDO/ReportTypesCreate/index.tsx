@@ -2,14 +2,14 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
+import { useAppDispatch } from '@/store';
 import ControlledTextField from '@/components/Common/ControlledTextField';
+import { ModalKey } from '@/constants/modal';
 import { useCreateReportTypeMutation } from '@/store/api/generalManagementApiSlice';
-import { isApiErrorResponse } from '@/store/api/helper';
-import { showError, showSuccess } from '@/utils/toast';
+import { showModal } from '@/store/slice/modal';
 import StaticActionBar from '../StaticActionBar';
 
 interface FormData {
@@ -22,6 +22,7 @@ const schema = yup.object({
 
 const ReportTypesCreate = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const {
     control,
@@ -38,22 +39,24 @@ const ReportTypesCreate = () => {
 
   const [createReportType] = useCreateReportTypeMutation();
 
-  const handleCreateReportType = useCallback(
-    handleSubmit(async (data: FormData) => {
-      try {
-        await createReportType(data).unwrap();
-        showSuccess('Report type created');
-        reset();
-      } catch (error) {
-        showError(
-          isApiErrorResponse(error)
-            ? error.data?.message
-            : 'Something went wrong',
-        );
-      }
-    }),
-    [createReportType],
-  );
+  const handleCreateReportType = handleSubmit(async (data: FormData) => {
+    dispatch(
+      showModal(ModalKey.GENERAL, {
+        headerText: `Create new report type ?`,
+        onModalClose: () => null,
+        primaryButtonText: 'Confirm',
+        onClickPrimaryButton: async () => {
+          try {
+            dispatch(showModal(null));
+            await createReportType(data).unwrap();
+            reset();
+          } catch (error) {
+            /* empty */
+          }
+        },
+      }),
+    );
+  });
 
   return (
     <StaticActionBar

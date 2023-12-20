@@ -2,19 +2,19 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
+import { useAppDispatch } from '@/store';
 import ControlledSelect from '@/components/Common/ControlledSelect';
 import ControlledTextField from '@/components/Common/ControlledTextField';
+import { ModalKey } from '@/constants/modal';
 import {
   useCreateWardMutation,
   useGetDistrictsQuery,
   useLazyGetDistrictsQuery,
 } from '@/store/api/generalManagementApiSlice';
-import { isApiErrorResponse } from '@/store/api/helper';
-import { showError, showSuccess } from '@/utils/toast';
+import { showModal } from '@/store/slice/modal';
 import FormInputSkeleton from '../FormInputSkeleton';
 import StaticActionBar from '../StaticActionBar';
 
@@ -30,6 +30,7 @@ const schema = yup.object({
 
 const WardsCreate = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const { data: districts } = useGetDistrictsQuery({});
 
@@ -54,22 +55,27 @@ const WardsCreate = () => {
 
   const [createWard] = useCreateWardMutation();
 
-  const handleCreateWard = useCallback(
-    handleSubmit(async (data: FormData) => {
-      try {
-        await createWard({ ...data, district_id: data.districtId }).unwrap();
-        showSuccess('Ward created');
-        reset();
-      } catch (error) {
-        showError(
-          isApiErrorResponse(error)
-            ? error.data?.message
-            : 'Something went wrong',
-        );
-      }
-    }),
-    [createWard],
-  );
+  const handleCreateWard = handleSubmit((data: FormData) => {
+    dispatch(
+      showModal(ModalKey.GENERAL, {
+        headerText: `Create new ward ?`,
+        onModalClose: () => null,
+        primaryButtonText: 'Confirm',
+        onClickPrimaryButton: async () => {
+          try {
+            dispatch(showModal(null));
+            await createWard({
+              ...data,
+              district_id: data.districtId,
+            }).unwrap();
+            reset();
+          } catch (error) {
+            /* empty */
+          }
+        },
+      }),
+    );
+  });
 
   return (
     <StaticActionBar
@@ -103,7 +109,7 @@ const WardsCreate = () => {
           rowGap: '16px',
         }}
       >
-        {isLoading ? (
+        {isLoading || !districts ? (
           <>
             <FormInputSkeleton label="Name" />
             <FormInputSkeleton label="District" />
@@ -115,7 +121,7 @@ const WardsCreate = () => {
               control={control}
               name="districtId"
               label="District"
-              options={districts!.data!.map((e) => ({
+              options={districts.data.map((e) => ({
                 value: e.id.toString(),
                 label: e.name,
               }))}

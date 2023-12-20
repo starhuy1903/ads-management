@@ -7,8 +7,10 @@ import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import * as yup from 'yup';
+import { useAppDispatch } from '@/store';
 import ControlledSelect from '@/components/Common/ControlledSelect';
 import ControlledTextField from '@/components/Common/ControlledTextField';
+import { ModalKey } from '@/constants/modal';
 import {
   useDeleteWardsMutation,
   useGetDistrictsQuery,
@@ -16,7 +18,8 @@ import {
   useUpdateWardMutation,
 } from '@/store/api/generalManagementApiSlice';
 import { isApiErrorResponse } from '@/store/api/helper';
-import { showError, showSuccess } from '@/utils/toast';
+import { showModal } from '@/store/slice/modal';
+import { showError } from '@/utils/toast';
 import FormInputSkeleton from '../FormInputSkeleton';
 import StaticActionBar from '../StaticActionBar';
 
@@ -33,8 +36,9 @@ const schema = yup.object({
 const WardsDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
-  const [getWard] = useLazyGetWardByIdQuery();
+  const [getWard, { data }] = useLazyGetWardByIdQuery();
 
   const { data: districts } = useGetDistrictsQuery({});
 
@@ -64,41 +68,48 @@ const WardsDetail = () => {
 
   const [updateWard] = useUpdateWardMutation();
 
-  const handleUpdateWard = useCallback(
-    handleSubmit(async (data: FormData) => {
-      try {
-        await updateWard({
-          id: parseInt(id!),
-          data: { ...data, district_id: data.districtId },
-        }).unwrap();
-        showSuccess('Ward updated');
-        reset(data);
-      } catch (error) {
-        showError(
-          isApiErrorResponse(error)
-            ? error.data?.message
-            : 'Something went wrong',
-        );
-      }
-    }),
-    [updateWard],
-  );
+  const handleUpdateWard = handleSubmit((data: FormData) => {
+    dispatch(
+      showModal(ModalKey.GENERAL, {
+        headerText: `Apply changes ?`,
+        onModalClose: () => null,
+        primaryButtonText: 'Confirm',
+        onClickPrimaryButton: async () => {
+          try {
+            dispatch(showModal(null));
+            await updateWard({
+              id: parseInt(id!),
+              data: { ...data, district_id: data.districtId },
+            }).unwrap();
+            reset(data);
+          } catch (error) {
+            /* empty */
+          }
+        },
+      }),
+    );
+  });
 
   const [deleteWards] = useDeleteWardsMutation();
 
-  const handleDeleteWard = useCallback(async () => {
-    try {
-      await deleteWards(parseInt(id!)).unwrap();
-      showSuccess('Ward deleted');
-      navigate(-1);
-    } catch (error) {
-      showError(
-        isApiErrorResponse(error)
-          ? error.data?.message
-          : 'Something went wrong',
-      );
-    }
-  }, [deleteWards, id, navigate]);
+  const handleDeleteWard = useCallback(() => {
+    dispatch(
+      showModal(ModalKey.GENERAL, {
+        headerText: `Delete ${data?.name} ?`,
+        onModalClose: () => null,
+        primaryButtonText: 'Confirm',
+        onClickPrimaryButton: async () => {
+          try {
+            dispatch(showModal(null));
+            await deleteWards(parseInt(id!)).unwrap();
+            navigate(-1);
+          } catch (error) {
+            /* empty */
+          }
+        },
+      }),
+    );
+  }, [data?.name, deleteWards, dispatch, id, navigate]);
 
   return (
     <StaticActionBar

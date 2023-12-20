@@ -2,14 +2,14 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
+import { useAppDispatch } from '@/store';
 import ControlledTextField from '@/components/Common/ControlledTextField';
+import { ModalKey } from '@/constants/modal';
 import { useCreateAdsTypeMutation } from '@/store/api/generalManagementApiSlice';
-import { isApiErrorResponse } from '@/store/api/helper';
-import { showError, showSuccess } from '@/utils/toast';
+import { showModal } from '@/store/slice/modal';
 import StaticActionBar from '../StaticActionBar';
 
 interface FormData {
@@ -22,6 +22,7 @@ const schema = yup.object({
 
 const AdsTypesCreate = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const {
     control,
@@ -38,22 +39,24 @@ const AdsTypesCreate = () => {
 
   const [createAdsType] = useCreateAdsTypeMutation();
 
-  const handleCreateAdsType = useCallback(
-    handleSubmit(async (data: FormData) => {
-      try {
-        await createAdsType(data).unwrap();
-        showSuccess('Advertisement type created');
-        reset();
-      } catch (error) {
-        showError(
-          isApiErrorResponse(error)
-            ? error.data?.message
-            : 'Something went wrong',
-        );
-      }
-    }),
-    [createAdsType],
-  );
+  const handleCreateAdsType = handleSubmit((data: FormData) => {
+    dispatch(
+      showModal(ModalKey.GENERAL, {
+        headerText: `Create new advertisement type ?`,
+        onModalClose: () => null,
+        primaryButtonText: 'Confirm',
+        onClickPrimaryButton: async () => {
+          try {
+            dispatch(showModal(null));
+            await createAdsType(data).unwrap();
+            reset();
+          } catch (error) {
+            /* empty */
+          }
+        },
+      }),
+    );
+  });
 
   return (
     <StaticActionBar

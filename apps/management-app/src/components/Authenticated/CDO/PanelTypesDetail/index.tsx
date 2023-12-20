@@ -7,14 +7,17 @@ import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import * as yup from 'yup';
+import { useAppDispatch } from '@/store';
 import ControlledTextField from '@/components/Common/ControlledTextField';
+import { ModalKey } from '@/constants/modal';
 import {
   useDeletePanelTypesMutation,
   useLazyGetPanelTypeByIdQuery,
   useUpdatePanelTypeMutation,
 } from '@/store/api/generalManagementApiSlice';
 import { isApiErrorResponse } from '@/store/api/helper';
-import { showError, showSuccess } from '@/utils/toast';
+import { showModal } from '@/store/slice/modal';
+import { showError } from '@/utils/toast';
 import FormInputSkeleton from '../FormInputSkeleton';
 import StaticActionBar from '../StaticActionBar';
 
@@ -29,8 +32,9 @@ const schema = yup.object({
 const PanelTypesDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
-  const [getPanelType] = useLazyGetPanelTypeByIdQuery();
+  const [getPanelType, { data }] = useLazyGetPanelTypeByIdQuery();
 
   const {
     control,
@@ -58,38 +62,45 @@ const PanelTypesDetail = () => {
 
   const [updatePanelType] = useUpdatePanelTypeMutation();
 
-  const handleUpdatePanelType = useCallback(
-    handleSubmit(async (data: FormData) => {
-      try {
-        await updatePanelType({ id: parseInt(id!), data }).unwrap();
-        showSuccess('Panel type updated');
-        reset(data);
-      } catch (error) {
-        showError(
-          isApiErrorResponse(error)
-            ? error.data?.message
-            : 'Something went wrong',
-        );
-      }
-    }),
-    [updatePanelType],
-  );
+  const handleUpdatePanelType = handleSubmit((data: FormData) => {
+    dispatch(
+      showModal(ModalKey.GENERAL, {
+        headerText: `Apply changes ?`,
+        onModalClose: () => null,
+        primaryButtonText: 'Confirm',
+        onClickPrimaryButton: async () => {
+          try {
+            dispatch(showModal(null));
+            await updatePanelType({ id: parseInt(id!), data }).unwrap();
+            reset(data);
+          } catch (error) {
+            /* empty */
+          }
+        },
+      }),
+    );
+  });
 
   const [deletePanelTypes] = useDeletePanelTypesMutation();
 
-  const handleDeletePanelType = useCallback(async () => {
-    try {
-      await deletePanelTypes(parseInt(id!)).unwrap();
-      showSuccess('Panel type deleted');
-      navigate(-1);
-    } catch (error) {
-      showError(
-        isApiErrorResponse(error)
-          ? error.data?.message
-          : 'Something went wrong',
-      );
-    }
-  }, [deletePanelTypes, id, navigate]);
+  const handleDeletePanelType = useCallback(() => {
+    dispatch(
+      showModal(ModalKey.GENERAL, {
+        headerText: `Delete ${data?.name} ?`,
+        onModalClose: () => null,
+        primaryButtonText: 'Confirm',
+        onClickPrimaryButton: async () => {
+          try {
+            dispatch(showModal(null));
+            await deletePanelTypes(parseInt(id!)).unwrap();
+            navigate(-1);
+          } catch (error) {
+            /* empty */
+          }
+        },
+      }),
+    );
+  }, [data?.name, deletePanelTypes, dispatch, id, navigate]);
 
   return (
     <StaticActionBar

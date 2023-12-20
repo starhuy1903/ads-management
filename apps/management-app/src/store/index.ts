@@ -7,13 +7,15 @@ import {
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { apiSlice } from './api/baseApiSlice';
 import { modalSlice } from './slice/modal';
-import { userSlice } from './slice/userSlice';
 import { sidebarSlice } from './slice/sidebar';
+import { statusSlice } from './slice/statusSlice';
+import { userSlice } from './slice/userSlice';
 
 const combinedReducer = combineReducers({
   user: userSlice.reducer,
   modal: modalSlice.reducer,
   sidebar: sidebarSlice.reducer,
+  status: statusSlice.reducer,
   [apiSlice.reducerPath]: apiSlice.reducer,
 });
 
