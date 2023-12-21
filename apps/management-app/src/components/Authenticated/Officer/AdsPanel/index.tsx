@@ -91,6 +91,7 @@ export default function AdsPanel() {
                 <TableCell align="center">Ended</TableCell>
                 <TableCell align="center">Created</TableCell>
                 <TableCell align="center">Modified</TableCell>
+                <TableCell align="center">Status</TableCell>
                 <TableCell align="center"></TableCell>
               </TableRow>
             </TableHead>
@@ -122,6 +123,8 @@ export default function AdsPanel() {
                     <TableCell align="center">
                       {formatDateTime(panel?.modified_time)}
                     </TableCell>
+
+                    <TableCell align="center">{panel?.status}</TableCell>
                     <TableCell>
                       <Box
                         sx={{

@@ -39,8 +39,8 @@ export type Location = {
 
 export type Panel = {
   id: number;
-  width: number;
-  height: number;
+  width: string;
+  height: string;
   image_urls: string[];
   company_email: string;
   company_number: string;

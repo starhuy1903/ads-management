@@ -46,6 +46,9 @@ export const officerManagementApiSlice = apiSlice.injectEndpoints({
         },
       }),
     }),
+    getPanelById: build.query<GetDetailResult<Panel>, string>({
+      query: (id) => `/panels/${id}`,
+    }),
   }),
 });
 
@@ -53,4 +56,5 @@ export const {
   useGetLocationsQuery,
   useGetLocationByIdQuery,
   useGetPanelsQuery,
+  useGetPanelByIdQuery,
 } = officerManagementApiSlice;
