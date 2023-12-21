@@ -72,12 +72,12 @@ export default function AdsLocationDetail() {
         <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
           <ReadOnlyTextField label="Address" value={location?.full_address} />
 
+          <ReadOnlyTextField label="Ward" value={location?.ward?.name} />
+
           <ReadOnlyTextField
             label="District"
             value={location?.district?.name}
           />
-
-          <ReadOnlyTextField label="Ward" value={location?.ward?.name} />
 
           <ReadOnlyTextField label="Latitude" value={location?.lat} />
 
@@ -87,13 +87,13 @@ export default function AdsLocationDetail() {
         <Typography variant="h6">Classification</Typography>
         <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
           <ReadOnlyTextField
-            label="Position type"
-            value={location?.type?.name}
+            label="Advertising Type"
+            value={location?.ad_type?.name}
           />
 
           <ReadOnlyTextField
-            label="Advertising type"
-            value={location?.ad_type?.name}
+            label="Position Type"
+            value={location?.type?.name}
           />
         </Stack>
 

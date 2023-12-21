@@ -24,7 +24,7 @@ export default function AdsLocation() {
   const { data, isLoading } = useGetLocationsQuery({
     page: page,
     take: 10,
-    wardId: 1,
+    wards: '1',
   });
 
   useEffect(() => {
@@ -63,8 +63,8 @@ export default function AdsLocation() {
                 <TableCell align="center">Address</TableCell>
                 <TableCell align="center">Ward</TableCell>
                 <TableCell align="center">District</TableCell>
-                <TableCell align="center">Position type</TableCell>
-                <TableCell align="center">Advertising type</TableCell>
+                <TableCell align="center">Advertising Type</TableCell>
+                <TableCell align="center">Position Type</TableCell>
                 <TableCell align="center">Planned</TableCell>
                 <TableCell align="center">Created</TableCell>
                 <TableCell align="center">Modified</TableCell>
@@ -83,10 +83,10 @@ export default function AdsLocation() {
                     <TableCell align="center">
                       {location?.district.name}
                     </TableCell>
-                    <TableCell align="center">{location?.type?.name}</TableCell>
                     <TableCell align="center">
                       {location?.ad_type?.name}
                     </TableCell>
+                    <TableCell align="center">{location?.type?.name}</TableCell>
                     <TableCell align="center">{`${
                       location?.isPlanning ? 'Yes' : 'No'
                     }`}</TableCell>

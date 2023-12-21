@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  Pagination,
   Paper,
   Table,
   TableBody,
@@ -10,137 +11,40 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import CenterLoading from '@/components/Common/CenterLoading';
 import { Edit, Info } from '@/components/Common/Icons';
-import { AdsPanelResponse } from '@/types/form';
-import { formatDate, formatDateTime } from '@/utils/format-date';
+import { useGetPanelsQuery } from '@/store/api/officerApiSlice';
+import { Panel } from '@/types/officer-management';
+import { formatDateTime } from '@/utils/format-date';
 
 export default function AdsPanel() {
-  const rows: AdsPanelResponse[] = [
-    {
-      id: 1,
-      panelType: 'Pillar/Panel cluster',
-      location: {
-        address: 'Dong Khoi - Nguyen Du (Department of Culture and Sports)',
-        ward: 'Ben Nghe',
-        commue: '1',
-        positionType: 'Public land/Park/Traffic safety corridor',
-        adsType: 'Commercial advertising',
-      },
-      width: 2.5,
-      height: 10,
-      quantity: 1,
-      imageUrl:
-        'https://cdn.tuoitrethudo.com.vn/stores/news_dataimages/ngovuongtuan/122021/06/14/711e32670b0f625bf1252c028017da66.png?rt=20211206144254',
-      company: {
-        email: 'shopee@gmail.com',
-        phone: '0123456789',
-        createdContractDate: '2023-12-01',
-        expiredContractDate: '2024-01-01',
-      },
-      createdTime: '2023-12-08T11:30:53.945Z',
-      modifiedTime: '2023-12-08T11:30:53.945Z',
-    },
-    {
-      id: 2,
-      panelType: 'Pillar/Panel cluster',
-      location: {
-        address: 'Dong Khoi - Nguyen Du (Department of Culture and Sports)',
-        ward: 'Ben Nghe',
-        commue: '1',
-        positionType: 'Public land/Park/Traffic safety corridor',
-        adsType: 'Commercial advertising',
-      },
-      width: 2.5,
-      height: 10,
-      quantity: 1,
-      imageUrl:
-        'https://cdn.tuoitrethudo.com.vn/stores/news_dataimages/ngovuongtuan/122021/06/14/711e32670b0f625bf1252c028017da66.png?rt=20211206144254',
-      company: {
-        email: 'shopee@gmail.com',
-        phone: '0123456789',
-        createdContractDate: '2023-12-01',
-        expiredContractDate: '2024-01-01',
-      },
-      createdTime: '2023-12-08T11:30:53.945Z',
-      modifiedTime: '2023-12-08T11:30:53.945Z',
-    },
-    {
-      id: 3,
-      panelType: 'Pillar/Panel cluster',
-      location: {
-        address: 'Dong Khoi - Nguyen Du (Department of Culture and Sports)',
-        ward: 'Ben Nghe',
-        commue: '1',
-        positionType: 'Public land/Park/Traffic safety corridor',
-        adsType: 'Commercial advertising',
-      },
-      width: 2.5,
-      height: 10,
-      quantity: 1,
-      imageUrl:
-        'https://cdn.tuoitrethudo.com.vn/stores/news_dataimages/ngovuongtuan/122021/06/14/711e32670b0f625bf1252c028017da66.png?rt=20211206144254',
-      company: {
-        email: 'shopee@gmail.com',
-        phone: '0123456789',
-        createdContractDate: '2023-12-01',
-        expiredContractDate: '2024-01-01',
-      },
-      createdTime: '2023-12-08T11:30:53.945Z',
-      modifiedTime: '2023-12-08T11:30:53.945Z',
-    },
-    {
-      id: 4,
-      panelType: 'Pillar/Panel cluster',
-      location: {
-        address: 'Dong Khoi - Nguyen Du (Department of Culture and Sports)',
-        ward: 'Ben Nghe',
-        commue: '1',
-        positionType: 'Public land/Park/Traffic safety corridor',
-        adsType: 'Commercial advertising',
-      },
-      width: 2.5,
-      height: 10,
-      quantity: 1,
-      imageUrl:
-        'https://cdn.tuoitrethudo.com.vn/stores/news_dataimages/ngovuongtuan/122021/06/14/711e32670b0f625bf1252c028017da66.png?rt=20211206144254',
-      company: {
-        email: 'shopee@gmail.com',
-        phone: '0123456789',
-        createdContractDate: '2023-12-01',
-        expiredContractDate: '2024-01-01',
-      },
-      createdTime: '2023-12-08T11:30:53.945Z',
-      modifiedTime: '2023-12-08T11:30:53.945Z',
-    },
-    {
-      id: 5,
-      panelType: 'Pillar/Panel cluster',
-      location: {
-        address: 'Dong Khoi - Nguyen Du (Department of Culture and Sports)',
-        ward: 'Ben Nghe',
-        commue: '1',
-        positionType: 'Public land/Park/Traffic safety corridor',
-        adsType: 'Commercial advertising',
-      },
-      width: 2.5,
-      height: 10,
-      quantity: 1,
-      imageUrl:
-        'https://cdn.tuoitrethudo.com.vn/stores/news_dataimages/ngovuongtuan/122021/06/14/711e32670b0f625bf1252c028017da66.png?rt=20211206144254',
-      company: {
-        email: 'shopee@gmail.com',
-        phone: '0123456789',
-        createdContractDate: '2023-12-01',
-        expiredContractDate: '2024-01-01',
-      },
-      createdTime: '2023-12-08T11:30:53.945Z',
-      modifiedTime: '2023-12-08T11:30:53.945Z',
-    },
-  ];
+  const [page, setPage] = useState<number>(1);
+  const [panels, setPanels] = useState<Panel[] | undefined>([]);
+
+  const { data, isLoading } = useGetPanelsQuery({
+    page: page,
+    take: 10,
+    districts: '1',
+  });
+
+  useEffect(() => {
+    if (data) {
+      setPanels(data.data.panels);
+    }
+  }, [data]);
+
+  if (isLoading || !panels) {
+    return <CenterLoading />;
+  }
 
   return (
-    <Box>
+    <Box
+      sx={{
+        height: '100%',
+      }}
+    >
       <Box
         sx={{
           display: 'flex',
@@ -164,60 +68,83 @@ export default function AdsPanel() {
         </Button>
       </Box>
 
-      <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="advertising points">
-          <TableHead>
-            <TableRow>
-              <TableCell align="center">ID</TableCell>
-              <TableCell align="center">Panel type</TableCell>
-              <TableCell align="center">Address</TableCell>
-              <TableCell align="center">Ward</TableCell>
-              <TableCell align="center">District</TableCell>
-              <TableCell align="center">Company email</TableCell>
-              <TableCell align="center">Started</TableCell>
-              <TableCell align="center">Ended</TableCell>
-              <TableCell align="center">Created</TableCell>
-              <TableCell align="center">Modified</TableCell>
-              <TableCell align="center"></TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rows.map((row: AdsPanelResponse) => (
-              <TableRow key={row?.id}>
-                <TableCell align="center">{row?.id}</TableCell>
-                <TableCell align="center">{row?.panelType}</TableCell>
-                <TableCell align="center">{row?.location?.address}</TableCell>
-                <TableCell align="center">{row?.location?.ward}</TableCell>
-                <TableCell align="center">{row?.location?.commue}</TableCell>
-                <TableCell align="center">{row?.company?.email}</TableCell>
-                <TableCell align="center">
-                  {formatDate(row?.company?.createdContractDate)}
-                </TableCell>
-                <TableCell align="center">
-                  {formatDate(row?.company?.expiredContractDate)}
-                </TableCell>
-                <TableCell align="center">
-                  {formatDateTime(row?.createdTime)}
-                </TableCell>
-                <TableCell align="center">
-                  {formatDateTime(row?.modifiedTime)}
-                </TableCell>
-                <TableCell>
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      gap: 2,
-                    }}
-                  >
-                    <Info link={`/panels/${row?.id}`} />
-                    <Edit link={`/panels/${row?.id}/edit`} />
-                  </Box>
-                </TableCell>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          height: '90%',
+        }}
+      >
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 650 }} aria-label="advertising points">
+            <TableHead>
+              <TableRow>
+                <TableCell align="center">ID</TableCell>
+                <TableCell align="center">Address</TableCell>
+                <TableCell align="center">Ward</TableCell>
+                <TableCell align="center">District</TableCell>
+                <TableCell align="center">Panel Type</TableCell>
+                <TableCell align="center">Company Email</TableCell>
+                <TableCell align="center">Started</TableCell>
+                <TableCell align="center">Ended</TableCell>
+                <TableCell align="center">Created</TableCell>
+                <TableCell align="center">Modified</TableCell>
+                <TableCell align="center"></TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+            </TableHead>
+            <TableBody>
+              {panels &&
+                panels.map((panel: Panel) => (
+                  <TableRow key={panel?.id}>
+                    <TableCell align="center">{panel?.id}</TableCell>
+                    <TableCell align="center">
+                      {panel?.location?.full_address}
+                    </TableCell>
+                    <TableCell align="center">
+                      {panel?.location?.ward?.name}
+                    </TableCell>
+                    <TableCell align="center">
+                      {panel?.location?.district?.name}
+                    </TableCell>
+                    <TableCell align="center">{panel?.type?.name}</TableCell>
+                    <TableCell align="center">{panel?.company_email}</TableCell>
+                    <TableCell align="center">
+                      {formatDateTime(panel?.create_contract_date)}
+                    </TableCell>
+                    <TableCell align="center">
+                      {formatDateTime(panel?.expired_contract_date)}
+                    </TableCell>
+                    <TableCell align="center">
+                      {formatDateTime(panel?.created_time)}
+                    </TableCell>
+                    <TableCell align="center">
+                      {formatDateTime(panel?.modified_time)}
+                    </TableCell>
+                    <TableCell>
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          gap: 2,
+                        }}
+                      >
+                        <Info link={`/panels/${panel?.id}`} />
+                        <Edit link={`/panels/${panel?.id}/edit`} />
+                      </Box>
+                    </TableCell>
+                  </TableRow>
+                ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+
+        <Pagination
+          count={data?.data.totalPages}
+          page={page}
+          onChange={(event, value) => setPage(value)}
+        />
+      </Box>
     </Box>
   );
 }
