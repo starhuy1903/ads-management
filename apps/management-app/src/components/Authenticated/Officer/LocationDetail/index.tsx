@@ -14,7 +14,7 @@ import { useGetLocationByIdQuery } from '@/store/api/officerApiSlice';
 import { Location } from '@/types/officer-management';
 import { formatDateTime } from '@/utils/format-date';
 
-export default function AdsLocationDetail() {
+export default function LocationDetail() {
   const [location, setLocation] = useState<Location | undefined>(undefined);
   const { locationId } = useParams<{ locationId: string }>();
   const { data, isLoading } = useGetLocationByIdQuery(locationId!);

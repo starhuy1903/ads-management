@@ -4,7 +4,7 @@ import { ReadOnlyTextField } from '@/components/Common/FormComponents';
 import { AdsPermissionResponse } from '@/types/form';
 import { formatDate, formatDateTime } from '@/utils/format-date';
 
-export default function AdsPermissionDetail() {
+export default function RequestDetail() {
   const permission: AdsPermissionResponse = {
     id: 1,
     type: 'Licensing request',

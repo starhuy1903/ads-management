@@ -77,7 +77,7 @@ const panel: AdsPanelResponse = {
   modifiedTime: '2023-12-08T11:30:53.945Z',
 };
 
-export default function AdsPanelEditing() {
+export default function PanelEditing() {
   const dispatch = useAppDispatch();
 
   const { handleSubmit, register, control, formState, setValue, watch } =

@@ -131,7 +131,7 @@ interface PermissionFormType {
   expiredContractDate: string;
 }
 
-export default function AdsPanelCreating() {
+export default function PanelCreating() {
   const dispatch = useAppDispatch();
 
   const { handleSubmit, register, control, formState, setValue, watch } =

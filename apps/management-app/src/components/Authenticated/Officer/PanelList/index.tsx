@@ -19,7 +19,7 @@ import { useGetPanelsQuery } from '@/store/api/officerApiSlice';
 import { Panel } from '@/types/officer-management';
 import { formatDateTime } from '@/utils/format-date';
 
-export default function AdsPanel() {
+export default function PanelList() {
   const [page, setPage] = useState<number>(1);
   const [panels, setPanels] = useState<Panel[] | undefined>([]);
 

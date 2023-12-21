@@ -62,7 +62,7 @@ const location = {
   modifiedTime: '2023-12-08T11:30:53.945Z',
 };
 
-export default function AdsLocationEditing() {
+export default function LocationEditing() {
   const dispatch = useAppDispatch();
 
   const { handleSubmit, register, control, formState, setValue, watch } =

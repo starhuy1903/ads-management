@@ -71,9 +71,9 @@ function Sidebar({ open, handleOnClose }: SidebarProps) {
               href="/reports"
             />
             <NavItem
-              title="Permissions"
+              title="Requests"
               icon={<CategoryOutlinedIcon />}
-              href="/permissions"
+              href="/requests"
             />
           </NavGroupWrapper>
         </PerfectScrollbar>

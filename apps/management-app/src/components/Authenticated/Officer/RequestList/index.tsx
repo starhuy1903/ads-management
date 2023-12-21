@@ -9,25 +9,18 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
-import { Info, Response } from '@/components/Common/Icons';
-import { ReportResponse } from '@/types/form';
+import { Delete, Info } from '@/components/Common/Icons';
+import { AdsPermissionResponse } from '@/types/form';
 import { formatDateTime } from '@/utils/format-date';
+import { showError, showSuccess } from '@/utils/toast';
 
-export default function ReportTable() {
-  const rows: ReportResponse[] = [
+export default function RequestList() {
+  const rows: AdsPermissionResponse[] = [
     {
       id: 1,
-      type: 'Opinion contribution',
-      fullname: 'Nguyen Van A',
-      email: 'nva@gmail.com',
-      phone: '0123456789',
-      content:
-        'The light of advertising board is too bright, causing discomfort to surrounding people.',
-      status: 'New',
-      imageUrls: [],
-      targetType: 'panel',
-      target: {
-        id: 3,
+      type: 'Licensing request',
+      panel: {
+        id: 2,
         panelType: 'Pillar/Panel cluster',
         location: {
           address: 'Dong Khoi - Nguyen Du (Department of Culture and Sports)',
@@ -50,23 +43,16 @@ export default function ReportTable() {
         createdTime: '2023-12-08T11:30:53.945Z',
         modifiedTime: '2023-12-08T11:30:53.945Z',
       },
-      resolvedContent: '',
+      reason: 'Advertise products and services for the company',
+      status: 'Approved',
       createdTime: '2023-12-08T11:30:53.945Z',
       modifiedTime: '2023-12-08T11:30:53.945Z',
     },
     {
       id: 2,
-      type: 'Opinion contribution',
-      fullname: 'Nguyen Van A',
-      email: 'nva@gmail.com',
-      phone: '0123456789',
-      content:
-        'The light of advertising board is too bright, causing discomfort to surrounding people.',
-      status: 'New',
-      imageUrls: [],
-      targetType: 'panel',
-      target: {
-        id: 3,
+      type: 'Licensing request',
+      panel: {
+        id: 2,
         panelType: 'Pillar/Panel cluster',
         location: {
           address: 'Dong Khoi - Nguyen Du (Department of Culture and Sports)',
@@ -89,23 +75,16 @@ export default function ReportTable() {
         createdTime: '2023-12-08T11:30:53.945Z',
         modifiedTime: '2023-12-08T11:30:53.945Z',
       },
-      resolvedContent: '',
+      reason: 'Advertise products and services for the company',
+      status: 'Processing',
       createdTime: '2023-12-08T11:30:53.945Z',
       modifiedTime: '2023-12-08T11:30:53.945Z',
     },
     {
       id: 3,
-      type: 'Opinion contribution',
-      fullname: 'Nguyen Van A',
-      email: 'nva@gmail.com',
-      phone: '0123456789',
-      content:
-        'The light of advertising board is too bright, causing discomfort to surrounding people.',
-      status: 'Processing',
-      imageUrls: [],
-      targetType: 'panel',
-      target: {
-        id: 3,
+      type: 'Licensing request',
+      panel: {
+        id: 2,
         panelType: 'Pillar/Panel cluster',
         location: {
           address: 'Dong Khoi - Nguyen Du (Department of Culture and Sports)',
@@ -128,23 +107,16 @@ export default function ReportTable() {
         createdTime: '2023-12-08T11:30:53.945Z',
         modifiedTime: '2023-12-08T11:30:53.945Z',
       },
-      resolvedContent: '',
+      reason: 'Advertise products and services for the company',
+      status: 'Approved',
       createdTime: '2023-12-08T11:30:53.945Z',
       modifiedTime: '2023-12-08T11:30:53.945Z',
     },
     {
       id: 4,
-      type: 'Opinion contribution',
-      fullname: 'Nguyen Van A',
-      email: 'nva@gmail.com',
-      phone: '0123456789',
-      content:
-        'The light of advertising board is too bright, causing discomfort to surrounding people.',
-      status: 'Processing',
-      imageUrls: [],
-      targetType: 'panel',
-      target: {
-        id: 3,
+      type: 'Licensing request',
+      panel: {
+        id: 2,
         panelType: 'Pillar/Panel cluster',
         location: {
           address: 'Dong Khoi - Nguyen Du (Department of Culture and Sports)',
@@ -167,23 +139,16 @@ export default function ReportTable() {
         createdTime: '2023-12-08T11:30:53.945Z',
         modifiedTime: '2023-12-08T11:30:53.945Z',
       },
-      resolvedContent: '',
+      reason: 'Advertise products and services for the company',
+      status: 'Processing',
       createdTime: '2023-12-08T11:30:53.945Z',
       modifiedTime: '2023-12-08T11:30:53.945Z',
     },
     {
       id: 5,
-      type: 'Opinion contribution',
-      fullname: 'Nguyen Van A',
-      email: 'nva@gmail.com',
-      phone: '0123456789',
-      content:
-        'The light of advertising board is too bright, causing discomfort to surrounding people.',
-      status: 'Processing',
-      imageUrls: [],
-      targetType: 'panel',
-      target: {
-        id: 3,
+      type: 'Licensing request',
+      panel: {
+        id: 2,
         panelType: 'Pillar/Panel cluster',
         location: {
           address: 'Dong Khoi - Nguyen Du (Department of Culture and Sports)',
@@ -206,27 +171,44 @@ export default function ReportTable() {
         createdTime: '2023-12-08T11:30:53.945Z',
         modifiedTime: '2023-12-08T11:30:53.945Z',
       },
-      resolvedContent: '',
+      reason: 'Advertise products and services for the company',
+      status: 'Approved',
       createdTime: '2023-12-08T11:30:53.945Z',
       modifiedTime: '2023-12-08T11:30:53.945Z',
     },
   ];
 
+  const handleDelete = (id: number) => {
+    const confirm = window.confirm('Are you sure to delete this request?');
+
+    if (confirm) {
+      try {
+        // Call API to delete
+        showSuccess(`Delete request #${id} successfully!`);
+      } catch (error) {
+        console.log(error);
+        showError(`Delete request #${id} failed!`);
+      }
+    }
+  };
+
   return (
     <Box>
       <Typography variant="h4" sx={{ mb: 2 }}>
-        List of Reports
+        List of Requests
       </Typography>
+
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="advertising points">
           <TableHead>
             <TableRow>
               <TableCell align="center">ID</TableCell>
-              <TableCell align="center">Type</TableCell>
-              <TableCell align="center">Name</TableCell>
-              <TableCell align="center">Email</TableCell>
-              <TableCell align="center">Phone</TableCell>
-              <TableCell align="center">Content</TableCell>
+              <TableCell align="center">Request type</TableCell>
+              <TableCell align="center">Advertising type</TableCell>
+              <TableCell align="center">Quantity</TableCell>
+              <TableCell align="center">Address</TableCell>
+              <TableCell align="center">Ward</TableCell>
+              <TableCell align="center">District</TableCell>
               <TableCell align="center">Created</TableCell>
               <TableCell align="center">Modified</TableCell>
               <TableCell align="center">Status</TableCell>
@@ -234,14 +216,21 @@ export default function ReportTable() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row: ReportResponse) => (
+            {rows.map((row: AdsPermissionResponse) => (
               <TableRow key={row?.id}>
                 <TableCell align="center">{row?.id}</TableCell>
                 <TableCell align="center">{row?.type}</TableCell>
-                <TableCell align="center">{row?.fullname}</TableCell>
-                <TableCell align="center">{row?.email}</TableCell>
-                <TableCell align="center">{row?.phone}</TableCell>
-                <TableCell>{row?.content}</TableCell>
+                <TableCell align="center">{row?.panel?.panelType}</TableCell>
+                <TableCell align="center">{row?.panel?.quantity}</TableCell>
+                <TableCell align="center">
+                  {row?.panel?.location?.address}
+                </TableCell>
+                <TableCell align="center">
+                  {row?.panel?.location?.ward}
+                </TableCell>
+                <TableCell align="center">
+                  {row?.panel?.location?.commue}
+                </TableCell>
                 <TableCell align="center">
                   {formatDateTime(row?.createdTime)}
                 </TableCell>
@@ -254,10 +243,14 @@ export default function ReportTable() {
                     sx={{
                       display: 'flex',
                       gap: 2,
+                      height: '100%',
                     }}
                   >
-                    <Info link={`/reports/${row?.id}`} />
-                    <Response link={`/reports/${row?.id}/response`} />
+                    <Info link={`/requests/${row?.id}`} />
+
+                    {row?.status !== 'Approved' && (
+                      <Delete onClick={() => handleDelete(row?.id)} />
+                    )}
                   </Box>
                 </TableCell>
               </TableRow>

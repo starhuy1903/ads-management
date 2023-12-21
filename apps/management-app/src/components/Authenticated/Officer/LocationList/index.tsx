@@ -17,7 +17,7 @@ import { useGetLocationsQuery } from '@/store/api/officerApiSlice';
 import { Location } from '@/types/officer-management';
 import { formatDateTime } from '@/utils/format-date';
 
-export default function AdsLocation() {
+export default function LocationList() {
   const [page, setPage] = useState<number>(1);
   const [locations, setLocations] = useState<Location[] | undefined>([]);
 

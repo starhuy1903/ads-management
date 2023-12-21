@@ -14,7 +14,7 @@ import { useGetPanelByIdQuery } from '@/store/api/officerApiSlice';
 import { Panel } from '@/types/officer-management';
 import { formatDateTime } from '@/utils/format-date';
 
-export default function AdsPanelDetail() {
+export default function PanelDetail() {
   const [panel, setPanel] = useState<Panel | undefined>(undefined);
   const { panelId } = useParams<{ panelId: string }>();
   const { data, isLoading } = useGetPanelByIdQuery(panelId!);
