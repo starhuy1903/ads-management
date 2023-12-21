@@ -1,11 +1,15 @@
-export interface GetListResult<T> {
+export type GetListResult<T> = {
   data: {
     locations?: Array<T>;
     totalPages?: number;
   };
-}
+};
 
-export interface LocationDto {
+export type GetDetailResult<T> = {
+  data?: T;
+};
+
+export type Location = {
   id?: number;
   full_address: string;
   ward: {
@@ -30,4 +34,4 @@ export interface LocationDto {
   isPlanning: boolean;
   created_time: string;
   modified_time: string;
-}
+};

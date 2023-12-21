@@ -1,24 +1,33 @@
-import { Box, Stack, Typography } from '@mui/material';
+import {
+  Box,
+  ImageList,
+  ImageListItem,
+  Stack,
+  Typography,
+} from '@mui/material';
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { BackButton } from '@/components/Common/Buttons';
+import CenterLoading from '@/components/Common/CenterLoading';
 import { ReadOnlyTextField } from '@/components/Common/FormComponents';
+import { useGetLocationByIdQuery } from '@/store/api/officerApiSlice';
+import { Location } from '@/types/officer-management';
 import { formatDateTime } from '@/utils/format-date';
 
 export default function AdsLocationDetail() {
-  const location = {
-    id: 5,
-    address: 'Dong Khoi - Nguyen Du (Department of Culture and Sports)',
-    ward: 'Ben Nghe',
-    commue: '1',
-    lat: 10.777,
-    long: 106.666,
-    positionType: 'Public land/Park/Traffic safety corridor',
-    adsType: 'Commercial advertising',
-    imageUrl:
-      'https://piximus.net/media2/46719/cool-advertising-that-gets-straight-to-the-point-20.jpg',
-    isPlanning: true,
-    createdTime: '2023-12-08T11:30:53.945Z',
-    modifiedTime: '2023-12-08T11:30:53.945Z',
-  };
+  const [location, setLocation] = useState<Location | undefined>(undefined);
+  const { locationId } = useParams<{ locationId: string }>();
+  const { data, isLoading } = useGetLocationByIdQuery(locationId!);
+
+  useEffect(() => {
+    if (data) {
+      setLocation(data?.data);
+    }
+  }, [data]);
+
+  if (isLoading || !location) {
+    return <CenterLoading />;
+  }
 
   return (
     <Box>
@@ -45,12 +54,12 @@ export default function AdsLocationDetail() {
 
           <ReadOnlyTextField
             label="Created"
-            value={formatDateTime(location?.createdTime)}
+            value={formatDateTime(location?.created_time)}
           />
 
           <ReadOnlyTextField
             label="Modified"
-            value={formatDateTime(location?.modifiedTime)}
+            value={formatDateTime(location?.modified_time)}
           />
 
           <ReadOnlyTextField
@@ -61,11 +70,14 @@ export default function AdsLocationDetail() {
 
         <Typography variant="h6">Location</Typography>
         <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-          <ReadOnlyTextField label="Address" value={location?.address} />
+          <ReadOnlyTextField label="Address" value={location?.full_address} />
 
-          <ReadOnlyTextField label="District" value={location?.commue} />
+          <ReadOnlyTextField
+            label="District"
+            value={location?.district?.name}
+          />
 
-          <ReadOnlyTextField label="Ward" value={location?.ward} />
+          <ReadOnlyTextField label="Ward" value={location?.ward?.name} />
 
           <ReadOnlyTextField label="Latitude" value={location?.lat} />
 
@@ -76,22 +88,33 @@ export default function AdsLocationDetail() {
         <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
           <ReadOnlyTextField
             label="Position type"
-            value={location?.positionType}
+            value={location?.type?.name}
           />
 
           <ReadOnlyTextField
             label="Advertising type"
-            value={location?.adsType}
+            value={location?.ad_type?.name}
           />
         </Stack>
 
         <Typography variant="h6">Image</Typography>
-        <img
-          src={location?.imageUrl}
-          alt="location"
-          loading="lazy"
-          width={650}
-        />
+
+        {location?.image_urls.length !== 0 ? (
+          <ImageList sx={{ width: '70%' }} cols={2}>
+            {location?.image_urls.map((item) => (
+              <ImageListItem key={item}>
+                <img src={item} alt="location" loading="lazy" />
+              </ImageListItem>
+            ))}
+          </ImageList>
+        ) : (
+          <Typography
+            variant="body1"
+            sx={{ mb: 2, fontStyle: 'italic', color: 'gray' }}
+          >
+            No image.
+          </Typography>
+        )}
       </Box>
     </Box>
   );

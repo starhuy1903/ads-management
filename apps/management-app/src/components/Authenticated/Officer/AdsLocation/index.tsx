@@ -14,12 +14,12 @@ import { useEffect, useState } from 'react';
 import CenterLoading from '@/components/Common/CenterLoading';
 import { Edit, Info } from '@/components/Common/Icons';
 import { useGetLocationsQuery } from '@/store/api/officerApiSlice';
-import { LocationDto } from '@/types/officer.dto';
+import { Location } from '@/types/officer-management';
 import { formatDateTime } from '@/utils/format-date';
 
 export default function AdsLocation() {
   const [page, setPage] = useState<number>(1);
-  const [locations, setLocations] = useState<LocationDto[] | undefined>([]);
+  const [locations, setLocations] = useState<Location[] | undefined>([]);
 
   const { data, isLoading } = useGetLocationsQuery({
     page: page,
@@ -33,7 +33,7 @@ export default function AdsLocation() {
     }
   }, [data]);
 
-  if (isLoading) {
+  if (isLoading || !locations) {
     return <CenterLoading />;
   }
 
@@ -73,7 +73,7 @@ export default function AdsLocation() {
             </TableHead>
             <TableBody>
               {locations &&
-                locations.map((location: LocationDto) => (
+                locations.map((location: Location) => (
                   <TableRow key={location?.id}>
                     <TableCell align="center">{location?.id}</TableCell>
                     <TableCell align="center">
