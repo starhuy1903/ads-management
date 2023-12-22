@@ -43,7 +43,7 @@ const DistrictsCreate = () => {
     dispatch(
       showModal(ModalKey.GENERAL, {
         headerText: `Create new district ?`,
-        onModalClose: () => null,
+        
         primaryButtonText: 'Confirm',
         onClickPrimaryButton: async () => {
           try {

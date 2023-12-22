@@ -66,7 +66,7 @@ const PanelTypesDetail = () => {
     dispatch(
       showModal(ModalKey.GENERAL, {
         headerText: `Apply changes ?`,
-        onModalClose: () => null,
+        
         primaryButtonText: 'Confirm',
         onClickPrimaryButton: async () => {
           try {
@@ -87,7 +87,7 @@ const PanelTypesDetail = () => {
     dispatch(
       showModal(ModalKey.GENERAL, {
         headerText: `Delete ${data?.name} ?`,
-        onModalClose: () => null,
+        
         primaryButtonText: 'Confirm',
         onClickPrimaryButton: async () => {
           try {

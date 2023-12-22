@@ -43,7 +43,7 @@ const AdsTypesCreate = () => {
     dispatch(
       showModal(ModalKey.GENERAL, {
         headerText: `Create new advertisement type ?`,
-        onModalClose: () => null,
+        
         primaryButtonText: 'Confirm',
         onClickPrimaryButton: async () => {
           try {

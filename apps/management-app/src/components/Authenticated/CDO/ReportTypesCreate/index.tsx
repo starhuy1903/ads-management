@@ -43,7 +43,7 @@ const ReportTypesCreate = () => {
     dispatch(
       showModal(ModalKey.GENERAL, {
         headerText: `Create new report type ?`,
-        onModalClose: () => null,
+        
         primaryButtonText: 'Confirm',
         onClickPrimaryButton: async () => {
           try {

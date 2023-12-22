@@ -135,7 +135,7 @@ const LocationTypesListView = () => {
                 dispatch(
                   showModal(ModalKey.GENERAL, {
                     headerText: `Delete ${params.row.name} ?`,
-                    onModalClose: () => null,
+                    
                     primaryButtonText: 'Confirm',
                     onClickPrimaryButton: async () => {
                       try {

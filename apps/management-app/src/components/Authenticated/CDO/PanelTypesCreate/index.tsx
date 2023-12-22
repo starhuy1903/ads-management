@@ -43,7 +43,7 @@ const PanelTypesCreate = () => {
     dispatch(
       showModal(ModalKey.GENERAL, {
         headerText: `Create new panel type ?`,
-        onModalClose: () => null,
+        
         primaryButtonText: 'Confirm',
         onClickPrimaryButton: async () => {
           try {

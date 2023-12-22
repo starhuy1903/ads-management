@@ -59,7 +59,7 @@ const WardsCreate = () => {
     dispatch(
       showModal(ModalKey.GENERAL, {
         headerText: `Create new ward ?`,
-        onModalClose: () => null,
+        
         primaryButtonText: 'Confirm',
         onClickPrimaryButton: async () => {
           try {

@@ -43,7 +43,7 @@ const LocationTypesCreate = () => {
     dispatch(
       showModal(ModalKey.GENERAL, {
         headerText: `Create new location type ?`,
-        onModalClose: () => null,
+        
         primaryButtonText: 'Confirm',
         onClickPrimaryButton: async () => {
           try {
