@@ -1,6 +1,14 @@
-import CategoryOutlinedIcon from '@mui/icons-material/CategoryOutlined';
 import DashboardIcon from '@mui/icons-material/Dashboard';
+import EditIcon from '@mui/icons-material/Edit';
+import EditLocationIcon from '@mui/icons-material/EditLocation';
+import EqualizerIcon from '@mui/icons-material/Equalizer';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+import PermMediaIcon from '@mui/icons-material/PermMedia';
+import ReportIcon from '@mui/icons-material/Report';
 import SignpostIcon from '@mui/icons-material/Signpost';
+import TaskIcon from '@mui/icons-material/Task';
+import VideoLabelIcon from '@mui/icons-material/VideoLabel';
 import ViewListIcon from '@mui/icons-material/ViewList';
 import { Box, Drawer, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
@@ -55,6 +63,7 @@ function Sidebar({ open, handleOnClose }: SidebarProps) {
             height: `calc(100dvh - ${theme.layout.headerHeight})`,
             padding: '0 16px',
           }}
+          options={{ swipeEasing: true }}
         >
           <NavGroupWrapper>
             <NavItem
@@ -71,14 +80,58 @@ function Sidebar({ open, handleOnClose }: SidebarProps) {
             />
             <NavItem title="Wards" icon={<SignpostIcon />} href="/wards" />
             <NavItem
-              title="Ads Types"
+              title="Panel Types"
               icon={<ViewListIcon />}
-              href="/ads-types"
+              href="/panel-types"
             />
             <NavItem
               title="Report Types"
-              icon={<ViewListIcon />}
+              icon={<ReportIcon />}
               href="/report-types"
+            />
+            <NavItem
+              title="Location Types"
+              icon={<EditLocationIcon />}
+              href="/location-types"
+            />
+            <NavItem
+              title="Advertisement Types"
+              icon={<PermMediaIcon />}
+              href="/ads-types"
+            />
+          </NavGroupWrapper>
+          <NavGroupWrapper title="Panels Management">
+            <NavItem
+              title="Location"
+              icon={<LocationOnIcon />}
+              href="/locations"
+            />
+            <NavItem title="Panel" icon={<VideoLabelIcon />} href="/panels" />
+          </NavGroupWrapper>
+          <NavGroupWrapper title="Request Management">
+            <NavItem
+              title="Modification Requests"
+              icon={<EditIcon />}
+              href="/modification-requests"
+            />
+            <NavItem
+              title="Permission Requests"
+              icon={<TaskIcon />}
+              href="/permission-requests"
+            />
+          </NavGroupWrapper>
+          <NavGroupWrapper title="Statictis">
+            <NavItem
+              title="Report Statictis"
+              icon={<EqualizerIcon />}
+              href="/report-statictis"
+            />
+          </NavGroupWrapper>
+          <NavGroupWrapper title="Account Management">
+            <NavItem
+              title="Accounts Management"
+              icon={<ManageAccountsIcon />}
+              href="/accounts"
             />
           </NavGroupWrapper>
         </PerfectScrollbar>
