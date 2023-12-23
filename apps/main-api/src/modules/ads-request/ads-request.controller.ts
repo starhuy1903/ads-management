@@ -9,15 +9,24 @@ import {
   Query,
   Res,
   UseGuards,
+  UseInterceptors,
+  UploadedFiles,
+  ParseFilePipeBuilder,
 } from '@nestjs/common';
 import { AdsRequestService } from './ads-request.service';
-import { CreateAdsRequestDto } from './dto/create-ads-request.dto';
+import {
+  CreateAdsRequestDto,
+  CreateAdsRequestUpdateLocationDto,
+  CreateAdsRequestUpdatePanelDto,
+} from './dto/create-ads-request.dto';
 import { UpdateAdsRequestDto } from './dto/update-ads-request.dto';
 import { PageOptionsAdsRequestDto } from './dto/find-all-ads-request.dto';
 import { CustomResponse } from '../../middlewares'; // Import your CustomResponse type
 import { UserRole } from '@prisma/client';
 import { Roles } from '../auth/decorators';
 import { JwtGuard } from '../auth/guards';
+import { FilesInterceptor } from '@nestjs/platform-express';
+import { FILE_TYPES_REGEX } from '../../constants/images';
 
 @Controller('ads-requests')
 export class AdsRequestController {
@@ -40,6 +49,66 @@ export class AdsRequestController {
       return res.error({
         statusCode: 500,
         message: error.message || 'Internal Server Error',
+      });
+    }
+  }
+
+  @Post('update-panel')
+  @UseInterceptors(FilesInterceptor('images', 2))
+  async createAdsRequestUpdatePanel(
+    @Body() createPanelDto: CreateAdsRequestUpdatePanelDto,
+    @Res() res: CustomResponse,
+    @UploadedFiles(
+      new ParseFilePipeBuilder()
+        .addFileTypeValidator({
+          fileType: FILE_TYPES_REGEX,
+        })
+        .build({
+          fileIsRequired: false,
+        }),
+    )
+    images?: Express.Multer.File[],
+  ) {
+    try {
+      const adsRequest = await this.adsRequestService.createUpdatePanel(
+        createPanelDto,
+        images,
+      );
+      return res.success({ data: adsRequest });
+    } catch (error) {
+      return res.error({
+        statusCode: 500,
+        message: error.message,
+      });
+    }
+  }
+
+  @Post('update-location')
+  @UseInterceptors(FilesInterceptor('images', 2))
+  async createAdsRequestUpdateLocation(
+    @Body() createPanelDto: CreateAdsRequestUpdateLocationDto,
+    @Res() res: CustomResponse,
+    @UploadedFiles(
+      new ParseFilePipeBuilder()
+        .addFileTypeValidator({
+          fileType: FILE_TYPES_REGEX,
+        })
+        .build({
+          fileIsRequired: false,
+        }),
+    )
+    images?: Express.Multer.File[],
+  ) {
+    try {
+      const adsRequest = await this.adsRequestService.createUpdateLocation(
+        createPanelDto,
+        images,
+      );
+      return res.success({ data: adsRequest });
+    } catch (error) {
+      return res.error({
+        statusCode: 500,
+        message: error.message,
       });
     }
   }

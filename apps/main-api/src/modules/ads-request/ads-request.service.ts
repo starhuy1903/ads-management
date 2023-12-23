@@ -1,9 +1,19 @@
 import { Injectable } from '@nestjs/common';
-import { CreateAdsRequestDto } from './dto/create-ads-request.dto';
+import {
+  CreateAdsRequestDto,
+  CreateAdsRequestUpdateLocationDto,
+  CreateAdsRequestUpdatePanelDto,
+} from './dto/create-ads-request.dto';
 import { UpdateAdsRequestDto } from './dto/update-ads-request.dto';
 import { AdsRequestStatus, TargetType } from '../../constants/ads_request';
 import { PrismaService } from '../../services/prisma/prisma.service';
 import { PageOptionsAdsRequestDto } from './dto/find-all-ads-request.dto';
+import { AdsRequestType, LocationStatus, PanelStatus } from '@prisma/client';
+import {
+  EUploadFolder,
+  uploadFilesFromFirebase,
+} from '../../services/files/upload';
+import { deleteFilesFromFirebase } from '../../services/files/delete';
 
 @Injectable()
 export class AdsRequestService {
@@ -11,21 +21,131 @@ export class AdsRequestService {
   async create(createAdsRequestDto: CreateAdsRequestDto) {
     const data = {
       user: { connect: { id: createAdsRequestDto.userId } },
-      target_type: createAdsRequestDto.targetType,
-      type: createAdsRequestDto.type,
+      target_type: TargetType.PANEL,
+      type: AdsRequestType.APPROVED_PANEL,
       reason: createAdsRequestDto.reason,
       status: AdsRequestStatus.SENT,
-      location: undefined,
-      panel: undefined,
+      panel: { connect: { id: createAdsRequestDto.panelId } },
     };
-    if (createAdsRequestDto.targetType == TargetType.LOCATION) {
-      data.location = { connect: { id: createAdsRequestDto.locationId } };
-    } else {
-      data.panel = { connect: { id: createAdsRequestDto.panelId } };
-    }
+
     return await this.prismaService.ads_request.create({
       data,
     });
+  }
+
+  async createUpdateLocation(
+    createAdsRequestDto: CreateAdsRequestUpdateLocationDto,
+    images?: Express.Multer.File[],
+  ) {
+    let imageUrls = [];
+    try {
+      if (images.length) {
+        const uploadImagesData = await uploadFilesFromFirebase(
+          images,
+          EUploadFolder.report,
+        );
+        if (!uploadImagesData.success) {
+          throw new Error('Failed to upload images!');
+        }
+        imageUrls = uploadImagesData.urls;
+      } else {
+        imageUrls = createAdsRequestDto.imgUrls;
+      }
+
+      const locationData = {
+        long: createAdsRequestDto?.long,
+        lat: createAdsRequestDto?.lat,
+        isPlanning: createAdsRequestDto?.isPlanning,
+        district: { connect: { id: createAdsRequestDto?.districtId } },
+        ward: { connect: { id: createAdsRequestDto?.wardId } },
+        full_address: createAdsRequestDto?.fullAddress,
+        type: { connect: { id: createAdsRequestDto?.typeId } },
+        ad_type: { connect: { id: createAdsRequestDto?.adsTypeId } },
+        image_urls: imageUrls,
+        name: createAdsRequestDto?.name,
+        location: { connect: { id: createAdsRequestDto?.belongLocationId } },
+        status: LocationStatus.AWAITING_UPDATE,
+      };
+
+      const location = this.prismaService.location.create({
+        data: locationData,
+      });
+
+      const data = {
+        user: { connect: { id: createAdsRequestDto.userId } },
+        target_type: TargetType.LOCATION,
+        type: AdsRequestType.UPDATE_DATA,
+        reason: createAdsRequestDto.reason,
+        status: AdsRequestStatus.SENT,
+        location: { connect: { id: (await location).id } },
+      };
+
+      const result = await this.prismaService.ads_request.create({
+        data,
+      });
+
+      return result;
+    } catch (error) {
+      if (imageUrls) await deleteFilesFromFirebase(imageUrls);
+      throw new Error(error);
+    }
+  }
+
+  async createUpdatePanel(
+    createAdsRequestDto: CreateAdsRequestUpdatePanelDto,
+    images?: Express.Multer.File[],
+  ) {
+    let imageUrls = [];
+    try {
+      if (images.length) {
+        const uploadImagesData = await uploadFilesFromFirebase(
+          images,
+          EUploadFolder.report,
+        );
+        if (!uploadImagesData.success) {
+          throw new Error('Failed to upload images!');
+        }
+        imageUrls = uploadImagesData.urls;
+      } else {
+        imageUrls = createAdsRequestDto.imgUrls;
+      }
+
+      const panelData = {
+        width: createAdsRequestDto?.width,
+        height: createAdsRequestDto?.height,
+        create_contract_date: createAdsRequestDto?.createContractDate,
+        expired_contract_date: createAdsRequestDto?.expiredContractDate,
+        company_email: createAdsRequestDto?.companyEmail,
+        company_number: createAdsRequestDto?.companyNumber,
+        status: PanelStatus.AWAITING_UPDATE,
+        type: { connect: { id: createAdsRequestDto?.typeId } },
+        location: { connect: { id: createAdsRequestDto?.locationId } },
+        image_urls: imageUrls,
+        panel: { connect: { id: createAdsRequestDto?.belongPanelId } },
+      };
+
+      const panel = await this.prismaService.panel.create({
+        data: panelData,
+      });
+
+      const data = {
+        user: { connect: { id: createAdsRequestDto.userId } },
+        target_type: TargetType.PANEL,
+        type: AdsRequestType.UPDATE_DATA,
+        reason: createAdsRequestDto.reason,
+        status: AdsRequestStatus.SENT,
+        panel: { connect: { id: panel.id } },
+      };
+
+      const result = await this.prismaService.ads_request.create({
+        data,
+      });
+
+      return result;
+    } catch (error) {
+      if (imageUrls) await deleteFilesFromFirebase(imageUrls);
+      throw new Error(error);
+    }
   }
 
   async findAll(pageOptionsAdsRequestDto: PageOptionsAdsRequestDto) {
