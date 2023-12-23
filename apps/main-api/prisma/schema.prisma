@@ -18,12 +18,15 @@ model panel {
   expired_contract_date DateTime
   company_email         String
   company_number        String
+  belong_panel_id       Int?
   created_time          DateTime      @default(now())
   modified_time         DateTime      @updatedAt
   status                PanelStatus   @default(DRAFT)
   ads_request           ads_request[]
   location              location      @relation(fields: [location_id], references: [id], onDelete: Cascade)
   type                  panel_type    @relation(fields: [type_id], references: [id], onDelete: Cascade)
+  belong_panel          panel?        @relation("PanelBelongTarget", fields: [belong_panel_id], references: [id], onDelete: Cascade)
+  belonged_panels       panel[]       @relation("PanelBelongTarget")
   report                report[]
 }
 
@@ -34,26 +37,30 @@ model panel_type {
 }
 
 model location {
-  id            Int                @id @default(autoincrement())
-  lat           Decimal
-  long          Decimal
-  isPlanning    Boolean            @default(false)
-  district_id   Int
-  ward_id       Int
-  full_address  String
-  type_id       Int
-  ad_type_id    Int
-  image_urls    String[]
-  created_time  DateTime           @default(now())
-  modified_time DateTime           @updatedAt
-  name          String?
-  ads_request   ads_request[]
-  ad_type       advertisement_type @relation(fields: [ad_type_id], references: [id], onDelete: Cascade)
-  district      district           @relation(fields: [district_id], references: [id], onDelete: Cascade)
-  type          location_type      @relation(fields: [type_id], references: [id], onDelete: Cascade)
-  ward          ward               @relation(fields: [ward_id], references: [id], onDelete: Cascade)
-  panel         panel[]
-  report        report[]
+  id                 Int                @id @default(autoincrement())
+  lat                Decimal
+  long               Decimal
+  isPlanning         Boolean            @default(false)
+  district_id        Int
+  ward_id            Int
+  full_address       String
+  type_id            Int
+  ad_type_id         Int
+  belong_location_id Int?
+  image_urls         String[]
+  created_time       DateTime           @default(now())
+  modified_time      DateTime           @updatedAt
+  name               String?
+  status             LocationStatus     @default(APPROVED)
+  ads_request        ads_request[]
+  ad_type            advertisement_type @relation(fields: [ad_type_id], references: [id], onDelete: Cascade)
+  district           district           @relation(fields: [district_id], references: [id], onDelete: Cascade)
+  type               location_type      @relation(fields: [type_id], references: [id], onDelete: Cascade)
+  ward               ward               @relation(fields: [ward_id], references: [id], onDelete: Cascade)
+  belong_location    location?          @relation("LocationBelongTarget", fields: [belong_location_id], references: [id], onDelete: Cascade)
+  belonged_location  location[]         @relation("LocationBelongTarget")
+  panel              panel[]
+  report             report[]
 }
 
 model location_type {
@@ -151,9 +158,15 @@ model token {
   user        user     @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }
 
+enum LocationStatus {
+  APPROVED
+  AWAITING_UPDATE
+}
+
 enum PanelStatus {
   DRAFT
   APPROVED
+  AWAITING_UPDATE
 }
 
 enum AdsRequestType {
