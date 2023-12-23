@@ -18,18 +18,13 @@ model panel {
   expired_contract_date DateTime
   company_email         String
   company_number        String
-  status                PanelStatus   @default(DRAFT)
   created_time          DateTime      @default(now())
   modified_time         DateTime      @updatedAt
+  status                PanelStatus   @default(DRAFT)
   ads_request           ads_request[]
   location              location      @relation(fields: [location_id], references: [id], onDelete: Cascade)
   type                  panel_type    @relation(fields: [type_id], references: [id], onDelete: Cascade)
   report                report[]
-}
-
-enum PanelStatus {
-  DRAFT
-  APPROVED
 }
 
 model panel_type {
@@ -51,6 +46,7 @@ model location {
   image_urls    String[]
   created_time  DateTime           @default(now())
   modified_time DateTime           @updatedAt
+  name          String?
   ads_request   ads_request[]
   ad_type       advertisement_type @relation(fields: [ad_type_id], references: [id], onDelete: Cascade)
   district      district           @relation(fields: [district_id], references: [id], onDelete: Cascade)
@@ -89,24 +85,19 @@ model ward {
 
 model ads_request {
   id          Int            @id @default(autoincrement())
-  type        AdsRequestType @default(UPDATE_DATA)
   reason      String
   status      String         @db.VarChar(255)
   target_type String         @db.VarChar(255)
   user_id     Int
   location_id Int?
   panel_id    Int?
-  new_data    String?
   createdAt   DateTime       @default(now())
   updatedAt   DateTime       @updatedAt
+  new_data    String?
+  type        AdsRequestType @default(UPDATE_DATA)
   location    location?      @relation(fields: [location_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_ads_request_location")
   panel       panel?         @relation(fields: [panel_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_ads_request_panel")
   user        user           @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_ads_request_user")
-}
-
-enum AdsRequestType {
-  UPDATE_DATA
-  APPROVED_PANEL
 }
 
 model report {
@@ -159,6 +150,16 @@ model token {
   created_at  DateTime @default(now())
   modified_at DateTime @updatedAt
   user        user     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+}
+
+enum PanelStatus {
+  DRAFT
+  APPROVED
+}
+
+enum AdsRequestType {
+  UPDATE_DATA
+  APPROVED_PANEL
 }
 
 enum UserRole {
