@@ -130,11 +130,19 @@ const officerRoutes = createBrowserRouter([
         element: <PanelEditing />,
       },
       {
-        path: 'reports',
+        path: 'location-reports',
         element: <ReportList />,
       },
       {
-        path: 'reports/:reportId',
+        path: 'location-reports/:reportId',
+        element: <ReportDetail />,
+      },
+      {
+        path: 'panel-reports',
+        element: <ReportList />,
+      },
+      {
+        path: 'panel-reports/:reportId',
         element: <ReportDetail />,
       },
       {
@@ -142,11 +150,19 @@ const officerRoutes = createBrowserRouter([
         element: <ReportResponse />,
       },
       {
-        path: 'requests',
+        path: 'licensing-requests',
         element: <RequestList />,
       },
       {
-        path: 'requests/:requestId',
+        path: 'licensing-requests/:requestId',
+        element: <RequestDetail />,
+      },
+      {
+        path: 'editing-requests',
+        element: <RequestList />,
+      },
+      {
+        path: 'editing-requests/:requestId',
         element: <RequestDetail />,
       },
     ],
