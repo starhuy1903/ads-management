@@ -1,8 +1,10 @@
 import {
+  AdsRequest,
   GetDetailResult,
   GetListResult,
   Location,
   Panel,
+  Report,
 } from '@/types/officer-management';
 import { apiSlice } from './baseApiSlice';
 
@@ -72,6 +74,32 @@ export const officerManagementApiSlice = apiSlice.injectEndpoints({
         },
       }),
     }),
+    getReportById: build.query<GetDetailResult<Report>, string>({
+      query: (id) => `/reports/${id}`,
+    }),
+    getRequests: build.query<
+      GetListResult<AdsRequest>,
+      {
+        page?: number;
+        take?: number;
+        wards?: string;
+        districts?: string;
+        type?: string;
+        status?: string;
+      }
+    >({
+      query: (arg) => ({
+        url: `/ads-requests`,
+        params: {
+          page: arg.page,
+          take: arg.take,
+          wards: arg.wards,
+          districts: arg.districts,
+          type: arg.type,
+          status: arg.status,
+        },
+      }),
+    }),
   }),
 });
 
@@ -81,4 +109,6 @@ export const {
   useGetPanelsQuery,
   useGetPanelByIdQuery,
   useGetReportsQuery,
+  useGetReportByIdQuery,
+  useGetRequestsQuery,
 } = officerManagementApiSlice;

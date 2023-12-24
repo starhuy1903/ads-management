@@ -1,24 +1,11 @@
+import moment from 'moment-timezone';
+
 // Format: "DD/MM/YYYY HH:mm:ss"
 export function formatDateTime(date: string) {
-  const dateObj = new Date(date);
-
-  const day = dateObj.getDate();
-  const month = dateObj.getMonth() + 1;
-  const year = dateObj.getFullYear();
-  const hours = dateObj.getHours();
-  const minutes = dateObj.getMinutes();
-  const seconds = dateObj.getSeconds();
-
-  return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+  return moment(date).format('DD/MM/YYYY HH:mm:ss');
 }
 
 // Format: "DD/MM/YYYY"
 export function formatDate(date: string) {
-  const dateObj = new Date(date);
-
-  const day = dateObj.getDate();
-  const month = dateObj.getMonth() + 1;
-  const year = dateObj.getFullYear();
-
-  return `${day}/${month}/${year}`;
+  return moment(date).format('DD/MM/YYYY');
 }

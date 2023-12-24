@@ -29,19 +29,20 @@ import Dashboard from './Authenticated/Dashboard';
 import Home from './Authenticated/Home';
 import CDOLayout from './Authenticated/Layout/CDOLayout';
 import OfficerLayout from './Authenticated/Layout/OfficerLayout';
+import LicensingRequestList from './Authenticated/Officer/LicensingRequestList';
 import LocationDetail from './Authenticated/Officer/LocationDetail';
 import LocationEditing from './Authenticated/Officer/LocationEditing';
 import LocationList from './Authenticated/Officer/LocationList';
+import LocationReportDetail from './Authenticated/Officer/LocationReportDetail';
 import LocationReportList from './Authenticated/Officer/LocationReportList';
 import PanelCreating from './Authenticated/Officer/PanelCreating';
 import PanelDetail from './Authenticated/Officer/PanelDetail';
 import PanelEditing from './Authenticated/Officer/PanelEditing';
 import PanelList from './Authenticated/Officer/PanelList';
+import PanelReportDetail from './Authenticated/Officer/PanelReportDetail';
 import PanelReportList from './Authenticated/Officer/PanelReportList';
-import ReportDetail from './Authenticated/Officer/ReportDetail';
 import ReportResponse from './Authenticated/Officer/ReportResponse';
 import RequestDetail from './Authenticated/Officer/RequestDetail';
-import RequestList from './Authenticated/Officer/RequestList';
 import ResetPassword from './Authenticated/ResetPassword';
 import CenterLoading from './Common/CenterLoading';
 import PageLayout from './Common/Layout/PageLayout';
@@ -221,7 +222,7 @@ const officerRoutes = createBrowserRouter([
       },
       {
         path: 'location-reports/:reportId',
-        element: <ReportDetail />,
+        element: <LocationReportDetail />,
       },
       {
         path: 'panel-reports',
@@ -229,7 +230,7 @@ const officerRoutes = createBrowserRouter([
       },
       {
         path: 'panel-reports/:reportId',
-        element: <ReportDetail />,
+        element: <PanelReportDetail />,
       },
       {
         path: 'reports/:reportId/response',
@@ -237,7 +238,7 @@ const officerRoutes = createBrowserRouter([
       },
       {
         path: 'licensing-requests',
-        element: <RequestList />,
+        element: <LicensingRequestList />,
       },
       {
         path: 'licensing-requests/:requestId',
@@ -245,7 +246,7 @@ const officerRoutes = createBrowserRouter([
       },
       {
         path: 'editing-requests',
-        element: <RequestList />,
+        element: <LicensingRequestList />,
       },
       {
         path: 'editing-requests/:requestId',

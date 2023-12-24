@@ -13,7 +13,7 @@ import {
 import { useEffect, useState } from 'react';
 import CenterLoading from '@/components/Common/CenterLoading';
 import { Info, Response } from '@/components/Common/Icons';
-import { useGetReportsQuery } from '@/store/api/reportApiSlice';
+import { useGetReportsQuery } from '@/store/api/officerApiSlice';
 import { Report } from '@/types/officer-management';
 import { formatDateTime } from '@/utils/format-date';
 
@@ -97,7 +97,7 @@ export default function PanelReportList() {
                           gap: 2,
                         }}
                       >
-                        <Info link={`/reports/${report?.id}`} />
+                        <Info link={`/panel-reports/${report?.id}`} />
                         <Response link={`/reports/${report?.id}/response`} />
                       </Box>
                     </TableCell>

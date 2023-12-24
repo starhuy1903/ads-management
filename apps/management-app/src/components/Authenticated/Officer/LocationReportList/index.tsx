@@ -97,7 +97,7 @@ export default function LocationReportList() {
                           gap: 2,
                         }}
                       >
-                        <Info link={`/reports/${report?.id}`} />
+                        <Info link={`/location-reports/${report?.id}`} />
                         <Response link={`/reports/${report?.id}/response`} />
                       </Box>
                     </TableCell>

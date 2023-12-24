@@ -2,6 +2,8 @@ export type GetListResult<T> = {
   data: {
     locations?: Array<T>;
     panels?: Array<T>;
+    reports?: Array<T>;
+    adsRequests?: Array<T>;
     totalPages?: number;
   };
 };
@@ -72,4 +74,34 @@ export type Report = {
   panel?: Panel;
   createdAt: string;
   updatedAt: string;
+};
+
+export type User = {
+  id: number;
+  email: string;
+  first_name: string;
+  last_name: string;
+  phone_number: string;
+  role: string;
+  ward?: {
+    id: number;
+    name: string;
+  };
+  district?: {
+    id: number;
+    name: string;
+  };
+};
+
+export type AdsRequest = {
+  id: number;
+  reason: string;
+  status: string;
+  target_type: string;
+  createdAt: string;
+  updatedAt: string;
+  type: string;
+  user: User;
+  location?: Location;
+  panel?: Panel;
 };
