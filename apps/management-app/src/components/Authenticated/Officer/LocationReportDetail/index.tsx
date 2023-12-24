@@ -1,5 +1,4 @@
 import {
-  Box,
   Button,
   ImageList,
   ImageListItem,
@@ -8,12 +7,11 @@ import {
   Typography,
 } from '@mui/material';
 import 'moment-timezone';
-import moment from 'moment-timezone';
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { BackButton } from '@/components/Common/Buttons';
 import CenterLoading from '@/components/Common/CenterLoading';
 import { ReadOnlyTextField } from '@/components/Common/FormComponents';
+import { DetailWrapper } from '@/components/Common/Layout/ScreenWrapper';
 import { useGetReportByIdQuery } from '@/store/api/officerApiSlice';
 import { Report } from '@/types/officer-management';
 import { formatDateTime } from '@/utils/format-date';
@@ -34,171 +32,154 @@ export default function LocationReportDetail() {
   }
 
   return (
-    <Box>
-      <BackButton />
-      <Typography variant="h4" sx={{ my: 2 }}>
-        Location Report Details
-      </Typography>
-      <Box
-        component="form"
-        autoComplete="off"
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 2,
-          bgcolor: 'white',
-          p: 4,
-          borderRadius: 1,
-          boxShadow: 1,
-        }}
-      >
-        {/* Report information */}
-        <Typography variant="h6">Report information</Typography>
-        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-          <ReadOnlyTextField label="ID" value={report?.id} />
+    <DetailWrapper label="Location Report Details">
+      {/* Report information */}
+      <Typography variant="h6">Report information</Typography>
+      <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+        <ReadOnlyTextField label="ID" value={report?.id} />
 
-          <ReadOnlyTextField label="Type" value={report?.report_type?.name} />
+        <ReadOnlyTextField label="Type" value={report?.report_type?.name} />
 
-          <ReadOnlyTextField
-            label="Created"
-            value={formatDateTime(report?.createdAt)}
-          />
-
-          <ReadOnlyTextField
-            label="Modified"
-            value={formatDateTime(report?.updatedAt)}
-          />
-
-          <ReadOnlyTextField label="Status" value={report?.status} />
-        </Stack>
-
-        <Typography variant="h6">Location</Typography>
-        <Stack
-          direction={{ xs: 'column', sm: 'row' }}
-          spacing={2}
-          sx={{
-            mb: 1,
-          }}
-        >
-          <ReadOnlyTextField label="ID" value={report?.location?.id} />
-
-          <ReadOnlyTextField
-            label="Created"
-            value={moment(report?.location?.created_time).format(
-              'DD/MM/YYYY HH:mm:ss',
-            )}
-          />
-
-          <ReadOnlyTextField
-            label="Modified"
-            value={moment(report?.location?.modified_time).format(
-              'DD/MM/YYYY HH:mm:ss',
-            )}
-          />
-
-          <ReadOnlyTextField
-            label="Panned"
-            value={report?.location?.isPlanning ? 'Yes' : 'No'}
-          />
-        </Stack>
-        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-          <ReadOnlyTextField
-            label="Address"
-            value={report?.location?.full_address}
-          />
-
-          <ReadOnlyTextField
-            label="Ward"
-            value={report?.location?.ward?.name}
-          />
-
-          <ReadOnlyTextField
-            label="District"
-            value={report?.location?.district?.name}
-          />
-
-          <ReadOnlyTextField label="Lat" value={report?.location?.lat} />
-
-          <ReadOnlyTextField label="Long" value={report?.location?.long} />
-        </Stack>
-
-        {/* Reporter */}
-        <Typography variant="h6">Reporter information</Typography>
-        <Stack
-          direction={{ xs: 'column', sm: 'row' }}
-          spacing={2}
-          sx={{
-            mb: 1,
-          }}
-        >
-          <ReadOnlyTextField label="Full name" value={report?.fullname} />
-
-          <ReadOnlyTextField label="Email" value={report?.email} />
-        </Stack>
-        <TextField
-          label="Content"
-          fullWidth
-          InputProps={{
-            readOnly: true,
-          }}
-          value={report?.content}
-          multiline
-          rows={5}
+        <ReadOnlyTextField
+          label="Created"
+          value={formatDateTime(report?.createdAt)}
         />
 
-        {/* Images */}
-        <Typography variant="h6">Images</Typography>
-        {report?.image_url.length !== 0 ? (
-          <ImageList sx={{ width: '70%' }} cols={2}>
-            {report?.image_url.map((item) => (
-              <ImageListItem key={item}>
-                <img src={item} alt="report" loading="lazy" />
-              </ImageListItem>
-            ))}
-          </ImageList>
-        ) : (
+        <ReadOnlyTextField
+          label="Modified"
+          value={formatDateTime(report?.updatedAt)}
+        />
+
+        <ReadOnlyTextField label="Status" value={report?.status} />
+      </Stack>
+
+      <Typography variant="h6">Location</Typography>
+      <Stack
+        direction={{ xs: 'column', sm: 'row' }}
+        spacing={2}
+        sx={{
+          mb: 1,
+        }}
+      >
+        <ReadOnlyTextField label="ID" value={report?.location?.id} />
+
+        <ReadOnlyTextField
+          label="Created"
+          value={
+            report?.location
+              ? formatDateTime(report?.location?.created_time)
+              : ''
+          }
+        />
+
+        <ReadOnlyTextField
+          label="Modified"
+          value={
+            report?.location
+              ? formatDateTime(report?.location?.modified_time)
+              : ''
+          }
+        />
+
+        <ReadOnlyTextField
+          label="Panned"
+          value={report?.location?.isPlanning ? 'Yes' : 'No'}
+        />
+      </Stack>
+      <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+        <ReadOnlyTextField
+          label="Address"
+          value={report?.location?.full_address}
+        />
+
+        <ReadOnlyTextField label="Ward" value={report?.location?.ward?.name} />
+
+        <ReadOnlyTextField
+          label="District"
+          value={report?.location?.district?.name}
+        />
+
+        <ReadOnlyTextField label="Lat" value={report?.location?.lat} />
+
+        <ReadOnlyTextField label="Long" value={report?.location?.long} />
+      </Stack>
+
+      {/* Reporter */}
+      <Typography variant="h6">Reporter information</Typography>
+      <Stack
+        direction={{ xs: 'column', sm: 'row' }}
+        spacing={2}
+        sx={{
+          mb: 1,
+        }}
+      >
+        <ReadOnlyTextField label="Full name" value={report?.fullname} />
+
+        <ReadOnlyTextField label="Email" value={report?.email} />
+      </Stack>
+      <TextField
+        label="Content"
+        fullWidth
+        InputProps={{
+          readOnly: true,
+        }}
+        value={report?.content}
+        multiline
+        rows={5}
+      />
+
+      {/* Images */}
+      <Typography variant="h6">Images</Typography>
+      {report?.image_url.length !== 0 ? (
+        <ImageList sx={{ width: '70%' }} cols={2}>
+          {report?.image_url.map((item) => (
+            <ImageListItem key={item}>
+              <img src={item} alt="report" loading="lazy" />
+            </ImageListItem>
+          ))}
+        </ImageList>
+      ) : (
+        <Typography
+          variant="body1"
+          sx={{ mb: 2, fontStyle: 'italic', color: 'gray' }}
+        >
+          No image.
+        </Typography>
+      )}
+
+      {/* Solution */}
+      <Typography variant="h6">Solution</Typography>
+      {report?.resolved_content === '' ? (
+        <>
           <Typography
             variant="body1"
             sx={{ mb: 2, fontStyle: 'italic', color: 'gray' }}
           >
-            No image.
+            Not processed yet.
           </Typography>
-        )}
 
-        {/* Solution */}
-        <Typography variant="h6">Solution</Typography>
-        {report?.resolved_content === '' ? (
-          <>
-            <Typography
-              variant="body1"
-              sx={{ mb: 2, fontStyle: 'italic', color: 'gray' }}
+          <Link to={`/location-reports/${report?.id}/response`}>
+            <Button
+              variant="contained"
+              color="primary"
+              sx={{ mt: 2, color: 'white' }}
             >
-              Not processed yet.
-            </Typography>
-
-            <Link to={`/location-reports/${report?.id}/response`}>
-              <Button
-                variant="contained"
-                color="primary"
-                sx={{ mt: 2, color: 'white' }}
-              >
-                Respond to report
-              </Button>
-            </Link>
-          </>
-        ) : (
-          <TextField
-            label="Response content"
-            fullWidth
-            InputProps={{
-              readOnly: true,
-            }}
-            value={report?.resolved_content}
-            multiline
-            rows={3}
-          />
-        )}
-      </Box>
-    </Box>
+              Respond to report
+            </Button>
+          </Link>
+        </>
+      ) : (
+        <TextField
+          label="Response content"
+          fullWidth
+          InputProps={{
+            readOnly: true,
+          }}
+          value={report?.resolved_content}
+          multiline
+          rows={3}
+        />
+      )}
+    </DetailWrapper>
   );
 }

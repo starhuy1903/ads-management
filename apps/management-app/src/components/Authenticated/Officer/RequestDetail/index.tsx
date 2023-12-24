@@ -1,6 +1,6 @@
-import { Box, Stack, TextField, Typography } from '@mui/material';
-import { BackButton } from '@/components/Common/Buttons';
+import { Stack, TextField, Typography } from '@mui/material';
 import { ReadOnlyTextField } from '@/components/Common/FormComponents';
+import { DetailWrapper } from '@/components/Common/Layout/ScreenWrapper';
 import { AdsPermissionResponse } from '@/types/form';
 import { formatDate, formatDateTime } from '@/utils/format-date';
 
@@ -40,161 +40,124 @@ export default function RequestDetail() {
   };
 
   return (
-    <Box>
-      <BackButton />
-      <Typography variant="h4" sx={{ my: 2 }}>
-        Permission Details #{permission?.id}
-      </Typography>
-      <Box
-        component="form"
-        autoComplete="off"
-        sx={{
-          bgcolor: 'white',
-          p: 4,
-          borderRadius: 1,
-          boxShadow: 1,
-        }}
-      >
-        <Stack spacing={2}>
-          <Typography variant="h6" sx={{ mb: 2 }}>
-            Information
-          </Typography>
-          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-            <ReadOnlyTextField label="ID" value={permission?.id} />
+    <DetailWrapper label="Permission Details">
+      <Typography variant="h6">Information</Typography>
+      <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+        <ReadOnlyTextField label="ID" value={permission?.id} />
 
-            <ReadOnlyTextField label="Type" value={permission?.type} />
+        <ReadOnlyTextField label="Type" value={permission?.type} />
 
-            <ReadOnlyTextField
-              label="Created"
-              value={formatDateTime(permission?.createdTime)}
-            />
+        <ReadOnlyTextField
+          label="Created"
+          value={formatDateTime(permission?.createdTime)}
+        />
 
-            <ReadOnlyTextField
-              label="Modified"
-              value={formatDateTime(permission?.modifiedTime)}
-            />
+        <ReadOnlyTextField
+          label="Modified"
+          value={formatDateTime(permission?.modifiedTime)}
+        />
 
-            <ReadOnlyTextField label="Status" value={permission?.status} />
-          </Stack>
+        <ReadOnlyTextField label="Status" value={permission?.status} />
+      </Stack>
 
-          <TextField
-            label="Reason"
-            value={permission?.reason}
-            multiline
-            rows={4}
-            fullWidth
-            sx={{ mb: 2 }}
-          />
+      <TextField
+        label="Reason"
+        value={permission?.reason}
+        multiline
+        rows={4}
+        fullWidth
+        sx={{ mb: 2 }}
+      />
 
-          <Typography variant="h6" sx={{ mb: 2 }}>
-            Panel
-          </Typography>
-          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-            <ReadOnlyTextField label="ID" value={permission?.panel?.id} />
+      <Typography variant="h6">Panel</Typography>
+      <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+        <ReadOnlyTextField label="ID" value={permission?.panel?.id} />
 
-            <ReadOnlyTextField
-              label="Panel type"
-              value={permission?.panel?.panelType}
-            />
+        <ReadOnlyTextField
+          label="Panel type"
+          value={permission?.panel?.panelType}
+        />
 
-            <ReadOnlyTextField label="Width" value={permission?.panel?.width} />
+        <ReadOnlyTextField label="Width" value={permission?.panel?.width} />
 
-            <ReadOnlyTextField
-              label="Height"
-              value={permission?.panel?.height}
-            />
+        <ReadOnlyTextField label="Height" value={permission?.panel?.height} />
 
-            <ReadOnlyTextField
-              label="Quantity"
-              value={permission?.panel?.quantity}
-            />
+        <ReadOnlyTextField
+          label="Quantity"
+          value={permission?.panel?.quantity}
+        />
 
-            <ReadOnlyTextField
-              label="Created"
-              value={formatDateTime(permission?.panel?.createdTime)}
-            />
+        <ReadOnlyTextField
+          label="Created"
+          value={formatDateTime(permission?.panel?.createdTime)}
+        />
 
-            <ReadOnlyTextField
-              label="Modified"
-              value={formatDateTime(permission?.panel?.modifiedTime)}
-            />
-          </Stack>
+        <ReadOnlyTextField
+          label="Modified"
+          value={formatDateTime(permission?.panel?.modifiedTime)}
+        />
+      </Stack>
 
-          <Typography variant="h6" sx={{ mb: 2 }}>
-            Image
-          </Typography>
-          <img
-            src={permission?.panel?.imageUrl}
-            alt="panel"
-            loading="lazy"
-            width={650}
-          />
+      <Typography variant="h6">Image</Typography>
+      <img
+        src={permission?.panel?.imageUrl}
+        alt="panel"
+        loading="lazy"
+        width={650}
+      />
 
-          <Typography variant="h6" sx={{ mb: 2 }}>
-            Location
-          </Typography>
-          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-            <ReadOnlyTextField
-              label="ID"
-              value={permission?.panel?.location?.id}
-            />
+      <Typography variant="h6">Location</Typography>
+      <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+        <ReadOnlyTextField label="ID" value={permission?.panel?.location?.id} />
 
-            <ReadOnlyTextField
-              label="Address"
-              value={permission?.panel?.location?.address}
-            />
+        <ReadOnlyTextField
+          label="Address"
+          value={permission?.panel?.location?.address}
+        />
 
-            <ReadOnlyTextField
-              label="Ward"
-              value={permission?.panel?.location?.ward}
-            />
+        <ReadOnlyTextField
+          label="Ward"
+          value={permission?.panel?.location?.ward}
+        />
 
-            <ReadOnlyTextField
-              label="District"
-              value={permission?.panel?.location?.commue}
-            />
+        <ReadOnlyTextField
+          label="District"
+          value={permission?.panel?.location?.commue}
+        />
 
-            <ReadOnlyTextField
-              label="Position type"
-              value={permission?.panel?.location?.positionType}
-            />
+        <ReadOnlyTextField
+          label="Position type"
+          value={permission?.panel?.location?.positionType}
+        />
 
-            <ReadOnlyTextField
-              label="Advertising type"
-              value={permission?.panel?.location?.adsType}
-            />
-          </Stack>
+        <ReadOnlyTextField
+          label="Advertising type"
+          value={permission?.panel?.location?.adsType}
+        />
+      </Stack>
 
-          <Typography variant="h6" sx={{ mb: 2 }}>
-            Company
-          </Typography>
-          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-            <ReadOnlyTextField
-              label="Email"
-              value={permission?.panel?.company?.email}
-            />
+      <Typography variant="h6">Company</Typography>
+      <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+        <ReadOnlyTextField
+          label="Email"
+          value={permission?.panel?.company?.email}
+        />
 
-            <ReadOnlyTextField
-              label="Phone"
-              value={permission?.panel?.company?.phone}
-            />
+        <ReadOnlyTextField
+          label="Phone"
+          value={permission?.panel?.company?.phone}
+        />
 
-            <ReadOnlyTextField
-              label="Created contract date"
-              value={formatDate(
-                permission?.panel?.company?.createdContractDate,
-              )}
-            />
+        <ReadOnlyTextField
+          label="Created contract date"
+          value={formatDate(permission?.panel?.company?.createdContractDate)}
+        />
 
-            <ReadOnlyTextField
-              label="Expired contract date"
-              value={formatDate(
-                permission?.panel?.company?.expiredContractDate,
-              )}
-            />
-          </Stack>
-        </Stack>
-      </Box>
-    </Box>
+        <ReadOnlyTextField
+          label="Expired contract date"
+          value={formatDate(permission?.panel?.company?.expiredContractDate)}
+        />
+      </Stack>
+    </DetailWrapper>
   );
 }
