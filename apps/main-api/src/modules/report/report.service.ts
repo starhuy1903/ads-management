@@ -13,6 +13,8 @@ import { deleteFilesFromFirebase } from '../../services/files/delete';
 import { PageOptionsUserReportDto } from './dto/find-all-user-report.dto';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { NotificationType } from '../../constants/notification';
+import { EDateType, GetStatisticDto } from './dto/get-statistic.dto';
+import moment from 'moment-timezone';
 
 @Injectable()
 export class ReportService {
@@ -235,5 +237,94 @@ export class ReportService {
       reports: result,
       totalPages: Math.ceil(totalCount / pageOptionsUserReportDto.take),
     };
+  }
+
+  async getStatistic(getStatisticDto: GetStatisticDto) {
+    const conditions = {
+      where: {
+        location: {
+          district_id: { in: getStatisticDto?.districtIds },
+          ward_id: { in: getStatisticDto?.wardIds },
+        },
+        createdAt: undefined,
+      },
+    };
+
+    if (getStatisticDto.dateType === EDateType.MONTH) {
+      const startDate = moment(getStatisticDto?.dateValue)
+        .startOf('month')
+        .utc()
+        .toDate();
+      const endDate = moment(getStatisticDto?.dateValue)
+        .endOf('month')
+        .utc()
+        .toDate();
+
+      conditions.where.createdAt = {
+        gte: startDate,
+        lte: endDate,
+      };
+
+      const reports = await this.prismaService.report.findMany({
+        where: {
+          createdAt: {
+            gte: startDate,
+            lt: endDate,
+          },
+        },
+      });
+
+      const reportCounts = {
+        resolved: Array<number>(endDate.getDate()).fill(0),
+        unresolved: Array<number>(endDate.getDate()).fill(0),
+      };
+
+      reports.forEach((report) => {
+        const reportDate = report.createdAt.getDate() - 1;
+        if (report.status === ReportStatus.DONE) {
+          reportCounts.resolved[reportDate]++;
+        } else {
+          reportCounts.unresolved[reportDate]++;
+        }
+      });
+
+      return reportCounts;
+    } else if (getStatisticDto.dateType === EDateType.YEAR) {
+      const startDate = moment(getStatisticDto?.dateValue)
+        .startOf('year')
+        .utc()
+        .toDate();
+      const endDate = moment(getStatisticDto?.dateValue)
+        .endOf('year')
+        .utc()
+        .toDate();
+
+      const conditions = {
+        where: {
+          createdAt: {
+            gte: startDate,
+            lte: endDate,
+          },
+        },
+      };
+
+      const reports = await this.prismaService.report.findMany(conditions);
+
+      const reportCounts = {
+        resolved: Array<number>(12).fill(0),
+        unresolved: Array<number>(12).fill(0),
+      };
+
+      reports.forEach((report) => {
+        const reportMonth = report.createdAt.getMonth();
+        if (report.status === ReportStatus.DONE) {
+          reportCounts.resolved[reportMonth]++;
+        } else {
+          reportCounts.unresolved[reportMonth]++;
+        }
+      });
+
+      return reportCounts;
+    }
   }
 }
