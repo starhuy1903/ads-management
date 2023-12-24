@@ -7,7 +7,24 @@ import {
 import { useAppSelector } from '@/store';
 import { useGetProfileQuery } from '@/store/api/userApiSlice';
 import { checkRole } from '@/store/slice/userSlice';
-import DistrictsManagement from './Authenticated/CDO/DistrictsManagement';
+import AdsTypesCreate from './Authenticated/CDO/AdsTypesCreate';
+import AdsTypesDetail from './Authenticated/CDO/AdsTypesDetail';
+import AdsTypesListView from './Authenticated/CDO/AdsTypesListView';
+import DistrictsCreate from './Authenticated/CDO/DistrictsCreate';
+import DistrictsDetail from './Authenticated/CDO/DistrictsDetail';
+import DistrictsListView from './Authenticated/CDO/DistrictsListView';
+import LocationTypesCreate from './Authenticated/CDO/LocationTypesCreate';
+import LocationTypesDetail from './Authenticated/CDO/LocationTypesDetail';
+import LocationTypesListView from './Authenticated/CDO/LocationTypesListView';
+import PanelTypesCreate from './Authenticated/CDO/PanelTypesCreate';
+import PanelTypesDetail from './Authenticated/CDO/PanelTypesDetail';
+import PanelTypesListView from './Authenticated/CDO/PanelTypesListView';
+import ReportTypesCreate from './Authenticated/CDO/ReportTypesCreate';
+import ReportTypesDetail from './Authenticated/CDO/ReportTypesDetail';
+import ReportTypesListView from './Authenticated/CDO/ReportTypesListView';
+import WardsCreate from './Authenticated/CDO/WardsCreate';
+import WardsDetail from './Authenticated/CDO/WardsDetail';
+import WardsListView from './Authenticated/CDO/WardsListView';
 import Dashboard from './Authenticated/Dashboard';
 import Home from './Authenticated/Home';
 import CDOLayout from './Authenticated/Layout/CDOLayout';
@@ -46,7 +63,75 @@ const CDORoutes = createBrowserRouter([
       },
       {
         path: 'districts',
-        element: <DistrictsManagement />,
+        element: <DistrictsListView />,
+      },
+      {
+        path: 'districts/create',
+        element: <DistrictsCreate />,
+      },
+      {
+        path: 'districts/:id',
+        element: <DistrictsDetail />,
+      },
+      {
+        path: 'wards',
+        element: <WardsListView />,
+      },
+      {
+        path: 'wards/create',
+        element: <WardsCreate />,
+      },
+      {
+        path: 'wards/:id',
+        element: <WardsDetail />,
+      },
+      {
+        path: 'panel-types',
+        element: <PanelTypesListView />,
+      },
+      {
+        path: 'panel-types/create',
+        element: <PanelTypesCreate />,
+      },
+      {
+        path: 'panel-types/:id',
+        element: <PanelTypesDetail />,
+      },
+      {
+        path: 'report-types',
+        element: <ReportTypesListView />,
+      },
+      {
+        path: 'report-types/create',
+        element: <ReportTypesCreate />,
+      },
+      {
+        path: 'report-types/:id',
+        element: <ReportTypesDetail />,
+      },
+      {
+        path: 'ads-types',
+        element: <AdsTypesListView />,
+      },
+      {
+        path: 'ads-types/create',
+        element: <AdsTypesCreate />,
+      },
+      {
+        path: 'ads-types/:id',
+        element: <AdsTypesDetail />,
+      },
+      {
+        path: 'location-types',
+        element: <LocationTypesListView />,
+      },
+      {
+        path: 'location-types/create',
+        element: <LocationTypesCreate />,
+      },
+      {
+        path: 'location-types/:id',
+        element: <LocationTypesDetail />,
       },
       {
         path: 'locations',

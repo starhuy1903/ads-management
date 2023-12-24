@@ -1,6 +1,7 @@
 import { Box, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { useState } from 'react';
+import { CSSProperties, useState } from 'react';
+import PerfectScrollbar from 'react-perfect-scrollbar';
 import { Outlet } from 'react-router-dom';
 import Header from '../OfficerLayout/Header';
 import Main from '../OfficerLayout/Main';
@@ -13,14 +14,29 @@ function CDOLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(matchUpMd);
 
   return (
-    <Box sx={{ display: 'flex' }}>
-      <Header onSidebarToggle={() => setSidebarOpen((open) => !open)} />
-      <Sidebar open={sidebarOpen} handleOnClose={() => setSidebarOpen(false)} />
+    <PerfectScrollbar
+      style={{
+        height: `100dvh`,
+        padding: '0 16px',
+      }}
+    >
+      <Box
+        sx={{
+          display: 'flex',
+          '~ .ps__rail-y': { zIndex: theme.zIndex.appBar + 10 },
+        }}
+      >
+        <Header onSidebarToggle={() => setSidebarOpen((open) => !open)} />
+        <Sidebar
+          open={sidebarOpen}
+          handleOnClose={() => setSidebarOpen(false)}
+        />
 
-      <Main sidebarOpen={sidebarOpen}>
-        <Outlet />
-      </Main>
-    </Box>
+        <Main sidebarOpen={sidebarOpen}>
+          <Outlet />
+        </Main>
+      </Box>
+    </PerfectScrollbar>
   );
 }
 export default CDOLayout;

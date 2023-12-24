@@ -12,6 +12,7 @@ import { Provider } from 'react-redux';
 import CustomToaster from '@/components/Common/CustomToaster';
 import { defaultTheme } from '@/constants/themes';
 import App from './components/App';
+import GlobalLoading from './components/Common/GlobalLoading';
 import { ModalContainer } from './components/Modals';
 import store from './store';
 
@@ -25,6 +26,7 @@ root.render(
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <CustomToaster />
           <ModalContainer />
+          <GlobalLoading />
           <App />
         </LocalizationProvider>
       </ThemeProvider>
