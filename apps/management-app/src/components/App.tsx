@@ -32,12 +32,13 @@ import OfficerLayout from './Authenticated/Layout/OfficerLayout';
 import LocationDetail from './Authenticated/Officer/LocationDetail';
 import LocationEditing from './Authenticated/Officer/LocationEditing';
 import LocationList from './Authenticated/Officer/LocationList';
+import LocationReportList from './Authenticated/Officer/LocationReportList';
 import PanelCreating from './Authenticated/Officer/PanelCreating';
 import PanelDetail from './Authenticated/Officer/PanelDetail';
 import PanelEditing from './Authenticated/Officer/PanelEditing';
 import PanelList from './Authenticated/Officer/PanelList';
+import PanelReportList from './Authenticated/Officer/PanelReportList';
 import ReportDetail from './Authenticated/Officer/ReportDetail';
-import ReportList from './Authenticated/Officer/ReportList';
 import ReportResponse from './Authenticated/Officer/ReportResponse';
 import RequestDetail from './Authenticated/Officer/RequestDetail';
 import RequestList from './Authenticated/Officer/RequestList';
@@ -216,7 +217,7 @@ const officerRoutes = createBrowserRouter([
       },
       {
         path: 'location-reports',
-        element: <ReportList />,
+        element: <LocationReportList />,
       },
       {
         path: 'location-reports/:reportId',
@@ -224,7 +225,7 @@ const officerRoutes = createBrowserRouter([
       },
       {
         path: 'panel-reports',
-        element: <ReportList />,
+        element: <PanelReportList />,
       },
       {
         path: 'panel-reports/:reportId',

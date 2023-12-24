@@ -49,6 +49,29 @@ export const officerManagementApiSlice = apiSlice.injectEndpoints({
     getPanelById: build.query<GetDetailResult<Panel>, string>({
       query: (id) => `/panels/${id}`,
     }),
+    getReports: build.query<
+      GetListResult<Report>,
+      {
+        page?: number;
+        take?: number;
+        wards?: string;
+        districts?: string;
+        targetType: string;
+        typeId?: number;
+      }
+    >({
+      query: (arg) => ({
+        url: `/reports`,
+        params: {
+          page: arg.page,
+          take: arg.take,
+          wards: arg.wards,
+          districts: arg.districts,
+          targetType: arg.targetType,
+          typeId: arg.typeId,
+        },
+      }),
+    }),
   }),
 });
 
@@ -57,4 +80,5 @@ export const {
   useGetLocationByIdQuery,
   useGetPanelsQuery,
   useGetPanelByIdQuery,
+  useGetReportsQuery,
 } = officerManagementApiSlice;

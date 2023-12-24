@@ -55,3 +55,21 @@ export type Panel = {
   created_time: string;
   modified_time: string;
 };
+
+export type Report = {
+  id: number;
+  fullname: string;
+  email: string;
+  content: string;
+  image_url: string[];
+  report_type: {
+    id: number;
+    name: string;
+  };
+  status: string;
+  resolved_content: string;
+  location?: Location;
+  panel?: Panel;
+  createdAt: string;
+  updatedAt: string;
+};

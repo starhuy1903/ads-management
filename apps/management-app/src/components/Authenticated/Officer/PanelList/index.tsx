@@ -26,7 +26,7 @@ export default function PanelList() {
   const { data, isLoading } = useGetPanelsQuery({
     page: page,
     take: 10,
-    districts: '1',
+    wards: '1',
   });
 
   useEffect(() => {
