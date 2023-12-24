@@ -37,6 +37,8 @@ export class ReportController {
     private readonly eventEmitter: EventEmitter2,
   ) {}
 
+  @UseGuards(JwtGuard)
+  @Roles(UserRole.DEPARTMENT_OFFICER)
   @Get('/statistic')
   async getStatistic(
     @Query() getStatisticDto: GetStatisticDto,
