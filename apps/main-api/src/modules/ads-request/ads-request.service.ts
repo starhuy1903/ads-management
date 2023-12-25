@@ -48,8 +48,6 @@ export class AdsRequestService {
           throw new Error('Failed to upload images!');
         }
         imageUrls = uploadImagesData.urls;
-      } else {
-        imageUrls = createAdsRequestDto.imgUrls;
       }
 
       const locationData = {
@@ -61,32 +59,34 @@ export class AdsRequestService {
         full_address: createAdsRequestDto?.fullAddress,
         type: { connect: { id: createAdsRequestDto?.typeId } },
         ad_type: { connect: { id: createAdsRequestDto?.adsTypeId } },
-        image_urls: imageUrls,
+        image_urls: undefined,
         name: createAdsRequestDto?.name,
         location: { connect: { id: createAdsRequestDto?.belongLocationId } },
         status: LocationStatus.AWAITING_UPDATE,
       };
 
-      const location = this.prismaService.location.create({
-        data: locationData,
-      });
-
-      const data = {
-        user: { connect: { id: createAdsRequestDto.userId } },
-        target_type: TargetType.LOCATION,
-        type: AdsRequestType.UPDATE_DATA,
-        reason: createAdsRequestDto.reason,
-        status: AdsRequestStatus.SENT,
-        location: { connect: { id: (await location).id } },
-      };
+      if (!imageUrls.length) {
+        locationData.image_urls = createAdsRequestDto.imgUrls;
+      } else {
+        locationData.image_urls = imageUrls;
+      }
 
       const result = await this.prismaService.ads_request.create({
-        data,
+        data: {
+          user: { connect: { id: createAdsRequestDto.userId } },
+          target_type: TargetType.LOCATION,
+          type: AdsRequestType.UPDATE_DATA,
+          reason: createAdsRequestDto.reason,
+          status: AdsRequestStatus.SENT,
+          location: {
+            create: locationData,
+          },
+        },
       });
 
       return result;
     } catch (error) {
-      if (imageUrls) await deleteFilesFromFirebase(imageUrls);
+      if (!imageUrls.length) await deleteFilesFromFirebase(imageUrls);
       throw new Error(error);
     }
   }
@@ -106,8 +106,6 @@ export class AdsRequestService {
           throw new Error('Failed to upload images!');
         }
         imageUrls = uploadImagesData.urls;
-      } else {
-        imageUrls = createAdsRequestDto.imgUrls;
       }
 
       const panelData = {
@@ -120,30 +118,32 @@ export class AdsRequestService {
         status: PanelStatus.AWAITING_UPDATE,
         type: { connect: { id: createAdsRequestDto?.typeId } },
         location: { connect: { id: createAdsRequestDto?.locationId } },
-        image_urls: imageUrls,
+        image_urls: undefined,
         panel: { connect: { id: createAdsRequestDto?.belongPanelId } },
       };
 
-      const panel = await this.prismaService.panel.create({
-        data: panelData,
-      });
-
-      const data = {
-        user: { connect: { id: createAdsRequestDto.userId } },
-        target_type: TargetType.PANEL,
-        type: AdsRequestType.UPDATE_DATA,
-        reason: createAdsRequestDto.reason,
-        status: AdsRequestStatus.SENT,
-        panel: { connect: { id: panel.id } },
-      };
+      if (!imageUrls.length) {
+        panelData.image_urls = createAdsRequestDto.imgUrls;
+      } else {
+        panelData.image_urls = imageUrls;
+      }
 
       const result = await this.prismaService.ads_request.create({
-        data,
+        data: {
+          user: { connect: { id: createAdsRequestDto.userId } },
+          target_type: TargetType.PANEL,
+          type: AdsRequestType.UPDATE_DATA,
+          reason: createAdsRequestDto.reason,
+          status: AdsRequestStatus.SENT,
+          panel: {
+            create: panelData,
+          },
+        },
       });
 
       return result;
     } catch (error) {
-      if (imageUrls) await deleteFilesFromFirebase(imageUrls);
+      if (!imageUrls.length) await deleteFilesFromFirebase(imageUrls);
       throw new Error(error);
     }
   }

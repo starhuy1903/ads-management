@@ -46,7 +46,7 @@ export class PanelService {
 
       return result;
     } catch (error) {
-      if (imageUrls) await deleteFilesFromFirebase(imageUrls);
+      if (!imageUrls.length) await deleteFilesFromFirebase(imageUrls);
       throw new Error(error);
     }
   }
