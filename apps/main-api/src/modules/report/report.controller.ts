@@ -28,6 +28,7 @@ import { UserRole } from '@prisma/client';
 import { Roles } from '../auth/decorators';
 import { JwtGuard } from '../auth/guards';
 import { NotificationType } from '../../constants/notification';
+import { GetStatisticDto } from './dto/get-statistic.dto';
 
 @Controller('reports')
 export class ReportController {
@@ -35,6 +36,24 @@ export class ReportController {
     private readonly reportService: ReportService,
     private readonly eventEmitter: EventEmitter2,
   ) {}
+
+  @UseGuards(JwtGuard)
+  @Roles(UserRole.DEPARTMENT_OFFICER)
+  @Get('/statistic')
+  async getStatistic(
+    @Query() getStatisticDto: GetStatisticDto,
+    @Res() res: CustomResponse,
+  ) {
+    try {
+      const results = await this.reportService.getStatistic(getStatisticDto);
+      return res.success({ data: results });
+    } catch (error) {
+      return res.error({
+        statusCode: 500,
+        message: error.message,
+      });
+    }
+  }
 
   @Post()
   @UseInterceptors(FilesInterceptor('images', 2))
