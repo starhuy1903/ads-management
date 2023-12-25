@@ -113,14 +113,19 @@ export class ReportService {
             include: {
               district: true,
               ward: true,
+              type: true,
+              ad_type: true,
             },
           },
           panel: {
             include: {
+              type: true,
               location: {
                 include: {
                   district: true,
                   ward: true,
+                  type: true,
+                  ad_type: true,
                 },
               },
             },
@@ -148,14 +153,19 @@ export class ReportService {
           include: {
             district: true,
             ward: true,
+            type: true,
+            ad_type: true,
           },
         },
         panel: {
           include: {
+            type: true,
             location: {
               include: {
                 district: true,
                 ward: true,
+                type: true,
+                ad_type: true,
               },
             },
           },
@@ -216,6 +226,7 @@ export class ReportService {
           },
           panel: {
             include: {
+              type: true,
               location: {
                 include: {
                   district: true,

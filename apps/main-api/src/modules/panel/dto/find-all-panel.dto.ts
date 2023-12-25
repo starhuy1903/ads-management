@@ -1,11 +1,16 @@
 import { Transform, Type } from 'class-transformer';
 import { IsArray, IsEnum, IsInt, IsOptional, Max, Min } from 'class-validator';
 import { Order } from '../../../constants/order';
+import { PanelStatus } from '@prisma/client';
 
 export class PageOptionsPanelDto {
   @IsEnum(Order)
   @IsOptional()
   readonly order?: Order = Order.DESC;
+
+  @IsEnum(PanelStatus)
+  @IsOptional()
+  readonly status?: PanelStatus = PanelStatus.APPROVED;
 
   @Type(() => Number)
   @IsInt()
