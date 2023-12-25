@@ -85,6 +85,7 @@ export const officerManagementApiSlice = apiSlice.injectEndpoints({
         wards?: string;
         districts?: string;
         type?: string;
+        targetType?: string;
         status?: string;
       }
     >({
@@ -96,6 +97,7 @@ export const officerManagementApiSlice = apiSlice.injectEndpoints({
           wards: arg.wards,
           districts: arg.districts,
           type: arg.type,
+          targetType: arg.targetType,
           status: arg.status,
         },
       }),
