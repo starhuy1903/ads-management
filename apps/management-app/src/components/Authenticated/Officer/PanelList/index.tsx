@@ -17,6 +17,21 @@ import { useGetPanelsQuery } from '@/store/api/officerApiSlice';
 import { Panel } from '@/types/officer-management';
 import { formatDateTime } from '@/utils/format-date';
 
+const titles = [
+  'ID',
+  'Address',
+  'Ward',
+  'District',
+  'Panel Type',
+  'Company Email',
+  'Started',
+  'Ended',
+  'Created',
+  'Modified',
+  'Status',
+  '',
+];
+
 export default function PanelList() {
   const [page, setPage] = useState<number>(1);
   const [panels, setPanels] = useState<Panel[] | undefined>([]);
@@ -43,18 +58,9 @@ export default function PanelList() {
         <Table sx={{ minWidth: 650 }} aria-label="advertising points">
           <TableHead>
             <TableRow>
-              <TableCell align="center">ID</TableCell>
-              <TableCell align="center">Address</TableCell>
-              <TableCell align="center">Ward</TableCell>
-              <TableCell align="center">District</TableCell>
-              <TableCell align="center">Panel Type</TableCell>
-              <TableCell align="center">Company Email</TableCell>
-              <TableCell align="center">Started</TableCell>
-              <TableCell align="center">Ended</TableCell>
-              <TableCell align="center">Created</TableCell>
-              <TableCell align="center">Modified</TableCell>
-              <TableCell align="center">Status</TableCell>
-              <TableCell align="center"></TableCell>
+              {titles.map((title) => (
+                <TableCell align="center">{title}</TableCell>
+              ))}
             </TableRow>
           </TableHead>
           <TableBody>

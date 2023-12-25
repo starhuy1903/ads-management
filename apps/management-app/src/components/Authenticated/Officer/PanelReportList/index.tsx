@@ -17,13 +17,24 @@ import { useGetReportsQuery } from '@/store/api/officerApiSlice';
 import { Report } from '@/types/officer-management';
 import { formatDateTime } from '@/utils/format-date';
 
+const titles = [
+  'ID',
+  'Type',
+  'Name',
+  'Email',
+  'Created',
+  'Modified',
+  'Status',
+  '',
+];
+
 export default function PanelReportList() {
   const [page, setPage] = useState<number>(1);
   const [reports, setReports] = useState<Report[] | undefined>([]);
 
   const { data, isLoading } = useGetReportsQuery({
     page: page,
-    take: 5,
+    take: 10,
     wards: '1',
     targetType: 'Panel',
     typeId: 1,
@@ -45,15 +56,9 @@ export default function PanelReportList() {
         <Table sx={{ minWidth: 650 }} aria-label="advertising points">
           <TableHead>
             <TableRow>
-              <TableCell align="center">ID</TableCell>
-              <TableCell align="center">Type</TableCell>
-              <TableCell align="center">Name</TableCell>
-              <TableCell align="center">Email</TableCell>
-              <TableCell align="center">Created</TableCell>
-              <TableCell align="center">Modified</TableCell>
-              <TableCell align="center">Content</TableCell>
-              <TableCell align="center">Status</TableCell>
-              <TableCell align="center"></TableCell>
+              {titles.map((title) => (
+                <TableCell align="center">{title}</TableCell>
+              ))}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -72,7 +77,6 @@ export default function PanelReportList() {
                   <TableCell align="center">
                     {formatDateTime(report?.updatedAt)}
                   </TableCell>
-                  <TableCell>{report?.content}</TableCell>
                   <TableCell align="center">{report?.status}</TableCell>
                   <TableCell>
                     <Box

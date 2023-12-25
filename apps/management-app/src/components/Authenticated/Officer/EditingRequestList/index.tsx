@@ -15,8 +15,8 @@ import { useEffect, useState } from 'react';
 import CenterLoading from '@/components/Common/CenterLoading';
 import { Delete, Info } from '@/components/Common/Icons';
 import { ListWrapper } from '@/components/Common/Layout/ScreenWrapper';
+import { AdsRequestType, TargetType } from '@/constants/ads-request';
 import { useGetRequestsQuery } from '@/store/api/officerApiSlice';
-import { AdsRequestType, TargetType } from '@/types/ads-request';
 import { AdsRequest } from '@/types/officer-management';
 import { formatDateTime } from '@/utils/format-date';
 import { showError, showSuccess } from '@/utils/toast';
@@ -81,6 +81,7 @@ export default function EditingRequestList() {
           onChange={(event) => setTargetType(event.target.value as TargetType)}
           sx={{
             mb: 2,
+            width: '10%',
           }}
         >
           <MenuItem value={TargetType?.PANEL}>Panel</MenuItem>
@@ -132,7 +133,7 @@ export default function EditingRequestList() {
                           height: '100%',
                         }}
                       >
-                        <Info link={`/licensing-requests/${request.id}`} />
+                        <Info link={`/editing-requests/${request.id}`} />
 
                         {request.status !== 'Approved' && (
                           <Delete onClick={() => handleDelete(request.id)} />

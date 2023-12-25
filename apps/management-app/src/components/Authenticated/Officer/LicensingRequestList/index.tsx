@@ -18,6 +18,17 @@ import { AdsRequest } from '@/types/officer-management';
 import { formatDateTime } from '@/utils/format-date';
 import { showError, showSuccess } from '@/utils/toast';
 
+const titles = [
+  'ID',
+  'Address',
+  'Ward',
+  'District',
+  'Created',
+  'Modified',
+  'Status',
+  '',
+];
+
 export default function LicensingRequestList() {
   const [page, setPage] = useState<number>(1);
   const [requests, setRequests] = useState<AdsRequest[] | undefined>([]);
@@ -59,14 +70,9 @@ export default function LicensingRequestList() {
         <Table sx={{ minWidth: 650 }} aria-label="advertising points">
           <TableHead>
             <TableRow>
-              <TableCell align="center">ID</TableCell>
-              <TableCell align="center">Address</TableCell>
-              <TableCell align="center">Ward</TableCell>
-              <TableCell align="center">District</TableCell>
-              <TableCell align="center">Created</TableCell>
-              <TableCell align="center">Modified</TableCell>
-              <TableCell align="center">Status</TableCell>
-              <TableCell align="center"></TableCell>
+              {titles.map((title) => (
+                <TableCell align="center">{title}</TableCell>
+              ))}
             </TableRow>
           </TableHead>
           <TableBody>

@@ -17,6 +17,19 @@ import { useGetLocationsQuery } from '@/store/api/officerApiSlice';
 import { Location } from '@/types/officer-management';
 import { formatDateTime } from '@/utils/format-date';
 
+const titles = [
+  'ID',
+  'Address',
+  'Ward',
+  'District',
+  'Ad Type',
+  'Type',
+  'Planning',
+  'Created',
+  'Modified',
+  '',
+];
+
 export default function LocationList() {
   const [page, setPage] = useState<number>(1);
   const [locations, setLocations] = useState<Location[] | undefined>([]);
@@ -43,16 +56,9 @@ export default function LocationList() {
         <Table sx={{ minWidth: 650 }} aria-label="advertising points">
           <TableHead>
             <TableRow>
-              <TableCell align="center">ID</TableCell>
-              <TableCell align="center">Address</TableCell>
-              <TableCell align="center">Ward</TableCell>
-              <TableCell align="center">District</TableCell>
-              <TableCell align="center">Advertising Type</TableCell>
-              <TableCell align="center">Position Type</TableCell>
-              <TableCell align="center">Planned</TableCell>
-              <TableCell align="center">Created</TableCell>
-              <TableCell align="center">Modified</TableCell>
-              <TableCell align="center"></TableCell>
+              {titles.map((title) => (
+                <TableCell align="center">{title}</TableCell>
+              ))}
             </TableRow>
           </TableHead>
           <TableBody>

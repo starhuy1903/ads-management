@@ -35,6 +35,7 @@ export type Location = {
   };
   image_urls: string[];
   isPlanning: boolean;
+  status?: string;
   created_time: string;
   modified_time: string;
 };
