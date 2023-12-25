@@ -186,14 +186,19 @@ export class AdsRequestService {
             include: {
               district: true,
               ward: true,
+              type: true,
+              ad_type: true,
             },
           },
           panel: {
             include: {
+              type: true,
               location: {
                 include: {
                   district: true,
                   ward: true,
+                  type: true,
+                  ad_type: true,
                 },
               },
             },
@@ -221,14 +226,19 @@ export class AdsRequestService {
           include: {
             district: true,
             ward: true,
+            type: true,
+            ad_type: true,
           },
         },
         panel: {
           include: {
+            type: true,
             location: {
               include: {
                 district: true,
                 ward: true,
+                type: true,
+                ad_type: true,
               },
             },
           },

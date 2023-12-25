@@ -75,6 +75,8 @@ export class PanelService {
             include: {
               district: true,
               ward: true,
+              type: true,
+              ad_type: true,
             },
           },
         },
@@ -117,6 +119,8 @@ export class PanelService {
             include: {
               district: true,
               ward: true,
+              type: true,
+              ad_type: true,
             },
           },
         },
@@ -142,6 +146,8 @@ export class PanelService {
           include: {
             district: true,
             ward: true,
+            type: true,
+            ad_type: true,
           },
         },
       },

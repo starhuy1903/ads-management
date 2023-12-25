@@ -73,7 +73,11 @@ export class LocationService {
     const [result, totalCount] = await Promise.all([
       this.prismaService.location.findMany({
         include: {
-          panel: true,
+          panel: {
+            include: {
+              type: true,
+            },
+          },
           type: true,
           ad_type: true,
           district: true,
@@ -96,7 +100,11 @@ export class LocationService {
   findOne(id: number) {
     return this.prismaService.location.findFirst({
       include: {
-        panel: true,
+        panel: {
+          include: {
+            type: true,
+          },
+        },
         type: true,
         ad_type: true,
         district: true,
