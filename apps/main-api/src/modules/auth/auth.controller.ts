@@ -53,7 +53,7 @@ export class AuthController {
   @Post('forgot-password')
   async forgotPassword(@Body() dto: ForgotPasswordDto) {
     const email = dto.email;
-    await this.authService.forgotPassword(email);
+    return await this.authService.forgotPassword(email);
   }
 
   @UseGuards(JwtVerifyGuard)

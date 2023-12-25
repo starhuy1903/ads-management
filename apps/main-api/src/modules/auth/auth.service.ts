@@ -390,6 +390,11 @@ export class AuthService {
 
     try {
       await this.mailService.sendEmailTemplate(data);
+
+      return {
+        success: true,
+        message: 'Forgot password email sent successfully',
+      };
     } catch (err) {
       throw new HttpException(
         {
