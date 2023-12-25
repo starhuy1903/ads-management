@@ -100,6 +100,9 @@ export const officerManagementApiSlice = apiSlice.injectEndpoints({
         },
       }),
     }),
+    getRequestById: build.query<GetDetailResult<AdsRequest>, string>({
+      query: (id) => `/ads-requests/${id}`,
+    }),
   }),
 });
 
@@ -111,4 +114,5 @@ export const {
   useGetReportsQuery,
   useGetReportByIdQuery,
   useGetRequestsQuery,
+  useGetRequestByIdQuery,
 } = officerManagementApiSlice;

@@ -29,6 +29,7 @@ import Dashboard from './Authenticated/Dashboard';
 import Home from './Authenticated/Home';
 import CDOLayout from './Authenticated/Layout/CDOLayout';
 import OfficerLayout from './Authenticated/Layout/OfficerLayout';
+import LicensingRequestDetail from './Authenticated/Officer/LicensingRequestDetail';
 import LicensingRequestList from './Authenticated/Officer/LicensingRequestList';
 import LocationDetail from './Authenticated/Officer/LocationDetail';
 import LocationEditing from './Authenticated/Officer/LocationEditing';
@@ -42,7 +43,6 @@ import PanelList from './Authenticated/Officer/PanelList';
 import PanelReportDetail from './Authenticated/Officer/PanelReportDetail';
 import PanelReportList from './Authenticated/Officer/PanelReportList';
 import ReportResponse from './Authenticated/Officer/ReportResponse';
-import RequestDetail from './Authenticated/Officer/RequestDetail';
 import ResetPassword from './Authenticated/ResetPassword';
 import CenterLoading from './Common/CenterLoading';
 import PageLayout from './Common/Layout/PageLayout';
@@ -242,7 +242,7 @@ const officerRoutes = createBrowserRouter([
       },
       {
         path: 'licensing-requests/:requestId',
-        element: <RequestDetail />,
+        element: <LicensingRequestDetail />,
       },
       {
         path: 'editing-requests',
@@ -250,7 +250,7 @@ const officerRoutes = createBrowserRouter([
       },
       {
         path: 'editing-requests/:requestId',
-        element: <RequestDetail />,
+        element: <LicensingRequestDetail />,
       },
     ],
   },
