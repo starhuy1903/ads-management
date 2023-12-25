@@ -18,7 +18,6 @@ model panel {
   expired_contract_date DateTime
   company_email         String
   company_number        String
-  belong_panel_id       Int?
   created_time          DateTime      @default(now())
   modified_time         DateTime      @updatedAt
   status                PanelStatus   @default(DRAFT)
@@ -28,8 +27,6 @@ model panel {
   other_panel           panel[]       @relation("panelTopanel")
   location              location      @relation(fields: [location_id], references: [id], onDelete: Cascade)
   type                  panel_type    @relation(fields: [type_id], references: [id], onDelete: Cascade)
-  belong_panel          panel?        @relation("PanelBelongTarget", fields: [belong_panel_id], references: [id], onDelete: Cascade)
-  belonged_panels       panel[]       @relation("PanelBelongTarget")
   report                report[]
 }
 
@@ -159,11 +156,6 @@ model token {
   created_at  DateTime @default(now())
   modified_at DateTime @updatedAt
   user        user     @relation(fields: [user_id], references: [id], onDelete: Cascade)
-}
-
-enum LocationStatus {
-  APPROVED
-  AWAITING_UPDATE
 }
 
 enum PanelStatus {
