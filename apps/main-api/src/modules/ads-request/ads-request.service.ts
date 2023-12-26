@@ -1,9 +1,19 @@
 import { Injectable } from '@nestjs/common';
-import { CreateAdsRequestDto } from './dto/create-ads-request.dto';
+import {
+  CreateAdsRequestDto,
+  CreateAdsRequestUpdateLocationDto,
+  CreateAdsRequestUpdatePanelDto,
+} from './dto/create-ads-request.dto';
 import { UpdateAdsRequestDto } from './dto/update-ads-request.dto';
 import { AdsRequestStatus, TargetType } from '../../constants/ads_request';
 import { PrismaService } from '../../services/prisma/prisma.service';
 import { PageOptionsAdsRequestDto } from './dto/find-all-ads-request.dto';
+import { AdsRequestType, LocationStatus, PanelStatus } from '@prisma/client';
+import {
+  EUploadFolder,
+  uploadFilesFromFirebase,
+} from '../../services/files/upload';
+import { deleteFilesFromFirebase } from '../../services/files/delete';
 
 @Injectable()
 export class AdsRequestService {
@@ -11,21 +21,131 @@ export class AdsRequestService {
   async create(createAdsRequestDto: CreateAdsRequestDto) {
     const data = {
       user: { connect: { id: createAdsRequestDto.userId } },
-      target_type: createAdsRequestDto.targetType,
-      type: createAdsRequestDto.type,
+      target_type: TargetType.PANEL,
+      type: AdsRequestType.APPROVED_PANEL,
       reason: createAdsRequestDto.reason,
       status: AdsRequestStatus.SENT,
-      location: undefined,
-      panel: undefined,
+      panel: { connect: { id: createAdsRequestDto.panelId } },
     };
-    if (createAdsRequestDto.targetType == TargetType.LOCATION) {
-      data.location = { connect: { id: createAdsRequestDto.locationId } };
-    } else {
-      data.panel = { connect: { id: createAdsRequestDto.panelId } };
-    }
+
     return await this.prismaService.ads_request.create({
       data,
     });
+  }
+
+  async createUpdateLocation(
+    createAdsRequestDto: CreateAdsRequestUpdateLocationDto,
+    images?: Express.Multer.File[],
+  ) {
+    let imageUrls = [];
+    try {
+      if (images.length) {
+        const uploadImagesData = await uploadFilesFromFirebase(
+          images,
+          EUploadFolder.report,
+        );
+        if (!uploadImagesData.success) {
+          throw new Error('Failed to upload images!');
+        }
+        imageUrls = uploadImagesData.urls;
+      }
+
+      const locationData = {
+        long: createAdsRequestDto?.long,
+        lat: createAdsRequestDto?.lat,
+        isPlanning: createAdsRequestDto?.isPlanning,
+        district: { connect: { id: createAdsRequestDto?.districtId } },
+        ward: { connect: { id: createAdsRequestDto?.wardId } },
+        full_address: createAdsRequestDto?.fullAddress,
+        type: { connect: { id: createAdsRequestDto?.typeId } },
+        ad_type: { connect: { id: createAdsRequestDto?.adsTypeId } },
+        image_urls: undefined,
+        name: createAdsRequestDto?.name,
+        location: { connect: { id: createAdsRequestDto?.belongLocationId } },
+        status: LocationStatus.AWAITING_UPDATE,
+      };
+
+      if (!imageUrls.length) {
+        locationData.image_urls = createAdsRequestDto.imgUrls;
+      } else {
+        locationData.image_urls = imageUrls;
+      }
+
+      const result = await this.prismaService.ads_request.create({
+        data: {
+          user: { connect: { id: createAdsRequestDto.userId } },
+          target_type: TargetType.LOCATION,
+          type: AdsRequestType.UPDATE_DATA,
+          reason: createAdsRequestDto.reason,
+          status: AdsRequestStatus.SENT,
+          location: {
+            create: locationData,
+          },
+        },
+      });
+
+      return result;
+    } catch (error) {
+      if (!imageUrls.length) await deleteFilesFromFirebase(imageUrls);
+      throw new Error(error);
+    }
+  }
+
+  async createUpdatePanel(
+    createAdsRequestDto: CreateAdsRequestUpdatePanelDto,
+    images?: Express.Multer.File[],
+  ) {
+    let imageUrls = [];
+    try {
+      if (images.length) {
+        const uploadImagesData = await uploadFilesFromFirebase(
+          images,
+          EUploadFolder.report,
+        );
+        if (!uploadImagesData.success) {
+          throw new Error('Failed to upload images!');
+        }
+        imageUrls = uploadImagesData.urls;
+      }
+
+      const panelData = {
+        width: createAdsRequestDto?.width,
+        height: createAdsRequestDto?.height,
+        create_contract_date: createAdsRequestDto?.createContractDate,
+        expired_contract_date: createAdsRequestDto?.expiredContractDate,
+        company_email: createAdsRequestDto?.companyEmail,
+        company_number: createAdsRequestDto?.companyNumber,
+        status: PanelStatus.AWAITING_UPDATE,
+        type: { connect: { id: createAdsRequestDto?.typeId } },
+        location: { connect: { id: createAdsRequestDto?.locationId } },
+        image_urls: undefined,
+        panel: { connect: { id: createAdsRequestDto?.belongPanelId } },
+      };
+
+      if (!imageUrls.length) {
+        panelData.image_urls = createAdsRequestDto.imgUrls;
+      } else {
+        panelData.image_urls = imageUrls;
+      }
+
+      const result = await this.prismaService.ads_request.create({
+        data: {
+          user: { connect: { id: createAdsRequestDto.userId } },
+          target_type: TargetType.PANEL,
+          type: AdsRequestType.UPDATE_DATA,
+          reason: createAdsRequestDto.reason,
+          status: AdsRequestStatus.SENT,
+          panel: {
+            create: panelData,
+          },
+        },
+      });
+
+      return result;
+    } catch (error) {
+      if (!imageUrls.length) await deleteFilesFromFirebase(imageUrls);
+      throw new Error(error);
+    }
   }
 
   async findAll(pageOptionsAdsRequestDto: PageOptionsAdsRequestDto) {
@@ -66,14 +186,19 @@ export class AdsRequestService {
             include: {
               district: true,
               ward: true,
+              type: true,
+              ad_type: true,
             },
           },
           panel: {
             include: {
+              type: true,
               location: {
                 include: {
                   district: true,
                   ward: true,
+                  type: true,
+                  ad_type: true,
                 },
               },
             },
@@ -101,14 +226,19 @@ export class AdsRequestService {
           include: {
             district: true,
             ward: true,
+            type: true,
+            ad_type: true,
           },
         },
         panel: {
           include: {
+            type: true,
             location: {
               include: {
                 district: true,
                 ward: true,
+                type: true,
+                ad_type: true,
               },
             },
           },

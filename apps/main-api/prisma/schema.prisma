@@ -23,8 +23,8 @@ model panel {
   status                PanelStatus   @default(DRAFT)
   belong_panel_id       Int?
   ads_request           ads_request[]
-  belong_panel          panel?        @relation("PanelBelongTarget", fields: [belong_panel_id], references: [id], onDelete: Cascade)
-  belonged_panels       panel[]       @relation("PanelBelongTarget")
+  panel                 panel?        @relation("panelTopanel", fields: [belong_panel_id], references: [id], onDelete: Cascade)
+  other_panel           panel[]       @relation("panelTopanel")
   location              location      @relation(fields: [location_id], references: [id], onDelete: Cascade)
   type                  panel_type    @relation(fields: [type_id], references: [id], onDelete: Cascade)
   report                report[]
@@ -54,8 +54,8 @@ model location {
   status             LocationStatus     @default(APPROVED)
   ads_request        ads_request[]
   ad_type            advertisement_type @relation(fields: [ad_type_id], references: [id], onDelete: Cascade)
-  belong_location    location?          @relation("LocationBelongTarget", fields: [belong_location_id], references: [id], onDelete: Cascade)
-  belonged_location  location[]         @relation("LocationBelongTarget")
+  location           location?          @relation("locationTolocation", fields: [belong_location_id], references: [id], onDelete: Cascade)
+  other_location     location[]         @relation("locationTolocation")
   district           district           @relation(fields: [district_id], references: [id], onDelete: Cascade)
   type               location_type      @relation(fields: [type_id], references: [id], onDelete: Cascade)
   ward               ward               @relation(fields: [ward_id], references: [id], onDelete: Cascade)
@@ -164,11 +164,6 @@ model token {
   user        user     @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }
 
-enum LocationStatus {
-  APPROVED
-  AWAITING_UPDATE
-}
-
 enum PanelStatus {
   DRAFT
   APPROVED
@@ -184,4 +179,9 @@ enum UserRole {
   WARD_OFFICER
   DISTRICT_OFFICER
   DEPARTMENT_OFFICER
+}
+
+enum LocationStatus {
+  APPROVED
+  AWAITING_UPDATE
 }
