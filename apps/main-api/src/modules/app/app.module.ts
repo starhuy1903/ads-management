@@ -17,6 +17,7 @@ import { LocationTypeModule } from '../location-type/location-type.module';
 import { PanelTypeModule } from '../panel-type/panel-type.module';
 import { DistrictModule } from '../district/district.module';
 import { WardModule } from '../ward/ward.module';
+import { UserModule } from '../user/user.module';
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { WardModule } from '../ward/ward.module';
     PanelTypeModule,
     DistrictModule,
     WardModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],

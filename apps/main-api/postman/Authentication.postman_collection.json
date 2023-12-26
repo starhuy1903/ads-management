@@ -2,20 +2,11 @@
 	"info": {
 		"_postman_id": "586ffb49-c7ad-4ae2-b915-eefa714f55be",
 		"name": "Authentication",
-		"description": "# 🚀 Get started here\n\nThis collection guides you through CRUD operations (GET, POST, PUT, DELETE), variables, and tests.\n\n## 🔖 **How to use this collection**\n\n#### **Step 1: Send requests**\n\nRESTful APIs allow you to perform CRUD operations using the POST, GET, PUT, and DELETE HTTP methods.\n\nThis collection contains each of these request types. Open each request and click \"Send\" to see what happens.\n\n#### **Step 2: View responses**\n\nObserve the response tab for status code (200 OK), response time, and size.\n\n#### **Step 3: Send new Body data**\n\nUpdate or add new data in \"Body\" in the POST request. Typically, Body data is also used in PUT and PATCH requests.\n\n```\n{\n    \"name\": \"Add your name in the body\"\n}\n\n```\n\n#### **Step 4: Update the variable**\n\nVariables enable you to store and reuse values in Postman. We have created a variable called `base_url` with the sample request [https://postman-api-learner.glitch.me](https://postman-api-learner.glitch.me). Replace it with your API endpoint to customize this collection.\n\n#### **Step 5: Add tests in the \"Tests\" tab**\n\nTests help you confirm that your API is working as expected. You can write test scripts in JavaScript and view the output in the \"Test Results\" tab.\n\n<img src=\"https://content.pstmn.io/b5f280a7-4b09-48ec-857f-0a7ed99d7ef8/U2NyZWVuc2hvdCAyMDIzLTAzLTI3IGF0IDkuNDcuMjggUE0ucG5n\">\n\n## 💪 Pro tips\n\n- Use folders to group related requests and organize the collection.\n- Add more scripts in \"Tests\" to verify if the API works as expected and execute flows.\n    \n\n## ℹ️ Resources\n\n[Building requests](https://learning.postman.com/docs/sending-requests/requests/)  \n[Authorizing requests](https://learning.postman.com/docs/sending-requests/authorization/)  \n[Using variables](https://learning.postman.com/docs/sending-requests/variables/)  \n[Managing environments](https://learning.postman.com/docs/sending-requests/managing-environments/)  \n[Writing scripts](https://learning.postman.com/docs/writing-scripts/intro-to-scripts/)",
+		"description": "Authentication API for the ads management app",
 		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
 		"_exporter_id": "24188163"
 	},
 	"item": [
-		{
-			"name": "Health check",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": "{{LOCAL_URL}}/api/health-check"
-			},
-			"response": []
-		},
 		{
 			"name": "Sign up",
 			"request": {
@@ -23,16 +14,185 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"email\": \"chihien20027@gmail.com\",\n    \"password\": \"123456789\",\n    \"first_name\": \"Hien\",\n    \"last_name\": \"Truong\",\n    \"role\": \"WARD_OFFICER\"\n}",
+					"raw": "{\n    \"email\": \"chihien20025@gmail.com\",\n    \"password\": \"123456789\",\n    \"first_name\": \"Hien\",\n    \"last_name\": \"Truong\",\n    \"role\": \"DISTRICT_OFFICER\",\n    \"ward_id\": 1\n}",
 					"options": {
 						"raw": {
 							"language": "json"
 						}
 					}
 				},
-				"url": "{{LOCAL_URL}}/api/auth/create-user"
+				"url": "{{URL}}/api/auth/create-user"
 			},
-			"response": []
+			"response": [
+				{
+					"name": "As ward officer",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"chihien20023@gmail.com\",\n    \"password\": \"123456789\",\n    \"first_name\": \"Hien\",\n    \"last_name\": \"Truong\",\n    \"role\": \"WARD_OFFICER\",\n    \"ward_id\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8194/api/auth/create-user"
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "53"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"35-M6anRP2TP58iQeZtcVqZZj9yUCM\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 25 Dec 2023 09:35:09 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"message\": \"Create user successfully\"\n}"
+				},
+				{
+					"name": "As district officer",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"chihien20024@gmail.com\",\n    \"password\": \"123456789\",\n    \"first_name\": \"Hien\",\n    \"last_name\": \"Truong\",\n    \"role\": \"DISTRICT_OFFICER\",\n    \"district_id\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URL}}/api/auth/create-user"
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "53"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"35-M6anRP2TP58iQeZtcVqZZj9yUCM\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 25 Dec 2023 09:35:47 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"message\": \"Create user successfully\"\n}"
+				},
+				{
+					"name": "Bad request",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"chihien20025@gmail.com\",\n    \"password\": \"123456789\",\n    \"first_name\": \"Hien\",\n    \"last_name\": \"Truong\",\n    \"role\": \"DISTRICT_OFFICER\",\n    \"ward_id\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URL}}/api/auth/create-user"
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "53"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"35-AvMlDt5Wy7wty72ta8oVZvXvq5k\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 25 Dec 2023 09:36:03 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": false,\n    \"message\": \"district_id is required\"\n}"
+				}
+			]
 		},
 		{
 			"name": "Sign in",
@@ -41,16 +201,129 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"email\": \"chihien2002@gmail.com\",\n    \"password\": \"111111111\"\n}",
+					"raw": "{\n    \"email\": \"chihien20022@gmail.com\",\n    \"password\": \"12345678912\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
 						}
 					}
 				},
-				"url": "{{LOCAL_URL}}/api/auth/signin"
+				"url": "{{URL}}/api/auth/signin"
 			},
-			"response": []
+			"response": [
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"chihien20022@gmail.com\",\n    \"password\": \"123456789\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8194/api/auth/signin"
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "730"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"2da-5dc8nJ3iarbk3kKUyvUn1elrAB8\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 25 Dec 2023 09:34:03 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjksImVtYWlsIjoiY2hpaGllbjIwMDIyQGdtYWlsLmNvbSIsInJvbGUiOiJXQVJEX09GRklDRVIiLCJpYXQiOjE3MDM0OTY4NDIsImV4cCI6MTcwMzQ5NzE0Mn0.nSI8pguLdRAwar0MbyS6exDUgIchslPTrbLSoq_2HwI\",\n    \"refreshToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjksImVtYWlsIjoiY2hpaGllbjIwMDIyQGdtYWlsLmNvbSIsInJvbGUiOiJXQVJEX09GRklDRVIiLCJpYXQiOjE3MDM0OTY4NDIsImV4cCI6MTcwMzU4MzI0Mn0.rGLtp6nNULi2A5W5uA7U8RvaALFWW-hhvgUi7XZd3Pc\",\n    \"tokenId\": \"1c2bea54-af32-4c52-8462-959f1561fb39\",\n    \"accessTokenExpires\": \"2023-12-25T09:34:08.219Z\",\n    \"user\": {\n        \"id\": 9,\n        \"email\": \"chihien20022@gmail.com\",\n        \"first_name\": \"Hien\",\n        \"last_name\": \"Truong\",\n        \"phone_number\": \"0795907075\",\n        \"dob\": \"2023-12-23T00:00:00.000Z\",\n        \"role\": \"WARD_OFFICER\"\n    }\n}"
+				},
+				{
+					"name": "Wrong Credentials",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"chihien20022@gmail.com\",\n    \"password\": \"12345678912\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URL}}/api/auth/signin"
+					},
+					"status": "Forbidden",
+					"code": 403,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "51"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"33-wa80wLQvXGP0t3Etm4RHSIRT6TY\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 25 Dec 2023 09:47:20 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": false,\n    \"message\": \"Credentials incorrect\"\n}"
+				}
+			]
 		},
 		{
 			"name": "Log out",
@@ -58,7 +331,7 @@
 				"auth": {
 					"type": "bearer",
 					"bearer": {
-						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoiY2hpaGllbjIwMDJAZ21haWwuY29tIiwicm9sZSI6IldBUkRfT0ZGSUNFUiIsImlhdCI6MTcwMjY2MTkyMiwiZXhwIjoxNzAyNjYyMjIyfQ.X886Q100i0VzCHpZOrTM6tzQOJgQR9EiLkmT91nqNxY"
+						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjksImVtYWlsIjoiY2hpaGllbjIwMDIyQGdtYWlsLmNvbSIsInJvbGUiOiJXQVJEX09GRklDRVIiLCJpYXQiOjE3MDM0OTcwMDYsImV4cCI6MTcwMzQ5NzMwNn0.8KbpSr3Q1Rg8kmohaX5sSes256On6SUWOpqIURPGmRA"
 					}
 				},
 				"method": "POST",
@@ -72,16 +345,143 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"tokenId\": \"4737a183-ca4c-42d1-ab4c-bea6489ddd90\"\n}",
+					"raw": "{\n    \"tokenId\": \"a5d19870-ba60-4c8f-b87e-618faed4a44e\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
 						}
 					}
 				},
-				"url": "{{LOCAL_URL}}/api/auth/logout"
+				"url": "{{URL}}/api/auth/logout"
 			},
-			"response": []
+			"response": [
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"tokenId\": \"a5d19870-ba60-4c8f-b87e-618faed4a44e\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8194/api/auth/logout"
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "49"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"31-xbB5Es/piagNIL27aZl7G2S1sXE\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 25 Dec 2023 09:37:08 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"message\": \"Log out successfully\"\n}"
+				},
+				{
+					"name": "Invalid access token",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"tokenId\": \"a5d19870-ba60-4c8f-b87e-618faed4a44e\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URL}}/api/auth/logout"
+					},
+					"status": "Unauthorized",
+					"code": 401,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "42"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"2a-H4CLXoxSRMwDtqUCBiDzMCvYSTQ\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 25 Dec 2023 09:37:15 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": false,\n    \"message\": \"Unauthorized\"\n}"
+				}
+			]
 		},
 		{
 			"name": "Refresh token",
@@ -97,16 +497,206 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"refreshToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoiY2hpaGllbjIwMDJAZ21haWwuY29tIiwicm9sZSI6IldBUkRfT0ZGSUNFUiIsImlhdCI6MTcwMjY2MTkzOCwiZXhwIjoxNzAyNzQ4MzM4fQ.3_zwNbU3RXvGiOfknMqaZ_aIP6fIjTNX-qiUMvsVhH4\",\n    \"tokenId\": \"61698782-5803-4699-83f8-0e4ba0e72bb2\"\n}",
+					"raw": "{\n    \"refreshToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjksImVtYWlsIjoiY2hpaGllbjIwMDIyQGdtYWlsLmNvbSIsInJvbGUiOiJXQVJEX09GRklDRVIiLCJpYXQiOjE3MDM0OTcwNDksImV4cCI6MTcwMzU4MzQ0OX0.MHsJce_lNno46Ce-5dWjhab5Glxzh2r6UaPRE0xrUSw\",\n    \"tokenId\": \"aafeed10-3ace-4e09-afd7-85a3c6597142\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
 						}
 					}
 				},
-				"url": "{{LOCAL_URL}}/api/auth/refresh"
+				"url": "{{URL}}/api/auth/refresh"
 			},
-			"response": []
+			"response": [
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"refreshToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjksImVtYWlsIjoiY2hpaGllbjIwMDIyQGdtYWlsLmNvbSIsInJvbGUiOiJXQVJEX09GRklDRVIiLCJpYXQiOjE3MDM0OTcwNDksImV4cCI6MTcwMzU4MzQ0OX0.MHsJce_lNno46Ce-5dWjhab5Glxzh2r6UaPRE0xrUSw\",\n    \"tokenId\": \"aafeed10-3ace-4e09-afd7-85a3c6597142\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8194/api/auth/refresh"
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "557"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"22d-MGw0JCJYOO13Ropw0Q+klvAcGzE\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 25 Dec 2023 09:37:48 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjksImVtYWlsIjoiY2hpaGllbjIwMDIyQGdtYWlsLmNvbSIsInJvbGUiOiJXQVJEX09GRklDRVIiLCJpYXQiOjE3MDM0OTcwNjgsImV4cCI6MTcwMzQ5NzM2OH0.IcIGYL5sQJXEgeXduZvqdv7Hb4G0XEYm7xt2il-RAIE\",\n    \"refreshToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjksImVtYWlsIjoiY2hpaGllbjIwMDIyQGdtYWlsLmNvbSIsInJvbGUiOiJXQVJEX09GRklDRVIiLCJpYXQiOjE3MDM0OTcwNjgsImV4cCI6MTcwMzU4MzQ2OH0.FVtJUg5UoYCtVf1b9iymLn2acbLSx-tXlLeEbtDWSUM\",\n    \"tokenId\": \"aafeed10-3ace-4e09-afd7-85a3c6597142\",\n    \"accessTokenExpires\": \"2023-12-25T09:37:53.881Z\"\n}"
+				},
+				{
+					"name": "Refresh token expires",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"refreshToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjksImVtYWlsIjoiY2hpaGllbjIwMDIyQGdtYWlsLmNvbSIsInJvbGUiOiJXQVJEX09GRklDRVIiLCJpYXQiOjE3MDM0OTcwNDksImV4cCI6MTcwMzU4MzQ0OX0.MHsJce_lNno46Ce-5dWjhab5Glxzh2r6UaPRE0xrUSw\",\n    \"tokenId\": \"aafeed10-3ace-4e09-afd7-85a3c6597142\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URL}}/api/auth/refresh"
+					},
+					"status": "Forbidden",
+					"code": 403,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "51"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"33-fg4CfoKy8dFeQfFOcBpPNpIConw\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 25 Dec 2023 09:48:17 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": false,\n    \"message\": \"Refresh token expired\"\n}"
+				},
+				{
+					"name": "Invalid refresh token",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"refreshToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjksImVtYWlsIjoiY2hpaGllbjIwMDIyQGdtYWlsLmNvbSIsInJvbGUiOiJXQVJEX09GRklDRVIiLCJpYXQiOjE3MDM0OTcwNDksImV4cCI6MTcwMzU4MzQ0OX0.MHsJce_lNno46Ce-5dWjhab5Glxzh2r6UaPRE0xrUSE\",\n    \"tokenId\": \"aafeed10-3ace-4e09-afd7-85a3c6597142\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URL}}/api/auth/refresh"
+					},
+					"status": "Unauthorized",
+					"code": 401,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "43"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"2b-dGnJzt6gv1nJjX6DJ9RztDWptng\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 25 Dec 2023 09:48:45 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"Unauthorized\",\n    \"statusCode\": 401\n}"
+				}
+			]
 		},
 		{
 			"name": "Forgot password",
@@ -122,9 +712,178 @@
 						}
 					}
 				},
-				"url": "{{LOCAL_URL}}/api/auth/forgot-password"
+				"url": "{{URL}}/api/auth/forgot-password"
 			},
-			"response": []
+			"response": [
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"chihien2002@gmail.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8194/api/auth/forgot-password"
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "68"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"44-oalqnt/JZL7zXVUEXM690CBre3U\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 25 Dec 2023 09:39:52 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"message\": \"Forgot password email sent successfully\"\n}"
+				},
+				{
+					"name": "Email not exist",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"chihien2002123@gmail.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URL}}/api/auth/forgot-password"
+					},
+					"status": "Forbidden",
+					"code": 403,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "43"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"2b-T37sZRdC6Lp96Zu32m7NkGzYBus\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 25 Dec 2023 09:49:24 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": false,\n    \"message\": \"Invalid email\"\n}"
+				},
+				{
+					"name": "Bad request (Not email format)",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"chihien2002123gmail.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URL}}/api/auth/forgot-password"
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "77"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"4d-3V3Uy1KR57m8txxwRQ1zEUNG0HY\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 25 Dec 2023 09:49:39 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": [\n        \"email must be an email\"\n    ],\n    \"error\": \"Bad Request\",\n    \"statusCode\": 400\n}"
+				}
+			]
 		},
 		{
 			"name": "Reset password",
@@ -133,31 +892,129 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"verifyToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoiY2hpaGllbjIwMDJAZ21haWwuY29tIiwicm9sZSI6IldBUkRfT0ZGSUNFUiIsImlhdCI6MTcwMjY2MTk2NCwiZXhwIjoxNzAyNjYyMjY0fQ.x2CR--f55lIbSyVAtLMqIFAV40Ct25miJTWB5fiCfOs\",\n    \"newPassword\": \"111111111\"\n}",
+					"raw": "{\n    \"verifyToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjQsImVtYWlsIjoiY2hpaGllbjIwMDJAZ21haWwuY29tIiwicm9sZSI6IldBUkRfT0ZGSUNFUiIsImlhdCI6MTcwMzQ5NzA5MSwiZXhwIjoxNzAzNDk3MzkxfQ.Sbc2EPRr8mw7p6Za2ZzwYWz1nyUirzHq-kqae-YfM6Q\",\n    \"newPassword\": \"111111111\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
 						}
 					}
 				},
-				"url": "{{LOCAL_URL}}/api/auth/reset-password"
+				"url": "{{URL}}/api/auth/reset-password"
 			},
-			"response": []
-		},
-		{
-			"name": "Test role",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": {
-						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoiY2hpaGllbjIwMDJAZ21haWwuY29tIiwicm9sZSI6IldBUkRfT0ZGSUNFUiIsImlhdCI6MTcwMjY2MTkxNSwiZXhwIjoxNzAyNjYyMjE1fQ.y0u9hcLpyXohrw5ch1kW_wLcQ7ogweIwviFiPe6rHjg"
-					}
+			"response": [
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"verifyToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjQsImVtYWlsIjoiY2hpaGllbjIwMDJAZ21haWwuY29tIiwicm9sZSI6IldBUkRfT0ZGSUNFUiIsImlhdCI6MTcwMzQ5NzE5MSwiZXhwIjoxNzAzNDk3NDkxfQ.UdhcWB3pkeZYAfo1ks0x8AbF6HqLgcOp6qWC7sgvPD4\",\n    \"newPassword\": \"111111111\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8194/api/auth/reset-password"
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "56"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"38-rXF4N3kDlPtEEMF9jP5telQ3l7w\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 25 Dec 2023 09:41:20 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"message\": \"Reset password successfully\"\n}"
 				},
-				"method": "POST",
-				"header": [],
-				"url": "{{LOCAL_URL}}/api/auth/test-role"
-			},
-			"response": []
+				{
+					"name": "Invalid token",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"verifyToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjQsImVtYWlsIjoiY2hpaGllbjIwMDJAZ21haWwuY29tIiwicm9sZSI6IldBUkRfT0ZGSUNFUiIsImlhdCI6MTcwMzQ5NzE5MSwiZXhwIjoxNzAzNDk3NDkxfQ.UdhcWB3pkeZYAfo1ks0x8AbF6HqLgcOp6qWC7sgvPD4\",\n    \"newPassword\": \"111111111\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URL}}/api/auth/reset-password"
+					},
+					"status": "Unauthorized",
+					"code": 401,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "43"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"2b-dGnJzt6gv1nJjX6DJ9RztDWptng\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 25 Dec 2023 09:50:16 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"Unauthorized\",\n    \"statusCode\": 401\n}"
+				}
+			]
 		}
 	],
 	"event": [
