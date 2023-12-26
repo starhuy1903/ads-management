@@ -14,6 +14,7 @@ import {
   uploadFilesFromFirebase,
 } from '../../services/files/upload';
 import { deleteFilesFromFirebase } from '../../services/files/delete';
+import { isNil } from 'lodash';
 
 @Injectable()
 export class AdsRequestService {
@@ -267,5 +268,195 @@ export class AdsRequestService {
         id: id,
       },
     });
+  }
+
+  async approveRequest(id: number) {
+    let oldImageUrls: string[] = [];
+    try {
+      return await this.prismaService.$transaction(async (tx) => {
+        const adsRequest = await tx.ads_request.findFirst({
+          include: {
+            location: {
+              include: {
+                location: {},
+              },
+            },
+            panel: {
+              include: {
+                panel: {},
+              },
+            },
+          },
+          where: {
+            id: id,
+          },
+        });
+
+        if (
+          isNil(adsRequest) ||
+          [
+            AdsRequestStatus.APPROVED,
+            AdsRequestStatus.CANCELED,
+            AdsRequestStatus.REJECTED,
+          ].includes(adsRequest.status as AdsRequestStatus)
+        ) {
+          return false; // TODO: return message instead
+        }
+
+        if (adsRequest.type === AdsRequestType.UPDATE_DATA) {
+          if (
+            adsRequest.target_type === TargetType.PANEL &&
+            !isNil(adsRequest.panel)
+          ) {
+            const newPanel = adsRequest.panel;
+
+            if (!isNil(newPanel.panel)) {
+              oldImageUrls = [...newPanel.panel.image_urls];
+              await tx.panel.update({
+                where: {
+                  id: newPanel.panel.id,
+                },
+                data: {
+                  width: newPanel.width,
+                  height: newPanel.height,
+                  type_id: newPanel.type_id,
+                  location_id: newPanel.location_id,
+                  image_urls: [...newPanel.image_urls],
+                  create_contract_date: newPanel.create_contract_date,
+                  expired_contract_date: newPanel.expired_contract_date,
+                  company_email: newPanel.company_email,
+                  company_number: newPanel.company_number,
+                },
+              });
+
+              await tx.ads_request.update({
+                where: {
+                  id: adsRequest.id,
+                },
+                data: {
+                  status: AdsRequestStatus.APPROVED,
+                  panel_id: newPanel.panel.id,
+                },
+              });
+
+              await tx.panel.delete({
+                where: {
+                  id: newPanel.id,
+                },
+              });
+            }
+          } else if (
+            adsRequest.target_type === TargetType.LOCATION &&
+            !isNil(adsRequest.location)
+          ) {
+            const newLocation = adsRequest.location;
+
+            if (!isNil(newLocation.location)) {
+              oldImageUrls = [...newLocation.location.image_urls];
+              await tx.location.update({
+                where: {
+                  id: newLocation.location.id,
+                },
+                data: {
+                  lat: newLocation.lat,
+                  long: newLocation.long,
+                  isPlanning: newLocation.isPlanning,
+                  district_id: newLocation.district_id,
+                  ward_id: newLocation.ward_id,
+                  full_address: newLocation.full_address,
+                  type_id: newLocation.type_id,
+                  ad_type_id: newLocation.ad_type_id,
+                  image_urls: [...newLocation.image_urls],
+                  name: newLocation.name,
+                },
+              });
+
+              await tx.ads_request.update({
+                where: {
+                  id: adsRequest.id,
+                },
+                data: {
+                  status: AdsRequestStatus.APPROVED,
+                  location_id: newLocation.location.id,
+                },
+              });
+
+              await tx.location.delete({
+                where: {
+                  id: newLocation.id,
+                },
+              });
+            }
+          }
+        } else if (adsRequest.type === AdsRequestType.APPROVED_PANEL) {
+          if (!isNil(adsRequest.panel)) {
+            await tx.panel.update({
+              where: {
+                id: adsRequest.panel.id,
+              },
+              data: {
+                status: PanelStatus.APPROVED,
+              },
+            });
+          }
+
+          await tx.ads_request.update({
+            where: {
+              id: adsRequest.id,
+            },
+            data: {
+              status: AdsRequestStatus.APPROVED,
+            },
+          });
+        }
+
+        await deleteFilesFromFirebase(oldImageUrls);
+        return true;
+      });
+    } catch (e) {
+      // rollback already
+      // silent
+      console.error('error: ', e);
+      return false;
+    }
+  }
+
+  async rejectRequest(id: number) {
+    try {
+      return await this.prismaService.$transaction(async (tx) => {
+        const adsRequest = await tx.ads_request.findFirst({
+          where: {
+            id: id,
+          },
+        });
+
+        if (
+          isNil(adsRequest) ||
+          [
+            AdsRequestStatus.APPROVED,
+            AdsRequestStatus.CANCELED,
+            AdsRequestStatus.REJECTED,
+          ].includes(adsRequest.status as AdsRequestStatus)
+        ) {
+          return false; // TODO: return message instead
+        }
+
+        await tx.ads_request.update({
+          where: {
+            id: adsRequest.id,
+          },
+          data: {
+            status: AdsRequestStatus.REJECTED,
+          },
+        });
+
+        return true;
+      });
+    } catch (e) {
+      // rollback already
+      // silent
+      console.error('error: ', e);
+      return false;
+    }
   }
 }

@@ -148,6 +148,40 @@ export class AdsRequestController {
     }
   }
 
+  @Patch('/:id/approve')
+  async approveRequest(@Param('id') id: string, @Res() res: CustomResponse) {
+    try {
+      const result = await this.adsRequestService.approveRequest(+id);
+      if (result === true) {
+        return res.success({ message: 'Ads request approved!' });
+      } else {
+        return res.error({ message: 'Ads request approve failed!' });
+      }
+    } catch (error) {
+      return res.error({
+        statusCode: 500,
+        message: error.message || 'Internal Server Error',
+      });
+    }
+  }
+
+  @Patch('/:id/reject')
+  async rejectRequest(@Param('id') id: string, @Res() res: CustomResponse) {
+    try {
+      const result = await this.adsRequestService.rejectRequest(+id);
+      if (result === true) {
+        return res.success({ message: 'Ads request rejected!' });
+      } else {
+        return res.error({ message: 'Ads request rejected failed!' });
+      }
+    } catch (error) {
+      return res.error({
+        statusCode: 500,
+        message: error.message || 'Internal Server Error',
+      });
+    }
+  }
+
   @Patch(':id')
   @UseGuards(JwtGuard)
   @Roles(UserRole.DEPARTMENT_OFFICER)
