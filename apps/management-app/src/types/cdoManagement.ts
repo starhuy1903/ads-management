@@ -35,9 +35,18 @@ export type LocationType = {
   name: string;
 };
 
-export type GetListResult<T> = {
-  rowsCount: number;
-  data: Array<T>;
+type ListResult<K extends string, DataType> = { [key in K]: Array<DataType> };
+
+export type GetListResult<K extends string, DataType> = {
+  success: boolean;
+  message?: string;
+  data: { totalPages: number } & ListResult<K, DataType>;
+};
+
+export type GetDataResult<DataType> = {
+  success: boolean;
+  message?: string;
+  data: DataType;
 };
 
 export type DistrictDto = {

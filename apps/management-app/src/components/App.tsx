@@ -256,7 +256,9 @@ const publicRoutes = createBrowserRouter([
 
 function App() {
   const isLoggedIn = useAppSelector((state) => state.user.isLoggedIn);
-  const { isLoading } = useGetProfileQuery();
+  const { data, isLoading } = useGetProfileQuery();
+
+  console.log(data)
   const { isCDO } = useAppSelector(checkRole);
 
   const protectedRoutes = isCDO ? CDORoutes : officerRoutes;

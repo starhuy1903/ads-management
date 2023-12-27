@@ -53,7 +53,7 @@ const WardsDetail = () => {
     defaultValues: async () => {
       try {
         const ward = await getWard(parseInt(id!), true).unwrap();
-        return { name: ward.name, districtId: ward.district_id };
+        return { name: ward.data.name, districtId: ward.data.district_id };
       } catch (error) {
         showError(
           isApiErrorResponse(error) && error.status === 404
@@ -95,7 +95,7 @@ const WardsDetail = () => {
   const handleDeleteWard = useCallback(() => {
     dispatch(
       showModal(ModalKey.GENERAL, {
-        headerText: `Delete ${data?.name} ?`,
+        headerText: `Delete ${data?.data.name} ?`,
         
         primaryButtonText: 'Confirm',
         onClickPrimaryButton: async () => {
@@ -109,7 +109,7 @@ const WardsDetail = () => {
         },
       }),
     );
-  }, [data?.name, deleteWards, dispatch, id, navigate]);
+  }, [data?.data.name, deleteWards, dispatch, id, navigate]);
 
   return (
     <StaticActionBar
@@ -171,7 +171,7 @@ const WardsDetail = () => {
               control={control}
               name="districtId"
               label="District"
-              options={districts.data.map((e) => ({
+              options={districts.data.districts.map((e) => ({
                 value: e.id.toString(),
                 label: e.name,
               }))}

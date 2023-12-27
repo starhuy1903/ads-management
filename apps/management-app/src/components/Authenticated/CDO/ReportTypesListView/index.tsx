@@ -33,18 +33,22 @@ const ReportTypesListView = () => {
     limit: 10,
   });
 
-  const [rowCountState, setRowCountState] = useState(data?.rowsCount || 0);
+  const [rowCountState, setRowCountState] = useState(
+    data?.data.totalPages || 0,
+  );
 
   useEffect(() => {
     setRowCountState((prevRowCountState) =>
-      data?.rowsCount !== undefined ? data?.rowsCount : prevRowCountState,
+      data?.data.totalPages !== undefined
+        ? data?.data.totalPages
+        : prevRowCountState,
     );
-  }, [data?.rowsCount, setRowCountState]);
+  }, [data?.data.totalPages, setRowCountState]);
 
   const [deleteReportTypes] = useDeleteReportTypesMutation();
 
   const rows: GridRowsProp =
-    data?.data || Array.from({ length: 10 }, (_, i) => ({ id: i }));
+    data?.data.reportTypes || Array.from({ length: 10 }, (_, i) => ({ id: i }));
 
   const columns: GridColDef[] = isLoading
     ? [
@@ -135,7 +139,7 @@ const ReportTypesListView = () => {
                 dispatch(
                   showModal(ModalKey.GENERAL, {
                     headerText: `Delete ${params.row.name} ?`,
-                    
+
                     primaryButtonText: 'Confirm',
                     onClickPrimaryButton: async () => {
                       try {
