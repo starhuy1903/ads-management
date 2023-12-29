@@ -50,7 +50,7 @@ export default function CitizenReport() {
         fullName: '',
         email: '',
         phoneNumber: '',
-        imageFiles: [],
+        images: [],
         captcha: '',
       },
     });
@@ -61,7 +61,7 @@ export default function CitizenReport() {
     field: { value: descValue, onChange: onChangeDesc },
   } = useController({
     control,
-    name: 'description',
+    name: 'content',
     rules: {
       maxLength: {
         value: 5000,
@@ -72,8 +72,8 @@ export default function CitizenReport() {
   });
 
   const handleAddImage = useCallback(
-    (file: File) => setValue('imageFiles', [...formValue.imageFiles, file]),
-    [formValue.imageFiles, setValue],
+    (file: File) => setValue('images', [...formValue.images, file]),
+    [formValue.images, setValue],
   );
 
   const handleUpdateImage = useCallback(
@@ -96,11 +96,11 @@ export default function CitizenReport() {
   const handleDeleteImage = useCallback(
     (file: File) => {
       setValue(
-        'imageFiles',
-        formValue.imageFiles.filter((image) => image !== file),
+        'images',
+        formValue.images.filter((image) => image !== file),
       );
     },
-    [formValue.imageFiles, setValue],
+    [formValue.images, setValue],
   );
 
   const renderUpdateImageContainer = ({
@@ -188,11 +188,11 @@ export default function CitizenReport() {
               {formError.phoneNumber?.message}
             </FormHelperText>
           </FormControl>
-          <FormControl fullWidth error={!!formError.reportType}>
+          <FormControl fullWidth error={!!formError.typeId}>
             <FormLabel htmlFor="reportType">Report Type</FormLabel>
             <Controller
               control={control}
-              name="reportType"
+              name="typeId"
               defaultValue={reportTypes[0].id}
               rules={{ required: 'Please select a report type.' }}
               render={({ field: { onChange, value } }) => (
@@ -211,13 +211,14 @@ export default function CitizenReport() {
               )}
             />
             <FormHelperText id="reportType-helper-text">
-              {formError.reportType?.message}
+              {formError.typeId?.message}
             </FormHelperText>
           </FormControl>
         </Stack>
         <FormControl fullWidth>
           <FormLabel>Description</FormLabel>
           <TinyEditor
+            name="report-content"
             value={descValue}
             onChange={onChangeDesc}
             disabled={isLoading}
@@ -227,7 +228,7 @@ export default function CitizenReport() {
         <FormControl>
           <FormLabel sx={{ mb: 1 }}>Upload image</FormLabel>
           <Stack direction="row" spacing={2}>
-            {formValue.imageFiles.map((image, index) => (
+            {formValue.images.map((image, index) => (
               <ImagePreview
                 key={index}
                 image={image}
@@ -235,7 +236,7 @@ export default function CitizenReport() {
                 onDeleteImage={handleDeleteImage}
               />
             ))}
-            {formValue.imageFiles.length < 2 && (
+            {formValue.images.length < 2 && (
               <DropFileContainer
                 onDropFile={handleUpdateImage}
                 acceptMIMETypes={ImageFileConfig.ACCEPTED_MINE_TYPES}
