@@ -1,3 +1,4 @@
+import auth from '@/utils/auth';
 import {
   CredentialPayload,
   ForgotPasswordPayload,
@@ -5,18 +6,11 @@ import {
   LoginResponse,
   LogoutPayload,
   MessageResponse,
-  RegisterPayload,
-  RegisterResponse,
   ResetPasswordPayload,
   UserProfile,
   VerifyPayload,
 } from '../../types/user';
-import {
-  logOut,
-  setIsLoggedIn,
-  setProfile,
-  setToken,
-} from '../slice/userSlice';
+import { setIsLoggedIn, setProfile } from '../slice/userSlice';
 import { apiSlice } from './baseApiSlice';
 
 export const userApiSlice = apiSlice.injectEndpoints({
@@ -31,19 +25,12 @@ export const userApiSlice = apiSlice.injectEndpoints({
         try {
           const { data } = await queryFulfilled;
           dispatch(setProfile(data.user));
-          dispatch(setToken(data));
           dispatch(setIsLoggedIn(true));
+          auth.setToken(data.accessToken, data.refreshToken);
         } catch (error) {
           console.log(error);
         }
       },
-    }),
-    register: build.mutation<RegisterResponse, RegisterPayload>({
-      query: (body) => ({
-        url: 'auth/signup',
-        method: 'POST',
-        body,
-      }),
     }),
     logout: build.mutation<MessageResponse, LogoutPayload>({
       query: (body) => ({
@@ -51,14 +38,6 @@ export const userApiSlice = apiSlice.injectEndpoints({
         method: 'POST',
         body,
       }),
-      onQueryStarted: async (_, { dispatch, queryFulfilled }) => {
-        try {
-          await queryFulfilled;
-          dispatch(logOut());
-        } catch (error) {
-          console.log(error);
-        }
-      },
     }),
     verify: build.mutation<MessageResponse, VerifyPayload>({
       query: (body) => ({
@@ -100,8 +79,7 @@ export const userApiSlice = apiSlice.injectEndpoints({
 
 export const {
   useLoginMutation,
-  useGetProfileQuery,
-  useRegisterMutation,
+  useLazyGetProfileQuery,
   useLogoutMutation,
   useVerifyMutation,
   useForgotPasswordMutation,

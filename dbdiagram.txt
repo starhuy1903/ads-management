@@ -90,6 +90,8 @@ Table user { // User - Các phân hệ Cán bộ
   phone_number string
   dob Datetime
   role ENUM // [WARD_OFFICER - Cán bộ Phường, DISTRICT_OFFICER - Cán bộ Quận, DEPARTMENT_OFFICER - Cán bộ Sở]
+  ward_id integer
+  district_id integer
   account_verified Boolean // Đã xác thực tài khoản
   reset_password Boolean // Đang reset mật khẩu
   created_at Datetime
@@ -115,3 +117,5 @@ Ref: ads_request.target_id > panel.id
 Ref: ads_request.target_id > location.id
 Ref: token.user_id > user.id
 Ref: ads_request.user_id > user.id
+Ref: user.ward_id > ward.id
+Ref: user.district_id > district.id

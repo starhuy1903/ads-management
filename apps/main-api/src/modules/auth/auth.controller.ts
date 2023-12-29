@@ -16,9 +16,6 @@ import {
 } from './dto';
 import { IRequestWithUser } from './interfaces';
 import { JwtGuard, JwtRefreshGuard, JwtVerifyGuard } from './guards';
-import { Roles } from './decorators';
-import { UserRole } from '@prisma/client';
-import { RolesGuard } from './guards/roles.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -56,7 +53,7 @@ export class AuthController {
   @Post('forgot-password')
   async forgotPassword(@Body() dto: ForgotPasswordDto) {
     const email = dto.email;
-    await this.authService.forgotPassword(email);
+    return await this.authService.forgotPassword(email);
   }
 
   @UseGuards(JwtVerifyGuard)
@@ -71,15 +68,5 @@ export class AuthController {
       payload['sub'],
       dto.newPassword,
     );
-  }
-
-  @Roles(UserRole.WARD_OFFICER)
-  @UseGuards(JwtGuard, RolesGuard)
-  @Post('test-role')
-  async testRoles() {
-    return {
-      success: true,
-      message: 'test roles',
-    };
   }
 }

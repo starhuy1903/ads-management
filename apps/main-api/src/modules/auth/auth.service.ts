@@ -56,6 +56,54 @@ export class AuthService {
       });
     }
 
+    // Validate ward and district
+    // Check if ward or district is provided for the role
+    if (role === UserRole.WARD_OFFICER) {
+      if (!dto.ward_id) {
+        throw new BadRequestException({
+          success: false,
+          message: 'ward_id is required',
+        });
+      }
+
+      // Check if ward exists in db
+      const ward = await this.prismaService.ward.findUnique({
+        where: {
+          id: dto.ward_id,
+        },
+      });
+
+      if (!ward) {
+        throw new BadRequestException({
+          success: false,
+          message: 'ward_id is invalid',
+        });
+      }
+    }
+
+    if (role === UserRole.DISTRICT_OFFICER) {
+      if (!dto.district_id) {
+        throw new BadRequestException({
+          success: false,
+          message: 'district_id is required',
+        });
+      }
+
+      // Check if district exists in db
+      const district = await this.prismaService.district.findUnique({
+        where: {
+          id: dto.district_id,
+        },
+      });
+
+      if (!district) {
+        throw new BadRequestException({
+          success: false,
+          message: 'district_id is invalid',
+        });
+      }
+    }
+
     // Hash password
     const password = await argon.hash(dto.password);
     try {
@@ -67,6 +115,8 @@ export class AuthService {
           first_name: dto.first_name,
           last_name: dto.last_name,
           role: role,
+          ward_id: dto.ward_id,
+          district_id: dto.district_id,
         },
       });
 
@@ -340,6 +390,11 @@ export class AuthService {
 
     try {
       await this.mailService.sendEmailTemplate(data);
+
+      return {
+        success: true,
+        message: 'Forgot password email sent successfully',
+      };
     } catch (err) {
       throw new HttpException(
         {

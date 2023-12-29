@@ -80,6 +80,7 @@ model district {
   name     String
   location location[]
   ward     ward[]
+  user     user[]
 }
 
 model ward {
@@ -87,6 +88,7 @@ model ward {
   name        String
   district_id Int
   location    location[]
+  user        user[]
   district    district   @relation(fields: [district_id], references: [id], onDelete: Cascade)
 }
 
@@ -144,6 +146,10 @@ model user {
   created_at     DateTime      @default(now())
   modified_at    DateTime      @default(now()) @updatedAt
   role           UserRole      @default(WARD_OFFICER)
+  ward_id        Int?
+  district_id    Int?
+  ward           ward?          @relation(fields: [ward_id], references: [id], onDelete: Cascade)
+  district       district?      @relation(fields: [district_id], references: [id], onDelete: Cascade)
   ads_request    ads_request[]
   tokens         token[]
 }

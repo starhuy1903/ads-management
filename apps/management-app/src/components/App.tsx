@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import 'react-perfect-scrollbar/dist/css/styles.css';
 import {
   Navigate,
@@ -5,7 +6,7 @@ import {
   createBrowserRouter,
 } from 'react-router-dom';
 import { useAppSelector } from '@/store';
-import { useGetProfileQuery } from '@/store/api/userApiSlice';
+import { useLazyGetProfileQuery } from '@/store/api/userApiSlice';
 import { checkRole } from '@/store/slice/userSlice';
 import AdsTypesCreate from './Authenticated/CDO/AdsTypesCreate';
 import AdsTypesDetail from './Authenticated/CDO/AdsTypesDetail';
@@ -52,7 +53,6 @@ import CitizenHome from './Unauthenticated/Citizen/CitizenHome';
 import CitizenReport from './Unauthenticated/Citizen/CitizenReport';
 import ForgotPassword from './Unauthenticated/ForgotPassword';
 import Login from './Unauthenticated/Login';
-import Register from './Unauthenticated/Register';
 import Verify from './Unauthenticated/Verify';
 
 // Culture Department Officer
@@ -285,10 +285,6 @@ const publicRoutes = createBrowserRouter([
         element: <Login />,
       },
       {
-        path: '/register',
-        element: <Register />,
-      },
-      {
         path: '/verify',
         element: <Verify />,
       },
@@ -306,10 +302,16 @@ const publicRoutes = createBrowserRouter([
 
 function App() {
   const isLoggedIn = useAppSelector((state) => state.user.isLoggedIn);
-  const { isLoading } = useGetProfileQuery();
+  const [getProfile, { isLoading }] = useLazyGetProfileQuery();
   const { isCDO } = useAppSelector(checkRole);
 
   const protectedRoutes = isCDO ? CDORoutes : officerRoutes;
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      getProfile();
+    }
+  }, [isLoggedIn, getProfile]);
 
   if (isLoading) {
     return <CenterLoading />;

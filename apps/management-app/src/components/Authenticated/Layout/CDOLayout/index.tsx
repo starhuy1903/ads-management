@@ -1,6 +1,6 @@
 import { Box, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { CSSProperties, useState } from 'react';
+import { useState } from 'react';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import { Outlet } from 'react-router-dom';
 import Header from '../OfficerLayout/Header';
