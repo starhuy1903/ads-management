@@ -21,6 +21,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '@/store';
 import { useLogoutMutation } from '@/store/api/userApiSlice';
 import { logOut } from '@/store/slice/userSlice';
+import auth from '@/utils/auth';
 
 const PopperListItem = styled(ListItem)(({ theme }) => ({
   padding: 0,
@@ -84,7 +85,7 @@ function ProfileSection({ src, alt }: ProfileSectionProps) {
     navigate('/');
     dispatch(logOut());
     await logoutRequest({
-      tokenId: localStorage.getItem('refreshToken') || '',
+      tokenId: auth.getRefreshToken(),
     });
   }, [logoutRequest, navigate, dispatch]);
 
