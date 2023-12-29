@@ -10,7 +10,7 @@ import {
   UserProfile,
   VerifyPayload,
 } from '../../types/user';
-import { logOut, setIsLoggedIn, setProfile } from '../slice/userSlice';
+import { setIsLoggedIn, setProfile } from '../slice/userSlice';
 import { apiSlice } from './baseApiSlice';
 
 export const userApiSlice = apiSlice.injectEndpoints({
@@ -38,14 +38,6 @@ export const userApiSlice = apiSlice.injectEndpoints({
         method: 'POST',
         body,
       }),
-      onQueryStarted: async (_, { dispatch, queryFulfilled }) => {
-        try {
-          await queryFulfilled;
-          dispatch(logOut());
-        } catch (error) {
-          console.log(error);
-        }
-      },
     }),
     verify: build.mutation<MessageResponse, VerifyPayload>({
       query: (body) => ({

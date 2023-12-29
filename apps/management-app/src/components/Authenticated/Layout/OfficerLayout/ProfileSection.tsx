@@ -18,7 +18,9 @@ import {
 import { useTheme, styled } from '@mui/material/styles';
 import { useCallback, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAppDispatch } from '@/store';
 import { useLogoutMutation } from '@/store/api/userApiSlice';
+import { logOut } from '@/store/slice/userSlice';
 
 const PopperListItem = styled(ListItem)(({ theme }) => ({
   padding: 0,
@@ -58,6 +60,7 @@ function ProfileSection({ src, alt }: ProfileSectionProps) {
   const theme = useTheme();
   const [logoutRequest] = useLogoutMutation();
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const anchorRef = useRef<HTMLButtonElement>(null);
   const [popperOpen, setPopperOpen] = useState(false);
@@ -78,11 +81,12 @@ function ProfileSection({ src, alt }: ProfileSectionProps) {
   };
 
   const handleLogout = useCallback(async () => {
+    navigate('/');
+    dispatch(logOut());
     await logoutRequest({
       tokenId: localStorage.getItem('refreshToken') || '',
     });
-    navigate('/');
-  }, [logoutRequest, navigate]);
+  }, [logoutRequest, navigate, dispatch]);
 
   return (
     <>
