@@ -1,3 +1,4 @@
+import { GetList } from '@/types/common';
 import { CreatedReport, ReportPayload, ReportType } from '@/types/report';
 import { apiSlice } from './baseApiSlice';
 
@@ -29,7 +30,7 @@ export const reportApiSlice = apiSlice.injectEndpoints({
         url: 'reports',
       }),
     }),
-    getReportTypes: build.query<ReportType[], void>({
+    getReportTypes: build.query<GetList<ReportType>, void>({
       query: () => ({
         url: 'report-types',
       }),

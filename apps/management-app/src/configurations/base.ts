@@ -1,5 +1,5 @@
 export const baseConfigs = {
-  apiUrl: 'http://localhost:8194/api',
+  apiUrl: 'http://localhost:8200/api',
   tinyMceEditor: 'kulkkatvrqim8ho9lhxqo5d0l4u80m68n44pbjphhlyzsy8n',
   mapBox:
     'pk.eyJ1Ijoic3Rhcmh1eTE5MDMiLCJhIjoiY2xwcXV6bmNnMDE0ejJqbzE3YWNqd3ViMCJ9.mWC4Rz_t-lMCPakGKCZtyQ',

@@ -39,8 +39,9 @@ import UploadImageCard from './UploadImageCard';
 export default function CitizenReport() {
   const dispatch = useAppDispatch();
   const [createReport, { isLoading }] = useCreateReportMutation();
-  const { data: reportTypesData, isSuccess: hasReportTypesData } =
+  const { data: reportTypesRes, isSuccess: hasReportTypesData } =
     useGetReportTypesQuery();
+  const reportTypes = reportTypesRes?.data;
 
   const { handleSubmit, register, control, formState, setValue, watch } =
     useForm<ReportPayload>({
@@ -115,7 +116,7 @@ export default function CitizenReport() {
     const res = await createReport(data).unwrap();
   };
 
-  if (!hasReportTypesData) {
+  if (!hasReportTypesData || !reportTypes) {
     return <CenterLoading />;
   }
 
@@ -192,7 +193,7 @@ export default function CitizenReport() {
             <Controller
               control={control}
               name="reportType"
-              defaultValue={reportTypesData[0].id}
+              defaultValue={reportTypes[0].id}
               rules={{ required: 'Please select a report type.' }}
               render={({ field: { onChange, value } }) => (
                 <Select
@@ -201,7 +202,7 @@ export default function CitizenReport() {
                   onChange={onChange}
                   aria-describedby="reportType-helper-text"
                 >
-                  {reportTypesData.map((type) => (
+                  {reportTypes.map((type) => (
                     <MenuItem key={type.id} value={type.id}>
                       {type.value}
                     </MenuItem>

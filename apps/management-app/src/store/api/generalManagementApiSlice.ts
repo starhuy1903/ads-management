@@ -132,10 +132,10 @@ export const generalManagementApiSlice = apiSlice.injectEndpoints({
       { page?: number; limit?: number }
     >({
       query: (arg) => ({
-        url: `/reportTypes`,
+        url: `/report-types`,
         params: {
-          page: arg.page,
-          limit: arg.limit,
+          page: arg?.page,
+          limit: arg?.limit,
         },
       }),
     }),
