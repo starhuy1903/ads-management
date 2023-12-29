@@ -42,7 +42,6 @@ import CitizenHome from './Unauthenticated/Citizen/CitizenHome';
 import CitizenReport from './Unauthenticated/Citizen/CitizenReport';
 import ForgotPassword from './Unauthenticated/ForgotPassword';
 import Login from './Unauthenticated/Login';
-import Register from './Unauthenticated/Register';
 import Verify from './Unauthenticated/Verify';
 
 // Culture Department Officer
@@ -233,10 +232,6 @@ const publicRoutes = createBrowserRouter([
       {
         path: '/login',
         element: <Login />,
-      },
-      {
-        path: '/register',
-        element: <Register />,
       },
       {
         path: '/verify',
