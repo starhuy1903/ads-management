@@ -25,6 +25,7 @@ export const userSlice = createSlice({
     logOut: (state) => {
       state.profile = null;
       state.isLoggedIn = false;
+      auth.logout();
     },
   },
 });
