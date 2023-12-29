@@ -96,6 +96,7 @@ export default function Login() {
           </div>
 
           <button
+            disabled={isLoading}
             type="submit"
             className="w-full text-white bg-[#7F56D9] py-2 rounded-lg font-semibold"
           >
