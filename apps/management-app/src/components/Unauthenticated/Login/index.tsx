@@ -17,9 +17,9 @@ export default function Login() {
     try {
       await requestLogin(data).unwrap();
     } catch (err) {
-      if (isApiErrorResponse(err)) {
-        showError(err.data.message);
-      }
+      showError(
+        isApiErrorResponse(err) ? err.data.message : 'Something went wrong',
+      );
     }
   };
 
@@ -96,21 +96,12 @@ export default function Login() {
           </div>
 
           <button
+            disabled={isLoading}
             type="submit"
             className="w-full text-white bg-[#7F56D9] py-2 rounded-lg font-semibold"
           >
             {isLoading ? <span>Loading...</span> : <span>Sign in</span>}
           </button>
-
-          <p className="text-sm font-light  text-center">
-            Don’t have an account yet?{' '}
-            <Link
-              to="/register"
-              className="font-semibold text-[#7F56D9] hover:underline"
-            >
-              Sign up
-            </Link>
-          </p>
         </form>
       </div>
     </div>

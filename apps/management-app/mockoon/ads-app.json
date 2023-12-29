@@ -4,9 +4,15 @@
   "name": "Auth app",
   "endpointPrefix": "",
   "latency": 0,
-  "port": 3000,
+  "port": 8194,
   "hostname": "",
-  "folders": [],
+  "folders": [
+    {
+      "uuid": "15990c8d-13f7-4a9c-a213-5ce9f1faa67d",
+      "name": "Auth",
+      "children": []
+    }
+  ],
   "routes": [
     {
       "uuid": "feca0709-6faa-4f40-8fe3-4d325712ea66",
@@ -17,7 +23,7 @@
       "responses": [
         {
           "uuid": "e7e723ad-70f7-4caf-bb63-c09ad95679b0",
-          "body": "{\n  \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoiY2hpaGllbjIwMDJAZ21haWwuY29tIiwiaWF0IjoxNjk2MjM4Njc4LCJleHAiOjE2OTYyMzg2OTN9.Z2aiXDTpFdyjF92AfN4-G-59apIYMJuCismrjSIeUkI\",\n  \"refreshToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoiY2hpaGllbjIwMDJAZ21haWwuY29tIiwiaWF0IjoxNjk2MjM4Njc4LCJleHAiOjE2OTYzMjUwNzh9.KIM3giDL-oVD41LcGb8DruolZpI77HQ0UQge4dI8SL4\",\n  \"tokenId\": \"dff20586-9521-428a-8551-b5ddf6096efa\",\n  \"accessTokenExpires\": \"2023-10-02T09:24:43.514Z\",\n  \"user\": {\n    \"id\": 1,\n    \"email\": \"chihien2002@gmail.com\",\n    \"name\": \"Trương Chí Hiển\",\n    \"role\": \"cdo\"\n  }\n}",
+          "body": "{\n  \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoiY2hpaGllbjIwMDJAZ21haWwuY29tIiwiaWF0IjoxNjk2MjM4Njc4LCJleHAiOjE2OTYyMzg2OTN9.Z2aiXDTpFdyjF92AfN4-G-59apIYMJuCismrjSIeUkI\",\n  \"refreshToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoiY2hpaGllbjIwMDJAZ21haWwuY29tIiwiaWF0IjoxNjk2MjM4Njc4LCJleHAiOjE2OTYzMjUwNzh9.KIM3giDL-oVD41LcGb8DruolZpI77HQ0UQge4dI8SL4\",\n  \"tokenId\": \"dff20586-9521-428a-8551-b5ddf6096efa\",\n  \"user\": {\n    \"id\": 1,\n    \"email\": \"chihien2002@gmail.com\",\n    \"name\": \"Trương Chí Hiển\",\n    \"role\": \"cdo\"\n  }\n}",
           "latency": 0,
           "statusCode": 200,
           "label": "",
@@ -1234,10 +1240,14 @@
     {
       "type": "route",
       "uuid": "f5d2bc90-ca46-41f1-862f-8d0cc9d1dabe"
+    },
+    {
+      "type": "folder",
+      "uuid": "15990c8d-13f7-4a9c-a213-5ce9f1faa67d"
     }
   ],
   "proxyMode": false,
-  "proxyHost": "http://localhost:3000",
+  "proxyHost": "http://localhost:8194",
   "proxyRemovePrefix": false,
   "tlsOptions": {
     "enabled": false,
