@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { PanelService } from './panel.service';
 import { PanelController } from './panel.controller';
-import { PrismaService } from '../../prisma/prisma.service';
+import { PrismaService } from '../../services/prisma/prisma.service';
 
 @Module({
   controllers: [PanelController],

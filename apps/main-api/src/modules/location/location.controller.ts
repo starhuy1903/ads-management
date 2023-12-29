@@ -8,7 +8,9 @@ import {
   Delete,
   Query,
   Res,
-  ParseIntPipe,
+  UseInterceptors,
+  UploadedFiles,
+  ParseFilePipeBuilder,
 } from '@nestjs/common';
 import { LocationService } from './location.service';
 import { CreateLocationDto } from './dto/create-location.dto';
@@ -16,6 +18,8 @@ import { UpdateLocationDto } from './dto/update-location.dto';
 import { PageOptionsLocationDto } from './dto/find-all-location.dto';
 import { CustomResponse } from '../../middlewares'; // Import your CustomResponse type
 import { PanelService } from '../panel/panel.service';
+import { FilesInterceptor } from '@nestjs/platform-express';
+import { FILE_TYPES_REGEX } from '../../constants/images';
 
 @Controller('locations')
 export class LocationController {
@@ -25,12 +29,26 @@ export class LocationController {
   ) {}
 
   @Post()
+  @UseInterceptors(FilesInterceptor('images', 2))
   async create(
     @Body() createLocationDto: CreateLocationDto,
     @Res() res: CustomResponse,
+    @UploadedFiles(
+      new ParseFilePipeBuilder()
+        .addFileTypeValidator({
+          fileType: FILE_TYPES_REGEX,
+        })
+        .build({
+          fileIsRequired: false,
+        }),
+    )
+    images?: Express.Multer.File[],
   ) {
     try {
-      const location = await this.locationService.create(createLocationDto);
+      const location = await this.locationService.create(
+        createLocationDto,
+        images,
+      );
       return res.success({
         data: location,
         message: 'Location created successfully',

@@ -1,0 +1,760 @@
+{
+	"info": {
+		"_postman_id": "17ef4a48-87da-4fba-bdd4-bde49a5cb124",
+		"name": "Officer's API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24967219"
+	},
+	"item": [
+		{
+			"name": "Reports",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"typeId\": 1,\r\n  \"fullName\": \"John Doe\",\r\n  \"email\": \"john.doe@example.com\",\r\n  \"content\": \"This is a sample report content.\",\r\n  \"imgUrls\": [\"url1\", \"url2\"],\r\n  \"targetType\": \"Location\",\r\n  \"panelId\": 1,\r\n  \"locationId\": 5\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8194/api/reports",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8194",
+							"path": [
+								"api",
+								"reports"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"resolvedContent\": \"Nộp đơn tại XYZ\",\r\n    \"status\": \"Đang xử lí\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8194/api/reports/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8194",
+							"path": [
+								"api",
+								"reports",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8194/api/reports/15",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8194",
+							"path": [
+								"api",
+								"reports",
+								"15"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8194/api/reports?wards=1,36&districts=1,2,3&targetType=Panel&typeId=1&page=2&take=10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8194",
+							"path": [
+								"api",
+								"reports"
+							],
+							"query": [
+								{
+									"key": "wards",
+									"value": "1,36"
+								},
+								{
+									"key": "districts",
+									"value": "1,2,3"
+								},
+								{
+									"key": "targetType",
+									"value": "Panel"
+								},
+								{
+									"key": "typeId",
+									"value": "1"
+								},
+								{
+									"key": "page",
+									"value": "2"
+								},
+								{
+									"key": "take",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Ads Request",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"userId\": 2,\r\n  \"reason\": \"This is a sample ads-request reason.\",\r\n  \"panelId\": 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8194/api/ads-requests",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8194",
+							"path": [
+								"api",
+								"ads-requests"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"status\": \"Không chấp nhận\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8194/api/ads-requests/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8194",
+							"path": [
+								"api",
+								"ads-requests",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8194/api/ads-requests/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8194",
+							"path": [
+								"api",
+								"ads-requests",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8194/api/ads-requests?targetType=Panel",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8194",
+							"path": [
+								"api",
+								"ads-requests"
+							],
+							"query": [
+								{
+									"key": "wards",
+									"value": "36,1,2,35",
+									"disabled": true
+								},
+								{
+									"key": "districts",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "targetType",
+									"value": "Panel"
+								},
+								{
+									"key": "status",
+									"value": "Không chấp nhận",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Panel",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "images",
+									"type": "file",
+									"src": "postman-cloud:///1eea1b4c-b6bf-4820-b8e0-34ce8e6ff798"
+								},
+								{
+									"key": "typeId",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "width",
+									"value": "10",
+									"type": "text"
+								},
+								{
+									"key": "height",
+									"value": "20",
+									"type": "text"
+								},
+								{
+									"key": "locationId",
+									"value": "5",
+									"type": "text"
+								},
+								{
+									"key": "createContractDate",
+									"value": "2023-12-23T00:00:00.000Z",
+									"type": "text"
+								},
+								{
+									"key": "expiredContractDate",
+									"value": "2024-12-23T00:00:00.000Z",
+									"type": "text"
+								},
+								{
+									"key": "companyEmail",
+									"value": "example@example.com",
+									"type": "text"
+								},
+								{
+									"key": "companyNumber",
+									"value": "123456789",
+									"type": "text"
+								},
+								{
+									"key": "userId",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "reason",
+									"value": "abc",
+									"type": "text"
+								},
+								{
+									"key": "imgUrls[]",
+									"value": "123,456",
+									"type": "text"
+								},
+								{
+									"key": "belongPanelId",
+									"value": "2",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8194/api/ads-requests/update-panel",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8194",
+							"path": [
+								"api",
+								"ads-requests",
+								"update-panel"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Location",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "images",
+									"type": "file",
+									"src": "postman-cloud:///1eea1b4c-b6bf-4820-b8e0-34ce8e6ff798"
+								},
+								{
+									"key": "typeId",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "adsTypeId",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "long",
+									"value": "20",
+									"type": "text"
+								},
+								{
+									"key": "lat",
+									"value": "5",
+									"type": "text"
+								},
+								{
+									"key": "isPlanning",
+									"value": "true",
+									"type": "text"
+								},
+								{
+									"key": "districtId",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "wardId",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "fullAddress",
+									"value": "kkjhkhkbkb ",
+									"type": "text"
+								},
+								{
+									"key": "name",
+									"value": "akjhskjhskj",
+									"type": "text"
+								},
+								{
+									"key": "userId",
+									"value": "4",
+									"type": "text"
+								},
+								{
+									"key": "reason",
+									"value": "lkjlklkjlk",
+									"type": "text"
+								},
+								{
+									"key": "imgUrls[]",
+									"value": "5621",
+									"type": "text"
+								},
+								{
+									"key": "belongLocationId",
+									"value": "5",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8194/api/ads-requests/update-location",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8194",
+							"path": [
+								"api",
+								"ads-requests",
+								"update-location"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Location",
+			"item": [
+				{
+					"name": "List",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8194/api/locations?status=AWAITING_UPDATE",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8194",
+							"path": [
+								"api",
+								"locations"
+							],
+							"query": [
+								{
+									"key": "districts",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "wards",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "status",
+									"value": "AWAITING_UPDATE"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8194/api/locations/5",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8194",
+							"path": [
+								"api",
+								"locations",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List Panel by Location id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8194/api/locations/5/panels?page=1&take=5",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8194",
+							"path": [
+								"api",
+								"locations",
+								"5",
+								"panels"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "take",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "images",
+									"type": "file",
+									"src": "postman-cloud:///1eea1b4c-b6bf-4820-b8e0-34ce8e6ff798"
+								},
+								{
+									"key": "typeId",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "adsTypeId",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "long",
+									"value": "20",
+									"type": "text"
+								},
+								{
+									"key": "lat",
+									"value": "5",
+									"type": "text"
+								},
+								{
+									"key": "isPlanning",
+									"value": "true",
+									"type": "text"
+								},
+								{
+									"key": "districtId",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "wardId",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "fullAddress",
+									"value": "kkjhkhkbkb ",
+									"type": "text"
+								},
+								{
+									"key": "name",
+									"value": "akjhskjhskj",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8194/api/locations",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8194",
+							"path": [
+								"api",
+								"locations"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Panel",
+			"item": [
+				{
+					"name": "List",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8194/api/panels?status=AWAITING_UPDATE",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8194",
+							"path": [
+								"api",
+								"panels"
+							],
+							"query": [
+								{
+									"key": "districts",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "wards",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "typeId",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "status",
+									"value": "AWAITING_UPDATE"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8194/api/panels/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8194",
+							"path": [
+								"api",
+								"panels",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "images",
+									"type": "file",
+									"src": "/C:/Users/9A312/Downloads/Activity Diagram_ Android Application.png"
+								},
+								{
+									"key": "typeId",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "width",
+									"value": "10",
+									"type": "text"
+								},
+								{
+									"key": "height",
+									"value": "20",
+									"type": "text"
+								},
+								{
+									"key": "locationId",
+									"value": "5",
+									"type": "text"
+								},
+								{
+									"key": "createContractDate",
+									"value": "2023-12-23T00:00:00.000Z",
+									"type": "text"
+								},
+								{
+									"key": "expiredContractDate",
+									"value": "2024-12-23T00:00:00.000Z",
+									"type": "text"
+								},
+								{
+									"key": "companyEmail",
+									"value": "example@example.com",
+									"type": "text"
+								},
+								{
+									"key": "companyNumber",
+									"value": "123456789",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8194/api/panels",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8194",
+							"path": [
+								"api",
+								"panels"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

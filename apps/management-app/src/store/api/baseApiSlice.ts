@@ -1,4 +1,3 @@
-import { configs } from '@/configurations';
 import {
   BaseQueryFn,
   FetchArgs,
@@ -7,17 +6,18 @@ import {
   fetchBaseQuery,
 } from '@reduxjs/toolkit/query/react';
 import { Mutex } from 'async-mutex';
-import { RootState } from '..';
+import { configs } from '@/configurations';
+import auth from '@/utils/auth';
 import { logOut } from '../slice/userSlice';
 
 const mutex = new Mutex();
 
-const BASE_URL = configs.apiUrl || 'http://localhost:3000/api';
+const BASE_URL = configs.apiUrl;
 
 const baseQuery = fetchBaseQuery({
   baseUrl: BASE_URL,
-  prepareHeaders: (headers, { getState }) => {
-    const token = (getState() as RootState).user.token?.accessToken;
+  prepareHeaders: (headers) => {
+    const token = auth.getAccessToken();
     if (token) {
       headers.set('authorization', `Bearer ${token}`);
     }
@@ -40,7 +40,7 @@ const baseQueryWithReAuth: BaseQueryFn<
 
       try {
         const refreshResult = await baseQuery(
-          { credentials: 'include', url: 'refresh' },
+          { credentials: 'include', url: 'auth/refresh' },
           api,
           extraOptions,
         );
@@ -49,7 +49,7 @@ const baseQueryWithReAuth: BaseQueryFn<
           result = await baseQuery(args, api, extraOptions);
         } else {
           api.dispatch(logOut());
-          window.location.href = '/login';
+          // window.location.href = '/login';
         }
       } finally {
         // release must be called once the mutex should be released again.

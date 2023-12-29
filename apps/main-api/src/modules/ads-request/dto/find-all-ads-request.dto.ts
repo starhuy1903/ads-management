@@ -1,7 +1,17 @@
 import { Transform, Type } from 'class-transformer';
-import { IsArray, IsEnum, IsInt, IsOptional, Max, Min } from 'class-validator';
+import {
+  IsArray,
+  IsEnum,
+  IsInt,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  Max,
+  Min,
+} from 'class-validator';
 import { Order } from '../../../constants/order';
 import { AdsRequestStatus, TargetType } from '../../../constants/ads_request';
+import { AdsRequestType } from '@prisma/client';
 
 export class PageOptionsAdsRequestDto {
   @IsEnum(Order)
@@ -21,11 +31,9 @@ export class PageOptionsAdsRequestDto {
   @IsOptional()
   readonly take?: number = 10;
 
-  @Type(() => Number)
-  @IsInt()
-  @Min(1)
-  @IsOptional()
-  readonly typeId?: number;
+  @IsEnum(AdsRequestType)
+  @IsNotEmpty()
+  readonly type?: AdsRequestType;
 
   @IsOptional()
   @IsArray()

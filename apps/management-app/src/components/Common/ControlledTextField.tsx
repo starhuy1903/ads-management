@@ -32,7 +32,7 @@ const ControlledTextField = ({
             onChange={onChange}
             onBlur={onBlur}
             error={!!error}
-            helperText={error?.message}
+            helperText={error?.message || ' '}
           />
         </FormControl>
       )}

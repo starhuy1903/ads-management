@@ -20,7 +20,6 @@ export interface CustomResponse extends Response {
 @Injectable()
 export class CustomResponseMiddleware implements NestMiddleware {
   use(req: unknown, res: CustomResponse, next: () => void) {
-    
     res.success = ({
       statusCode = 200,
       data = null,
@@ -33,10 +32,10 @@ export class CustomResponseMiddleware implements NestMiddleware {
       });
     };
 
-    res.error = ({ statusCode = 500, message = 'Error' } = {}) => {
+    res.error = ({ statusCode = 500, message } = {}) => {
       return res.status(statusCode).json({
         success: false,
-        message,
+        message: message ?? 'Internal Server Error',
       });
     };
 

@@ -16,7 +16,12 @@ import {
   Zoom,
 } from '@mui/material';
 import { useTheme, styled } from '@mui/material/styles';
-import { useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAppDispatch } from '@/store';
+import { useLogoutMutation } from '@/store/api/userApiSlice';
+import { logOut } from '@/store/slice/userSlice';
+import auth from '@/utils/auth';
 
 const PopperListItem = styled(ListItem)(({ theme }) => ({
   padding: 0,
@@ -54,6 +59,9 @@ type ProfileSectionProps = {
 
 function ProfileSection({ src, alt }: ProfileSectionProps) {
   const theme = useTheme();
+  const [logoutRequest] = useLogoutMutation();
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const anchorRef = useRef<HTMLButtonElement>(null);
   const [popperOpen, setPopperOpen] = useState(false);
@@ -73,9 +81,13 @@ function ProfileSection({ src, alt }: ProfileSectionProps) {
     setPopperOpen(false);
   };
 
-  const handleLogout = () => {
-    console.log('Logging out');
-  };
+  const handleLogout = useCallback(async () => {
+    navigate('/');
+    dispatch(logOut());
+    await logoutRequest({
+      tokenId: auth.getRefreshToken(),
+    });
+  }, [logoutRequest, navigate, dispatch]);
 
   return (
     <>

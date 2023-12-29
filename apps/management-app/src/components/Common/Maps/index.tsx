@@ -1,7 +1,7 @@
 import { Avatar } from '@mui/material';
 // import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import Map, {
   FullscreenControl,
   GeolocateControl,
@@ -13,8 +13,16 @@ import { configs } from '@/configurations';
 import { useAppDispatch } from '@/store';
 import { SidebarKey } from '@/constants/sidebar';
 import { showSidebar } from '@/store/slice/sidebar';
+import CenterLoading from '../CenterLoading';
+
+interface ViewPort {
+  zoom: number;
+  latitude: number;
+  longitude: number;
+}
 
 export default function Maps({ children }: { children?: React.ReactNode }) {
+  const [viewPort, setViewPort] = useState<ViewPort>();
   const [showPopup, setShowPopup] = useState<boolean>(true);
 
   const markerRef = useRef<mapboxgl.Marker>();
@@ -36,14 +44,24 @@ export default function Maps({ children }: { children?: React.ReactNode }) {
   //   markerRef.current?.togglePopup();
   // }, []);
 
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition((pos) => {
+      setViewPort({
+        zoom: 15,
+        latitude: pos.coords.latitude,
+        longitude: pos.coords.longitude,
+      });
+    });
+  }, []);
+
+  if (!viewPort) {
+    return <CenterLoading />;
+  }
+
   return (
     <Map
+      initialViewState={viewPort}
       // mapLib={mapLib}
-      initialViewState={{
-        longitude: -100,
-        latitude: 40,
-        zoom: 1,
-      }}
       style={{ width: '100%', height: '100%', zIndex: 1 }}
       mapStyle="mapbox://styles/mapbox/streets-v9"
       mapboxAccessToken={configs.mapBox}
