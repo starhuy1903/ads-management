@@ -46,16 +46,11 @@ export class UserService {
         },
       });
 
-      return {
-        success: true,
-        message: 'Get user info successfully',
-        user,
-      };
+      return user;
     } catch (err) {
       console.log('Error: ', err);
       throw new HttpException(
         {
-          success: false,
           message: 'Something went wrong',
         },
         HttpStatus.INTERNAL_SERVER_ERROR,

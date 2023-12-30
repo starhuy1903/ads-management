@@ -4,6 +4,7 @@ import {
   HttpException,
   HttpStatus,
   Injectable,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { PrismaService } from '../../services/prisma/prisma.service';
 import { SignInDto, CreateUserDto } from './dto';
@@ -147,7 +148,7 @@ export class AuthService {
     }
   }
 
-  async handeleSignIn(user: user) {
+  async handleSignIn(user: user) {
     const { refreshToken } = await this.getJwtRefreshToken(
       user.id,
       user.email,
@@ -177,7 +178,6 @@ export class AuthService {
         accessToken,
         refreshToken,
         tokenId: token.id,
-        accessTokenExpires: getAccessExpiry(),
         user: {
           id: user.id,
           email: user.email,
@@ -191,7 +191,6 @@ export class AuthService {
     } catch (err) {
       throw new HttpException(
         {
-          success: false,
           message: 'Bad Request',
         },
         HttpStatus.BAD_REQUEST,
@@ -209,9 +208,8 @@ export class AuthService {
 
     // If the there is no user throw exception
     if (!user) {
-      throw new ForbiddenException({
-        success: false,
-        message: 'Credentials incorrect',
+      throw new UnauthorizedException({
+        message: 'Wrong email or password',
       });
     }
 
@@ -219,13 +217,13 @@ export class AuthService {
     const isMatch = await argon.verify(user.password, dto.password);
 
     if (!isMatch) {
-      throw new ForbiddenException({
+      throw new UnauthorizedException({
         success: false,
-        message: 'Credentials incorrect',
+        message: 'Wrong email or password',
       });
     }
 
-    return await this.handeleSignIn(user);
+    return await this.handleSignIn(user);
   }
 
   async logOut(userId: number, tokenId: string) {
