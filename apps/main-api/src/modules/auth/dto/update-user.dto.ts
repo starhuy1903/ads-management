@@ -4,15 +4,15 @@ import { Transform } from 'class-transformer';
 export class UpdateUserDto {
   @IsString()
   @IsOptional()
-  first_name?: string;
+  firstName?: string;
 
   @IsString()
   @IsOptional()
-  last_name?: string;
+  lastName?: string;
 
   @IsString()
   @IsOptional()
-  phone_number?: string;
+  phoneNumber?: string;
 
   @IsDate()
   @IsOptional()

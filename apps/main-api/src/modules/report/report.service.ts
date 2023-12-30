@@ -41,13 +41,13 @@ export class ReportService {
 
       const data = {
         email: createReportDto.email,
-        target_type: createReportDto.targetType,
-        report_type: { connect: { id: createReportDto.typeId } },
-        image_url: imageUrls,
+        targetType: createReportDto.targetType,
+        reportType: { connect: { id: createReportDto.typeId } },
+        imageUrls: imageUrls,
         content: createReportDto.content,
-        fullname: createReportDto.fullName,
-        user_uuid: createReportDto.userUuid,
-        resolved_content: '',
+        fullName: createReportDto.fullName,
+        userUuid: createReportDto.userUuid,
+        resolvedContent: '',
         status: ReportStatus.NEW,
         location: undefined,
         panel: undefined,
@@ -83,8 +83,8 @@ export class ReportService {
         },
       ],
       where: {
-        type_id: pageOptionsReportDto.typeId,
-        target_type: pageOptionsReportDto.targetType,
+        typeId: pageOptionsReportDto.typeId,
+        targetType: pageOptionsReportDto.targetType,
         status: pageOptionsReportDto.status,
         location: undefined,
         panel: undefined,
@@ -93,14 +93,14 @@ export class ReportService {
 
     if (pageOptionsReportDto.targetType == TargetType.LOCATION) {
       conditions.where.location = {
-        district_id: { in: pageOptionsReportDto?.districts },
-        ward_id: { in: pageOptionsReportDto?.wards },
+        districtId: { in: pageOptionsReportDto?.districts },
+        wardId: { in: pageOptionsReportDto?.wards },
       };
     } else if (pageOptionsReportDto.targetType == TargetType.PANEL) {
       conditions.where.panel = {
         location: {
-          district_id: { in: pageOptionsReportDto?.districts },
-          ward_id: { in: pageOptionsReportDto?.wards },
+          districtId: { in: pageOptionsReportDto?.districts },
+          wardId: { in: pageOptionsReportDto?.wards },
         },
       };
     }
@@ -108,13 +108,13 @@ export class ReportService {
     const [result, totalCount] = await Promise.all([
       this.prismaService.report.findMany({
         include: {
-          report_type: true,
+          reportType: true,
           location: {
             include: {
               district: true,
               ward: true,
               type: true,
-              ad_type: true,
+              adType: true,
             },
           },
           panel: {
@@ -125,7 +125,7 @@ export class ReportService {
                   district: true,
                   ward: true,
                   type: true,
-                  ad_type: true,
+                  adType: true,
                 },
               },
             },
@@ -149,13 +149,13 @@ export class ReportService {
   findOne(id: number) {
     return this.prismaService.report.findFirst({
       include: {
-        report_type: true,
+        reportType: true,
         location: {
           include: {
             district: true,
             ward: true,
             type: true,
-            ad_type: true,
+            adType: true,
           },
         },
         panel: {
@@ -166,7 +166,7 @@ export class ReportService {
                 district: true,
                 ward: true,
                 type: true,
-                ad_type: true,
+                adType: true,
               },
             },
           },
@@ -184,7 +184,7 @@ export class ReportService {
         id: id,
       },
       data: {
-        resolved_content: updateReportDto?.resolvedContent,
+        resolvedContent: updateReportDto?.resolvedContent,
         status: updateReportDto?.status,
       },
     });
@@ -206,10 +206,10 @@ export class ReportService {
         },
       ],
       where: {
-        type_id: pageOptionsUserReportDto.typeId,
-        target_type: pageOptionsUserReportDto.targetType,
+        typeId: pageOptionsUserReportDto.typeId,
+        targetType: pageOptionsUserReportDto.targetType,
         status: pageOptionsUserReportDto.status,
-        user_uuid: pageOptionsUserReportDto.userUuid,
+        userUuid: pageOptionsUserReportDto.userUuid,
         location: undefined,
         panel: undefined,
       },
@@ -218,7 +218,7 @@ export class ReportService {
     const [result, totalCount] = await Promise.all([
       this.prismaService.report.findMany({
         include: {
-          report_type: true,
+          reportType: true,
           location: {
             include: {
               district: true,
@@ -256,8 +256,8 @@ export class ReportService {
     const conditions = {
       where: {
         location: {
-          district_id: { in: getStatisticDto?.districtIds },
-          ward_id: { in: getStatisticDto?.wardIds },
+          districtId: { in: getStatisticDto?.districtIds },
+          wardId: { in: getStatisticDto?.wardIds },
         },
         createdAt: undefined,
       },

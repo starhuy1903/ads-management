@@ -36,10 +36,10 @@ export class LocationService {
         isPlanning: createLocationDto?.isPlanning,
         district: { connect: { id: createLocationDto?.districtId } },
         ward: { connect: { id: createLocationDto?.wardId } },
-        full_address: createLocationDto?.fullAddress,
+        fullAddress: createLocationDto?.fullAddress,
         type: { connect: { id: createLocationDto?.typeId } },
-        ad_type: { connect: { id: createLocationDto?.adsTypeId } },
-        image_urls: imageUrls,
+        adType: { connect: { id: createLocationDto?.adsTypeId } },
+        imageUrls: imageUrls,
         name: createLocationDto?.name,
         status: LocationStatus.APPROVED,
       };
@@ -59,14 +59,14 @@ export class LocationService {
     const conditions = {
       orderBy: [
         {
-          created_time: pageOptionsLocationDto.order,
+          createdAt: pageOptionsLocationDto.order,
         },
       ],
       where: {
-        district_id: { in: pageOptionsLocationDto?.districts },
-        ward_id: { in: pageOptionsLocationDto?.wards },
-        type_id: pageOptionsLocationDto?.locationTypeId,
-        ad_type_id: pageOptionsLocationDto?.adTypeId,
+        districtId: { in: pageOptionsLocationDto?.districts },
+        wardId: { in: pageOptionsLocationDto?.wards },
+        typeId: pageOptionsLocationDto?.locationTypeId,
+        adTypeId: pageOptionsLocationDto?.adTypeId,
         status: pageOptionsLocationDto?.status,
       },
     };
@@ -79,7 +79,7 @@ export class LocationService {
             },
           },
           type: true,
-          ad_type: true,
+          adType: true,
           district: true,
           ward: true,
         },
@@ -107,7 +107,7 @@ export class LocationService {
           },
         },
         type: true,
-        ad_type: true,
+        adType: true,
         district: true,
         ward: true,
       },
