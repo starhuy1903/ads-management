@@ -1,3 +1,8 @@
+export type MessageResponse = {
+  success: boolean;
+  message: string;
+};
+
 export type GetListResult<T> = {
   data: Array<T>;
   totalPages?: number;

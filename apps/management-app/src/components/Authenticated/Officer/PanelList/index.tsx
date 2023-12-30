@@ -52,7 +52,11 @@ export default function PanelList() {
   }
 
   return (
-    <ListWrapper label="List of Advertising Panels">
+    <ListWrapper
+      label="List of Advertising Panels"
+      btnLabel="Create"
+      btnLink={'/panels/create'}
+    >
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="panels">
           <TableHead>

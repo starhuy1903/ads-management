@@ -12,11 +12,21 @@ import {
   TableRow,
 } from '@mui/material';
 import { useEffect, useState } from 'react';
+import { useAppDispatch } from '@/store';
 import CenterLoading from '@/components/Common/CenterLoading';
-import { Delete, Info } from '@/components/Common/Icons';
+import { Cancel, Info } from '@/components/Common/Icons';
 import { ListWrapper } from '@/components/Common/Layout/ScreenWrapper';
-import { AdsRequestType, TargetType } from '@/constants/ads-request';
-import { useGetRequestsQuery } from '@/store/api/officerApiSlice';
+import {
+  AdsRequestStatus,
+  AdsRequestType,
+  TargetType,
+} from '@/constants/ads-request';
+import { ModalKey } from '@/constants/modal';
+import {
+  useDeleteRequestMutation,
+  useGetRequestsQuery,
+} from '@/store/api/officerApiSlice';
+import { showModal } from '@/store/slice/modal';
 import { AdsRequest } from '@/types/officer-management';
 import { formatDateTime } from '@/utils/format-date';
 import { showError, showSuccess } from '@/utils/toast';
@@ -34,6 +44,8 @@ const titles = [
 ];
 
 export default function EditingRequestList() {
+  const dispatch = useAppDispatch();
+
   const [targetType, setTargetType] = useState<TargetType>(TargetType.PANEL);
   const [page, setPage] = useState<number>(1);
   const [requests, setRequests] = useState<AdsRequest[] | undefined>([]);
@@ -45,6 +57,18 @@ export default function EditingRequestList() {
     targetType: targetType,
   });
 
+  const [deleteRequest] = useDeleteRequestMutation();
+
+  const handleDelete = async (id: string) => {
+    try {
+      await deleteRequest(id);
+      showSuccess(`Delete request #${id} successfully!`);
+    } catch (error) {
+      console.log(error);
+      showError(`Delete request #${id} failed!`);
+    }
+  };
+
   useEffect(() => {
     if (data) {
       setRequests(data.data);
@@ -54,20 +78,6 @@ export default function EditingRequestList() {
   if (isLoading || !requests) {
     return <CenterLoading />;
   }
-
-  const handleDelete = (id: number) => {
-    const confirm = window.confirm('Are you sure to delete this request?');
-
-    if (confirm) {
-      try {
-        // Call API to delete
-        showSuccess(`Delete request #${id} successfully!`);
-      } catch (error) {
-        console.log(error);
-        showError(`Delete request #${id} failed!`);
-      }
-    }
-  };
 
   return (
     <ListWrapper label="List of Licensing Requests">
@@ -137,8 +147,17 @@ export default function EditingRequestList() {
                       >
                         <Info link={`/editing-requests/${request?.id}`} />
 
-                        {request?.status !== 'Approved' && (
-                          <Delete onClick={() => handleDelete(request?.id)} />
+                        {request?.status === AdsRequestStatus?.PENDING && (
+                          <Cancel
+                            onClick={() =>
+                              dispatch(
+                                showModal(ModalKey.CANCEL_REQUESTT, {
+                                  handleDelete: () =>
+                                    handleDelete(request?.id?.toString()),
+                                }),
+                              )
+                            }
+                          />
                         )}
                       </Box>
                     </TableCell>

@@ -1,8 +1,10 @@
+import { AdsRequestStatus } from '@/constants/ads-request';
 import {
   AdsRequest,
   GetDetailResult,
   GetListResult,
   Location,
+  MessageResponse,
   Panel,
   Report,
 } from '@/types/officer-management';
@@ -105,6 +107,15 @@ export const officerManagementApiSlice = apiSlice.injectEndpoints({
     getRequestById: build.query<GetDetailResult<AdsRequest>, string>({
       query: (id) => `/ads-requests/${id}`,
     }),
+    deleteRequest: build.mutation<MessageResponse, string>({
+      query: (id) => ({
+        url: `/ads-requests/${id}`,
+        method: 'PATCH',
+        body: {
+          status: AdsRequestStatus.CANCELLED,
+        },
+      }),
+    }),
   }),
 });
 
@@ -117,4 +128,5 @@ export const {
   useGetReportByIdQuery,
   useGetRequestsQuery,
   useGetRequestByIdQuery,
+  useDeleteRequestMutation,
 } = officerManagementApiSlice;

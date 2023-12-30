@@ -1,4 +1,5 @@
 import DeleteIcon from '@mui/icons-material/Delete';
+import DoDisturbOnIcon from '@mui/icons-material/DoDisturbOn';
 import EditNoteIcon from '@mui/icons-material/EditNote';
 import InfoIcon from '@mui/icons-material/Info';
 import MailIcon from '@mui/icons-material/Mail';
@@ -36,6 +37,18 @@ export const Delete = ({ onClick }: { onClick: () => void }) => {
       sx={{
         cursor: 'pointer',
         color: '#FF2E63',
+      }}
+      onClick={onClick}
+    />
+  );
+};
+
+export const Cancel = ({ onClick }: { onClick: () => void }) => {
+  return (
+    <DoDisturbOnIcon
+      sx={{
+        cursor: 'pointer',
+        color: '#F38181',
       }}
       onClick={onClick}
     />

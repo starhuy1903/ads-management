@@ -1,11 +1,16 @@
-import { Box, Typography } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
+import { Link } from 'react-router-dom';
 import { BackButton } from '../Buttons';
 
 export function ListWrapper({
   label = '',
+  btnLabel = '',
+  btnLink = '',
   children,
 }: {
   label: string;
+  btnLabel?: string;
+  btnLink?: string;
   children: React.ReactNode;
 }) {
   return (
@@ -14,9 +19,29 @@ export function ListWrapper({
         height: '100%',
       }}
     >
-      <Typography variant="h4" sx={{ mb: 2 }}>
-        {label}
-      </Typography>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+      >
+        <Typography variant="h4" sx={{ mb: 2 }}>
+          {label}
+        </Typography>
+        {btnLabel && btnLink && (
+          <Button
+            component={Link}
+            to={btnLink}
+            variant="contained"
+            sx={{
+              color: 'white',
+            }}
+          >
+            {btnLabel}
+          </Button>
+        )}
+      </Box>
       <Box
         sx={{
           display: 'flex',
