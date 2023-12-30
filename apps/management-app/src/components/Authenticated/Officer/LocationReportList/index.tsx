@@ -35,7 +35,6 @@ export default function LocationReportList() {
   const { data, isLoading } = useGetReportsQuery({
     page: page,
     take: 10,
-    wards: '1',
     targetType: 'Location',
     typeId: 1,
   });
@@ -57,7 +56,9 @@ export default function LocationReportList() {
           <TableHead>
             <TableRow>
               {titles.map((title) => (
-                <TableCell align="center">{title}</TableCell>
+                <TableCell align="center" key={title}>
+                  {title}
+                </TableCell>
               ))}
             </TableRow>
           </TableHead>

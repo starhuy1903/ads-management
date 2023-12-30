@@ -36,7 +36,6 @@ export default function LicensingRequestList() {
   const { data, isLoading } = useGetRequestsQuery({
     page: page,
     take: 5,
-    wards: '1',
     type: 'APPROVED_PANEL',
   });
 
@@ -71,7 +70,9 @@ export default function LicensingRequestList() {
           <TableHead>
             <TableRow>
               {titles.map((title) => (
-                <TableCell align="center">{title}</TableCell>
+                <TableCell align="center" key={title}>
+                  {title}
+                </TableCell>
               ))}
             </TableRow>
           </TableHead>

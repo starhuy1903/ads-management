@@ -35,7 +35,6 @@ export default function PanelReportList() {
   const { data, isLoading } = useGetReportsQuery({
     page: page,
     take: 10,
-    wards: '1',
     targetType: 'Panel',
     typeId: 1,
   });
@@ -57,7 +56,9 @@ export default function PanelReportList() {
           <TableHead>
             <TableRow>
               {titles.map((title) => (
-                <TableCell align="center">{title}</TableCell>
+                <TableCell align="center" key={title}>
+                  {title}
+                </TableCell>
               ))}
             </TableRow>
           </TableHead>

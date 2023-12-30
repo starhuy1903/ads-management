@@ -93,7 +93,9 @@ export default function EditingRequestList() {
             <TableHead>
               <TableRow>
                 {titles.map((title) => (
-                  <TableCell align="center">{title}</TableCell>
+                  <TableCell align="center" key={title}>
+                    {title}
+                  </TableCell>
                 ))}
               </TableRow>
             </TableHead>

@@ -37,7 +37,6 @@ export default function LocationList() {
   const { data, isLoading } = useGetLocationsQuery({
     page: page,
     take: 10,
-    wards: '1',
   });
 
   useEffect(() => {
@@ -57,12 +56,14 @@ export default function LocationList() {
           <TableHead>
             <TableRow>
               {titles.map((title) => (
-                <TableCell align="center">{title}</TableCell>
+                <TableCell align="center" key={title}>
+                  {title}
+                </TableCell>
               ))}
             </TableRow>
           </TableHead>
           <TableBody>
-            {locations &&
+            {locations?.length !== 0 ? (
               locations.map((location: Location) => (
                 <TableRow key={location?.id}>
                   <TableCell align="center">{location?.id}</TableCell>
@@ -96,7 +97,14 @@ export default function LocationList() {
                     </Box>
                   </TableCell>
                 </TableRow>
-              ))}
+              ))
+            ) : (
+              <TableRow>
+                <TableCell align="center" colSpan={9}>
+                  No rows
+                </TableCell>
+              </TableRow>
+            )}
           </TableBody>
         </Table>
       </TableContainer>

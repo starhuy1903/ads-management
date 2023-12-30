@@ -39,7 +39,6 @@ export default function PanelList() {
   const { data, isLoading } = useGetPanelsQuery({
     page: page,
     take: 10,
-    wards: '1',
   });
 
   useEffect(() => {
@@ -59,7 +58,9 @@ export default function PanelList() {
           <TableHead>
             <TableRow>
               {titles.map((title) => (
-                <TableCell align="center">{title}</TableCell>
+                <TableCell align="center" key={title}>
+                  {title}
+                </TableCell>
               ))}
             </TableRow>
           </TableHead>
