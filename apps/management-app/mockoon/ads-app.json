@@ -52,6 +52,10 @@
         {
           "type": "route",
           "uuid": "c4a23192-e335-4128-b1a3-ecd85569c1ff"
+        },
+        {
+          "type": "route",
+          "uuid": "3be2bb3e-60b7-48b0-be0c-7a440e73e830"
         }
       ]
     },
@@ -1225,6 +1229,35 @@
         {
           "uuid": "c3a7c553-4fea-400d-b3fe-a318789f33d4",
           "body": "{\n  \"data\": [\n    {\n      \"id\": 1,\n      \"value\": \"Tố giác sai phạm\"\n    },\n    {\n      \"id\": 2,\n      \"value\": \"Đăng ký nội dung\"\n    },\n    {\n      \"id\": 3,\n      \"value\": \"Đóng góp ý kiến\"\n    },\n    {\n      \"id\": 4,\n      \"value\": \"Giải đáp thắc mắc\"\n    }\n  ],\n  \"totalPages\": 1\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null
+    },
+    {
+      "uuid": "3be2bb3e-60b7-48b0-be0c-7a440e73e830",
+      "type": "http",
+      "documentation": "Create report",
+      "method": "post",
+      "endpoint": "reports",
+      "responses": [
+        {
+          "uuid": "511b7ca4-f721-4d7e-a51a-5d0efefd1c76",
+          "body": "{\n  \"id\": 37,\n  \"typeId\": 1,\n  \"fullName\": \"Thong\",\n  \"email\": \"adfas@gmail.com\",\n  \"phoneNumeber\": \"0123456789\",\n  \"content\": \"<p>Biển quảng cáo này quá xấu lần 4</p>\",\n  \"imageUrl\": [],\n  \"targetType\": \"Location\",\n  \"locationId\": 5,\n  \"panelId\": null,\n  \"status\": \"Mới\",\n  \"resolvedContent\": \"\",\n  \"createdAt\": \"2023-12-30T01:42:05.203Z\",\n  \"updatedAt\": \"2023-12-30T01:42:05.203Z\",\n  \"userUuid\": \"2412341234-asfasdfasdf\"\n}",
           "latency": 0,
           "statusCode": 200,
           "label": "",

@@ -1,4 +1,4 @@
-export interface ReportPayload {
+export interface CreateReportForm {
   fullName: string;
   email: string;
   phoneNumber: string;
@@ -6,18 +6,33 @@ export interface ReportPayload {
   content: string;
   images: File[];
   captcha: string;
+}
+
+export type ReportTargetType = 'Location' | 'Panel';
+
+export interface ReportPayload extends CreateReportForm {
   userUuid: string;
-  targetType: 'location' | 'panel';
+  targetType: ReportTargetType;
+  panelId?: number;
+  locationId?: number;
 }
 
 export interface CreatedReport {
+  id: number;
+  typeId: number;
   fullName: string;
   email: string;
+  content: string;
   phoneNumber: string;
-  reportType: number;
-  description: string;
-  imageFiles: File[];
-  captcha: string;
+  imageUrl: string[];
+  targetType: ReportTargetType;
+  locationId?: number;
+  panelId?: number;
+  status: 'Mới';
+  resolvedContent: string;
+  createdAt: string;
+  updatedAt: string;
+  userUuid: string;
 }
 
 export interface ReportType {

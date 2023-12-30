@@ -20,6 +20,7 @@ import {
   useController,
   useForm,
 } from 'react-hook-form';
+import { v4 as uuidv4 } from 'uuid';
 import { configs } from '@/configurations';
 import { useAppDispatch } from '@/store';
 import CenterLoading from '@/components/Common/CenterLoading';
@@ -27,12 +28,14 @@ import DropFileContainer from '@/components/Common/DropFileContainer';
 import TinyEditor from '@/components/Common/TinyEditor';
 import { ModalKey } from '@/constants/modal';
 import { ImageFileConfig } from '@/constants/validation';
+import { isApiErrorResponse } from '@/store/api/helper';
 import {
   useCreateReportMutation,
   useGetReportTypesQuery,
 } from '@/store/api/reportApiSlice';
 import { showModal } from '@/store/slice/modal';
-import { ReportPayload } from '@/types/report';
+import { CreateReportForm, ReportPayload } from '@/types/report';
+import { showError, showSuccess } from '@/utils/toast';
 import ImagePreview from './ImagePreview';
 import UploadImageCard from './UploadImageCard';
 
@@ -44,8 +47,8 @@ export default function CitizenReport() {
   const reportTypes = reportTypesRes?.data;
 
   const { handleSubmit, register, control, formState, setValue, watch } =
-    useForm<ReportPayload>({
-      mode: 'onChange',
+    useForm<CreateReportForm>({
+      mode: 'onTouched',
       defaultValues: {
         fullName: '',
         email: '',
@@ -111,9 +114,24 @@ export default function CitizenReport() {
     disabled: boolean;
   }) => <UploadImageCard open={open} disabled={disabled} />;
 
-  const onSubmit: SubmitHandler<ReportPayload> = async (data) => {
+  const onSubmit: SubmitHandler<CreateReportForm> = async (data) => {
     console.log(data);
-    const res = await createReport(data).unwrap();
+    const submitData: ReportPayload = {
+      ...data,
+      userUuid: uuidv4(),
+      targetType: 'Location',
+    };
+    try {
+      const res = await createReport(submitData).unwrap();
+      console.log({ res });
+
+      // TODO: store userId to local storage
+      showSuccess('Report submitted successfully!');
+    } catch (err) {
+      showError(
+        isApiErrorResponse(err) ? err.data.message : 'Something went wrong',
+      );
+    }
   };
 
   if (!hasReportTypesData || !reportTypes) {
