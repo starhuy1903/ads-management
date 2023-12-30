@@ -30,14 +30,14 @@ export class PanelService {
       const data = {
         width: createPanelDto?.width,
         height: createPanelDto?.height,
-        create_contract_date: createPanelDto?.createContractDate,
-        expired_contract_date: createPanelDto?.expiredContractDate,
-        company_email: createPanelDto?.companyEmail,
-        company_number: createPanelDto?.companyNumber,
+        createContractDate: createPanelDto?.createContractDate,
+        expiredContractDate: createPanelDto?.expiredContractDate,
+        companyEmail: createPanelDto?.companyEmail,
+        companyNumber: createPanelDto?.companyNumber,
         status: PanelStatus.DRAFT,
         type: { connect: { id: createPanelDto?.typeId } },
         location: { connect: { id: createPanelDto?.locationId } },
-        image_urls: imageUrls,
+        imageUrls: imageUrls,
       };
 
       const result = await this.prismaService.panel.create({
@@ -55,15 +55,15 @@ export class PanelService {
     const conditions = {
       orderBy: [
         {
-          created_time: pageOptionsPanelDto.order,
+          createdAt: pageOptionsPanelDto.order,
         },
       ],
       where: {
         location: {
-          district_id: { in: pageOptionsPanelDto?.districts },
-          ward_id: { in: pageOptionsPanelDto?.wards },
+          districtId: { in: pageOptionsPanelDto?.districts },
+          wardId: { in: pageOptionsPanelDto?.wards },
         },
-        type_id: pageOptionsPanelDto?.typeId,
+        typeId: pageOptionsPanelDto?.typeId,
         status: pageOptionsPanelDto?.status,
       },
     };
@@ -76,7 +76,7 @@ export class PanelService {
               district: true,
               ward: true,
               type: true,
-              ad_type: true,
+              adType: true,
             },
           },
         },
@@ -102,14 +102,14 @@ export class PanelService {
     const conditions = {
       orderBy: [
         {
-          created_time: pageOptionsPanelDto.order,
+          createdAt: pageOptionsPanelDto.order,
         },
       ],
       where: {
         location: {
           id: locationId,
         },
-        type_id: pageOptionsPanelDto.typeId,
+        typeId: pageOptionsPanelDto.typeId,
       },
     };
     const [result, totalCount] = await Promise.all([
@@ -121,7 +121,7 @@ export class PanelService {
               district: true,
               ward: true,
               type: true,
-              ad_type: true,
+              adType: true,
             },
           },
         },
@@ -149,7 +149,7 @@ export class PanelService {
             district: true,
             ward: true,
             type: true,
-            ad_type: true,
+            adType: true,
           },
         },
       },

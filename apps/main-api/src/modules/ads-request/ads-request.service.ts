@@ -22,7 +22,7 @@ export class AdsRequestService {
   async create(createAdsRequestDto: CreateAdsRequestDto) {
     const data = {
       user: { connect: { id: createAdsRequestDto.userId } },
-      target_type: TargetType.PANEL,
+      targetType: TargetType.PANEL,
       type: AdsRequestType.APPROVED_PANEL,
       reason: createAdsRequestDto.reason,
       status: AdsRequestStatus.SENT,
@@ -57,25 +57,25 @@ export class AdsRequestService {
         isPlanning: createAdsRequestDto?.isPlanning,
         district: { connect: { id: createAdsRequestDto?.districtId } },
         ward: { connect: { id: createAdsRequestDto?.wardId } },
-        full_address: createAdsRequestDto?.fullAddress,
+        fullAddress: createAdsRequestDto?.fullAddress,
         type: { connect: { id: createAdsRequestDto?.typeId } },
-        ad_type: { connect: { id: createAdsRequestDto?.adsTypeId } },
-        image_urls: undefined,
+        adType: { connect: { id: createAdsRequestDto?.adsTypeId } },
+        imageUrls: undefined,
         name: createAdsRequestDto?.name,
         location: { connect: { id: createAdsRequestDto?.belongLocationId } },
         status: LocationStatus.AWAITING_UPDATE,
       };
 
       if (!imageUrls.length) {
-        locationData.image_urls = createAdsRequestDto.imgUrls;
+        locationData.imageUrls = createAdsRequestDto.imgUrls;
       } else {
-        locationData.image_urls = imageUrls;
+        locationData.imageUrls = imageUrls;
       }
 
       const result = await this.prismaService.ads_request.create({
         data: {
           user: { connect: { id: createAdsRequestDto.userId } },
-          target_type: TargetType.LOCATION,
+          targetType: TargetType.LOCATION,
           type: AdsRequestType.UPDATE_DATA,
           reason: createAdsRequestDto.reason,
           status: AdsRequestStatus.SENT,
@@ -112,27 +112,27 @@ export class AdsRequestService {
       const panelData = {
         width: createAdsRequestDto?.width,
         height: createAdsRequestDto?.height,
-        create_contract_date: createAdsRequestDto?.createContractDate,
-        expired_contract_date: createAdsRequestDto?.expiredContractDate,
-        company_email: createAdsRequestDto?.companyEmail,
-        company_number: createAdsRequestDto?.companyNumber,
+        createContractDate: createAdsRequestDto?.createContractDate,
+        expiredContractDate: createAdsRequestDto?.expiredContractDate,
+        companyEmail: createAdsRequestDto?.companyEmail,
+        companyNumber: createAdsRequestDto?.companyNumber,
         status: PanelStatus.AWAITING_UPDATE,
         type: { connect: { id: createAdsRequestDto?.typeId } },
         location: { connect: { id: createAdsRequestDto?.locationId } },
-        image_urls: undefined,
+        imageUrls: undefined,
         panel: { connect: { id: createAdsRequestDto?.belongPanelId } },
       };
 
       if (!imageUrls.length) {
-        panelData.image_urls = createAdsRequestDto.imgUrls;
+        panelData.imageUrls = createAdsRequestDto.imgUrls;
       } else {
-        panelData.image_urls = imageUrls;
+        panelData.imageUrls = imageUrls;
       }
 
       const result = await this.prismaService.ads_request.create({
         data: {
           user: { connect: { id: createAdsRequestDto.userId } },
-          target_type: TargetType.PANEL,
+          targetType: TargetType.PANEL,
           type: AdsRequestType.UPDATE_DATA,
           reason: createAdsRequestDto.reason,
           status: AdsRequestStatus.SENT,
@@ -158,7 +158,7 @@ export class AdsRequestService {
       ],
       where: {
         type: pageOptionsAdsRequestDto.type,
-        target_type: pageOptionsAdsRequestDto.targetType,
+        targetType: pageOptionsAdsRequestDto.targetType,
         status: pageOptionsAdsRequestDto.status,
         location: undefined,
         panel: undefined,
@@ -167,14 +167,14 @@ export class AdsRequestService {
 
     if (pageOptionsAdsRequestDto.targetType == TargetType.LOCATION) {
       conditions.where.location = {
-        district_id: { in: pageOptionsAdsRequestDto?.districts },
-        ward_id: { in: pageOptionsAdsRequestDto?.wards },
+        districtId: { in: pageOptionsAdsRequestDto?.districts },
+        wardId: { in: pageOptionsAdsRequestDto?.wards },
       };
     } else if (pageOptionsAdsRequestDto.targetType == TargetType.PANEL) {
       conditions.where.panel = {
         location: {
-          district_id: { in: pageOptionsAdsRequestDto?.districts },
-          ward_id: { in: pageOptionsAdsRequestDto?.wards },
+          districtId: { in: pageOptionsAdsRequestDto?.districts },
+          wardId: { in: pageOptionsAdsRequestDto?.wards },
         },
       };
     }
@@ -188,7 +188,7 @@ export class AdsRequestService {
               district: true,
               ward: true,
               type: true,
-              ad_type: true,
+              adType: true,
             },
           },
           panel: {
@@ -199,7 +199,7 @@ export class AdsRequestService {
                   district: true,
                   ward: true,
                   type: true,
-                  ad_type: true,
+                  adType: true,
                 },
               },
             },
@@ -229,7 +229,7 @@ export class AdsRequestService {
             district: true,
             ward: true,
             type: true,
-            ad_type: true,
+            adType: true,
           },
         },
         panel: {
@@ -240,7 +240,7 @@ export class AdsRequestService {
                 district: true,
                 ward: true,
                 type: true,
-                ad_type: true,
+                adType: true,
               },
             },
           },
@@ -306,13 +306,13 @@ export class AdsRequestService {
 
         if (adsRequest.type === AdsRequestType.UPDATE_DATA) {
           if (
-            adsRequest.target_type === TargetType.PANEL &&
+            adsRequest.targetType === TargetType.PANEL &&
             !isNil(adsRequest.panel)
           ) {
             const newPanel = adsRequest.panel;
 
             if (!isNil(newPanel.panel)) {
-              oldImageUrls = [...newPanel.panel.image_urls];
+              oldImageUrls = [...newPanel.panel.imageUrls];
               await tx.panel.update({
                 where: {
                   id: newPanel.panel.id,
@@ -320,13 +320,13 @@ export class AdsRequestService {
                 data: {
                   width: newPanel.width,
                   height: newPanel.height,
-                  type_id: newPanel.type_id,
-                  location_id: newPanel.location_id,
-                  image_urls: [...newPanel.image_urls],
-                  create_contract_date: newPanel.create_contract_date,
-                  expired_contract_date: newPanel.expired_contract_date,
-                  company_email: newPanel.company_email,
-                  company_number: newPanel.company_number,
+                  typeId: newPanel.typeId,
+                  locationId: newPanel.locationId,
+                  imageUrls: [...newPanel.imageUrls],
+                  createContractDate: newPanel.createContractDate,
+                  expiredContractDate: newPanel.expiredContractDate,
+                  companyEmail: newPanel.companyEmail,
+                  companyNumber: newPanel.companyNumber,
                 },
               });
 
@@ -336,7 +336,7 @@ export class AdsRequestService {
                 },
                 data: {
                   status: AdsRequestStatus.APPROVED,
-                  panel_id: newPanel.panel.id,
+                  panelId: newPanel.panel.id,
                 },
               });
 
@@ -347,13 +347,13 @@ export class AdsRequestService {
               });
             }
           } else if (
-            adsRequest.target_type === TargetType.LOCATION &&
+            adsRequest.targetType === TargetType.LOCATION &&
             !isNil(adsRequest.location)
           ) {
             const newLocation = adsRequest.location;
 
             if (!isNil(newLocation.location)) {
-              oldImageUrls = [...newLocation.location.image_urls];
+              oldImageUrls = [...newLocation.location.imageUrls];
               await tx.location.update({
                 where: {
                   id: newLocation.location.id,
@@ -362,12 +362,12 @@ export class AdsRequestService {
                   lat: newLocation.lat,
                   long: newLocation.long,
                   isPlanning: newLocation.isPlanning,
-                  district_id: newLocation.district_id,
-                  ward_id: newLocation.ward_id,
-                  full_address: newLocation.full_address,
-                  type_id: newLocation.type_id,
-                  ad_type_id: newLocation.ad_type_id,
-                  image_urls: [...newLocation.image_urls],
+                  districtId: newLocation.districtId,
+                  wardId: newLocation.wardId,
+                  fullAddress: newLocation.fullAddress,
+                  typeId: newLocation.typeId,
+                  adTypeId: newLocation.adTypeId,
+                  imageUrls: [...newLocation.imageUrls],
                   name: newLocation.name,
                 },
               });
@@ -378,7 +378,7 @@ export class AdsRequestService {
                 },
                 data: {
                   status: AdsRequestStatus.APPROVED,
-                  location_id: newLocation.location.id,
+                  locationId: newLocation.location.id,
                 },
               });
 
