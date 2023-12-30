@@ -6,16 +6,15 @@ import mockConfigs from './mock';
 let currentConfigs = mockConfigs;
 
 switch (import.meta.env.MODE) {
-  case 'local':
+  case 'local-be':
     currentConfigs = localConfigs;
     break;
   case 'development':
     currentConfigs = devConfigs;
     break;
   case 'production':
-    currentConfigs = devConfigs;
+    currentConfigs = devConfigs; // TODO: config prod
     break;
-  // TODO: config prod
 }
 
 export const configs = { ...currentConfigs };
