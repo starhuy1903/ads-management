@@ -9,6 +9,8 @@ import {
   Query,
   Res,
   UseGuards,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { LocationTypeService } from './location-type.service';
 import { CreateLocationTypeDto } from './dto/create-location-type.dto';
@@ -49,18 +51,17 @@ export class LocationTypeController {
   @Get()
   async findAll(
     @Query() pageOptionsLocationTypeDto: PageOptionsLocationTypeDto,
-    @Res() res: CustomResponse,
   ) {
     try {
-      const locationTypes = await this.locationTypeService.findAll(
-        pageOptionsLocationTypeDto,
-      );
-      return res.success({ data: locationTypes });
+      return await this.locationTypeService.findAll(pageOptionsLocationTypeDto);
     } catch (error) {
-      return res.error({
-        statusCode: 500,
-        message: error.message || 'Internal Server Error',
-      });
+      throw new HttpException(
+        {
+          statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+          message: error.message || 'Internal Server Error',
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 

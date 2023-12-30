@@ -9,6 +9,8 @@ import {
   Query,
   Res,
   UseGuards,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { DistrictService } from './district.service';
 import { CreateDistrictDto } from './dto/create-district.dto';
@@ -47,20 +49,17 @@ export class DistrictController {
   @Get()
   @UseGuards(JwtGuard)
   @Roles(UserRole.DEPARTMENT_OFFICER)
-  async findAll(
-    @Query() pageOptionsDistrictDto: PageOptionsDistrictDto,
-    @Res() res: CustomResponse,
-  ) {
+  async findAll(@Query() pageOptionsDistrictDto: PageOptionsDistrictDto) {
     try {
-      const Districts = await this.districtService.findAll(
-        pageOptionsDistrictDto,
-      );
-      return res.success({ data: Districts });
+      return await this.districtService.findAll(pageOptionsDistrictDto);
     } catch (error) {
-      return res.error({
-        statusCode: 500,
-        message: error.message || 'Internal Server Error',
-      });
+      throw new HttpException(
+        {
+          statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+          message: error.message || 'Internal Server Error',
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 

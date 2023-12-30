@@ -9,6 +9,8 @@ import {
   Query,
   Res,
   UseGuards,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { ReportTypeService } from './report-type.service';
 import { CreateReportTypeDto } from './dto/create-report-type.dto';
@@ -47,20 +49,17 @@ export class ReportTypeController {
   }
 
   @Get()
-  async findAll(
-    @Query() pageOptionsReportTypeDto: PageOptionsReportTypeDto,
-    @Res() res: CustomResponse,
-  ) {
+  async findAll(@Query() pageOptionsReportTypeDto: PageOptionsReportTypeDto) {
     try {
-      const reportTypes = await this.reportTypeService.findAll(
-        pageOptionsReportTypeDto,
-      );
-      return res.success({ data: reportTypes });
+      return await this.reportTypeService.findAll(pageOptionsReportTypeDto);
     } catch (error) {
-      return res.error({
-        statusCode: 500,
-        message: error.message || 'Internal Server Error',
-      });
+      throw new HttpException(
+        {
+          statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+          message: error.message || 'Internal Server Error',
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 

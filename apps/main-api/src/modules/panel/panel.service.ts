@@ -89,8 +89,9 @@ export class PanelService {
       }),
     ]);
     return {
-      panels: result,
+      data: result,
       totalPages: Math.ceil(totalCount / pageOptionsPanelDto.take),
+      totalCount,
     };
   }
 
@@ -133,8 +134,9 @@ export class PanelService {
       }),
     ]);
     return {
-      panels: result,
+      data: result,
       totalPages: Math.ceil(totalCount / pageOptionsPanelDto.take),
+      totalCount,
     };
   }
 

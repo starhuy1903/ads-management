@@ -9,6 +9,8 @@ import {
   Query,
   Res,
   UseGuards,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { PanelTypeService } from './panel-type.service';
 import { CreatePanelTypeDto } from './dto/create-panel-type.dto';
@@ -31,9 +33,7 @@ export class PanelTypeController {
     @Res() res: CustomResponse,
   ) {
     try {
-      const panelType = await this.panelTypeService.create(
-        createPanelTypeDto,
-      );
+      const panelType = await this.panelTypeService.create(createPanelTypeDto);
       return res.success({
         data: panelType,
         message: 'PanelType created successfully',
@@ -47,20 +47,17 @@ export class PanelTypeController {
   }
 
   @Get()
-  async findAll(
-    @Query() pageOptionsPanelTypeDto: PageOptionsPanelTypeDto,
-    @Res() res: CustomResponse,
-  ) {
+  async findAll(@Query() pageOptionsPanelTypeDto: PageOptionsPanelTypeDto) {
     try {
-      const panelTypes = await this.panelTypeService.findAll(
-        pageOptionsPanelTypeDto,
-      );
-      return res.success({ data: panelTypes });
+      return await this.panelTypeService.findAll(pageOptionsPanelTypeDto);
     } catch (error) {
-      return res.error({
-        statusCode: 500,
-        message: error.message || 'Internal Server Error',
-      });
+      throw new HttpException(
+        {
+          statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+          message: error.message || 'Internal Server Error',
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 

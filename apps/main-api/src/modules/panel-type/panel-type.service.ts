@@ -26,8 +26,9 @@ export class PanelTypeService {
       this.prismaService.panel_type.count({}),
     ]);
     return {
-      panelTypes: result,
+      data: result,
       totalPages: Math.ceil(totalCount / pageOptionsPanelTypeDto.take),
+      totalCount,
     };
   }
 

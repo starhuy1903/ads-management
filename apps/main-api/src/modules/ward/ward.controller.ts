@@ -9,6 +9,8 @@ import {
   Query,
   Res,
   UseGuards,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { WardService } from './ward.service';
 import { CreateWardDto } from './dto/create-ward.dto';
@@ -47,20 +49,17 @@ export class WardController {
   @Get()
   @UseGuards(JwtGuard)
   @Roles(UserRole.DEPARTMENT_OFFICER)
-  async findAll(
-    @Query() pageOptionsWardDto: PageOptionsWardDto,
-    @Res() res: CustomResponse,
-  ) {
+  async findAll(@Query() pageOptionsWardDto: PageOptionsWardDto) {
     try {
-      const Wards = await this.wardService.findAll(
-        pageOptionsWardDto,
-      );
-      return res.success({ data: Wards });
+      return await this.wardService.findAll(pageOptionsWardDto);
     } catch (error) {
-      return res.error({
-        statusCode: 500,
-        message: error.message || 'Internal Server Error',
-      });
+      throw new HttpException(
+        {
+          statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+          message: error.message || 'Internal Server Error',
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
@@ -88,10 +87,7 @@ export class WardController {
     @Res() res: CustomResponse,
   ) {
     try {
-      const updatedWard = await this.wardService.update(
-        +id,
-        updateWardDto,
-      );
+      const updatedWard = await this.wardService.update(+id, updateWardDto);
       return res.success({
         data: updatedWard,
         message: 'Ward updated successfully',

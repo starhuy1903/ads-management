@@ -12,6 +12,8 @@ import {
   UseInterceptors,
   UploadedFiles,
   ParseFilePipeBuilder,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { AdsRequestService } from './ads-request.service';
 import {
@@ -116,20 +118,17 @@ export class AdsRequestController {
   @Get()
   @UseGuards(JwtGuard)
   @Roles(UserRole.DEPARTMENT_OFFICER)
-  async findAll(
-    @Query() pageOptionsAdsRequestDto: PageOptionsAdsRequestDto,
-    @Res() res: CustomResponse,
-  ) {
+  async findAll(@Query() pageOptionsAdsRequestDto: PageOptionsAdsRequestDto) {
     try {
-      const adsRequests = await this.adsRequestService.findAll(
-        pageOptionsAdsRequestDto,
-      );
-      return res.success({ data: adsRequests });
+      return await this.adsRequestService.findAll(pageOptionsAdsRequestDto);
     } catch (error) {
-      return res.error({
-        statusCode: 500,
-        message: error.message || 'Internal Server Error',
-      });
+      throw new HttpException(
+        {
+          statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+          message: error.message || 'Internal Server Error',
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 

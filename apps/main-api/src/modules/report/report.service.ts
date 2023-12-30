@@ -140,8 +140,9 @@ export class ReportService {
       }),
     ]);
     return {
-      reports: result,
+      data: result,
       totalPages: Math.ceil(totalCount / pageOptionsReportDto.take),
+      totalCount,
     };
   }
 
@@ -245,8 +246,9 @@ export class ReportService {
       }),
     ]);
     return {
-      reports: result,
+      data: result,
       totalPages: Math.ceil(totalCount / pageOptionsUserReportDto.take),
+      totalCount,
     };
   }
 

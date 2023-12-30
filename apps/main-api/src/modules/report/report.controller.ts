@@ -13,6 +13,8 @@ import {
   UploadedFiles,
   Sse,
   UseGuards,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { ReportService } from './report.service';
 import { CreateReportDto } from './dto/create-report.dto';
@@ -83,36 +85,36 @@ export class ReportController {
   }
 
   @Get()
-  async findAll(
-    @Query() pageOptionsReportDto: PageOptionsReportDto,
-    @Res() res: CustomResponse,
-  ) {
+  async findAll(@Query() pageOptionsReportDto: PageOptionsReportDto) {
     try {
-      const reports = await this.reportService.findAll(pageOptionsReportDto);
-      return res.success({ data: reports });
+      return await this.reportService.findAll(pageOptionsReportDto);
     } catch (error) {
-      return res.error({
-        statusCode: 500,
-        message: error.message,
-      });
+      throw new HttpException(
+        {
+          statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+          message: error.message || 'Internal Server Error',
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
   @Get('/get-me')
   async findAllUserReport(
     @Query() pageOptionsUserReportDto: PageOptionsUserReportDto,
-    @Res() res: CustomResponse,
   ) {
     try {
-      const reports = await this.reportService.findAllUserReport(
+      return await this.reportService.findAllUserReport(
         pageOptionsUserReportDto,
       );
-      return res.success({ data: reports });
     } catch (error) {
-      return res.error({
-        statusCode: 500,
-        message: error.message,
-      });
+      throw new HttpException(
+        {
+          statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+          message: error.message || 'Internal Server Error',
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
