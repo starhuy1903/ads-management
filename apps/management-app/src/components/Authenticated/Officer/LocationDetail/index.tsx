@@ -2,7 +2,10 @@ import { ImageList, ImageListItem, Stack, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import CenterLoading from '@/components/Common/CenterLoading';
-import { ReadOnlyTextField } from '@/components/Common/FormComponents';
+import {
+  ImageListField,
+  ReadOnlyTextField,
+} from '@/components/Common/FormComponents';
 import { DetailWrapper } from '@/components/Common/Layout/ScreenWrapper';
 import { useGetLocationByIdQuery } from '@/store/api/officerApiSlice';
 import { Location } from '@/types/officer-management';
@@ -30,13 +33,13 @@ export default function LocationDetail() {
         <ReadOnlyTextField label="ID" value={location?.id} />
 
         <ReadOnlyTextField
-          label="Created"
-          value={formatDateTime(location?.created_time)}
+          label="Created Time"
+          value={formatDateTime(location?.createdAt)}
         />
 
         <ReadOnlyTextField
-          label="Modified"
-          value={formatDateTime(location?.modified_time)}
+          label="Updated Time"
+          value={formatDateTime(location?.updatedAt)}
         />
 
         <ReadOnlyTextField
@@ -47,7 +50,7 @@ export default function LocationDetail() {
 
       <Typography variant="h6">Location</Typography>
       <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-        <ReadOnlyTextField label="Address" value={location?.full_address} />
+        <ReadOnlyTextField label="Address" value={location?.fullAddress} />
 
         <ReadOnlyTextField label="Ward" value={location?.ward?.name} />
 
@@ -62,30 +65,13 @@ export default function LocationDetail() {
       <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
         <ReadOnlyTextField
           label="Advertising Type"
-          value={location?.ad_type?.name}
+          value={location?.adType?.name}
         />
 
         <ReadOnlyTextField label="Position Type" value={location?.type?.name} />
       </Stack>
 
-      <Typography variant="h6">Image</Typography>
-
-      {location?.image_urls.length !== 0 ? (
-        <ImageList sx={{ width: '70%' }} cols={2}>
-          {location?.image_urls.map((item) => (
-            <ImageListItem key={item}>
-              <img src={item} alt="location" loading="lazy" />
-            </ImageListItem>
-          ))}
-        </ImageList>
-      ) : (
-        <Typography
-          variant="body1"
-          sx={{ mb: 2, fontStyle: 'italic', color: 'gray' }}
-        >
-          No image.
-        </Typography>
-      )}
+      <ImageListField label="Image" images={location?.imageUrls} />
     </DetailWrapper>
   );
 }

@@ -1,16 +1,12 @@
-import {
-  Button,
-  ImageList,
-  ImageListItem,
-  Stack,
-  TextField,
-  Typography,
-} from '@mui/material';
+import { Button, Stack, TextField, Typography } from '@mui/material';
 import 'moment-timezone';
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import CenterLoading from '@/components/Common/CenterLoading';
-import { ReadOnlyTextField } from '@/components/Common/FormComponents';
+import {
+  ImageListField,
+  ReadOnlyTextField,
+} from '@/components/Common/FormComponents';
 import { DetailWrapper } from '@/components/Common/Layout/ScreenWrapper';
 import { useGetReportByIdQuery } from '@/store/api/officerApiSlice';
 import { Report } from '@/types/officer-management';
@@ -38,15 +34,15 @@ export default function PanelReportDetail() {
       <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
         <ReadOnlyTextField label="ID" value={report?.id} />
 
-        <ReadOnlyTextField label="Type" value={report?.report_type?.name} />
+        <ReadOnlyTextField label="Type" value={report?.reportType?.name} />
 
         <ReadOnlyTextField
-          label="Created"
+          label="Created Time"
           value={formatDateTime(report?.createdAt)}
         />
 
         <ReadOnlyTextField
-          label="Modified"
+          label="Updated Time"
           value={formatDateTime(report?.updatedAt)}
         />
 
@@ -64,20 +60,16 @@ export default function PanelReportDetail() {
         <ReadOnlyTextField label="ID" value={report?.location?.id} />
 
         <ReadOnlyTextField
-          label="Created"
+          label="Created Time"
           value={
-            report?.location
-              ? formatDateTime(report?.location?.created_time)
-              : ''
+            report?.location ? formatDateTime(report?.location?.createdAt) : ''
           }
         />
 
         <ReadOnlyTextField
-          label="Modified"
+          label="Updated Time"
           value={
-            report?.location
-              ? formatDateTime(report?.location?.modified_time)
-              : ''
+            report?.location ? formatDateTime(report?.location?.updatedAt) : ''
           }
         />
 
@@ -89,7 +81,7 @@ export default function PanelReportDetail() {
       <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
         <ReadOnlyTextField
           label="Address"
-          value={report?.location?.full_address}
+          value={report?.location?.fullAddress}
         />
 
         <ReadOnlyTextField label="Ward" value={report?.location?.ward?.name} />
@@ -113,7 +105,7 @@ export default function PanelReportDetail() {
           mb: 1,
         }}
       >
-        <ReadOnlyTextField label="Full name" value={report?.fullname} />
+        <ReadOnlyTextField label="Full name" value={report?.fullName} />
 
         <ReadOnlyTextField label="Email" value={report?.email} />
       </Stack>
@@ -129,27 +121,11 @@ export default function PanelReportDetail() {
       />
 
       {/* Images */}
-      <Typography variant="h6">Images</Typography>
-      {report?.image_url.length !== 0 ? (
-        <ImageList sx={{ width: '70%' }} cols={2}>
-          {report?.image_url.map((item) => (
-            <ImageListItem key={item}>
-              <img src={item} alt="report" loading="lazy" />
-            </ImageListItem>
-          ))}
-        </ImageList>
-      ) : (
-        <Typography
-          variant="body1"
-          sx={{ mb: 2, fontStyle: 'italic', color: 'gray' }}
-        >
-          No image.
-        </Typography>
-      )}
+      <ImageListField images={report?.imageUrls} />
 
       {/* Solution */}
       <Typography variant="h6">Solution</Typography>
-      {report?.resolved_content === '' ? (
+      {report?.resolvedContent === '' ? (
         <>
           <Typography
             variant="body1"
@@ -175,7 +151,7 @@ export default function PanelReportDetail() {
           InputProps={{
             readOnly: true,
           }}
-          value={report?.resolved_content}
+          value={report?.resolvedContent}
           multiline
           rows={3}
         />

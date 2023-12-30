@@ -22,11 +22,11 @@ const titles = [
   'Address',
   'Ward',
   'District',
-  'Ad Type',
-  'Type',
+  'Advertising Type',
+  'Position Type',
   'Planning',
-  'Created',
-  'Modified',
+  'Created Time',
+  'Updated Time',
   '',
 ];
 
@@ -41,7 +41,7 @@ export default function LocationList() {
 
   useEffect(() => {
     if (data) {
-      setLocations(data.data.locations);
+      setLocations(data.data);
     }
   }, [data]);
 
@@ -52,7 +52,7 @@ export default function LocationList() {
   return (
     <ListWrapper label="List of Advertising Locations">
       <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="advertising points">
+        <Table sx={{ minWidth: 650 }} aria-label="locations">
           <TableHead>
             <TableRow>
               {titles.map((title) => (
@@ -67,23 +67,21 @@ export default function LocationList() {
               locations.map((location: Location) => (
                 <TableRow key={location?.id}>
                   <TableCell align="center">{location?.id}</TableCell>
-                  <TableCell align="center">{location?.full_address}</TableCell>
+                  <TableCell align="center">{location?.fullAddress}</TableCell>
                   <TableCell align="center">{location?.ward?.name}</TableCell>
                   <TableCell align="center">
-                    {location?.district.name}
+                    {location?.district?.name}
                   </TableCell>
-                  <TableCell align="center">
-                    {location?.ad_type?.name}
-                  </TableCell>
+                  <TableCell align="center">{location?.adType?.name}</TableCell>
                   <TableCell align="center">{location?.type?.name}</TableCell>
                   <TableCell align="center">{`${
                     location?.isPlanning ? 'Yes' : 'No'
                   }`}</TableCell>
                   <TableCell align="center">
-                    {formatDateTime(location?.created_time)}
+                    {formatDateTime(location?.createdAt)}
                   </TableCell>
                   <TableCell align="center">
-                    {formatDateTime(location?.modified_time)}
+                    {formatDateTime(location?.updatedAt)}
                   </TableCell>
                   <TableCell>
                     <Box
@@ -110,7 +108,7 @@ export default function LocationList() {
       </TableContainer>
 
       <Pagination
-        count={data?.data.totalPages}
+        count={data?.totalPages}
         page={page}
         onChange={(event, value) => setPage(value)}
       />

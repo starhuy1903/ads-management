@@ -23,8 +23,8 @@ const titles = [
   'Address',
   'Ward',
   'District',
-  'Created',
-  'Modified',
+  'Created Time',
+  'Updated Time',
   'Status',
   '',
 ];
@@ -41,7 +41,7 @@ export default function LicensingRequestList() {
 
   useEffect(() => {
     if (data) {
-      setRequests(data.data.adsRequests);
+      setRequests(data.data);
     }
   }, [data]);
 
@@ -79,24 +79,24 @@ export default function LicensingRequestList() {
           <TableBody>
             {requests.length !== 0 ? (
               requests.map((request: AdsRequest) => (
-                <TableRow key={request.id}>
-                  <TableCell align="center">{request.id}</TableCell>
+                <TableRow key={request?.id}>
+                  <TableCell align="center">{request?.id}</TableCell>
                   <TableCell align="center">
-                    {request.panel?.location?.full_address}
+                    {request?.panel?.location?.fullAddress}
                   </TableCell>
                   <TableCell align="center">
-                    {request.panel?.location?.ward?.name}
+                    {request?.panel?.location?.ward?.name}
                   </TableCell>
                   <TableCell align="center">
-                    {request.panel?.location?.district?.name}
+                    {request?.panel?.location?.district?.name}
                   </TableCell>
                   <TableCell align="center">
-                    {formatDateTime(request.createdAt)}
+                    {formatDateTime(request?.createdAt)}
                   </TableCell>
                   <TableCell align="center">
-                    {formatDateTime(request.updatedAt)}
+                    {formatDateTime(request?.updatedAt)}
                   </TableCell>
-                  <TableCell align="center">{request.status}</TableCell>
+                  <TableCell align="center">{request?.status}</TableCell>
                   <TableCell>
                     <Box
                       sx={{
@@ -105,10 +105,10 @@ export default function LicensingRequestList() {
                         height: '100%',
                       }}
                     >
-                      <Info link={`/licensing-requests/${request.id}`} />
+                      <Info link={`/licensing-requests/${request?.id}`} />
 
-                      {request.status !== 'Approved' && (
-                        <Delete onClick={() => handleDelete(request.id)} />
+                      {request?.status !== 'Approved' && (
+                        <Delete onClick={() => handleDelete(request?.id)} />
                       )}
                     </Box>
                   </TableCell>
@@ -126,7 +126,7 @@ export default function LicensingRequestList() {
       </TableContainer>
 
       <Pagination
-        count={data?.data.totalPages}
+        count={data?.totalPages}
         page={page}
         onChange={(event, value) => setPage(value)}
       />

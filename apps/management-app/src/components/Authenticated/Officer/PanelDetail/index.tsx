@@ -1,8 +1,11 @@
-import { ImageList, ImageListItem, Stack, Typography } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import CenterLoading from '@/components/Common/CenterLoading';
-import { ReadOnlyTextField } from '@/components/Common/FormComponents';
+import {
+  ImageListField,
+  ReadOnlyTextField,
+} from '@/components/Common/FormComponents';
 import { DetailWrapper } from '@/components/Common/Layout/ScreenWrapper';
 import { useGetPanelByIdQuery } from '@/store/api/officerApiSlice';
 import { Panel } from '@/types/officer-management';
@@ -36,13 +39,13 @@ export default function PanelDetail() {
         <ReadOnlyTextField label="Height" value={panel?.height} />
 
         <ReadOnlyTextField
-          label="Created"
-          value={formatDateTime(panel?.created_time)}
+          label="Created Time"
+          value={formatDateTime(panel?.createdAt)}
         />
 
         <ReadOnlyTextField
-          label="Modified"
-          value={formatDateTime(panel?.modified_time)}
+          label="Updated Time"
+          value={formatDateTime(panel?.updatedAt)}
         />
 
         <ReadOnlyTextField label="Status" value={panel?.status} />
@@ -52,7 +55,7 @@ export default function PanelDetail() {
       <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
         <ReadOnlyTextField
           label="Address"
-          value={panel?.location?.full_address}
+          value={panel?.location?.fullAddress}
         />
 
         <ReadOnlyTextField label="Ward" value={panel?.location?.ward?.name} />
@@ -63,38 +66,22 @@ export default function PanelDetail() {
         />
       </Stack>
 
-      <Typography variant="h6">Image</Typography>
-      {panel?.image_urls.length !== 0 ? (
-        <ImageList sx={{ width: '70%' }} cols={2}>
-          {panel?.image_urls.map((item) => (
-            <ImageListItem key={item}>
-              <img src={item} alt="panel" loading="lazy" />
-            </ImageListItem>
-          ))}
-        </ImageList>
-      ) : (
-        <Typography
-          variant="body1"
-          sx={{ mb: 2, fontStyle: 'italic', color: 'gray' }}
-        >
-          No image.
-        </Typography>
-      )}
+      <ImageListField images={panel?.imageUrls} />
 
       <Typography variant="h6">Company</Typography>
       <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-        <ReadOnlyTextField label="Email" value={panel?.company_email} />
+        <ReadOnlyTextField label="Email" value={panel?.companyEmail} />
 
-        <ReadOnlyTextField label="Phone" value={panel?.company_number} />
+        <ReadOnlyTextField label="Phone" value={panel?.companyNumber} />
 
         <ReadOnlyTextField
           label="Created Contract Date"
-          value={formatDateTime(panel?.create_contract_date)}
+          value={formatDateTime(panel?.createContractDate)}
         />
 
         <ReadOnlyTextField
           label="Expired Contract Date"
-          value={formatDateTime(panel?.expired_contract_date)}
+          value={formatDateTime(panel?.expiredContractDate)}
         />
       </Stack>
     </DetailWrapper>

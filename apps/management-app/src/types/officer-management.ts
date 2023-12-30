@@ -1,106 +1,78 @@
 export type GetListResult<T> = {
-  data: {
-    locations?: Array<T>;
-    panels?: Array<T>;
-    reports?: Array<T>;
-    adsRequests?: Array<T>;
-    totalPages?: number;
-  };
+  data: Array<T>;
+  totalPages?: number;
+  totalCount?: number;
 };
 
 export type GetDetailResult<T> = {
   data?: T;
 };
 
-export type Location = {
+type BaseType = {
   id: number;
-  full_address: string;
-  ward: {
-    id: number;
-    name: string;
-  };
-  district: {
-    id: number;
-    name: string;
-  };
-  lat: number;
-  long: number;
-  type?: {
-    id: number;
-    name: string;
-  };
-  ad_type?: {
-    id: number;
-    name: string;
-  };
-  image_urls: string[];
-  isPlanning: boolean;
-  status?: string;
-  created_time: string;
-  modified_time: string;
+  createdAt: string;
+  updatedAt: string;
 };
 
-export type Panel = {
+type RefType = {
   id: number;
+  name: string;
+};
+
+export type Location = BaseType & {
+  lat: string;
+  long: string;
+  isPlanning: boolean;
+  fullAddress: string;
+  imageUrls: string[];
+  name: string;
+  status?: string;
+  type: RefType;
+  adType: RefType;
+  ward: RefType;
+  district: RefType;
+};
+
+export type Panel = BaseType & {
   width: string;
   height: string;
-  image_urls: string[];
-  company_email: string;
-  company_number: string;
+  imageUrls: string[];
+  companyEmail: string;
+  companyNumber: string;
+  createContractDate: string;
+  expiredContractDate: string;
   status: string;
-  type: {
-    id: number;
-    name: string;
-  };
   location: Location;
-  create_contract_date: string;
-  expired_contract_date: string;
-  created_time: string;
-  modified_time: string;
+  type: RefType;
 };
 
-export type Report = {
-  id: number;
-  fullname: string;
+export type Report = BaseType & {
+  fullName: string;
   email: string;
   content: string;
-  image_url: string[];
-  report_type: {
-    id: number;
-    name: string;
-  };
+  imageUrls: string[];
+  targetType: string;
   status: string;
-  resolved_content: string;
+  resolvedContent: string;
   location?: Location;
   panel?: Panel;
-  createdAt: string;
-  updatedAt: string;
+  reportType: RefType;
 };
 
-export type User = {
-  id: number;
+export type User = BaseType & {
   email: string;
-  first_name: string;
-  last_name: string;
-  phone_number: string;
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
   role: string;
-  ward?: {
-    id: number;
-    name: string;
-  };
-  district?: {
-    id: number;
-    name: string;
-  };
+  ward?: RefType;
+  district?: RefType;
 };
 
-export type AdsRequest = {
-  id: number;
+export type AdsRequest = BaseType & {
   reason: string;
   status: string;
-  target_type: string;
-  createdAt: string;
-  updatedAt: string;
+  targetType: string;
   type: string;
   user: User;
   location?: Location;

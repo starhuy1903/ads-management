@@ -26,8 +26,8 @@ const titles = [
   'Company Email',
   'Started',
   'Ended',
-  'Created',
-  'Modified',
+  'Created Time',
+  'Updated Time',
   'Status',
   '',
 ];
@@ -43,7 +43,7 @@ export default function PanelList() {
 
   useEffect(() => {
     if (data) {
-      setPanels(data.data.panels);
+      setPanels(data.data);
     }
   }, [data]);
 
@@ -54,7 +54,7 @@ export default function PanelList() {
   return (
     <ListWrapper label="List of Advertising Panels">
       <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="advertising points">
+        <Table sx={{ minWidth: 650 }} aria-label="panels">
           <TableHead>
             <TableRow>
               {titles.map((title) => (
@@ -70,7 +70,7 @@ export default function PanelList() {
                 <TableRow key={panel?.id}>
                   <TableCell align="center">{panel?.id}</TableCell>
                   <TableCell align="center">
-                    {panel?.location?.full_address}
+                    {panel?.location?.fullAddress}
                   </TableCell>
                   <TableCell align="center">
                     {panel?.location?.ward?.name}
@@ -79,18 +79,18 @@ export default function PanelList() {
                     {panel?.location?.district?.name}
                   </TableCell>
                   <TableCell align="center">{panel?.type?.name}</TableCell>
-                  <TableCell align="center">{panel?.company_email}</TableCell>
+                  <TableCell align="center">{panel?.companyEmail}</TableCell>
                   <TableCell align="center">
-                    {formatDateTime(panel?.create_contract_date)}
+                    {formatDateTime(panel?.createContractDate)}
                   </TableCell>
                   <TableCell align="center">
-                    {formatDateTime(panel?.expired_contract_date)}
+                    {formatDateTime(panel?.expiredContractDate)}
                   </TableCell>
                   <TableCell align="center">
-                    {formatDateTime(panel?.created_time)}
+                    {formatDateTime(panel?.createdAt)}
                   </TableCell>
                   <TableCell align="center">
-                    {formatDateTime(panel?.modified_time)}
+                    {formatDateTime(panel?.updatedAt)}
                   </TableCell>
 
                   <TableCell align="center">{panel?.status}</TableCell>
@@ -112,7 +112,7 @@ export default function PanelList() {
       </TableContainer>
 
       <Pagination
-        count={data?.data.totalPages}
+        count={data?.totalPages}
         page={page}
         onChange={(event, value) => setPage(value)}
       />

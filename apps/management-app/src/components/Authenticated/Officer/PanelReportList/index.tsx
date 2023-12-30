@@ -22,8 +22,8 @@ const titles = [
   'Type',
   'Name',
   'Email',
-  'Created',
-  'Modified',
+  'Created Time',
+  'Updated Time',
   'Status',
   '',
 ];
@@ -41,7 +41,7 @@ export default function PanelReportList() {
 
   useEffect(() => {
     if (data) {
-      setReports(data.data.reports);
+      setReports(data.data);
     }
   }, [data]);
 
@@ -52,7 +52,7 @@ export default function PanelReportList() {
   return (
     <ListWrapper label="List of Panel Reports">
       <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="advertising points">
+        <Table sx={{ minWidth: 650 }} aria-label="panel reports">
           <TableHead>
             <TableRow>
               {titles.map((title) => (
@@ -68,9 +68,9 @@ export default function PanelReportList() {
                 <TableRow key={report?.id}>
                   <TableCell align="center">{report?.id}</TableCell>
                   <TableCell align="center">
-                    {report?.report_type?.name}
+                    {report?.reportType?.name}
                   </TableCell>
-                  <TableCell align="center">{report?.fullname}</TableCell>
+                  <TableCell align="center">{report?.fullName}</TableCell>
                   <TableCell align="center">{report?.email}</TableCell>
                   <TableCell align="center">
                     {formatDateTime(report?.createdAt)}
@@ -104,7 +104,7 @@ export default function PanelReportList() {
       </TableContainer>
 
       <Pagination
-        count={data?.data.totalPages}
+        count={data?.totalPages}
         page={page}
         onChange={(event, value) => setPage(value)}
       />

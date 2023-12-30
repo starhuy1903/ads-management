@@ -27,8 +27,8 @@ const titles = [
   'Address',
   'Ward',
   'District',
-  'Created',
-  'Modified',
+  'Created Time',
+  'Updated Time',
   'Status',
   '',
 ];
@@ -47,7 +47,7 @@ export default function EditingRequestList() {
 
   useEffect(() => {
     if (data) {
-      setRequests(data.data.adsRequests);
+      setRequests(data.data);
     }
   }, [data]);
 
@@ -102,13 +102,13 @@ export default function EditingRequestList() {
             <TableBody>
               {requests.length !== 0 ? (
                 requests.map((request: AdsRequest) => (
-                  <TableRow key={request.id}>
-                    <TableCell align="center">{request.id}</TableCell>
-                    <TableCell align="center">{request.target_type}</TableCell>
+                  <TableRow key={request?.id}>
+                    <TableCell align="center">{request?.id}</TableCell>
+                    <TableCell align="center">{request?.targetType}</TableCell>
                     <TableCell align="center">
                       {targetType === TargetType.LOCATION
-                        ? request?.location?.full_address
-                        : request?.panel?.location?.full_address}
+                        ? request?.location?.fullAddress
+                        : request?.panel?.location?.fullAddress}
                     </TableCell>
                     <TableCell align="center">
                       {targetType === TargetType.LOCATION
@@ -121,12 +121,12 @@ export default function EditingRequestList() {
                         : request?.panel?.location?.district?.name}
                     </TableCell>
                     <TableCell align="center">
-                      {formatDateTime(request.createdAt)}
+                      {formatDateTime(request?.createdAt)}
                     </TableCell>
                     <TableCell align="center">
-                      {formatDateTime(request.updatedAt)}
+                      {formatDateTime(request?.updatedAt)}
                     </TableCell>
-                    <TableCell align="center">{request.status}</TableCell>
+                    <TableCell align="center">{request?.status}</TableCell>
                     <TableCell>
                       <Box
                         sx={{
@@ -135,10 +135,10 @@ export default function EditingRequestList() {
                           height: '100%',
                         }}
                       >
-                        <Info link={`/editing-requests/${request.id}`} />
+                        <Info link={`/editing-requests/${request?.id}`} />
 
-                        {request.status !== 'Approved' && (
-                          <Delete onClick={() => handleDelete(request.id)} />
+                        {request?.status !== 'Approved' && (
+                          <Delete onClick={() => handleDelete(request?.id)} />
                         )}
                       </Box>
                     </TableCell>
@@ -157,7 +157,7 @@ export default function EditingRequestList() {
       </Box>
 
       <Pagination
-        count={data?.data.totalPages}
+        count={data?.totalPages}
         page={page}
         onChange={(event, value) => setPage(value)}
       />

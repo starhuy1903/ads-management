@@ -39,12 +39,12 @@ export default function LicensingRequestDetail() {
         <ReadOnlyTextField label="ID" value={request?.id} />
 
         <ReadOnlyTextField
-          label="Created"
+          label="Created Time"
           value={formatDateTime(request?.createdAt)}
         />
 
         <ReadOnlyTextField
-          label="Modified"
+          label="Updated Time"
           value={formatDateTime(request?.updatedAt)}
         />
 
@@ -60,14 +60,14 @@ export default function LicensingRequestDetail() {
       >
         <ReadOnlyTextField
           label="Request Sender"
-          value={`${request?.user?.first_name} ${request?.user?.last_name}`}
+          value={`${request?.user?.firstName} ${request?.user?.lastName}`}
         />
 
         <ReadOnlyTextField label="Role" value={request?.user?.role} />
 
         <ReadOnlyTextField label="Email" value={request?.user?.email} />
 
-        <ReadOnlyTextField label="Phone" value={request?.user?.phone_number} />
+        <ReadOnlyTextField label="Phone" value={request?.user?.phoneNumber} />
 
         <ReadOnlyTextField label="Ward" value={request?.user?.ward?.name} />
 
@@ -99,16 +99,16 @@ export default function LicensingRequestDetail() {
         <ReadOnlyTextField label="Height" value={request?.panel?.height} />
 
         <ReadOnlyTextField
-          label="Created"
+          label="Created Time"
           value={
-            request?.panel ? formatDateTime(request?.panel?.created_time) : ''
+            request?.panel ? formatDateTime(request?.panel?.createdAt) : ''
           }
         />
 
         <ReadOnlyTextField
-          label="Modified"
+          label="Updated Time"
           value={
-            request?.panel ? formatDateTime(request?.panel?.modified_time) : ''
+            request?.panel ? formatDateTime(request?.panel?.updatedAt) : ''
           }
         />
       </Stack>
@@ -119,7 +119,7 @@ export default function LicensingRequestDetail() {
 
         <ReadOnlyTextField
           label="Address"
-          value={request?.panel?.location?.full_address}
+          value={request?.panel?.location?.fullAddress}
         />
 
         <ReadOnlyTextField
@@ -139,29 +139,26 @@ export default function LicensingRequestDetail() {
 
         <ReadOnlyTextField
           label="Advertising Type"
-          value={request?.panel?.location?.ad_type?.name}
+          value={request?.panel?.location?.adType?.name}
         />
       </Stack>
 
-      <ImageListField images={request?.panel?.image_urls} />
+      <ImageListField images={request?.panel?.imageUrls} />
 
       <Typography variant="h6">Company</Typography>
       <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-        <ReadOnlyTextField
-          label="Email"
-          value={request?.panel?.company_email}
-        />
+        <ReadOnlyTextField label="Email" value={request?.panel?.companyEmail} />
 
         <ReadOnlyTextField
           label="Phone"
-          value={request?.panel?.company_number}
+          value={request?.panel?.companyNumber}
         />
 
         <ReadOnlyTextField
           label="Created Contract Date"
           value={
             request?.panel
-              ? formatDateTime(request?.panel?.create_contract_date)
+              ? formatDateTime(request?.panel?.createContractDate)
               : ''
           }
         />
@@ -170,7 +167,7 @@ export default function LicensingRequestDetail() {
           label="Expired Contract Date"
           value={
             request?.panel
-              ? formatDateTime(request?.panel?.expired_contract_date)
+              ? formatDateTime(request?.panel?.expiredContractDate)
               : ''
           }
         />
