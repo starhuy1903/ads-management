@@ -59,7 +59,7 @@ export class AuthService {
     // Validate ward and district
     // Check if ward or district is provided for the role
     if (role === UserRole.WARD_OFFICER) {
-      if (!dto.ward_id) {
+      if (!dto.wardId) {
         throw new BadRequestException({
           success: false,
           message: 'ward_id is required',
@@ -69,7 +69,7 @@ export class AuthService {
       // Check if ward exists in db
       const ward = await this.prismaService.ward.findUnique({
         where: {
-          id: dto.ward_id,
+          id: dto.wardId,
         },
       });
 
@@ -82,7 +82,7 @@ export class AuthService {
     }
 
     if (role === UserRole.DISTRICT_OFFICER) {
-      if (!dto.district_id) {
+      if (!dto.districtId) {
         throw new BadRequestException({
           success: false,
           message: 'district_id is required',
@@ -92,7 +92,7 @@ export class AuthService {
       // Check if district exists in db
       const district = await this.prismaService.district.findUnique({
         where: {
-          id: dto.district_id,
+          id: dto.districtId,
         },
       });
 
@@ -112,11 +112,11 @@ export class AuthService {
         data: {
           email: dto.email,
           password: password,
-          first_name: dto.first_name,
-          last_name: dto.last_name,
+          firstName: dto.firstName,
+          lastName: dto.lastName,
           role: role,
-          ward_id: dto.ward_id,
-          district_id: dto.district_id,
+          wardId: dto.wardId,
+          districtId: dto.districtId,
         },
       });
 
@@ -163,7 +163,7 @@ export class AuthService {
       const hash = await argon.hash(refreshToken);
       const token = await this.prismaService.token.create({
         data: {
-          expires_at: getRefreshExpiry(),
+          expiresAt: getRefreshExpiry(),
           token: hash,
           user: {
             connect: {
@@ -181,9 +181,9 @@ export class AuthService {
         user: {
           id: user.id,
           email: user.email,
-          first_name: user.first_name,
-          last_name: user.last_name,
-          phone_number: user.phone_number,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          phoneNumber: user.phoneNumber,
           dob: user.dob,
           role: user.role,
         },
@@ -314,12 +314,12 @@ export class AuthService {
 
       // Refresh token is valid but not in db
       // Possible re-use!!! delete all refresh tokens(sessions) belonging to the sub
-      if (payload.sub !== foundToken.user_id) {
+      if (payload.sub !== foundToken.userId) {
         // The sub of the token isn't the id of the token in db
         // Log out all session of this payalod id, reFreshToken has been compromised
         await this.prismaService.token.deleteMany({
           where: {
-            user_id: payload.sub,
+            userId: payload.sub,
           },
         });
         throw new HttpException(
@@ -359,7 +359,7 @@ export class AuthService {
         id: user.id,
       },
       data: {
-        reset_password: true,
+        resetPassword: true,
       },
     });
 
@@ -375,7 +375,7 @@ export class AuthService {
 
     // Send verification email with token
     const templateData = {
-      fullname: user.first_name + ' ' + user.last_name,
+      fullname: user.firstName + ' ' + user.lastName,
       link: verificationLink,
     };
 
@@ -421,7 +421,7 @@ export class AuthService {
       });
     }
 
-    if (user.reset_password == false) {
+    if (user.resetPassword == false) {
       throw new ForbiddenException({
         success: false,
         message: 'User has not requested for password reset',
@@ -438,7 +438,7 @@ export class AuthService {
       },
       data: {
         password: hash,
-        reset_password: false,
+        resetPassword: false,
       },
     });
 

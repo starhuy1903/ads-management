@@ -1,18 +1,13 @@
-import { Avatar } from '@mui/material';
 // import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Map, {
   FullscreenControl,
   GeolocateControl,
-  Marker,
   NavigationControl,
   Popup,
 } from 'react-map-gl';
 import { configs } from '@/configurations';
-import { useAppDispatch } from '@/store';
-import { SidebarKey } from '@/constants/sidebar';
-import { showSidebar } from '@/store/slice/sidebar';
 import CenterLoading from '../CenterLoading';
 
 interface ViewPort {
@@ -26,15 +21,6 @@ export default function Maps({ children }: { children?: React.ReactNode }) {
   const [showPopup, setShowPopup] = useState<boolean>(true);
 
   const markerRef = useRef<mapboxgl.Marker>();
-  const dispatch = useAppDispatch();
-
-  const handleViewDetailAd = useCallback(() => {
-    dispatch(
-      showSidebar(SidebarKey.AD_DETAIL, {
-        sidebarId: 1, // todo: remove mock
-      }),
-    );
-  }, [dispatch]);
 
   // const popup = useMemo(() => {
   //   return mapboxgl.Popup().setText('Hello world!');
@@ -76,19 +62,6 @@ export default function Maps({ children }: { children?: React.ReactNode }) {
       <NavigationControl position="bottom-right" />
       {/* <ScaleControl position="bottom-left" /> */}
       {children}
-      <Marker
-        longitude={-100}
-        latitude={40}
-        anchor="center"
-        // popup={popup}
-        // ref={markerRef}
-      >
-        <Avatar
-          sx={{ bgcolor: 'blue', width: 20, height: 20, fontSize: '12px' }}
-          children="BC"
-          onClick={handleViewDetailAd}
-        />
-      </Marker>
       {showPopup && (
         <Popup
           longitude={-100}

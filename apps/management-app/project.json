@@ -34,6 +34,10 @@
           "buildTarget": "management-app:build:mock",
           "hmr": true
         },
+        "local": {
+          "buildTarget": "management-app:build:local",
+          "hmr": true
+        },
         "development": {
           "buildTarget": "management-app:build:development",
           "hmr": true

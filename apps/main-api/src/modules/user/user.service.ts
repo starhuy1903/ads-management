@@ -20,9 +20,9 @@ export class UserService {
         select: {
           id: true,
           email: true,
-          first_name: true,
-          last_name: true,
-          phone_number: true,
+          firstName: true,
+          lastName: true,
+          phoneNumber: true,
           dob: true,
           role: true,
           ward: {
@@ -90,9 +90,9 @@ export class UserService {
         select: {
           id: true,
           email: true,
-          first_name: true,
-          last_name: true,
-          phone_number: true,
+          firstName: true,
+          lastName: true,
+          phoneNumber: true,
           dob: true,
           role: true,
           ward: {

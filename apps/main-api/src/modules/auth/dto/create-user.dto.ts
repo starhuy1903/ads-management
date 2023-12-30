@@ -19,11 +19,11 @@ export class CreateUserDto {
 
   @IsString()
   @IsNotEmpty()
-  first_name: string;
+  firstName: string;
 
   @IsString()
   @IsNotEmpty()
-  last_name: string;
+  lastName: string;
 
   @IsString()
   @IsNotEmpty()
@@ -31,9 +31,9 @@ export class CreateUserDto {
 
   @IsNumber()
   @IsOptional()
-  ward_id?: number;
+  wardId?: number;
 
   @IsNumber()
   @IsOptional()
-  district_id?: number;
+  districtId?: number;
 }

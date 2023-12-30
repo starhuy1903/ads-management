@@ -20,50 +20,40 @@ import {
   useController,
   useForm,
 } from 'react-hook-form';
+import { v4 as uuidv4 } from 'uuid';
 import { configs } from '@/configurations';
 import { useAppDispatch } from '@/store';
+import CenterLoading from '@/components/Common/CenterLoading';
 import DropFileContainer from '@/components/Common/DropFileContainer';
 import TinyEditor from '@/components/Common/TinyEditor';
 import { ModalKey } from '@/constants/modal';
 import { ImageFileConfig } from '@/constants/validation';
-import { useCreateReportMutation } from '@/store/api/reportApiSlice';
+import { isApiErrorResponse } from '@/store/api/helper';
+import {
+  useCreateReportMutation,
+  useGetReportTypesQuery,
+} from '@/store/api/reportApiSlice';
 import { showModal } from '@/store/slice/modal';
-import { ReportPayload } from '@/types/report';
+import { CreateReportForm, ReportPayload } from '@/types/report';
+import { showError, showSuccess } from '@/utils/toast';
 import ImagePreview from './ImagePreview';
 import UploadImageCard from './UploadImageCard';
-
-const ReportTypes = [
-  {
-    id: 1,
-    value: 'Tố giác sai phạm',
-  },
-  {
-    id: 2,
-    value: 'Đăng ký nội dung',
-  },
-  {
-    id: 3,
-    value: 'Đóng góp ý kiến',
-  },
-  {
-    id: 4,
-    value: 'Giải đáp thắc mắc',
-  },
-];
 
 export default function CitizenReport() {
   const dispatch = useAppDispatch();
   const [createReport, { isLoading }] = useCreateReportMutation();
+  const { data: reportTypesRes, isSuccess: hasReportTypesData } =
+    useGetReportTypesQuery();
+  const reportTypes = reportTypesRes?.data;
 
   const { handleSubmit, register, control, formState, setValue, watch } =
-    useForm<ReportPayload>({
-      mode: 'onChange',
+    useForm<CreateReportForm>({
+      mode: 'onTouched',
       defaultValues: {
         fullName: '',
         email: '',
         phoneNumber: '',
-        reportType: 1,
-        imageFiles: [],
+        images: [],
         captcha: '',
       },
     });
@@ -74,7 +64,7 @@ export default function CitizenReport() {
     field: { value: descValue, onChange: onChangeDesc },
   } = useController({
     control,
-    name: 'description',
+    name: 'content',
     rules: {
       maxLength: {
         value: 5000,
@@ -85,8 +75,8 @@ export default function CitizenReport() {
   });
 
   const handleAddImage = useCallback(
-    (file: File) => setValue('imageFiles', [...formValue.imageFiles, file]),
-    [formValue.imageFiles, setValue],
+    (file: File) => setValue('images', [...formValue.images, file]),
+    [formValue.images, setValue],
   );
 
   const handleUpdateImage = useCallback(
@@ -109,11 +99,11 @@ export default function CitizenReport() {
   const handleDeleteImage = useCallback(
     (file: File) => {
       setValue(
-        'imageFiles',
-        formValue.imageFiles.filter((image) => image !== file),
+        'images',
+        formValue.images.filter((image) => image !== file),
       );
     },
-    [formValue.imageFiles, setValue],
+    [formValue.images, setValue],
   );
 
   const renderUpdateImageContainer = ({
@@ -124,10 +114,29 @@ export default function CitizenReport() {
     disabled: boolean;
   }) => <UploadImageCard open={open} disabled={disabled} />;
 
-  const onSubmit: SubmitHandler<ReportPayload> = async (data) => {
+  const onSubmit: SubmitHandler<CreateReportForm> = async (data) => {
     console.log(data);
-    const res = await createReport(data).unwrap();
+    const submitData: ReportPayload = {
+      ...data,
+      userUuid: uuidv4(),
+      targetType: 'Location',
+    };
+    try {
+      const res = await createReport(submitData).unwrap();
+      console.log({ res });
+
+      // TODO: store userId to local storage
+      showSuccess('Report submitted successfully!');
+    } catch (err) {
+      showError(
+        isApiErrorResponse(err) ? err.data.message : 'Something went wrong',
+      );
+    }
   };
+
+  if (!hasReportTypesData || !reportTypes) {
+    return <CenterLoading />;
+  }
 
   return (
     <Container maxWidth="xl" sx={{ marginY: 8 }}>
@@ -197,27 +206,37 @@ export default function CitizenReport() {
               {formError.phoneNumber?.message}
             </FormHelperText>
           </FormControl>
-          <FormControl fullWidth error={!!formError.reportType}>
+          <FormControl fullWidth error={!!formError.typeId}>
             <FormLabel htmlFor="reportType">Report Type</FormLabel>
-            <Select
-              id="reportType"
-              {...register('reportType')}
-              aria-describedby="reportType-helper-text"
-            >
-              {ReportTypes.map((type) => (
-                <MenuItem key={type.id} value={type.id}>
-                  {type.value}
-                </MenuItem>
-              ))}
-            </Select>
+            <Controller
+              control={control}
+              name="typeId"
+              defaultValue={reportTypes[0].id}
+              rules={{ required: 'Please select a report type.' }}
+              render={({ field: { onChange, value } }) => (
+                <Select
+                  value={value}
+                  id="reportType"
+                  onChange={onChange}
+                  aria-describedby="reportType-helper-text"
+                >
+                  {reportTypes.map((type) => (
+                    <MenuItem key={type.id} value={type.id}>
+                      {type.value}
+                    </MenuItem>
+                  ))}
+                </Select>
+              )}
+            />
             <FormHelperText id="reportType-helper-text">
-              {formError.reportType?.message}
+              {formError.typeId?.message}
             </FormHelperText>
           </FormControl>
         </Stack>
         <FormControl fullWidth>
           <FormLabel>Description</FormLabel>
           <TinyEditor
+            name="report-content"
             value={descValue}
             onChange={onChangeDesc}
             disabled={isLoading}
@@ -227,7 +246,7 @@ export default function CitizenReport() {
         <FormControl>
           <FormLabel sx={{ mb: 1 }}>Upload image</FormLabel>
           <Stack direction="row" spacing={2}>
-            {formValue.imageFiles.map((image, index) => (
+            {formValue.images.map((image, index) => (
               <ImagePreview
                 key={index}
                 image={image}
@@ -235,7 +254,7 @@ export default function CitizenReport() {
                 onDeleteImage={handleDeleteImage}
               />
             ))}
-            {formValue.imageFiles.length < 2 && (
+            {formValue.images.length < 2 && (
               <DropFileContainer
                 onDropFile={handleUpdateImage}
                 acceptMIMETypes={ImageFileConfig.ACCEPTED_MINE_TYPES}
