@@ -27,8 +27,9 @@ export class WardService {
       this.prismaService.ward.count({}),
     ]);
     return {
-      wards: result,
+      data: result,
       totalPages: Math.ceil(totalCount / pageOptionsWardDto.take),
+      totalCount,
     };
   }
 

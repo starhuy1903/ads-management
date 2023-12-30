@@ -11,6 +11,8 @@ import {
   UseInterceptors,
   UploadedFiles,
   ParseFilePipeBuilder,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { LocationService } from './location.service';
 import { CreateLocationDto } from './dto/create-location.dto';
@@ -62,40 +64,38 @@ export class LocationController {
   }
 
   @Get()
-  async findAll(
-    @Query() pageOptionsLocationDto: PageOptionsLocationDto,
-    @Res() res: CustomResponse,
-  ) {
+  async findAll(@Query() pageOptionsLocationDto: PageOptionsLocationDto) {
     try {
-      const locations = await this.locationService.findAll(
-        pageOptionsLocationDto,
-      );
-      return res.success({ data: locations });
+      return await this.locationService.findAll(pageOptionsLocationDto);
     } catch (error) {
-      return res.error({
-        statusCode: 500,
-        message: error.message || 'Internal Server Error',
-      });
+      throw new HttpException(
+        {
+          statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+          message: error.message || 'Internal Server Error',
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
   @Get(':id/panels')
   async findAllPanelByLocation(
     @Query() pageOptionsLocationDto: PageOptionsLocationDto,
-    @Res() res: CustomResponse,
     @Param('id') id: string,
   ) {
     try {
-      const locations = await this.panelService.findAllPanelsByLocation(
+      return await this.panelService.findAllPanelsByLocation(
         pageOptionsLocationDto,
         +id,
       );
-      return res.success({ data: locations });
     } catch (error) {
-      return res.error({
-        statusCode: 500,
-        message: error.message || 'Internal Server Error',
-      });
+      throw new HttpException(
+        {
+          statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+          message: error.message || 'Internal Server Error',
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 

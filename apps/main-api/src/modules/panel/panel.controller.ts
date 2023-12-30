@@ -11,6 +11,8 @@ import {
   Res,
   UploadedFiles,
   ParseFilePipeBuilder,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { PanelService } from './panel.service';
 import { CreatePanelDto } from './dto/create-panel.dto';
@@ -52,18 +54,17 @@ export class PanelController {
   }
 
   @Get()
-  async findAll(
-    @Query() pageOptionsPanelDto: PageOptionsPanelDto,
-    @Res() res: CustomResponse,
-  ) {
+  async findAll(@Query() pageOptionsPanelDto: PageOptionsPanelDto) {
     try {
-      const panels = await this.panelService.findAll(pageOptionsPanelDto);
-      return res.success({ data: panels });
+      return await this.panelService.findAll(pageOptionsPanelDto);
     } catch (error) {
-      return res.error({
-        statusCode: 500,
-        message: error.message,
-      });
+      throw new HttpException(
+        {
+          statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+          message: error.message || 'Internal Server Error',
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 

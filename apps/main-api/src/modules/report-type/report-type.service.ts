@@ -26,8 +26,9 @@ export class ReportTypeService {
       this.prismaService.report_type.count({}),
     ]);
     return {
-      reportTypes: result,
+      data: result,
       totalPages: Math.ceil(totalCount / pageOptionsReportTypeDto.take),
+      totalCount,
     };
   }
 

@@ -214,8 +214,9 @@ export class AdsRequestService {
       }),
     ]);
     return {
-      adsRequests: result,
+      data: result,
       totalPages: Math.ceil(totalCount / pageOptionsAdsRequestDto.take),
+      totalCount,
     };
   }
 

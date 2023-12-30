@@ -92,8 +92,9 @@ export class LocationService {
       }),
     ]);
     return {
-      locations: result,
+      data: result,
       totalPages: Math.ceil(totalCount / pageOptionsLocationDto.take),
+      totalCount,
     };
   }
 
