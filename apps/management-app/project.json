@@ -15,6 +15,9 @@
         "mock": {
           "mode": "mock"
         },
+        "local-be": {
+          "mode": "local-be"
+        },
         "development": {
           "mode": "development"
         },
@@ -34,8 +37,8 @@
           "buildTarget": "management-app:build:mock",
           "hmr": true
         },
-        "local": {
-          "buildTarget": "management-app:build:local",
+        "local-be": {
+          "buildTarget": "management-app:build:local-be",
           "hmr": true
         },
         "development": {
