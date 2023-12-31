@@ -5,10 +5,6 @@ export type CredentialPayload = {
   password: string;
 };
 
-export type RegisterPayload = CredentialPayload & {
-  name: string;
-};
-
 export type VerifyPayload = {
   verifyToken: string;
 };
@@ -30,7 +26,6 @@ export type LoginResponse = {
   accessToken: string;
   refreshToken: string;
   tokenId: string;
-  accessTokenExpires: string;
   user: UserProfile;
 };
 
@@ -48,6 +43,9 @@ export type ForgotPasswordResponse = RegisterResponse;
 export type UserProfile = {
   id: string;
   email: string;
-  name: string;
+  firstName: string;
+  lastName: string;
   role: UserRole;
+  dob: string;
+  phoneNumber: string;
 };

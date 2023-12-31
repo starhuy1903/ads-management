@@ -10,7 +10,7 @@ export class WardService {
   async create(createWardDto: CreateWardDto) {
     const data = {
       name: createWardDto.name,
-      district_id: createWardDto.districtId,
+      districtId: createWardDto.districtId,
     };
 
     return await this.prismaService.ward.create({
@@ -27,8 +27,9 @@ export class WardService {
       this.prismaService.ward.count({}),
     ]);
     return {
-      wards: result,
+      data: result,
       totalPages: Math.ceil(totalCount / pageOptionsWardDto.take),
+      totalCount,
     };
   }
 
@@ -47,7 +48,7 @@ export class WardService {
       },
       data: {
         name: updateWardDto.name,
-        district_id: updateWardDto.districtId,
+        districtId: updateWardDto.districtId,
       },
     });
   }

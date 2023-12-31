@@ -5,6 +5,7 @@ import { Editor as TinyMCEEditor } from 'tinymce';
 import { configs } from '@/configurations';
 
 interface TinyEditorProps {
+  name?: string;
   value: string;
   onChange: (value: string) => void;
   disabled?: boolean;
@@ -12,6 +13,7 @@ interface TinyEditorProps {
 }
 
 export default function TinyEditor({
+  name = 'tiny',
   value,
   onChange,
   disabled = false,
@@ -27,13 +29,13 @@ export default function TinyEditor({
   return (
     <Box>
       <Editor
-        id="report-description-editor"
+        id={`${name}-editor`}
         apiKey={configs.tinyMceEditor}
         onInit={(evt, editor) => {
           editorRef.current = editor;
           setEditorMounted(true);
+          editor.setContent(value);
         }}
-        initialValue={value}
         onEditorChange={handleEditorChange}
         init={{
           height: height,

@@ -1,11 +1,16 @@
 import { Transform, Type } from 'class-transformer';
 import { IsArray, IsEnum, IsInt, IsOptional, Max, Min } from 'class-validator';
 import { Order } from '../../../constants/order';
+import { LocationStatus } from '@prisma/client';
 
 export class PageOptionsLocationDto {
   @IsEnum(Order)
   @IsOptional()
   readonly order?: Order = Order.DESC;
+
+  @IsEnum(LocationStatus)
+  @IsOptional()
+  readonly status?: LocationStatus = LocationStatus.APPROVED;
 
   @Type(() => Number)
   @IsInt()

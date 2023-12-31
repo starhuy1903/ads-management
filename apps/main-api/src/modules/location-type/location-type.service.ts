@@ -26,8 +26,9 @@ export class LocationTypeService {
       this.prismaService.location_type.count({}),
     ]);
     return {
-      locationTypes: result,
+      data: result,
       totalPages: Math.ceil(totalCount / pageOptionsLocationTypeDto.take),
+      totalCount,
     };
   }
 

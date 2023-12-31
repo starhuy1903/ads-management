@@ -2,22 +2,80 @@
   "uuid": "3f75ac6c-5dab-457e-949e-b206f2625508",
   "lastMigration": 32,
   "name": "Auth app",
-  "endpointPrefix": "",
+  "endpointPrefix": "api",
   "latency": 0,
-  "port": 3000,
+  "port": 8200,
   "hostname": "",
-  "folders": [],
+  "folders": [
+    {
+      "uuid": "15990c8d-13f7-4a9c-a213-5ce9f1faa67d",
+      "name": "Auth",
+      "children": [
+        {
+          "type": "route",
+          "uuid": "feca0709-6faa-4f40-8fe3-4d325712ea66"
+        },
+        {
+          "type": "route",
+          "uuid": "8000e59c-e315-40e0-840c-652d049b97bf"
+        },
+        {
+          "type": "route",
+          "uuid": "0549457b-6ec7-4881-8c11-7c9395e75b2a"
+        },
+        {
+          "type": "route",
+          "uuid": "7620b1d0-5b19-4452-ad39-b97db5a769f6"
+        },
+        {
+          "type": "route",
+          "uuid": "0e819db7-73e4-476f-9c4c-395ca8729aeb"
+        },
+        {
+          "type": "route",
+          "uuid": "e5dbf0e5-a66f-4755-a56e-ae93352e065e"
+        },
+        {
+          "type": "route",
+          "uuid": "f0124384-5fc3-46d3-a205-3bd172add9cc"
+        },
+        {
+          "type": "route",
+          "uuid": "77160d18-9514-465f-947d-c4fea0466467"
+        }
+      ]
+    },
+    {
+      "uuid": "30ba6e07-2d62-460d-90b0-3b398ddf80de",
+      "name": "Crew",
+      "children": [
+        {
+          "type": "route",
+          "uuid": "c4a23192-e335-4128-b1a3-ecd85569c1ff"
+        },
+        {
+          "type": "route",
+          "uuid": "3be2bb3e-60b7-48b0-be0c-7a440e73e830"
+        }
+      ]
+    },
+    {
+      "uuid": "a2c5f55c-ed1f-41da-bf3f-c612319b1119",
+      "name": "CDO",
+      "children": []
+    }
+  ],
   "routes": [
     {
       "uuid": "feca0709-6faa-4f40-8fe3-4d325712ea66",
       "type": "http",
       "documentation": "",
       "method": "post",
-      "endpoint": "api/auth/signin",
+      "endpoint": "auth/signin",
       "responses": [
         {
           "uuid": "e7e723ad-70f7-4caf-bb63-c09ad95679b0",
-          "body": "{\n  \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoiY2hpaGllbjIwMDJAZ21haWwuY29tIiwiaWF0IjoxNjk2MjM4Njc4LCJleHAiOjE2OTYyMzg2OTN9.Z2aiXDTpFdyjF92AfN4-G-59apIYMJuCismrjSIeUkI\",\n  \"refreshToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoiY2hpaGllbjIwMDJAZ21haWwuY29tIiwiaWF0IjoxNjk2MjM4Njc4LCJleHAiOjE2OTYzMjUwNzh9.KIM3giDL-oVD41LcGb8DruolZpI77HQ0UQge4dI8SL4\",\n  \"tokenId\": \"dff20586-9521-428a-8551-b5ddf6096efa\",\n  \"accessTokenExpires\": \"2023-10-02T09:24:43.514Z\",\n  \"user\": {\n    \"id\": 1,\n    \"email\": \"chihien2002@gmail.com\",\n    \"name\": \"Trương Chí Hiển\",\n    \"role\": \"cdo\"\n  }\n}",
+          "body": "{\n  \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoiY2hpaGllbjIwMDJAZ21haWwuY29tIiwiaWF0IjoxNjk2MjM4Njc4LCJleHAiOjE2OTYyMzg2OTN9.Z2aiXDTpFdyjF92AfN4-G-59apIYMJuCismrjSIeUkI\",\n  \"refreshToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoiY2hpaGllbjIwMDJAZ21haWwuY29tIiwiaWF0IjoxNjk2MjM4Njc4LCJleHAiOjE2OTYzMjUwNzh9.KIM3giDL-oVD41LcGb8DruolZpI77HQ0UQge4dI8SL4\",\n  \"tokenId\": \"dff20586-9521-428a-8551-b5ddf6096efa\",\n  \"user\": {\n    \"id\": 1,\n    \"email\": \"chihien2002@gmail.com\",\n    \"name\": \"Trương Chí Hiển\",\n    \"role\": \"cdo\"\n  }\n}",
           "latency": 0,
           "statusCode": 200,
           "label": "",
@@ -96,7 +154,7 @@
       "type": "http",
       "documentation": "",
       "method": "post",
-      "endpoint": "api/auth/signup",
+      "endpoint": "auth/signup",
       "responses": [
         {
           "uuid": "5044b22f-b456-482a-93f1-6e09e34e7aa8",
@@ -181,7 +239,7 @@
       "type": "http",
       "documentation": "",
       "method": "get",
-      "endpoint": "api/users/me",
+      "endpoint": "users/me",
       "responses": [
         {
           "uuid": "a3ab4ce3-7d5f-43fa-a89d-9703229d865f",
@@ -210,7 +268,7 @@
       "type": "http",
       "documentation": "",
       "method": "post",
-      "endpoint": "api/auth/logout",
+      "endpoint": "auth/logout",
       "responses": [
         {
           "uuid": "ad5d60c9-e2e2-4fe7-b270-4911d9fb6ab5",
@@ -288,7 +346,7 @@
       "type": "http",
       "documentation": "",
       "method": "post",
-      "endpoint": "api/auth/verify",
+      "endpoint": "auth/verify",
       "responses": [
         {
           "uuid": "c03acc3c-95b5-4cec-9f34-3e123c11d0ea",
@@ -352,7 +410,7 @@
       "type": "http",
       "documentation": "",
       "method": "post",
-      "endpoint": "api/auth/forgot-password",
+      "endpoint": "auth/forgot-password",
       "responses": [
         {
           "uuid": "ba4e447f-bd1a-4627-99b6-c90ee455f7cf",
@@ -443,7 +501,7 @@
       "type": "http",
       "documentation": "",
       "method": "post",
-      "endpoint": "api/auth/reset-password",
+      "endpoint": "auth/reset-password",
       "responses": [
         {
           "uuid": "10490394-9248-42a7-813d-e559b4dc1af3",
@@ -507,7 +565,7 @@
       "type": "http",
       "documentation": "",
       "method": "get",
-      "endpoint": "api/districts",
+      "endpoint": "districts",
       "responses": [
         {
           "uuid": "017d9a09-afb1-4ac6-a07c-9c0d7d0e142a",
@@ -653,7 +711,7 @@
       "type": "http",
       "documentation": "",
       "method": "get",
-      "endpoint": "api/wards",
+      "endpoint": "wards",
       "responses": [
         {
           "uuid": "bf46491c-f77c-434a-99b1-1f38e0ab6078",
@@ -682,7 +740,7 @@
       "type": "http",
       "documentation": "",
       "method": "get",
-      "endpoint": "api/districts/:id",
+      "endpoint": "districts/:id",
       "responses": [
         {
           "uuid": "2bf6cb6e-49d5-40ff-a8b3-489410d0378a",
@@ -738,7 +796,7 @@
       "type": "http",
       "documentation": "",
       "method": "get",
-      "endpoint": "api/wards/:id",
+      "endpoint": "wards/:id",
       "responses": [
         {
           "uuid": "d0420b5e-5222-45be-a1ae-572fd5fd7bc9",
@@ -767,7 +825,7 @@
       "type": "http",
       "documentation": "",
       "method": "post",
-      "endpoint": "api/districts",
+      "endpoint": "districts",
       "responses": [
         {
           "uuid": "f1e7cdc5-a3bf-4ca6-9afa-59b74a4e0e0a",
@@ -823,7 +881,7 @@
       "type": "http",
       "documentation": "",
       "method": "post",
-      "endpoint": "api/wards",
+      "endpoint": "wards",
       "responses": [
         {
           "uuid": "5c5b2e6a-c984-473e-9048-17b17a95da14",
@@ -879,7 +937,7 @@
       "type": "http",
       "documentation": "",
       "method": "put",
-      "endpoint": "api/districts/:id",
+      "endpoint": "districts/:id",
       "responses": [
         {
           "uuid": "b74f7870-fb0d-498f-8d4b-85e084dae7c0",
@@ -935,7 +993,7 @@
       "type": "http",
       "documentation": "",
       "method": "put",
-      "endpoint": "api/wards/:id",
+      "endpoint": "wards/:id",
       "responses": [
         {
           "uuid": "b437cffe-8911-4c32-a9cd-39d43b18c0fc",
@@ -991,7 +1049,7 @@
       "type": "http",
       "documentation": "",
       "method": "delete",
-      "endpoint": "api/districts/:id",
+      "endpoint": "districts/:id",
       "responses": [
         {
           "uuid": "844e2ad9-9114-432a-85fa-29f938d9840e",
@@ -1020,7 +1078,7 @@
       "type": "http",
       "documentation": "",
       "method": "get",
-      "endpoint": "api/ads-requests",
+      "endpoint": "ads-requests",
       "responses": [
         {
           "uuid": "5402b72a-09f3-49f1-8b37-ce5cdd1f859e",
@@ -1160,41 +1218,67 @@
         }
       ],
       "responseMode": null
+    },
+    {
+      "uuid": "c4a23192-e335-4128-b1a3-ecd85569c1ff",
+      "type": "http",
+      "documentation": "",
+      "method": "get",
+      "endpoint": "report-types",
+      "responses": [
+        {
+          "uuid": "c3a7c553-4fea-400d-b3fe-a318789f33d4",
+          "body": "{\n  \"data\": [\n    {\n      \"id\": 1,\n      \"value\": \"Tố giác sai phạm\"\n    },\n    {\n      \"id\": 2,\n      \"value\": \"Đăng ký nội dung\"\n    },\n    {\n      \"id\": 3,\n      \"value\": \"Đóng góp ý kiến\"\n    },\n    {\n      \"id\": 4,\n      \"value\": \"Giải đáp thắc mắc\"\n    }\n  ],\n  \"totalPages\": 1\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null
+    },
+    {
+      "uuid": "3be2bb3e-60b7-48b0-be0c-7a440e73e830",
+      "type": "http",
+      "documentation": "Create report",
+      "method": "post",
+      "endpoint": "reports",
+      "responses": [
+        {
+          "uuid": "511b7ca4-f721-4d7e-a51a-5d0efefd1c76",
+          "body": "{\n  \"id\": 37,\n  \"typeId\": 1,\n  \"fullName\": \"Thong\",\n  \"email\": \"adfas@gmail.com\",\n  \"phoneNumeber\": \"0123456789\",\n  \"content\": \"<p>Biển quảng cáo này quá xấu lần 4</p>\",\n  \"imageUrl\": [],\n  \"targetType\": \"Location\",\n  \"locationId\": 5,\n  \"panelId\": null,\n  \"status\": \"Mới\",\n  \"resolvedContent\": \"\",\n  \"createdAt\": \"2023-12-30T01:42:05.203Z\",\n  \"updatedAt\": \"2023-12-30T01:42:05.203Z\",\n  \"userUuid\": \"2412341234-asfasdfasdf\"\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null
     }
   ],
   "rootChildren": [
-    {
-      "type": "route",
-      "uuid": "feca0709-6faa-4f40-8fe3-4d325712ea66"
-    },
-    {
-      "type": "route",
-      "uuid": "8000e59c-e315-40e0-840c-652d049b97bf"
-    },
-    {
-      "type": "route",
-      "uuid": "0549457b-6ec7-4881-8c11-7c9395e75b2a"
-    },
-    {
-      "type": "route",
-      "uuid": "7620b1d0-5b19-4452-ad39-b97db5a769f6"
-    },
-    {
-      "type": "route",
-      "uuid": "0e819db7-73e4-476f-9c4c-395ca8729aeb"
-    },
-    {
-      "type": "route",
-      "uuid": "e5dbf0e5-a66f-4755-a56e-ae93352e065e"
-    },
-    {
-      "type": "route",
-      "uuid": "f0124384-5fc3-46d3-a205-3bd172add9cc"
-    },
-    {
-      "type": "route",
-      "uuid": "77160d18-9514-465f-947d-c4fea0466467"
-    },
     {
       "type": "route",
       "uuid": "8a8d36e7-0fdb-4557-b6ba-baba876bdb32"
@@ -1206,6 +1290,10 @@
     {
       "type": "route",
       "uuid": "153cecf9-4a2b-4bac-b48c-a4a2e7b70340"
+    },
+    {
+      "type": "folder",
+      "uuid": "15990c8d-13f7-4a9c-a213-5ce9f1faa67d"
     },
     {
       "type": "route",
@@ -1234,10 +1322,18 @@
     {
       "type": "route",
       "uuid": "f5d2bc90-ca46-41f1-862f-8d0cc9d1dabe"
+    },
+    {
+      "type": "folder",
+      "uuid": "30ba6e07-2d62-460d-90b0-3b398ddf80de"
+    },
+    {
+      "type": "folder",
+      "uuid": "a2c5f55c-ed1f-41da-bf3f-c612319b1119"
     }
   ],
   "proxyMode": false,
-  "proxyHost": "http://localhost:3000",
+  "proxyHost": "http://localhost:8200",
   "proxyRemovePrefix": false,
   "tlsOptions": {
     "enabled": false,

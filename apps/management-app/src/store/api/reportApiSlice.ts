@@ -1,4 +1,5 @@
-import { CreatedReport, ReportPayload } from '@/types/report';
+import { GetList } from '@/types/common';
+import { CreatedReport, ReportPayload, ReportType } from '@/types/report';
 import { apiSlice } from './baseApiSlice';
 
 export const reportApiSlice = apiSlice.injectEndpoints({
@@ -19,7 +20,7 @@ export const reportApiSlice = apiSlice.injectEndpoints({
           body: bodyFormData,
           headers: {
             'Content-Type': 'multipart/form-data;',
-            'recaptcha-token': body.captcha,
+            'Recaptcha-Token': body.captcha,
           },
         };
       },
@@ -29,7 +30,16 @@ export const reportApiSlice = apiSlice.injectEndpoints({
         url: 'reports',
       }),
     }),
+    getReportTypes: build.query<GetList<ReportType>, void>({
+      query: () => ({
+        url: 'report-types',
+      }),
+    }),
   }),
 });
 
-export const { useCreateReportMutation, useGetReportsQuery } = reportApiSlice;
+export const {
+  useCreateReportMutation,
+  useGetReportsQuery,
+  useGetReportTypesQuery,
+} = reportApiSlice;

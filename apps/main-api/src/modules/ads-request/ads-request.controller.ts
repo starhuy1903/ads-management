@@ -9,15 +9,26 @@ import {
   Query,
   Res,
   UseGuards,
+  UseInterceptors,
+  UploadedFiles,
+  ParseFilePipeBuilder,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { AdsRequestService } from './ads-request.service';
-import { CreateAdsRequestDto } from './dto/create-ads-request.dto';
+import {
+  CreateAdsRequestDto,
+  CreateAdsRequestUpdateLocationDto,
+  CreateAdsRequestUpdatePanelDto,
+} from './dto/create-ads-request.dto';
 import { UpdateAdsRequestDto } from './dto/update-ads-request.dto';
 import { PageOptionsAdsRequestDto } from './dto/find-all-ads-request.dto';
 import { CustomResponse } from '../../middlewares'; // Import your CustomResponse type
 import { UserRole } from '@prisma/client';
 import { Roles } from '../auth/decorators';
 import { JwtGuard } from '../auth/guards';
+import { FilesInterceptor } from '@nestjs/platform-express';
+import { FILE_TYPES_REGEX } from '../../constants/images';
 
 @Controller('ads-requests')
 export class AdsRequestController {
@@ -44,23 +55,80 @@ export class AdsRequestController {
     }
   }
 
-  @Get()
-  @UseGuards(JwtGuard)
-  @Roles(UserRole.DEPARTMENT_OFFICER)
-  async findAll(
-    @Query() pageOptionsAdsRequestDto: PageOptionsAdsRequestDto,
+  @Post('update-panel')
+  @UseInterceptors(FilesInterceptor('images', 2))
+  async createAdsRequestUpdatePanel(
+    @Body() createPanelDto: CreateAdsRequestUpdatePanelDto,
     @Res() res: CustomResponse,
+    @UploadedFiles(
+      new ParseFilePipeBuilder()
+        .addFileTypeValidator({
+          fileType: FILE_TYPES_REGEX,
+        })
+        .build({
+          fileIsRequired: false,
+        }),
+    )
+    images?: Express.Multer.File[],
   ) {
     try {
-      const adsRequests = await this.adsRequestService.findAll(
-        pageOptionsAdsRequestDto,
+      const adsRequest = await this.adsRequestService.createUpdatePanel(
+        createPanelDto,
+        images,
       );
-      return res.success({ data: adsRequests });
+      return res.success({ data: adsRequest });
     } catch (error) {
       return res.error({
         statusCode: 500,
-        message: error.message || 'Internal Server Error',
+        message: error.message,
       });
+    }
+  }
+
+  @Post('update-location')
+  @UseInterceptors(FilesInterceptor('images', 2))
+  async createAdsRequestUpdateLocation(
+    @Body() createPanelDto: CreateAdsRequestUpdateLocationDto,
+    @Res() res: CustomResponse,
+    @UploadedFiles(
+      new ParseFilePipeBuilder()
+        .addFileTypeValidator({
+          fileType: FILE_TYPES_REGEX,
+        })
+        .build({
+          fileIsRequired: false,
+        }),
+    )
+    images?: Express.Multer.File[],
+  ) {
+    try {
+      const adsRequest = await this.adsRequestService.createUpdateLocation(
+        createPanelDto,
+        images,
+      );
+      return res.success({ data: adsRequest });
+    } catch (error) {
+      return res.error({
+        statusCode: 500,
+        message: error.message,
+      });
+    }
+  }
+
+  @Get()
+  @UseGuards(JwtGuard)
+  @Roles(UserRole.DEPARTMENT_OFFICER)
+  async findAll(@Query() pageOptionsAdsRequestDto: PageOptionsAdsRequestDto) {
+    try {
+      return await this.adsRequestService.findAll(pageOptionsAdsRequestDto);
+    } catch (error) {
+      throw new HttpException(
+        {
+          statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+          message: error.message || 'Internal Server Error',
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
@@ -71,6 +139,40 @@ export class AdsRequestController {
     try {
       const adsRequest = await this.adsRequestService.findOne(+id);
       return res.success({ data: adsRequest });
+    } catch (error) {
+      return res.error({
+        statusCode: 500,
+        message: error.message || 'Internal Server Error',
+      });
+    }
+  }
+
+  @Patch('/:id/approve')
+  async approveRequest(@Param('id') id: string, @Res() res: CustomResponse) {
+    try {
+      const result = await this.adsRequestService.approveRequest(+id);
+      if (result === true) {
+        return res.success({ message: 'Ads request approved!' });
+      } else {
+        return res.error({ message: 'Ads request approve failed!' });
+      }
+    } catch (error) {
+      return res.error({
+        statusCode: 500,
+        message: error.message || 'Internal Server Error',
+      });
+    }
+  }
+
+  @Patch('/:id/reject')
+  async rejectRequest(@Param('id') id: string, @Res() res: CustomResponse) {
+    try {
+      const result = await this.adsRequestService.rejectRequest(+id);
+      if (result === true) {
+        return res.success({ message: 'Ads request rejected!' });
+      } else {
+        return res.error({ message: 'Ads request rejected failed!' });
+      }
     } catch (error) {
       return res.error({
         statusCode: 500,

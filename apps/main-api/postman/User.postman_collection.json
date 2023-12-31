@@ -1,0 +1,313 @@
+{
+	"info": {
+		"_postman_id": "c811c740-98a2-4a63-bd36-c70b5e651b5a",
+		"name": "User",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "24188163"
+	},
+	"item": [
+		{
+			"name": "Get user info",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjksImVtYWlsIjoiY2hpaGllbjIwMDIyQGdtYWlsLmNvbSIsInJvbGUiOiJXQVJEX09GRklDRVIiLCJpYXQiOjE3MDM0OTczMjgsImV4cCI6MTcwMzQ5NzYyOH0.u9PeJaNdfTHLG4ylXEwELwDgiQslfneoxRBgfSAZruW"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": "{{URL}}/api/users/me"
+			},
+			"response": [
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": "{{URL}}/api/users/me"
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "323"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"143-Cbay+dGkBQ9xf43vBHY4vjNAZUI\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 25 Dec 2023 09:44:43 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"message\": \"Get user info successfully\",\n    \"user\": {\n        \"id\": 9,\n        \"email\": \"chihien20022@gmail.com\",\n        \"first_name\": \"Hien\",\n        \"last_name\": \"Truong\",\n        \"phone_number\": \"0795907075\",\n        \"dob\": \"2023-12-23T00:00:00.000Z\",\n        \"role\": \"WARD_OFFICER\",\n        \"ward\": {\n            \"id\": 1,\n            \"name\": \"test\",\n            \"district\": {\n                \"id\": 2,\n                \"name\": \"Huyện Cần Giờ\"\n            }\n        },\n        \"district\": null\n    }\n}"
+				},
+				{
+					"name": "Unauthorized",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": "{{URL}}/api/users/me"
+					},
+					"status": "Unauthorized",
+					"code": 401,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "43"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"2b-dGnJzt6gv1nJjX6DJ9RztDWptng\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 25 Dec 2023 09:45:05 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"Unauthorized\",\n    \"statusCode\": 401\n}"
+				}
+			]
+		},
+		{
+			"name": "Update user info",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjksImVtYWlsIjoiY2hpaGllbjIwMDIyQGdtYWlsLmNvbSIsInJvbGUiOiJXQVJEX09GRklDRVIiLCJpYXQiOjE3MDM0OTczMjgsImV4cCI6MTcwMzQ5NzYyOH0.u9PeJaNdfTHLG4ylXEwELwDgiQslfneoxRBgfSAZruE"
+					}
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"phone_number\": \"0795907075\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{URL}}/api/users/me"
+			},
+			"response": [
+				{
+					"name": "Only dob",
+					"originalRequest": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"dob\": \"2023-12-23\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URL}}/api/users/me"
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "326"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"146-PmRfi+9VNgSKdTd1V7xPLYTl/bU\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 25 Dec 2023 09:42:38 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"message\": \"Update user info successfully\",\n    \"user\": {\n        \"id\": 9,\n        \"email\": \"chihien20022@gmail.com\",\n        \"first_name\": \"Hien\",\n        \"last_name\": \"Truong\",\n        \"phone_number\": \"0795907075\",\n        \"dob\": \"2023-12-23T00:00:00.000Z\",\n        \"role\": \"WARD_OFFICER\",\n        \"ward\": {\n            \"id\": 1,\n            \"name\": \"test\",\n            \"district\": {\n                \"id\": 2,\n                \"name\": \"Huyện Cần Giờ\"\n            }\n        },\n        \"district\": null\n    }\n}"
+				},
+				{
+					"name": "Both dob and phone number",
+					"originalRequest": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"phone_number\": \"0795907075\",\n    \"dob\": \"2023-12-23\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URL}}/api/users/me"
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "326"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"146-PmRfi+9VNgSKdTd1V7xPLYTl/bU\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 25 Dec 2023 09:42:54 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"message\": \"Update user info successfully\",\n    \"user\": {\n        \"id\": 9,\n        \"email\": \"chihien20022@gmail.com\",\n        \"first_name\": \"Hien\",\n        \"last_name\": \"Truong\",\n        \"phone_number\": \"0795907075\",\n        \"dob\": \"2023-12-23T00:00:00.000Z\",\n        \"role\": \"WARD_OFFICER\",\n        \"ward\": {\n            \"id\": 1,\n            \"name\": \"test\",\n            \"district\": {\n                \"id\": 2,\n                \"name\": \"Huyện Cần Giờ\"\n            }\n        },\n        \"district\": null\n    }\n}"
+				},
+				{
+					"name": "Only phone number",
+					"originalRequest": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"phone_number\": \"0795907075\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URL}}/api/users/me"
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "326"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"146-PmRfi+9VNgSKdTd1V7xPLYTl/bU\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 25 Dec 2023 09:43:04 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"message\": \"Update user info successfully\",\n    \"user\": {\n        \"id\": 9,\n        \"email\": \"chihien20022@gmail.com\",\n        \"first_name\": \"Hien\",\n        \"last_name\": \"Truong\",\n        \"phone_number\": \"0795907075\",\n        \"dob\": \"2023-12-23T00:00:00.000Z\",\n        \"role\": \"WARD_OFFICER\",\n        \"ward\": {\n            \"id\": 1,\n            \"name\": \"test\",\n            \"district\": {\n                \"id\": 2,\n                \"name\": \"Huyện Cần Giờ\"\n            }\n        },\n        \"district\": null\n    }\n}"
+				}
+			]
+		}
+	]
+}

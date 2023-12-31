@@ -203,7 +203,7 @@ export const generalManagementApiSlice = apiSlice.injectEndpoints({
       onQueryStarted: getOnMutationFunction('Location type deleted'),
     }),
     getAdsTypes: build.query<
-      GetListResult<AdsType>,
+      GetListResult<'',AdsType>,
       { page?: number; limit?: number }
     >({
       query: (arg) => ({
