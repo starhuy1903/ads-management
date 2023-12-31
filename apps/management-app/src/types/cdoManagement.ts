@@ -73,3 +73,26 @@ export type LocationTypeDto = {
 export type AdsTypeDto = {
   name: string;
 };
+
+export type GetStatictisQueryOptions = {
+  dateValue: string;
+  dateType: 'MONTH' | 'YEAR';
+  wards: Array<number>;
+  districts: Array<number>;
+};
+
+export type GetStatictisResult = {
+  success: boolean;
+  message?: string;
+  data: {
+    resolved: Array<number>;
+    unresolved: Array<number>;
+  };
+};
+export interface IStatisticsViewOptions {
+  mode: 'YEAR' | 'MONTH';
+  wards: Array<number>;
+  districts: Array<number>;
+  year: number;
+  month: number;
+}

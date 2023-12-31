@@ -21,6 +21,7 @@ import LocationTypesListView from './Authenticated/CDO/LocationTypesListView';
 import PanelTypesCreate from './Authenticated/CDO/PanelTypesCreate';
 import PanelTypesDetail from './Authenticated/CDO/PanelTypesDetail';
 import PanelTypesListView from './Authenticated/CDO/PanelTypesListView';
+import ReportStatistics from './Authenticated/CDO/ReportStatistics';
 import ReportTypesCreate from './Authenticated/CDO/ReportTypesCreate';
 import ReportTypesDetail from './Authenticated/CDO/ReportTypesDetail';
 import ReportTypesListView from './Authenticated/CDO/ReportTypesListView';
@@ -126,6 +127,10 @@ const CDORoutes = createBrowserRouter([
       {
         path: 'location-types/:id',
         element: <LocationTypesDetail />,
+      },
+      {
+        path: 'report-statistics',
+        element: <ReportStatistics />,
       },
       {
         path: 'locations',
@@ -256,9 +261,7 @@ const publicRoutes = createBrowserRouter([
 
 function App() {
   const isLoggedIn = useAppSelector((state) => state.user.isLoggedIn);
-  const { data, isLoading } = useGetProfileQuery();
-
-  console.log(data)
+  const { isLoading } = useGetProfileQuery();
   const { isCDO } = useAppSelector(checkRole);
 
   const protectedRoutes = isCDO ? CDORoutes : officerRoutes;

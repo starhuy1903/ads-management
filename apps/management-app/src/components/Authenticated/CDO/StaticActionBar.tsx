@@ -15,6 +15,7 @@ const StaticActionBar = ({
   return (
     <Box
       sx={{
+        maxWidth: '100%',
         height: (theme) =>
           `calc(100dvh - ${theme.layout.headerHeight} - 16px * 2)`,
         display: 'flex',

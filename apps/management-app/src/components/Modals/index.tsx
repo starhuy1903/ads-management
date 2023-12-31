@@ -5,12 +5,14 @@ import CreateCategory from './CreateCategory';
 import CreateItem from './CreateItem';
 import CropImage from './CropImage';
 import GeneralModal from './GeneralModal';
+import StatisticsViewOptions from './StatisticsViewOptions';
 
 const modalsMap: { [modalKey: string]: any } = {
   [ModalKey.CREATE_CATEGORY]: CreateCategory,
   [ModalKey.CERATE_ITEM]: CreateItem,
   [ModalKey.CROP_IMAGE]: CropImage,
-  [ModalKey.GENERAL]: GeneralModal
+  [ModalKey.GENERAL]: GeneralModal,
+  [ModalKey.STATISTICS_VIEW_OPTIONS]: StatisticsViewOptions,
 };
 
 export function ModalContainer() {
