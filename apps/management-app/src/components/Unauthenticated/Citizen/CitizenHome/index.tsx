@@ -6,10 +6,13 @@ import { useAppDispatch } from '@/store';
 import Maps from '@/components/Common/Maps';
 import SidebarContainer from '@/components/Common/Sidebar';
 import { SidebarKey } from '@/constants/sidebar';
+import { useGetLocationQuery } from '@/store/api/citizen/locationApiSlice';
 import { showSidebar } from '@/store/slice/sidebar';
 
 export default function CitizenHome() {
   const dispatch = useAppDispatch();
+  const { data, isLoading } = useGetLocationQuery();
+  console.log({ data });
 
   const handleViewDetailAd = useCallback(() => {
     dispatch(

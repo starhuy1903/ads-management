@@ -1228,7 +1228,7 @@
       "responses": [
         {
           "uuid": "c3a7c553-4fea-400d-b3fe-a318789f33d4",
-          "body": "{\n  \"data\": [\n    {\n      \"id\": 1,\n      \"value\": \"Tố giác sai phạm\"\n    },\n    {\n      \"id\": 2,\n      \"value\": \"Đăng ký nội dung\"\n    },\n    {\n      \"id\": 3,\n      \"value\": \"Đóng góp ý kiến\"\n    },\n    {\n      \"id\": 4,\n      \"value\": \"Giải đáp thắc mắc\"\n    }\n  ],\n  \"totalPages\": 1\n}",
+          "body": "{\n  \"data\": [\n    {\n      \"id\": 1,\n      \"name\": \"Tố giác sai phạm\"\n    },\n    {\n      \"id\": 2,\n      \"name\": \"Đăng ký nội dung\"\n    },\n    {\n      \"id\": 3,\n      \"name\": \"Đóng góp ý kiến\"\n    },\n    {\n      \"id\": 4,\n      \"name\": \"Giải đáp thắc mắc\"\n    }\n  ],\n  \"totalPages\": 1\n}",
           "latency": 0,
           "statusCode": 200,
           "label": "",
