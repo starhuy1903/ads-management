@@ -25,7 +25,7 @@ export class AdsRequestService {
       targetType: TargetType.PANEL,
       type: AdsRequestType.APPROVED_PANEL,
       reason: createAdsRequestDto.reason,
-      status: AdsRequestStatus.SENT,
+      status: AdsRequestStatus.PENDING,
       panel: { connect: { id: createAdsRequestDto.panelId } },
     };
 
@@ -78,7 +78,7 @@ export class AdsRequestService {
           targetType: TargetType.LOCATION,
           type: AdsRequestType.UPDATE_DATA,
           reason: createAdsRequestDto.reason,
-          status: AdsRequestStatus.SENT,
+          status: AdsRequestStatus.PENDING,
           location: {
             create: locationData,
           },
@@ -135,7 +135,7 @@ export class AdsRequestService {
           targetType: TargetType.PANEL,
           type: AdsRequestType.UPDATE_DATA,
           reason: createAdsRequestDto.reason,
-          status: AdsRequestStatus.SENT,
+          status: AdsRequestStatus.PENDING,
           panel: {
             create: panelData,
           },

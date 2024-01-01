@@ -49,10 +49,22 @@ export class LocationTypeController {
   }
 
   @Get()
+  @UseGuards(JwtGuard)
+  @Roles(
+    UserRole.DEPARTMENT_OFFICER,
+    UserRole.WARD_OFFICER,
+    UserRole.DISTRICT_OFFICER,
+  )
   async findAll(
     @Query() pageOptionsLocationTypeDto: PageOptionsLocationTypeDto,
   ) {
     try {
+      if (
+        !pageOptionsLocationTypeDto.take ||
+        !pageOptionsLocationTypeDto.page
+      ) {
+        return await this.locationTypeService.findAllWithoutPagination();
+      }
       return await this.locationTypeService.findAll(pageOptionsLocationTypeDto);
     } catch (error) {
       throw new HttpException(

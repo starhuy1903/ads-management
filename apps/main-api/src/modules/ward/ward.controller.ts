@@ -49,8 +49,16 @@ export class WardController {
   @Get()
   @UseGuards(JwtGuard)
   @Roles(UserRole.cdo)
+  @Roles(
+    UserRole.cdo,
+    UserRole.ward_officer,
+    UserRole.district_officer,
+  )
   async findAll(@Query() pageOptionsWardDto: PageOptionsWardDto) {
     try {
+      if (!pageOptionsWardDto.take || !pageOptionsWardDto.page) {
+        return await this.wardService.findAllWithoutPagination();
+      }
       return await this.wardService.findAll(pageOptionsWardDto);
     } catch (error) {
       throw new HttpException(

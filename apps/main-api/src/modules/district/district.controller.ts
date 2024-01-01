@@ -48,9 +48,16 @@ export class DistrictController {
 
   @Get()
   @UseGuards(JwtGuard)
-  @Roles(UserRole.cdo)
+  @Roles(
+    UserRole.cdo,
+    UserRole.ward_officer,
+    UserRole.district_officer,
+  )
   async findAll(@Query() pageOptionsDistrictDto: PageOptionsDistrictDto) {
     try {
+      if (!pageOptionsDistrictDto.take || !pageOptionsDistrictDto.page) {
+        return await this.districtService.findAllWithoutPagination();
+      }
       return await this.districtService.findAll(pageOptionsDistrictDto);
     } catch (error) {
       throw new HttpException(

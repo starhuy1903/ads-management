@@ -33,6 +33,13 @@ export class WardService {
     };
   }
 
+  async findAllWithoutPagination() {
+    const result = await this.prismaService.ward.findMany({});
+    return {
+      data: result,
+    };
+  }
+
   findOne(id: number) {
     return this.prismaService.ward.findFirst({
       where: {
