@@ -32,6 +32,13 @@ export class LocationTypeService {
     };
   }
 
+  async findAllWithoutPagination() {
+    const result = await this.prismaService.location_type.findMany({});
+    return {
+      data: result,
+    };
+  }
+
   findOne(id: number) {
     return this.prismaService.location_type.findFirst({
       where: {

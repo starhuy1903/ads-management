@@ -49,8 +49,17 @@ export class ReportTypeController {
   }
 
   @Get()
+  @UseGuards(JwtGuard)
+  @Roles(
+    UserRole.DEPARTMENT_OFFICER,
+    UserRole.WARD_OFFICER,
+    UserRole.DISTRICT_OFFICER,
+  )
   async findAll(@Query() pageOptionsReportTypeDto: PageOptionsReportTypeDto) {
     try {
+      if (!pageOptionsReportTypeDto.take || !pageOptionsReportTypeDto.page) {
+        return await this.reportTypeService.findAllWithoutPagination();
+      }
       return await this.reportTypeService.findAll(pageOptionsReportTypeDto);
     } catch (error) {
       throw new HttpException(
