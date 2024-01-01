@@ -27,7 +27,7 @@ export class WardController {
 
   @Post()
   @UseGuards(JwtGuard)
-  @Roles(UserRole.DEPARTMENT_OFFICER)
+  @Roles(UserRole.cdo)
   async create(
     @Body() createWardDto: CreateWardDto,
     @Res() res: CustomResponse,
@@ -48,7 +48,7 @@ export class WardController {
 
   @Get()
   @UseGuards(JwtGuard)
-  @Roles(UserRole.DEPARTMENT_OFFICER)
+  @Roles(UserRole.cdo)
   async findAll(@Query() pageOptionsWardDto: PageOptionsWardDto) {
     try {
       return await this.wardService.findAll(pageOptionsWardDto);
@@ -65,7 +65,7 @@ export class WardController {
 
   @Get(':id')
   @UseGuards(JwtGuard)
-  @Roles(UserRole.DEPARTMENT_OFFICER)
+  @Roles(UserRole.cdo)
   async findOne(@Param('id') id: string, @Res() res: CustomResponse) {
     try {
       const ward = await this.wardService.findOne(Number(id));
@@ -80,7 +80,7 @@ export class WardController {
 
   @Patch(':id')
   @UseGuards(JwtGuard)
-  @Roles(UserRole.DEPARTMENT_OFFICER)
+  @Roles(UserRole.cdo)
   async update(
     @Param('id') id: string,
     @Body() updateWardDto: UpdateWardDto,
@@ -102,7 +102,7 @@ export class WardController {
 
   @Delete(':id')
   @UseGuards(JwtGuard)
-  @Roles(UserRole.DEPARTMENT_OFFICER)
+  @Roles(UserRole.cdo)
   async remove(@Param('id') id: string, @Res() res: CustomResponse) {
     try {
       await this.wardService.remove(+id);

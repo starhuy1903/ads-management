@@ -27,7 +27,7 @@ export class DistrictController {
 
   @Post()
   @UseGuards(JwtGuard)
-  @Roles(UserRole.DEPARTMENT_OFFICER)
+  @Roles(UserRole.cdo)
   async create(
     @Body() createDistrictDto: CreateDistrictDto,
     @Res() res: CustomResponse,
@@ -48,7 +48,7 @@ export class DistrictController {
 
   @Get()
   @UseGuards(JwtGuard)
-  @Roles(UserRole.DEPARTMENT_OFFICER)
+  @Roles(UserRole.cdo)
   async findAll(@Query() pageOptionsDistrictDto: PageOptionsDistrictDto) {
     try {
       return await this.districtService.findAll(pageOptionsDistrictDto);
@@ -65,7 +65,7 @@ export class DistrictController {
 
   @Get(':id')
   @UseGuards(JwtGuard)
-  @Roles(UserRole.DEPARTMENT_OFFICER)
+  @Roles(UserRole.cdo)
   async findOne(@Param('id') id: string, @Res() res: CustomResponse) {
     try {
       const district = await this.districtService.findOne(Number(id));
@@ -80,7 +80,7 @@ export class DistrictController {
 
   @Patch(':id')
   @UseGuards(JwtGuard)
-  @Roles(UserRole.DEPARTMENT_OFFICER)
+  @Roles(UserRole.cdo)
   async update(
     @Param('id') id: string,
     @Body() updateDistrictDto: UpdateDistrictDto,
@@ -105,7 +105,7 @@ export class DistrictController {
 
   @Delete(':id')
   @UseGuards(JwtGuard)
-  @Roles(UserRole.DEPARTMENT_OFFICER)
+  @Roles(UserRole.cdo)
   async remove(@Param('id') id: string, @Res() res: CustomResponse) {
     try {
       await this.districtService.remove(+id);

@@ -14,7 +14,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"email\": \"chihien20025@gmail.com\",\n    \"password\": \"123456789\",\n    \"first_name\": \"Hien\",\n    \"last_name\": \"Truong\",\n    \"role\": \"DISTRICT_OFFICER\",\n    \"ward_id\": 1\n}",
+					"raw": "{\n    \"email\": \"chihien20025@gmail.com\",\n    \"password\": \"123456789\",\n    \"first_name\": \"Hien\",\n    \"last_name\": \"Truong\",\n    \"role\": \"district_officer\",\n    \"ward_id\": 1\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -38,7 +38,7 @@
 								}
 							}
 						},
-						"url": "http://localhost:8194/api/auth/create-user"
+						"url": "{{URL}}/api/auth/create-user"
 					},
 					"status": "Created",
 					"code": 201,
@@ -225,7 +225,7 @@
 								}
 							}
 						},
-						"url": "http://localhost:8194/api/auth/signin"
+						"url": "{{URL}}/api/auth/signin"
 					},
 					"status": "Created",
 					"code": 201,
@@ -376,7 +376,7 @@
 								}
 							}
 						},
-						"url": "http://localhost:8194/api/auth/logout"
+						"url": "{{URL}}/api/auth/logout"
 					},
 					"status": "OK",
 					"code": 200,
@@ -528,7 +528,7 @@
 								}
 							}
 						},
-						"url": "http://localhost:8194/api/auth/refresh"
+						"url": "{{URL}}/api/auth/refresh"
 					},
 					"status": "OK",
 					"code": 200,
@@ -729,7 +729,7 @@
 								}
 							}
 						},
-						"url": "http://localhost:8194/api/auth/forgot-password"
+						"url": "{{URL}}/api/auth/forgot-password"
 					},
 					"status": "OK",
 					"code": 200,
@@ -916,7 +916,7 @@
 								}
 							}
 						},
-						"url": "http://localhost:8194/api/auth/reset-password"
+						"url": "{{URL}}/api/auth/reset-password"
 					},
 					"status": "OK",
 					"code": 200,

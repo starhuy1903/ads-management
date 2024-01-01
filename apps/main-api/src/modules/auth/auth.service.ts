@@ -1,9 +1,8 @@
 import {
   BadRequestException,
   ForbiddenException,
-  HttpException,
-  HttpStatus,
   Injectable,
+  InternalServerErrorException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { PrismaService } from '../../services/prisma/prisma.service';
@@ -39,30 +38,24 @@ export class AuthService {
     });
 
     if (userExists) {
-      throw new HttpException(
-        {
-          success: false,
-          message: 'Email already exists',
-        },
-        HttpStatus.BAD_REQUEST,
-      );
+      throw new BadRequestException({
+        message: 'Email already exists',
+      });
     }
 
     // Validate role
     const role = dto.role as UserRole;
     if (!Object.values(UserRole).includes(role)) {
       throw new BadRequestException({
-        success: false,
         message: 'Invalid user role',
       });
     }
 
     // Validate ward and district
     // Check if ward or district is provided for the role
-    if (role === UserRole.WARD_OFFICER) {
+    if (role === UserRole.ward_officer) {
       if (!dto.wardId) {
         throw new BadRequestException({
-          success: false,
           message: 'ward_id is required',
         });
       }
@@ -76,16 +69,14 @@ export class AuthService {
 
       if (!ward) {
         throw new BadRequestException({
-          success: false,
           message: 'ward_id is invalid',
         });
       }
     }
 
-    if (role === UserRole.DISTRICT_OFFICER) {
+    if (role === UserRole.district_officer) {
       if (!dto.districtId) {
         throw new BadRequestException({
-          success: false,
           message: 'district_id is required',
         });
       }
@@ -99,7 +90,6 @@ export class AuthService {
 
       if (!district) {
         throw new BadRequestException({
-          success: false,
           message: 'district_id is invalid',
         });
       }
@@ -122,14 +112,12 @@ export class AuthService {
       });
 
       return {
-        success: true,
         message: 'Create user successfully',
       };
     } catch (err) {
       if (err instanceof PrismaClientKnownRequestError) {
         if (err.code === 'P2002') {
           throw new ForbiddenException({
-            success: false,
             message: 'Credentials taken',
           });
         }
@@ -138,13 +126,9 @@ export class AuthService {
       // Add logger
       console.log(err);
 
-      throw new HttpException(
-        {
-          success: false,
-          message: 'Something went wrong',
-        },
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
+      throw new InternalServerErrorException({
+        message: 'Something went wrong',
+      });
     }
   }
 
@@ -189,12 +173,9 @@ export class AuthService {
         },
       };
     } catch (err) {
-      throw new HttpException(
-        {
-          message: 'Bad Request',
-        },
-        HttpStatus.BAD_REQUEST,
-      );
+      throw new BadRequestException({
+        message: 'Bad Request',
+      });
     }
   }
 
@@ -218,7 +199,6 @@ export class AuthService {
 
     if (!isMatch) {
       throw new UnauthorizedException({
-        success: false,
         message: 'Wrong email or password',
       });
     }
@@ -235,8 +215,7 @@ export class AuthService {
       });
 
       if (!user) {
-        throw new ForbiddenException({
-          success: false,
+        throw new UnauthorizedException({
           message: 'User not found',
         });
       }
@@ -249,31 +228,22 @@ export class AuthService {
       });
 
       return {
-        success: true,
         message: 'Log out successfully',
       };
     } catch (err) {
       // Token not found -> Already logged out
       if (err.code === 'P2025') {
-        throw new HttpException(
-          {
-            success: false,
-            message: 'Unauthorized',
-          },
-          HttpStatus.UNAUTHORIZED,
-        );
+        throw new UnauthorizedException({
+          message: 'Unauthorized',
+        });
       }
 
       // Add logger
       console.log(err);
 
-      throw new HttpException(
-        {
-          success: false,
-          message: 'Something went wrong',
-        },
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
+      throw new InternalServerErrorException({
+        message: 'Something went wrong',
+      });
     }
   }
 
@@ -287,13 +257,9 @@ export class AuthService {
     if (foundToken == null) {
       // Refresh token is valid but the id is not in database
       // TODO: inform the user with the payload sub
-      throw new HttpException(
-        {
-          success: false,
-          message: 'Unauthorized',
-        },
-        HttpStatus.UNAUTHORIZED,
-      );
+      throw new UnauthorizedException({
+        message: 'Unauthorized',
+      });
     }
 
     const isMatch = await argon.verify(foundToken.token ?? '', refreshToken);
@@ -320,17 +286,12 @@ export class AuthService {
             userId: payload.sub,
           },
         });
-        throw new HttpException(
-          {
-            success: false,
-            message: 'Forbidden',
-          },
-          HttpStatus.FORBIDDEN,
-        );
+        throw new ForbiddenException({
+          message: 'Forbidden',
+        });
       }
 
       throw new ForbiddenException({
-        success: false,
         message: 'Refresh token expired',
       });
     }
@@ -345,8 +306,7 @@ export class AuthService {
     });
 
     if (!user) {
-      throw new ForbiddenException({
-        success: false,
+      throw new UnauthorizedException({
         message: 'Invalid email',
       });
     }
@@ -390,17 +350,12 @@ export class AuthService {
       await this.mailService.sendEmailTemplate(data);
 
       return {
-        success: true,
         message: 'Forgot password email sent successfully',
       };
     } catch (err) {
-      throw new HttpException(
-        {
-          success: false,
-          message: 'Forgot password email failed to send',
-        },
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
+      throw new InternalServerErrorException({
+        message: 'Forgot password email failed to send',
+      });
     }
   }
 
@@ -413,15 +368,13 @@ export class AuthService {
     });
 
     if (!user) {
-      throw new ForbiddenException({
-        success: false,
+      throw new UnauthorizedException({
         message: 'User not found',
       });
     }
 
     if (user.resetPassword == false) {
-      throw new ForbiddenException({
-        success: false,
+      throw new UnauthorizedException({
         message: 'User has not requested for password reset',
       });
     }
@@ -441,7 +394,6 @@ export class AuthService {
     });
 
     return {
-      success: true,
       message: 'Reset password successfully',
     };
   }

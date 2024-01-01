@@ -145,9 +145,9 @@ model user {
   resetPassword Boolean       @default(false) @map("reset_password")
   createdAt     DateTime      @default(now()) @map("created_at")
   updatedAt     DateTime      @default(now()) @updatedAt @map("updated_at")
-  role          UserRole      @default(WARD_OFFICER)
   wardId        Int?          @map("ward_id")
   districtId    Int?          @map("district_id")
+  role          UserRole      @default(ward_officer)
   adsRequest    ads_request[]
   tokens        token[]
   district      district?     @relation(fields: [districtId], references: [id], onDelete: Cascade)
@@ -176,9 +176,9 @@ enum AdsRequestType {
 }
 
 enum UserRole {
-  WARD_OFFICER
-  DISTRICT_OFFICER
-  DEPARTMENT_OFFICER
+  ward_officer
+  district_officer
+  cdo
 }
 
 enum LocationStatus {
