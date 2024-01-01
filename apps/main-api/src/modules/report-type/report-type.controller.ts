@@ -27,7 +27,7 @@ export class ReportTypeController {
 
   @Post()
   @UseGuards(JwtGuard)
-  @Roles(UserRole.DEPARTMENT_OFFICER)
+  @Roles(UserRole.cdo)
   async create(
     @Body() createReportTypeDto: CreateReportTypeDto,
     @Res() res: CustomResponse,
@@ -74,7 +74,7 @@ export class ReportTypeController {
 
   @Patch(':id')
   @UseGuards(JwtGuard)
-  @Roles(UserRole.DEPARTMENT_OFFICER)
+  @Roles(UserRole.cdo)
   async update(
     @Param('id') id: string,
     @Body() updateReportTypeDto: UpdateReportTypeDto,
@@ -99,7 +99,7 @@ export class ReportTypeController {
 
   @Delete(':id')
   @UseGuards(JwtGuard)
-  @Roles(UserRole.DEPARTMENT_OFFICER)
+  @Roles(UserRole.cdo)
   async remove(@Param('id') id: string, @Res() res: CustomResponse) {
     try {
       await this.reportTypeService.remove(+id);

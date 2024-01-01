@@ -117,7 +117,7 @@ export class AdsRequestController {
 
   @Get()
   @UseGuards(JwtGuard)
-  @Roles(UserRole.DEPARTMENT_OFFICER)
+  @Roles(UserRole.cdo)
   async findAll(@Query() pageOptionsAdsRequestDto: PageOptionsAdsRequestDto) {
     try {
       return await this.adsRequestService.findAll(pageOptionsAdsRequestDto);
@@ -134,7 +134,7 @@ export class AdsRequestController {
 
   @Get(':id')
   @UseGuards(JwtGuard)
-  @Roles(UserRole.DEPARTMENT_OFFICER)
+  @Roles(UserRole.cdo)
   async findOne(@Param('id') id: string, @Res() res: CustomResponse) {
     try {
       const adsRequest = await this.adsRequestService.findOne(+id);
@@ -183,7 +183,7 @@ export class AdsRequestController {
 
   @Patch(':id')
   @UseGuards(JwtGuard)
-  @Roles(UserRole.DEPARTMENT_OFFICER)
+  @Roles(UserRole.cdo)
   async update(
     @Param('id') id: string,
     @Body() updateAdsRequestDto: UpdateAdsRequestDto,

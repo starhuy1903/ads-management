@@ -65,7 +65,7 @@
 						}
 					],
 					"cookie": [],
-					"body": "{\n    \"success\": true,\n    \"message\": \"Get user info successfully\",\n    \"user\": {\n        \"id\": 9,\n        \"email\": \"chihien20022@gmail.com\",\n        \"first_name\": \"Hien\",\n        \"last_name\": \"Truong\",\n        \"phone_number\": \"0795907075\",\n        \"dob\": \"2023-12-23T00:00:00.000Z\",\n        \"role\": \"WARD_OFFICER\",\n        \"ward\": {\n            \"id\": 1,\n            \"name\": \"test\",\n            \"district\": {\n                \"id\": 2,\n                \"name\": \"Huyện Cần Giờ\"\n            }\n        },\n        \"district\": null\n    }\n}"
+					"body": "{\n    \"success\": true,\n    \"message\": \"Get user info successfully\",\n    \"user\": {\n        \"id\": 9,\n        \"email\": \"chihien20022@gmail.com\",\n        \"first_name\": \"Hien\",\n        \"last_name\": \"Truong\",\n        \"phone_number\": \"0795907075\",\n        \"dob\": \"2023-12-23T00:00:00.000Z\",\n        \"role\": \"ward_officer\",\n        \"ward\": {\n            \"id\": 1,\n            \"name\": \"test\",\n            \"district\": {\n                \"id\": 2,\n                \"name\": \"Huyện Cần Giờ\"\n            }\n        },\n        \"district\": null\n    }\n}"
 				},
 				{
 					"name": "Unauthorized",

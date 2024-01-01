@@ -27,7 +27,7 @@ export class LocationTypeController {
 
   @Post()
   @UseGuards(JwtGuard)
-  @Roles(UserRole.DEPARTMENT_OFFICER)
+  @Roles(UserRole.cdo)
   async create(
     @Body() createLocationTypeDto: CreateLocationTypeDto,
     @Res() res: CustomResponse,
@@ -79,7 +79,7 @@ export class LocationTypeController {
 
   @Patch(':id')
   @UseGuards(JwtGuard)
-  @Roles(UserRole.DEPARTMENT_OFFICER)
+  @Roles(UserRole.cdo)
   async update(
     @Param('id') id: string,
     @Body() updateLocationTypeDto: UpdateLocationTypeDto,
@@ -104,7 +104,7 @@ export class LocationTypeController {
 
   @Delete(':id')
   @UseGuards(JwtGuard)
-  @Roles(UserRole.DEPARTMENT_OFFICER)
+  @Roles(UserRole.cdo)
   async remove(@Param('id') id: string, @Res() res: CustomResponse) {
     try {
       await this.locationTypeService.remove(+id);
