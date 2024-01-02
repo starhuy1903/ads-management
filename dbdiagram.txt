@@ -89,20 +89,12 @@ Table user { // User - Các phân hệ Cán bộ
   last_name string
   phone_number string
   dob Datetime
-  role ENUM // [WARD_OFFICER - Cán bộ Phường, DISTRICT_OFFICER - Cán bộ Quận, DEPARTMENT_OFFICER - Cán bộ Sở]
+  role ENUM // [ward_officer - Cán bộ Phường, district_officer - Cán bộ Quận, cdo - Cán bộ Sở]
   ward_id integer
   district_id integer
   account_verified Boolean // Đã xác thực tài khoản
   reset_password Boolean // Đang reset mật khẩu
-  created_at Datetime
-  modified_at Datetime
-}
-
-Table token { // Các refresh token của user
-  id string [primary key] // uuid
-  user_id integer // FK đến User
-  token string
-  expires_at Datetime
+  refresh_token string
   created_at Datetime
   modified_at Datetime
 }
@@ -115,7 +107,6 @@ Ref: report.target_id > location.id
 Ref: report.target_id > panel.id
 Ref: ads_request.target_id > panel.id
 Ref: ads_request.target_id > location.id
-Ref: token.user_id > user.id
 Ref: ads_request.user_id > user.id
 Ref: user.ward_id > ward.id
 Ref: user.district_id > district.id

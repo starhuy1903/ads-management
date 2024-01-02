@@ -50,11 +50,7 @@ export class LocationTypeController {
 
   @Get()
   @UseGuards(JwtGuard)
-  @Roles(
-    UserRole.DEPARTMENT_OFFICER,
-    UserRole.WARD_OFFICER,
-    UserRole.DISTRICT_OFFICER,
-  )
+  @Roles(UserRole.cdo, UserRole.ward_officer, UserRole.district_officer)
   async findAll(
     @Query() pageOptionsLocationTypeDto: PageOptionsLocationTypeDto,
   ) {
