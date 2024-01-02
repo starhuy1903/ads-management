@@ -63,11 +63,14 @@ export const userApiSlice = apiSlice.injectEndpoints({
         body,
       }),
     }),
-    getProfile: build.query<UserProfile, void>({
+    getProfile: build.query<
+      { success: boolean; message?: string; user: UserProfile },
+      void
+    >({
       query: () => 'users/me',
       onQueryStarted: async (_, { dispatch, queryFulfilled }) => {
         const { data } = await queryFulfilled;
-        dispatch(setProfile(data));
+        dispatch(setProfile(data.user));
       },
     }),
   }),

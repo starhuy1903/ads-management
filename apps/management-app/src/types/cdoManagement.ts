@@ -11,8 +11,7 @@ export type District = {
 export type Ward = {
   id: number;
   name: string;
-  district_id: number;
-  district: string;
+  districtId: number;
 };
 
 export type PanelType = {
@@ -35,12 +34,18 @@ export type LocationType = {
   name: string;
 };
 
-type ListResult<K extends string, DataType> = { [key in K]: Array<DataType> };
+// type ListResult<K extends string, DataType> = { [key in K]: Array<DataType> };
 
-export type GetListResult<K extends string, DataType> = {
-  success: boolean;
-  message?: string;
-  data: { totalPages: number } & ListResult<K, DataType>;
+// export type GetListResult<K extends string, DataType> = {
+//   success: boolean;
+//   message?: string;
+//   data: { totalPages: number } & ListResult<K, DataType>;
+// };
+
+export type GetListResult<DataType> = {
+  data: Array<DataType>;
+  totalPages: number;
+  totalCount: number;
 };
 
 export type GetDataResult<DataType> = {
@@ -55,7 +60,7 @@ export type DistrictDto = {
 
 export type WardDto = {
   name: string;
-  district_id: number;
+  districtId: number;
 };
 
 export type PanelTypeDto = {

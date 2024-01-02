@@ -53,7 +53,7 @@ const WardsDetail = () => {
     defaultValues: async () => {
       try {
         const ward = await getWard(parseInt(id!), true).unwrap();
-        return { name: ward.data.name, districtId: ward.data.district_id };
+        return ward.data;
       } catch (error) {
         showError(
           isApiErrorResponse(error) && error.status === 404
@@ -79,7 +79,7 @@ const WardsDetail = () => {
             dispatch(showModal(null));
             await updateWard({
               id: parseInt(id!),
-              data: { ...data, district_id: data.districtId },
+              data,
             }).unwrap();
             reset(data);
           } catch (error) {
@@ -171,7 +171,7 @@ const WardsDetail = () => {
               control={control}
               name="districtId"
               label="District"
-              options={districts.data.districts.map((e) => ({
+              options={districts.data.map((e) => ({
                 value: e.id.toString(),
                 label: e.name,
               }))}

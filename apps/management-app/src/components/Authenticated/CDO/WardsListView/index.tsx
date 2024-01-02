@@ -14,6 +14,7 @@ import { useAppDispatch } from '@/store';
 import { ModalKey } from '@/constants/modal';
 import {
   useDeleteWardsMutation,
+  useGetDistrictsQuery,
   useGetWardsQuery,
 } from '@/store/api/generalManagementApiSlice';
 import { showModal } from '@/store/slice/modal';
@@ -30,139 +31,152 @@ const WardsListView = () => {
 
   const { data, isLoading, isFetching, refetch } = useGetWardsQuery({
     page: parseInt(searchParams.get('page') || '1'),
-    limit: 10,
+    limit: parseInt(searchParams.get('pageSize') || '10'),
   });
 
-  const [rowCountState, setRowCountState] = useState(data?.data.totalPages || 0);
+  const { data: districts, isLoading: districtLoading } = useGetDistrictsQuery(
+    {},
+  );
+
+  const [rowCountState, setRowCountState] = useState(data?.totalCount || 0);
 
   useEffect(() => {
     setRowCountState((prevRowCountState) =>
-      data?.data.totalPages !== undefined ? data?.data.totalPages : prevRowCountState,
+      data?.totalCount !== undefined ? data?.totalCount : prevRowCountState,
     );
-  }, [data?.data.totalPages, setRowCountState]);
+  }, [data?.totalCount, setRowCountState]);
 
   const [deleteWards] = useDeleteWardsMutation();
 
   const rows: GridRowsProp =
-    data?.data.wards || Array.from({ length: 10 }, (_, i) => ({ id: i }));
+    data?.data || Array.from({ length: 10 }, (_, i) => ({ id: i }));
 
-  const columns: GridColDef[] = isLoading
-    ? [
-        {
-          field: 'id',
-          headerName: 'ID',
-          width: 70,
-          align: 'center',
-          headerAlign: 'center',
-          sortable: false,
-          renderCell: () => (
-            <Skeleton
-              variant="text"
-              sx={{ width: '100%', fontSize: '0.875rem' }}
-            />
-          ),
-        },
-        {
-          field: 'name',
-          headerName: 'Name',
-          width: 300,
-          renderCell: () => (
-            <Skeleton
-              variant="text"
-              sx={{ width: '100%', fontSize: '0.875rem' }}
-            />
-          ),
-        },
-        {
-          field: 'district',
-          headerName: 'District',
-          width: 300,
-          renderCell: () => (
-            <Skeleton
-              variant="text"
-              sx={{ width: '100%', fontSize: '0.875rem' }}
-            />
-          ),
-        },
-        {
-          field: 'detail',
-          width: 150,
-          disableColumnMenu: true,
-          sortable: false,
-          renderHeader: () => null,
-          renderCell: () => (
-            <Skeleton
-              variant="text"
-              sx={{ width: '100%', fontSize: '0.875rem' }}
-            />
-          ),
-        },
-        {
-          field: 'delete',
-          width: 50,
-          disableColumnMenu: true,
-          align: 'center',
-          sortable: false,
-          renderHeader: () => null,
-          renderCell: () => (
-            <IconButton disabled>
-              <DeleteIcon />
-            </IconButton>
-          ),
-        },
-      ]
-    : [
-        {
-          field: 'id',
-          headerName: 'ID',
-          width: 70,
-          align: 'center',
-          headerAlign: 'center',
-          sortable: false,
-        },
-        { field: 'name', headerName: 'Name', width: 300 },
-        { field: 'district', headerName: 'District', width: 300 },
-        {
-          field: 'detail',
-          width: 150,
-          disableColumnMenu: true,
-          sortable: false,
-          renderHeader: () => null,
-          renderCell: (params: GridRenderCellParams) => (
-            <CustomLink to={'/wards/' + params.row.id}>View details</CustomLink>
-          ),
-        },
-        {
-          field: 'delete',
-          width: 50,
-          disableColumnMenu: true,
-          align: 'center',
-          sortable: false,
-          renderHeader: () => null,
-          renderCell: (params: GridRenderCellParams) => (
-            <DeleteIconButton
-              onClick={() => {
-                dispatch(
-                  showModal(ModalKey.GENERAL, {
-                    headerText: `Delete ${params.row.name} ?`,
-                    
-                    primaryButtonText: 'Confirm',
-                    onClickPrimaryButton: async () => {
-                      try {
-                        dispatch(showModal(null));
-                        await deleteWards(params.row.id).unwrap();
-                        await refetch();
-                      } catch (error) {
-                        /* empty */
-                      }
-                    },
-                  }),
-                );
-              }}
-            />
-          ),
-        },
-      ];
+  const columns: GridColDef[] =
+    isLoading || districtLoading
+      ? [
+          {
+            field: 'id',
+            headerName: 'ID',
+            width: 70,
+            align: 'center',
+            headerAlign: 'center',
+            sortable: false,
+            renderCell: () => (
+              <Skeleton
+                variant="text"
+                sx={{ width: '100%', fontSize: '0.875rem' }}
+              />
+            ),
+          },
+          {
+            field: 'name',
+            headerName: 'Name',
+            width: 300,
+            renderCell: () => (
+              <Skeleton
+                variant="text"
+                sx={{ width: '100%', fontSize: '0.875rem' }}
+              />
+            ),
+          },
+          {
+            field: 'districtId',
+            headerName: 'District',
+            width: 300,
+            renderCell: () => (
+              <Skeleton
+                variant="text"
+                sx={{ width: '100%', fontSize: '0.875rem' }}
+              />
+            ),
+          },
+          {
+            field: 'detail',
+            width: 150,
+            disableColumnMenu: true,
+            sortable: false,
+            renderHeader: () => null,
+            renderCell: () => (
+              <Skeleton
+                variant="text"
+                sx={{ width: '100%', fontSize: '0.875rem' }}
+              />
+            ),
+          },
+          {
+            field: 'delete',
+            width: 50,
+            disableColumnMenu: true,
+            align: 'center',
+            sortable: false,
+            renderHeader: () => null,
+            renderCell: () => (
+              <IconButton disabled>
+                <DeleteIcon />
+              </IconButton>
+            ),
+          },
+        ]
+      : [
+          {
+            field: 'id',
+            headerName: 'ID',
+            width: 70,
+            align: 'center',
+            headerAlign: 'center',
+            sortable: false,
+          },
+          { field: 'name', headerName: 'Name', width: 300 },
+          {
+            field: 'districtId',
+            headerName: 'District',
+            width: 300,
+            renderCell: (params: GridRenderCellParams) =>
+              districts?.data.find((e) => e.id === params.value)?.name,
+          },
+          {
+            field: 'detail',
+            width: 150,
+            disableColumnMenu: true,
+            sortable: false,
+            renderHeader: () => null,
+            renderCell: (params: GridRenderCellParams) => (
+              <CustomLink to={'/wards/' + params.row.id}>
+                View details
+              </CustomLink>
+            ),
+          },
+          {
+            field: 'delete',
+            width: 50,
+            disableColumnMenu: true,
+            align: 'center',
+            sortable: false,
+            renderHeader: () => null,
+            renderCell: (params: GridRenderCellParams) => (
+              <DeleteIconButton
+                onClick={() => {
+                  dispatch(
+                    showModal(ModalKey.GENERAL, {
+                      headerText: `Delete ${params.row.name} ?`,
+
+                      primaryButtonText: 'Confirm',
+                      onClickPrimaryButton: async () => {
+                        try {
+                          dispatch(showModal(null));
+                          await deleteWards(params.row.id).unwrap();
+                          await refetch();
+                        } catch (error) {
+                          /* empty */
+                        }
+                      },
+                    }),
+                  );
+                }}
+              />
+            ),
+          },
+        ];
   return (
     <StaticActionBar
       actionBar={
@@ -181,14 +195,17 @@ const WardsListView = () => {
         disableRowSelectionOnClick
         rowCount={rowCountState}
         loading={isFetching}
-        pageSizeOptions={[10]}
+        pageSizeOptions={[10, 20, 50]}
         paginationMode="server"
         paginationModel={{
           page: parseInt(searchParams.get('page') || '1') - 1,
-          pageSize: 10,
+          pageSize: parseInt(searchParams.get('pageSize') || '10'),
         }}
         onPaginationModelChange={(model) => {
-          setSearchParams({ page: (model.page + 1).toString() });
+          setSearchParams({
+            page: (model.page + 1).toString(),
+            pageSize: model.pageSize.toString(),
+          });
         }}
       />
     </StaticActionBar>
