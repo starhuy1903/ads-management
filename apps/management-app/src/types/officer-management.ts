@@ -51,6 +51,8 @@ export type Panel = BaseType & {
   type: RefType;
 };
 
+export type PanelType = RefType;
+
 export type Report = BaseType & {
   fullName: string;
   email: string;
@@ -82,4 +84,17 @@ export type AdsRequest = BaseType & {
   user: User;
   location?: Location;
   panel?: Panel;
+};
+
+// DTO
+export type PanelDto = {
+  images: File[];
+  typeId: number;
+  width: number;
+  height: number;
+  locationId: number;
+  companyEmail: string;
+  companyNumber: string;
+  createContractDate: string;
+  expiredContractDate: string;
 };

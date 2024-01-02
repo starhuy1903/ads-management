@@ -8,12 +8,12 @@ import {
 } from '@mui/material';
 
 export function ReadOnlyTextField({
-  label,
-  value,
-  disabled = false,
+  label = '',
+  value = '',
+  disabled,
 }: {
   label?: string;
-  value?: string | number | undefined;
+  value?: string | number;
   disabled?: boolean;
 }) {
   return (
@@ -30,13 +30,13 @@ export function ReadOnlyTextField({
 }
 
 export function ReadOnlyTextForm({
-  label,
-  field,
-  value,
+  label = '',
+  field = '',
+  value = '',
 }: {
-  label?: string;
+  label: string;
   field: string;
-  value?: string | number | undefined;
+  value: string | number;
 }) {
   return (
     <FormControl fullWidth>

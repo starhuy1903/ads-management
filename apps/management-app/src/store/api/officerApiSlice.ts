@@ -6,9 +6,11 @@ import {
   Location,
   MessageResponse,
   Panel,
+  PanelType,
   Report,
 } from '@/types/officer-management';
 import { apiSlice } from './baseApiSlice';
+import { getOnMutationFunction } from './helper';
 
 export const officerManagementApiSlice = apiSlice.injectEndpoints({
   endpoints: (build) => ({
@@ -52,6 +54,27 @@ export const officerManagementApiSlice = apiSlice.injectEndpoints({
     }),
     getPanelById: build.query<GetDetailResult<Panel>, string>({
       query: (id) => `/panels/${id}`,
+    }),
+    getPanelTypesOfficer: build.query<
+      GetListResult<PanelType>,
+      {
+        page?: number;
+        take?: number;
+      }
+    >({
+      query: (arg) => ({
+        url: `/panel-types`,
+        params: {
+          page: arg.page,
+          take: arg.take,
+        },
+      }),
+    }),
+    createPanel: build.mutation<MessageResponse, FormData>({
+      query: (arg) => ({ url: '/panels', method: 'POST', body: arg }),
+      onQueryStarted: getOnMutationFunction(
+        'Created the panel licensing request',
+      ),
     }),
     getReports: build.query<
       GetListResult<Report>,
@@ -124,6 +147,8 @@ export const {
   useGetLocationByIdQuery,
   useGetPanelsQuery,
   useGetPanelByIdQuery,
+  useGetPanelTypesOfficerQuery,
+  useCreatePanelMutation,
   useGetReportsQuery,
   useGetReportByIdQuery,
   useGetRequestsQuery,
