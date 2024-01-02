@@ -14,6 +14,7 @@ import {
   ParseFilePipeBuilder,
   HttpException,
   HttpStatus,
+  Req,
 } from '@nestjs/common';
 import { AdsRequestService } from './ads-request.service';
 import {
@@ -29,6 +30,7 @@ import { Roles } from '../auth/decorators';
 import { JwtGuard } from '../auth/guards';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { FILE_TYPES_REGEX } from '../../constants/images';
+import { IRequestWithUser } from '../auth/interfaces';
 
 @Controller('ads-requests')
 export class AdsRequestController {
@@ -117,10 +119,16 @@ export class AdsRequestController {
 
   @Get()
   @UseGuards(JwtGuard)
-  @Roles(UserRole.DEPARTMENT_OFFICER)
-  async findAll(@Query() pageOptionsAdsRequestDto: PageOptionsAdsRequestDto) {
+  async findAll(
+    @Req() req: IRequestWithUser,
+    @Query() pageOptionsAdsRequestDto: PageOptionsAdsRequestDto,
+  ) {
     try {
-      return await this.adsRequestService.findAll(pageOptionsAdsRequestDto);
+      const userId = req.user['sub'];
+      return await this.adsRequestService.findAll(
+        pageOptionsAdsRequestDto,
+        userId,
+      );
     } catch (error) {
       throw new HttpException(
         {
@@ -134,7 +142,7 @@ export class AdsRequestController {
 
   @Get(':id')
   @UseGuards(JwtGuard)
-  @Roles(UserRole.DEPARTMENT_OFFICER)
+  @Roles(UserRole.cdo)
   async findOne(@Param('id') id: string, @Res() res: CustomResponse) {
     try {
       const adsRequest = await this.adsRequestService.findOne(+id);
@@ -183,7 +191,7 @@ export class AdsRequestController {
 
   @Patch(':id')
   @UseGuards(JwtGuard)
-  @Roles(UserRole.DEPARTMENT_OFFICER)
+  @Roles(UserRole.cdo)
   async update(
     @Param('id') id: string,
     @Body() updateAdsRequestDto: UpdateAdsRequestDto,

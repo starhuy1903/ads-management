@@ -32,6 +32,13 @@ export class PanelTypeService {
     };
   }
 
+  async findAllWithoutPagination() {
+    const result = await this.prismaService.panel_type.findMany({});
+    return {
+      data: result,
+    };
+  }
+
   findOne(id: number) {
     return this.prismaService.panel_type.findFirst({
       where: {

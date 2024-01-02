@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import {
   CreateAdsRequestDto,
   CreateAdsRequestUpdateLocationDto,
@@ -8,7 +8,12 @@ import { UpdateAdsRequestDto } from './dto/update-ads-request.dto';
 import { AdsRequestStatus, TargetType } from '../../constants/ads_request';
 import { PrismaService } from '../../services/prisma/prisma.service';
 import { PageOptionsAdsRequestDto } from './dto/find-all-ads-request.dto';
-import { AdsRequestType, LocationStatus, PanelStatus } from '@prisma/client';
+import {
+  AdsRequestType,
+  LocationStatus,
+  PanelStatus,
+  UserRole,
+} from '@prisma/client';
 import {
   EUploadFolder,
   uploadFilesFromFirebase,
@@ -149,7 +154,22 @@ export class AdsRequestService {
     }
   }
 
-  async findAll(pageOptionsAdsRequestDto: PageOptionsAdsRequestDto) {
+  async findAll(
+    pageOptionsAdsRequestDto: PageOptionsAdsRequestDto,
+    userId: number,
+  ) {
+    const user = await this.prismaService.user.findUnique({
+      where: {
+        id: userId,
+      },
+    });
+
+    if (!user) {
+      throw new UnauthorizedException({
+        message: 'Unauthorized',
+      });
+    }
+
     const conditions = {
       orderBy: [
         {
@@ -166,17 +186,79 @@ export class AdsRequestService {
     };
 
     if (pageOptionsAdsRequestDto.targetType == TargetType.LOCATION) {
-      conditions.where.location = {
-        districtId: { in: pageOptionsAdsRequestDto?.districts },
-        wardId: { in: pageOptionsAdsRequestDto?.wards },
-      };
-    } else if (pageOptionsAdsRequestDto.targetType == TargetType.PANEL) {
-      conditions.where.panel = {
-        location: {
+      if (user.role === UserRole.ward_officer) {
+        conditions.where.location = {
+          wardId: user.wardId,
+        };
+      } else if (user.role === UserRole.district_officer) {
+        // allowedWardIds = [{id: 1}, {id: 2}, {id: 3}, ...]
+        const allowedWardIds = await this.prismaService.ward.findMany({
+          where: {
+            districtId: user.districtId,
+          },
+          select: {
+            id: true,
+          },
+        });
+
+        // allowedWards = [1, 2, 3, ...]
+        const allowedWards = allowedWardIds.map((ward) => ward.id);
+
+        // Filter wards by district -> Only get ward which belong to district
+        const filteredWards = pageOptionsAdsRequestDto.wards.filter((wardId) =>
+          allowedWards.includes(wardId),
+        );
+
+        conditions.where.location = {
+          districtId: user.districtId,
+          wardId: { in: filteredWards },
+        };
+      } else {
+        conditions.where.location = {
           districtId: { in: pageOptionsAdsRequestDto?.districts },
           wardId: { in: pageOptionsAdsRequestDto?.wards },
-        },
-      };
+        };
+      }
+    } else if (pageOptionsAdsRequestDto.targetType == TargetType.PANEL) {
+      // Initialize
+      conditions.where.panel = {};
+
+      if (user.role === UserRole.ward_officer) {
+        conditions.where.panel = {
+          location: {
+            wardId: user.wardId,
+          },
+        };
+      } else if (user.role === UserRole.district_officer) {
+        // allowedWardIds = [{id: 1}, {id: 2}, {id: 3}, ...]
+        const allowedWardIds = await this.prismaService.ward.findMany({
+          where: {
+            districtId: user.districtId,
+          },
+          select: {
+            id: true,
+          },
+        });
+        // allowedWards = [1, 2, 3, ...]
+        const allowedWards = allowedWardIds.map((ward) => ward.id);
+        // Filter wards by district -> Only get ward which belong to district
+        const filteredWards = pageOptionsAdsRequestDto.wards.filter((wardId) =>
+          allowedWards.includes(wardId),
+        );
+        conditions.where.panel = {
+          location: {
+            districtId: user.districtId,
+            wardId: { in: filteredWards },
+          },
+        };
+      } else {
+        conditions.where.panel = {
+          location: {
+            districtId: { in: pageOptionsAdsRequestDto?.districts },
+            wardId: { in: pageOptionsAdsRequestDto?.wards },
+          },
+        };
+      }
     }
 
     const [result, totalCount] = await Promise.all([

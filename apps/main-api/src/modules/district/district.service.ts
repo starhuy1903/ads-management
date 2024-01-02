@@ -1,4 +1,4 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateDistrictDto } from './dto/create-district.dto';
 import { UpdateDistrictDto } from './dto/update-district.dto';
 import { PageOptionsDistrictDto } from './dto/find-all-district.dto';
@@ -29,6 +29,13 @@ export class DistrictService {
       data: result,
       totalPages: Math.ceil(totalCount / pageOptionsDistrictDto.take),
       totalCount,
+    };
+  }
+
+  async findAllWithoutPagination() {
+    const result = await this.prismaService.district.findMany({});
+    return {
+      data: result,
     };
   }
 

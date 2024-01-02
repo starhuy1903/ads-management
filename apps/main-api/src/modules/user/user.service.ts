@@ -1,8 +1,7 @@
 import {
   BadRequestException,
-  HttpException,
-  HttpStatus,
   Injectable,
+  InternalServerErrorException,
 } from '@nestjs/common';
 import { PrismaService } from '../../services/prisma/prisma.service';
 import { UpdateUserDto } from '../auth/dto';
@@ -47,19 +46,13 @@ export class UserService {
       });
 
       return {
-        success: true,
-        message: 'Get user info successfully',
         user,
       };
     } catch (err) {
       console.log('Error: ', err);
-      throw new HttpException(
-        {
-          success: false,
-          message: 'Something went wrong',
-        },
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
+      throw new InternalServerErrorException({
+        message: 'Something went wrong',
+      });
     }
   }
 
@@ -73,7 +66,6 @@ export class UserService {
 
     if (!user) {
       throw new BadRequestException({
-        success: false,
         message: 'User not found',
       });
     }
@@ -117,19 +109,13 @@ export class UserService {
       });
 
       return {
-        success: true,
-        message: 'Update user info successfully',
         user: updatedUser,
       };
     } catch (err) {
       console.log('Error: ', err);
-      throw new HttpException(
-        {
-          success: false,
-          message: 'Something went wrong',
-        },
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
+      throw new InternalServerErrorException({
+        message: 'Something went wrong',
+      });
     }
   }
 }
