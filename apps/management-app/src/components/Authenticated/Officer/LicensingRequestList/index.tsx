@@ -23,6 +23,7 @@ import {
 import { showModal } from '@/store/slice/modal';
 import { AdsRequest } from '@/types/officer-management';
 import { formatDateTime } from '@/utils/format-date';
+import { capitalize } from '@/utils/format-string';
 import { showError, showSuccess } from '@/utils/toast';
 
 const titles = [
@@ -103,7 +104,9 @@ export default function LicensingRequestList() {
                   <TableCell align="center">
                     {formatDateTime(request?.updatedAt)}
                   </TableCell>
-                  <TableCell align="center">{request?.status}</TableCell>
+                  <TableCell align="center">
+                    {capitalize(request?.status)}
+                  </TableCell>
                   <TableCell>
                     <Box
                       sx={{

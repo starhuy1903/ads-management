@@ -12,5 +12,5 @@ export enum AdsRequestStatus {
   PENDING = 'PENDING',
   APPROVED = 'APPROVED',
   REJECTED = 'REJECTED',
-  CANCELLED = 'CANCELLED',
+  CANCELED = 'CANCELED',
 }

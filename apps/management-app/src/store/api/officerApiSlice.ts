@@ -112,7 +112,7 @@ export const officerManagementApiSlice = apiSlice.injectEndpoints({
         url: `/ads-requests/${id}`,
         method: 'PATCH',
         body: {
-          status: AdsRequestStatus.CANCELLED,
+          status: AdsRequestStatus.CANCELED,
         },
       }),
     }),
