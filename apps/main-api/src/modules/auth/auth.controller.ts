@@ -9,7 +9,6 @@ import {
 import { AuthService } from './auth.service';
 import {
   ForgotPasswordDto,
-  LogoutDto,
   ResetPasswordDto,
   SignInDto,
   CreateUserDto,
@@ -34,9 +33,9 @@ export class AuthController {
   @UseGuards(JwtGuard)
   @Post('logout')
   @HttpCode(200)
-  async signOut(@Req() req: IRequestWithUser, @Body() dto: LogoutDto) {
+  async signOut(@Req() req: IRequestWithUser) {
     const userId = req.user['sub'];
-    return await this.authService.logOut(userId, dto.tokenId);
+    return await this.authService.logOut(userId);
   }
 
   @UseGuards(JwtRefreshGuard)
@@ -44,9 +43,8 @@ export class AuthController {
   @Post('refresh')
   async refresh(@Req() req: IRequestWithUser) {
     const refreshToken = req.user['refreshToken'];
-    const tokenId = req.user['tokenId'];
     const payload = req.user['payload'];
-    return await this.authService.refresh(refreshToken, tokenId, payload);
+    return await this.authService.refresh(refreshToken, payload);
   }
 
   @HttpCode(200)

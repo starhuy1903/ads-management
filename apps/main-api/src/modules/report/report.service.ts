@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { CreateReportDto } from './dto/create-report.dto';
 import { UpdateReportDto } from './dto/update-report.dto';
 import { PrismaService } from '../../services/prisma/prisma.service';
@@ -15,6 +15,7 @@ import { EventEmitter2 } from '@nestjs/event-emitter';
 import { NotificationType } from '../../constants/notification';
 import { EDateType, GetStatisticDto } from './dto/get-statistic.dto';
 import moment from 'moment-timezone';
+import { UserRole } from '@prisma/client';
 
 @Injectable()
 export class ReportService {
@@ -75,7 +76,19 @@ export class ReportService {
     }
   }
 
-  async findAll(pageOptionsReportDto: PageOptionsReportDto) {
+  async findAll(pageOptionsReportDto: PageOptionsReportDto, userId: number) {
+    const user = await this.prismaService.user.findUnique({
+      where: {
+        id: userId,
+      },
+    });
+
+    if (!user) {
+      throw new UnauthorizedException({
+        message: 'Unauthorized',
+      });
+    }
+
     const conditions = {
       orderBy: [
         {
@@ -92,17 +105,79 @@ export class ReportService {
     };
 
     if (pageOptionsReportDto.targetType == TargetType.LOCATION) {
-      conditions.where.location = {
-        districtId: { in: pageOptionsReportDto?.districts },
-        wardId: { in: pageOptionsReportDto?.wards },
-      };
-    } else if (pageOptionsReportDto.targetType == TargetType.PANEL) {
-      conditions.where.panel = {
-        location: {
+      if (user.role === UserRole.ward_officer) {
+        conditions.where.location = {
+          wardId: user.wardId,
+        };
+      } else if (user.role === UserRole.district_officer) {
+        // allowedWardIds = [{id: 1}, {id: 2}, {id: 3}, ...]
+        const allowedWardIds = await this.prismaService.ward.findMany({
+          where: {
+            districtId: user.districtId,
+          },
+          select: {
+            id: true,
+          },
+        });
+
+        // allowedWards = [1, 2, 3, ...]
+        const allowedWards = allowedWardIds.map((ward) => ward.id);
+
+        // Filter wards by district -> Only get ward which belong to district
+        const filteredWards = pageOptionsReportDto.wards.filter((wardId) =>
+          allowedWards.includes(wardId),
+        );
+
+        conditions.where.location = {
+          districtId: user.districtId,
+          wardId: { in: filteredWards },
+        };
+      } else {
+        conditions.where.location = {
           districtId: { in: pageOptionsReportDto?.districts },
           wardId: { in: pageOptionsReportDto?.wards },
-        },
-      };
+        };
+      }
+    } else if (pageOptionsReportDto.targetType == TargetType.PANEL) {
+      // Initialize
+      conditions.where.panel = {};
+
+      if (user.role === UserRole.ward_officer) {
+        conditions.where.panel = {
+          location: {
+            wardId: user.wardId,
+          },
+        };
+      } else if (user.role === UserRole.district_officer) {
+        // allowedWardIds = [{id: 1}, {id: 2}, {id: 3}, ...]
+        const allowedWardIds = await this.prismaService.ward.findMany({
+          where: {
+            districtId: user.districtId,
+          },
+          select: {
+            id: true,
+          },
+        });
+        // allowedWards = [1, 2, 3, ...]
+        const allowedWards = allowedWardIds.map((ward) => ward.id);
+        // Filter wards by district -> Only get ward which belong to district
+        const filteredWards = pageOptionsReportDto.wards.filter((wardId) =>
+          allowedWards.includes(wardId),
+        );
+        conditions.where.panel = {
+          location: {
+            districtId: user.districtId,
+            wardId: { in: filteredWards },
+          },
+        };
+      } else {
+        conditions.where.panel = {
+          location: {
+            districtId: { in: pageOptionsReportDto?.districts },
+            wardId: { in: pageOptionsReportDto?.wards },
+          },
+        };
+      }
     }
 
     const [result, totalCount] = await Promise.all([

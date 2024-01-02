@@ -49,9 +49,9 @@ export class PanelTypeController {
   @Get()
   @UseGuards(JwtGuard)
   @Roles(
-    UserRole.DEPARTMENT_OFFICER,
-    UserRole.WARD_OFFICER,
-    UserRole.DISTRICT_OFFICER,
+    UserRole.cdo,
+    UserRole.ward_officer,
+    UserRole.district_officer,
   )
   async findAll(@Query() pageOptionsPanelTypeDto: PageOptionsPanelTypeDto) {
     try {
