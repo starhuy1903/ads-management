@@ -32,6 +32,13 @@ export class DistrictService {
     };
   }
 
+  async findAllWithoutPagination() {
+    const result = await this.prismaService.district.findMany({});
+    return {
+      data: result,
+    };
+  }
+
   findOne(id: number) {
     return this.prismaService.district.findFirst({
       where: {

@@ -40,7 +40,7 @@ export class ReportController {
   ) {}
 
   @UseGuards(JwtGuard)
-  @Roles(UserRole.DEPARTMENT_OFFICER)
+  @Roles(UserRole.cdo)
   @Get('/statistic')
   async getStatistic(
     @Query() getStatisticDto: GetStatisticDto,
@@ -120,9 +120,9 @@ export class ReportController {
 
   @Sse('/officer/sse/:userId')
   @UseGuards(JwtGuard)
-  @Roles(UserRole.WARD_OFFICER)
-  @Roles(UserRole.DISTRICT_OFFICER)
-  @Roles(UserRole.DEPARTMENT_OFFICER)
+  @Roles(UserRole.ward_officer)
+  @Roles(UserRole.district_officer)
+  @Roles(UserRole.cdo)
   sseCreateNewReport(@Param() params: { userId: string }) {
     const { userId } = params;
     try {

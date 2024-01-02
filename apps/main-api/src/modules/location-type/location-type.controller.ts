@@ -27,7 +27,7 @@ export class LocationTypeController {
 
   @Post()
   @UseGuards(JwtGuard)
-  @Roles(UserRole.DEPARTMENT_OFFICER)
+  @Roles(UserRole.cdo)
   async create(
     @Body() createLocationTypeDto: CreateLocationTypeDto,
     @Res() res: CustomResponse,
@@ -49,10 +49,22 @@ export class LocationTypeController {
   }
 
   @Get()
+  @UseGuards(JwtGuard)
+  @Roles(
+    UserRole.DEPARTMENT_OFFICER,
+    UserRole.WARD_OFFICER,
+    UserRole.DISTRICT_OFFICER,
+  )
   async findAll(
     @Query() pageOptionsLocationTypeDto: PageOptionsLocationTypeDto,
   ) {
     try {
+      if (
+        !pageOptionsLocationTypeDto.take ||
+        !pageOptionsLocationTypeDto.page
+      ) {
+        return await this.locationTypeService.findAllWithoutPagination();
+      }
       return await this.locationTypeService.findAll(pageOptionsLocationTypeDto);
     } catch (error) {
       throw new HttpException(
@@ -67,7 +79,7 @@ export class LocationTypeController {
 
   @Patch(':id')
   @UseGuards(JwtGuard)
-  @Roles(UserRole.DEPARTMENT_OFFICER)
+  @Roles(UserRole.cdo)
   async update(
     @Param('id') id: string,
     @Body() updateLocationTypeDto: UpdateLocationTypeDto,
@@ -92,7 +104,7 @@ export class LocationTypeController {
 
   @Delete(':id')
   @UseGuards(JwtGuard)
-  @Roles(UserRole.DEPARTMENT_OFFICER)
+  @Roles(UserRole.cdo)
   async remove(@Param('id') id: string, @Res() res: CustomResponse) {
     try {
       await this.locationTypeService.remove(+id);

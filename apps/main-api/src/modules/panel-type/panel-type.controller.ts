@@ -27,7 +27,7 @@ export class PanelTypeController {
 
   @Post()
   @UseGuards(JwtGuard)
-  @Roles(UserRole.DEPARTMENT_OFFICER)
+  @Roles(UserRole.cdo)
   async create(
     @Body() createPanelTypeDto: CreatePanelTypeDto,
     @Res() res: CustomResponse,
@@ -47,8 +47,17 @@ export class PanelTypeController {
   }
 
   @Get()
+  @UseGuards(JwtGuard)
+  @Roles(
+    UserRole.DEPARTMENT_OFFICER,
+    UserRole.WARD_OFFICER,
+    UserRole.DISTRICT_OFFICER,
+  )
   async findAll(@Query() pageOptionsPanelTypeDto: PageOptionsPanelTypeDto) {
     try {
+      if (!pageOptionsPanelTypeDto.take || !pageOptionsPanelTypeDto.page) {
+        return await this.panelTypeService.findAllWithoutPagination();
+      }
       return await this.panelTypeService.findAll(pageOptionsPanelTypeDto);
     } catch (error) {
       throw new HttpException(
@@ -63,7 +72,7 @@ export class PanelTypeController {
 
   @Patch(':id')
   @UseGuards(JwtGuard)
-  @Roles(UserRole.DEPARTMENT_OFFICER)
+  @Roles(UserRole.cdo)
   async update(
     @Param('id') id: string,
     @Body() updatePanelTypeDto: UpdatePanelTypeDto,
@@ -88,7 +97,7 @@ export class PanelTypeController {
 
   @Delete(':id')
   @UseGuards(JwtGuard)
-  @Roles(UserRole.DEPARTMENT_OFFICER)
+  @Roles(UserRole.cdo)
   async remove(@Param('id') id: string, @Res() res: CustomResponse) {
     try {
       await this.panelTypeService.remove(+id);
