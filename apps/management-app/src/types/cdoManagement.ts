@@ -15,11 +15,6 @@ export type Ward = {
   district: string;
 };
 
-export type PanelType = {
-  id: number;
-  name: string;
-};
-
 export type DistrictDto = {
   name: string;
 };

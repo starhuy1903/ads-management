@@ -11,8 +11,8 @@ import { showSidebar } from '@/store/slice/sidebar';
 
 export default function CitizenHome() {
   const dispatch = useAppDispatch();
-  const { data, isLoading } = useGetLocationQuery();
-  console.log({ data });
+  const { data: adsLocationData, isLoading } = useGetLocationQuery();
+  // console.log({ data });
 
   const handleViewDetailAd = useCallback(() => {
     dispatch(
@@ -23,10 +23,11 @@ export default function CitizenHome() {
   }, [dispatch]);
 
   const renderChildren = () => {
-    return (
+    return adsLocationData?.data.map((loc) => (
       <Marker
-        longitude={106.6586948}
-        latitude={10.8483839}
+        key={loc.id}
+        longitude={loc.long}
+        latitude={loc.lat}
         anchor="center"
         // popup={popup}
         // ref={markerRef}
@@ -37,7 +38,7 @@ export default function CitizenHome() {
           onClick={handleViewDetailAd}
         />
       </Marker>
-    );
+    ));
   };
   return (
     <>
