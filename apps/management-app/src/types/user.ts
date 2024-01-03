@@ -49,3 +49,8 @@ export type UserProfile = {
   dob: string;
   phoneNumber: string;
 };
+
+export type RefreshResponse = {
+  accessToken: string;
+  refreshToken: string;
+};

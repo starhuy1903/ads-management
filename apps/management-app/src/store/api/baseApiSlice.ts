@@ -9,6 +9,7 @@ import { Mutex } from 'async-mutex';
 import { configs } from '@/configurations';
 import auth from '@/utils/auth';
 import { logOut } from '../slice/userSlice';
+import { isRefreshResponse } from './helper';
 
 const mutex = new Mutex();
 
@@ -23,6 +24,7 @@ const baseQuery = fetchBaseQuery({
     }
     return headers;
   },
+  timeout: 30000,
 });
 
 const baseQueryWithReAuth: BaseQueryFn<
@@ -40,12 +42,20 @@ const baseQueryWithReAuth: BaseQueryFn<
 
       try {
         const refreshResult = await baseQuery(
-          { credentials: 'include', url: 'auth/refresh' },
+          {
+            url: 'auth/refresh',
+            method: 'POST',
+            body: { refreshToken: auth.getRefreshToken() },
+          },
           api,
           extraOptions,
         );
 
-        if (refreshResult.data) {
+        if (isRefreshResponse(refreshResult.data)) {
+          auth.setToken(
+            refreshResult.data.accessToken,
+            refreshResult.data.refreshToken,
+          );
           result = await baseQuery(args, api, extraOptions);
         } else {
           api.dispatch(logOut());
