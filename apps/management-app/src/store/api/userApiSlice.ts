@@ -22,14 +22,10 @@ export const userApiSlice = apiSlice.injectEndpoints({
         body,
       }),
       onQueryStarted: async (_, { dispatch, queryFulfilled }) => {
-        try {
-          const { data } = await queryFulfilled;
-          dispatch(setProfile(data.user));
-          dispatch(setIsLoggedIn(true));
-          auth.setToken(data.accessToken, data.refreshToken);
-        } catch (error) {
-          console.log(error);
-        }
+        const { data } = await queryFulfilled;
+        dispatch(setProfile(data.user));
+        dispatch(setIsLoggedIn(true));
+        auth.setToken(data.accessToken, data.refreshToken);
       },
     }),
     logout: build.mutation<MessageResponse, LogoutPayload>({

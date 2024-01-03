@@ -82,11 +82,11 @@ function ProfileSection({ src, alt }: ProfileSectionProps) {
   };
 
   const handleLogout = useCallback(async () => {
-    navigate('/');
-    dispatch(logOut());
     await logoutRequest({
       tokenId: auth.getRefreshToken(),
     });
+    dispatch(logOut());
+    navigate('/');
   }, [logoutRequest, navigate, dispatch]);
 
   return (
