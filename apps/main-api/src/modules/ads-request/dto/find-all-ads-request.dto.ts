@@ -32,7 +32,7 @@ export class PageOptionsAdsRequestDto {
   readonly take?: number = 10;
 
   @IsEnum(AdsRequestType)
-  @IsNotEmpty()
+  @IsOptional()
   readonly type?: AdsRequestType;
 
   @IsOptional()

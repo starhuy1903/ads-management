@@ -1,9 +1,9 @@
 import {
   BadRequestException,
   ForbiddenException,
-  HttpException,
-  HttpStatus,
   Injectable,
+  InternalServerErrorException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { PrismaService } from '../../services/prisma/prisma.service';
 import { SignInDto, CreateUserDto } from './dto';
@@ -12,14 +12,9 @@ import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { JwtService } from '@nestjs/jwt';
 import { ITokenPayload } from './interfaces/ITokenPayload';
 
-import dayjs from 'dayjs';
-
 import { UserRole, user } from '@prisma/client';
 import { SendMailTemplateDto } from '../../services/mail/mail.dto';
 import { MailService } from '../../services/mail/mail.service';
-
-const getAccessExpiry = () => dayjs().add(5, 's').toDate();
-const getRefreshExpiry = () => dayjs().add(1, 'd').toDate();
 
 @Injectable()
 export class AuthService {
@@ -38,30 +33,24 @@ export class AuthService {
     });
 
     if (userExists) {
-      throw new HttpException(
-        {
-          success: false,
-          message: 'Email already exists',
-        },
-        HttpStatus.BAD_REQUEST,
-      );
+      throw new BadRequestException({
+        message: 'Email already exists',
+      });
     }
 
     // Validate role
     const role = dto.role as UserRole;
     if (!Object.values(UserRole).includes(role)) {
       throw new BadRequestException({
-        success: false,
         message: 'Invalid user role',
       });
     }
 
     // Validate ward and district
     // Check if ward or district is provided for the role
-    if (role === UserRole.WARD_OFFICER) {
+    if (role === UserRole.ward_officer) {
       if (!dto.wardId) {
         throw new BadRequestException({
-          success: false,
           message: 'ward_id is required',
         });
       }
@@ -75,16 +64,14 @@ export class AuthService {
 
       if (!ward) {
         throw new BadRequestException({
-          success: false,
           message: 'ward_id is invalid',
         });
       }
     }
 
-    if (role === UserRole.DISTRICT_OFFICER) {
+    if (role === UserRole.district_officer) {
       if (!dto.districtId) {
         throw new BadRequestException({
-          success: false,
           message: 'district_id is required',
         });
       }
@@ -98,7 +85,6 @@ export class AuthService {
 
       if (!district) {
         throw new BadRequestException({
-          success: false,
           message: 'district_id is invalid',
         });
       }
@@ -121,14 +107,12 @@ export class AuthService {
       });
 
       return {
-        success: true,
         message: 'Create user successfully',
       };
     } catch (err) {
       if (err instanceof PrismaClientKnownRequestError) {
         if (err.code === 'P2002') {
           throw new ForbiddenException({
-            success: false,
             message: 'Credentials taken',
           });
         }
@@ -137,17 +121,13 @@ export class AuthService {
       // Add logger
       console.log(err);
 
-      throw new HttpException(
-        {
-          success: false,
-          message: 'Something went wrong',
-        },
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
+      throw new InternalServerErrorException({
+        message: 'Something went wrong',
+      });
     }
   }
 
-  async handeleSignIn(user: user) {
+  async handleSignIn(user: user) {
     const { refreshToken } = await this.getJwtRefreshToken(
       user.id,
       user.email,
@@ -161,23 +141,24 @@ export class AuthService {
 
     try {
       const hash = await argon.hash(refreshToken);
-      const token = await this.prismaService.token.create({
+      const updatedUser = await this.prismaService.user.update({
+        where: {
+          id: user.id,
+        },
         data: {
-          expiresAt: getRefreshExpiry(),
-          token: hash,
-          user: {
-            connect: {
-              id: user.id,
-            },
-          },
+          refreshToken: hash,
         },
       });
+
+      if (!updatedUser) {
+        throw new UnauthorizedException({
+          message: 'Unauthorized',
+        });
+      }
 
       return {
         accessToken,
         refreshToken,
-        tokenId: token.id,
-        accessTokenExpires: getAccessExpiry(),
         user: {
           id: user.id,
           email: user.email,
@@ -189,13 +170,9 @@ export class AuthService {
         },
       };
     } catch (err) {
-      throw new HttpException(
-        {
-          success: false,
-          message: 'Bad Request',
-        },
-        HttpStatus.BAD_REQUEST,
-      );
+      throw new BadRequestException({
+        message: 'Bad Request',
+      });
     }
   }
 
@@ -209,9 +186,8 @@ export class AuthService {
 
     // If the there is no user throw exception
     if (!user) {
-      throw new ForbiddenException({
-        success: false,
-        message: 'Credentials incorrect',
+      throw new UnauthorizedException({
+        message: 'Wrong email or password',
       });
     }
 
@@ -219,123 +195,86 @@ export class AuthService {
     const isMatch = await argon.verify(user.password, dto.password);
 
     if (!isMatch) {
-      throw new ForbiddenException({
-        success: false,
-        message: 'Credentials incorrect',
+      throw new UnauthorizedException({
+        message: 'Wrong email or password',
       });
     }
 
-    return await this.handeleSignIn(user);
+    return await this.handleSignIn(user);
   }
 
-  async logOut(userId: number, tokenId: string) {
-    try {
-      const user = await this.prismaService.user.findUnique({
-        where: {
-          id: userId,
-        },
-      });
-
-      if (!user) {
-        throw new ForbiddenException({
-          success: false,
-          message: 'User not found',
-        });
-      }
-
-      // Delete token
-      await this.prismaService.token.delete({
-        where: {
-          id: tokenId,
-        },
-      });
-
-      return {
-        success: true,
-        message: 'Log out successfully',
-      };
-    } catch (err) {
-      // Token not found -> Already logged out
-      if (err.code === 'P2025') {
-        throw new HttpException(
-          {
-            success: false,
-            message: 'Unauthorized',
-          },
-          HttpStatus.UNAUTHORIZED,
-        );
-      }
-
-      // Add logger
-      console.log(err);
-
-      throw new HttpException(
-        {
-          success: false,
-          message: 'Something went wrong',
-        },
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
-  }
-
-  async refresh(refreshToken: string, tokenId: string, payload: ITokenPayload) {
-    const foundToken = await this.prismaService.token.findUnique({
+  async logOut(userId: number) {
+    const user = await this.prismaService.user.findUnique({
       where: {
-        id: tokenId,
+        id: userId,
       },
     });
 
-    if (foundToken == null) {
-      // Refresh token is valid but the id is not in database
-      // TODO: inform the user with the payload sub
-      throw new HttpException(
-        {
-          success: false,
-          message: 'Unauthorized',
-        },
-        HttpStatus.UNAUTHORIZED,
-      );
-    }
-
-    const isMatch = await argon.verify(foundToken.token ?? '', refreshToken);
-
-    const issuedAt = dayjs.unix(payload.iat);
-    const diff = dayjs().diff(issuedAt, 'seconds');
-
-    if (isMatch) {
-      return await this.generateTokens(payload, tokenId);
-    } else {
-      // Less than 1 minute leeway allows refresh for network concurrency
-      if (diff < 60 * 1 * 1) {
-        console.log('Leeway');
-        return await this.generateTokens(payload, tokenId);
-      }
-
-      // Refresh token is valid but not in db
-      // Possible re-use!!! delete all refresh tokens(sessions) belonging to the sub
-      if (payload.sub !== foundToken.userId) {
-        // The sub of the token isn't the id of the token in db
-        // Log out all session of this payalod id, reFreshToken has been compromised
-        await this.prismaService.token.deleteMany({
-          where: {
-            userId: payload.sub,
-          },
-        });
-        throw new HttpException(
-          {
-            success: false,
-            message: 'Forbidden',
-          },
-          HttpStatus.FORBIDDEN,
-        );
-      }
-
-      throw new ForbiddenException({
-        success: false,
-        message: 'Refresh token expired',
+    if (!user) {
+      throw new UnauthorizedException({
+        message: 'User not found',
       });
     }
+
+    // Check if user is already logged out
+    if (!user.refreshToken) {
+      throw new UnauthorizedException({
+        message: 'Unauthorized',
+      });
+    }
+
+    try {
+      // Update user's refresh token to null
+      await this.prismaService.user.update({
+        where: {
+          id: userId,
+        },
+        data: {
+          refreshToken: null,
+        },
+      });
+
+      return {};
+    } catch (err) {
+      // Add logger
+      console.log(err);
+
+      throw new InternalServerErrorException({
+        message: 'Something went wrong',
+      });
+    }
+  }
+
+  async refresh(refreshToken: string, payload: ITokenPayload) {
+    const user = await this.prismaService.user.findUnique({
+      where: {
+        id: payload.sub,
+      },
+    });
+
+    if (!user) {
+      throw new UnauthorizedException({
+        message: 'Unauthorized',
+      });
+    }
+
+    // Check if user is already logged out
+    if (!user.refreshToken) {
+      throw new UnauthorizedException({
+        message: 'Unauthorized',
+      });
+    }
+
+    // Compare refresh token
+    const isMatch = await argon.verify(user.refreshToken, refreshToken);
+
+    if (!isMatch) {
+      throw new UnauthorizedException({
+        message: 'Unauthorized',
+      });
+    }
+
+    return await this.generateTokens(payload);
   }
 
   async forgotPassword(email: string) {
@@ -347,8 +286,7 @@ export class AuthService {
     });
 
     if (!user) {
-      throw new ForbiddenException({
-        success: false,
+      throw new UnauthorizedException({
         message: 'Invalid email',
       });
     }
@@ -391,18 +329,11 @@ export class AuthService {
     try {
       await this.mailService.sendEmailTemplate(data);
 
-      return {
-        success: true,
-        message: 'Forgot password email sent successfully',
-      };
+      return {};
     } catch (err) {
-      throw new HttpException(
-        {
-          success: false,
-          message: 'Forgot password email failed to send',
-        },
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
+      throw new InternalServerErrorException({
+        message: 'Forgot password email failed to send',
+      });
     }
   }
 
@@ -415,15 +346,13 @@ export class AuthService {
     });
 
     if (!user) {
-      throw new ForbiddenException({
-        success: false,
+      throw new UnauthorizedException({
         message: 'User not found',
       });
     }
 
     if (user.resetPassword == false) {
-      throw new ForbiddenException({
-        success: false,
+      throw new UnauthorizedException({
         message: 'User has not requested for password reset',
       });
     }
@@ -442,10 +371,7 @@ export class AuthService {
       },
     });
 
-    return {
-      success: true,
-      message: 'Reset password successfully',
-    };
+    return {};
   }
 
   public async getJwtRefreshToken(sub: number, email: string, role: string) {
@@ -481,35 +407,33 @@ export class AuthService {
     };
   }
 
-  private async generateTokens(payload: ITokenPayload, tokenId: string) {
+  private async generateTokens(payload: ITokenPayload) {
     const { accessToken } = await this.getJwtAccessToken(
       payload.sub,
       payload.email,
       payload.role,
     );
 
-    const { refreshToken: newRefreshToken } = await this.getJwtRefreshToken(
+    const { refreshToken } = await this.getJwtRefreshToken(
       payload.sub,
       payload.email,
       payload.role,
     );
 
-    const hash = await argon.hash(newRefreshToken);
+    const hash = await argon.hash(refreshToken);
 
-    await this.prismaService.token.update({
+    await this.prismaService.user.update({
       where: {
-        id: tokenId,
+        id: payload.sub,
       },
       data: {
-        token: hash,
+        refreshToken: hash,
       },
     });
 
     return {
       accessToken,
-      refreshToken: newRefreshToken,
-      tokenId: tokenId,
-      accessTokenExpires: getAccessExpiry(),
+      refreshToken,
     };
   }
 }

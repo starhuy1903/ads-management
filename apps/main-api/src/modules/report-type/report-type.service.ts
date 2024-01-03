@@ -32,6 +32,13 @@ export class ReportTypeService {
     };
   }
 
+  async findAllWithoutPagination() {
+    const result = await this.prismaService.panel_type.findMany({});
+    return {
+      data: result,
+    };
+  }
+
   findOne(id: number) {
     return this.prismaService.report_type.findFirst({
       where: {

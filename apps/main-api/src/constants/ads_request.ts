@@ -4,8 +4,8 @@ export enum TargetType {
 }
 
 export enum AdsRequestStatus {
-  SENT = 'Đã gửi',
-  APPROVED = 'Đồng ý',
-  REJECTED = 'Không chấp nhận',
-  CANCELED = 'Đã hủy bỏ',
+  PENDING = 'PENDING',
+  APPROVED = 'APPROVED',
+  REJECTED = 'REJECTED',
+  CANCELED = 'CANCELED',
 }

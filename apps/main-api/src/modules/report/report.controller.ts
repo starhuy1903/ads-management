@@ -15,6 +15,7 @@ import {
   UseGuards,
   HttpException,
   HttpStatus,
+  Req,
 } from '@nestjs/common';
 import { ReportService } from './report.service';
 import { CreateReportDto } from './dto/create-report.dto';
@@ -31,6 +32,7 @@ import { Roles } from '../auth/decorators';
 import { JwtGuard } from '../auth/guards';
 import { NotificationType } from '../../constants/notification';
 import { GetStatisticDto } from './dto/get-statistic.dto';
+import { IRequestWithUser } from '../auth/interfaces';
 
 @Controller('reports')
 export class ReportController {
@@ -40,7 +42,7 @@ export class ReportController {
   ) {}
 
   @UseGuards(JwtGuard)
-  @Roles(UserRole.DEPARTMENT_OFFICER)
+  @Roles(UserRole.cdo)
   @Get('/statistic')
   async getStatistic(
     @Query() getStatisticDto: GetStatisticDto,
@@ -85,9 +87,14 @@ export class ReportController {
   }
 
   @Get()
-  async findAll(@Query() pageOptionsReportDto: PageOptionsReportDto) {
+  @UseGuards(JwtGuard)
+  async findAll(
+    @Req() req: IRequestWithUser,
+    @Query() pageOptionsReportDto: PageOptionsReportDto,
+  ) {
     try {
-      return await this.reportService.findAll(pageOptionsReportDto);
+      const userId = req.user['sub'];
+      return await this.reportService.findAll(pageOptionsReportDto, userId);
     } catch (error) {
       throw new HttpException(
         {
@@ -120,9 +127,9 @@ export class ReportController {
 
   @Sse('/officer/sse/:userId')
   @UseGuards(JwtGuard)
-  @Roles(UserRole.WARD_OFFICER)
-  @Roles(UserRole.DISTRICT_OFFICER)
-  @Roles(UserRole.DEPARTMENT_OFFICER)
+  @Roles(UserRole.ward_officer)
+  @Roles(UserRole.district_officer)
+  @Roles(UserRole.cdo)
   sseCreateNewReport(@Param() params: { userId: string }) {
     const { userId } = params;
     try {
