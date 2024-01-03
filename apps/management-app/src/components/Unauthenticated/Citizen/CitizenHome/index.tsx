@@ -31,8 +31,6 @@ export default function CitizenHome() {
     [dispatch],
   );
 
-  console.log({ selectedLocation });
-
   const renderChildren = () => {
     return adsLocationData?.data.map((loc) => (
       <Marker
