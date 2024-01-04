@@ -10,7 +10,7 @@ export class PageOptionsPanelDto {
 
   @IsEnum(PanelStatus)
   @IsOptional()
-  readonly status?: PanelStatus = PanelStatus.APPROVED;
+  readonly status?: PanelStatus;
 
   @Type(() => Number)
   @IsInt()
