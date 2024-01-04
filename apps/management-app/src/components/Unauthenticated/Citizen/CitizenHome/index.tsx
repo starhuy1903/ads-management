@@ -1,6 +1,6 @@
 import { Box, Typography } from '@mui/material';
 import { Avatar } from '@mui/material';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Marker, Popup } from 'react-map-gl';
 import { useAppDispatch } from '@/store';
 import Maps from '@/components/Common/Maps';
@@ -48,14 +48,6 @@ export default function CitizenHome() {
     },
     [dispatch, getPanels],
   );
-
-  useEffect(() => {
-    dispatch(
-      showSidebar(SidebarKey.AD_DETAIL, {
-        sidebarId: 1, // todo: remove mock
-      }),
-    );
-  }, [dispatch]);
 
   const renderChildren = () => {
     return adLocationData?.data.map((loc) => (
