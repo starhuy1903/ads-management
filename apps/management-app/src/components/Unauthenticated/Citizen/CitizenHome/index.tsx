@@ -1,38 +1,64 @@
 import { Box, Typography } from '@mui/material';
 import { Avatar } from '@mui/material';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Marker, Popup } from 'react-map-gl';
 import { useAppDispatch } from '@/store';
 import Maps from '@/components/Common/Maps';
 import SidebarContainer from '@/components/Common/Sidebar';
 import { SidebarKey } from '@/constants/sidebar';
-import { useGetLocationQuery } from '@/store/api/citizen/locationApiSlice';
+import {
+  useGetLocationQuery,
+  useLazyGetPanelByLocationQuery,
+} from '@/store/api/citizen/locationApiSlice';
+import { isApiErrorResponse } from '@/store/api/helper';
 import { showSidebar } from '@/store/slice/sidebar';
 import { AdsLocation } from '@/types/location';
+import { showError } from '@/utils/toast';
 
 export default function CitizenHome() {
   const dispatch = useAppDispatch();
-  const { data: adsLocationData, isLoading } = useGetLocationQuery();
+  const { data: adLocationData, isLoading: fetchingAdLocation } =
+    useGetLocationQuery();
+  const [getPanels, { isLoading: fetchingPanels }] =
+    useLazyGetPanelByLocationQuery();
   const [selectedLocation, setSelectedLocation] = useState<AdsLocation | null>(
     null,
   );
   // console.log({ data });
 
   const handleViewDetailAd = useCallback(
-    (loc: AdsLocation) => {
+    async (loc: AdsLocation) => {
       setSelectedLocation(loc);
+      try {
+        const res = await getPanels({ locationId: loc.id }).unwrap;
+        console.log({ res });
 
-      dispatch(
-        showSidebar(SidebarKey.AD_DETAIL, {
-          sidebarId: 1, // todo: remove mock
-        }),
-      );
+        dispatch(
+          showSidebar(SidebarKey.AD_DETAIL, {
+            sidebarId: 1, // todo: remove mock
+          }),
+        );
+      } catch (error) {
+        showError(
+          isApiErrorResponse(error)
+            ? error.data.message
+            : 'Something went wrong',
+        );
+      }
     },
-    [dispatch],
+    [dispatch, getPanels],
   );
 
+  useEffect(() => {
+    dispatch(
+      showSidebar(SidebarKey.AD_DETAIL, {
+        sidebarId: 1, // todo: remove mock
+      }),
+    );
+  }, [dispatch]);
+
   const renderChildren = () => {
-    return adsLocationData?.data.map((loc) => (
+    return adLocationData?.data.map((loc) => (
       <Marker
         key={loc.id}
         longitude={loc.long}

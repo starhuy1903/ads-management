@@ -18,4 +18,5 @@ const locationApiSlice = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useGetLocationQuery } = locationApiSlice;
+export const { useGetLocationQuery, useLazyGetPanelByLocationQuery } =
+  locationApiSlice;
