@@ -13,7 +13,7 @@ import {
 import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useAppDispatch } from '@/store';
+import { useAppDispatch, useAppSelector } from '@/store';
 import CenterLoading from '@/components/Common/CenterLoading';
 import DropFileContainer from '@/components/Common/DropFileContainer';
 import { ReadOnlyTextForm } from '@/components/Common/FormComponents';
@@ -55,8 +55,7 @@ export default function LocationEditing() {
 
   const { locationId } = useParams<{ locationId: string }>();
 
-  // const userId = useAppSelector((state) => state?.user?.profile?.id);
-  const userId = '11';
+  const userId = useAppSelector((state) => state?.user?.profile?.id);
 
   const [location, setLocation] = useState<Location | undefined>(undefined);
   const [locationTypes, setLocationTypes] = useState<LocationType[]>([]);
@@ -175,7 +174,7 @@ export default function LocationEditing() {
 
       setSubmitting(false);
 
-      // navigate(-1);
+      navigate(-1);
     } catch (error) {
       console.log(error);
     }
