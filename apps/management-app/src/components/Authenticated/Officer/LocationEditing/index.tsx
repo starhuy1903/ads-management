@@ -220,7 +220,7 @@ export default function LocationEditing() {
       <Typography variant="h6">Classification</Typography>
       <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
         <FormControl fullWidth error={!!formError.name}>
-          <FormLabel htmlFor="reportType">Name</FormLabel>
+          <FormLabel htmlFor="name">Name</FormLabel>
           <TextField
             {...register('name', {
               required: 'The name is required.',
@@ -235,7 +235,7 @@ export default function LocationEditing() {
         </FormControl>
 
         <FormControl fullWidth error={!!formError.typeId}>
-          <FormLabel htmlFor="reportType">Type</FormLabel>
+          <FormLabel htmlFor="typeId">Type</FormLabel>
           <Select
             id="typeId"
             {...register('typeId')}

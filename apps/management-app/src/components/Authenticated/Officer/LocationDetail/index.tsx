@@ -1,4 +1,4 @@
-import { ImageList, ImageListItem, Stack, Typography } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import CenterLoading from '@/components/Common/CenterLoading';
@@ -68,7 +68,7 @@ export default function LocationDetail() {
           value={location?.adType?.name}
         />
 
-        <ReadOnlyTextField label="Position Type" value={location?.type?.name} />
+        <ReadOnlyTextField label="Type" value={location?.type?.name} />
       </Stack>
 
       <ImageListField label="Image" images={location?.imageUrls} />

@@ -152,9 +152,15 @@ export const officerManagementApiSlice = apiSlice.injectEndpoints({
         method: 'POST',
         body: arg,
       }),
-      onQueryStarted: getOnMutationFunction(
-        'Created the location updating request',
-      ),
+      onQueryStarted: getOnMutationFunction('Create the request successfully'),
+    }),
+    createUpdatePanelRequest: build.mutation<MessageResponse, FormData>({
+      query: (arg) => ({
+        url: '/ads-requests/update-panel',
+        method: 'POST',
+        body: arg,
+      }),
+      onQueryStarted: getOnMutationFunction('Create the request successfully'),
     }),
     deleteRequest: build.mutation<MessageResponse, string>({
       query: (id) => ({
@@ -181,5 +187,6 @@ export const {
   useGetRequestsQuery,
   useGetRequestByIdQuery,
   useCreateUpdateLocationRequestMutation,
+  useCreateUpdatePanelRequestMutation,
   useDeleteRequestMutation,
 } = officerManagementApiSlice;

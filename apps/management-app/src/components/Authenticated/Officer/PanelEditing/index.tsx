@@ -12,17 +12,23 @@ import {
 } from '@mui/material';
 import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useAppDispatch } from '@/store';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '@/store';
+import CenterLoading from '@/components/Common/CenterLoading';
 import DropFileContainer from '@/components/Common/DropFileContainer';
-import { ReadOnlyTextField } from '@/components/Common/FormComponents';
+import { ReadOnlyTextForm } from '@/components/Common/FormComponents';
 import { DetailWrapper } from '@/components/Common/Layout/ScreenWrapper';
 import ImagePreview from '@/components/Unauthenticated/Citizen/CitizenReport/ImagePreview';
 import UploadImageCard from '@/components/Unauthenticated/Citizen/CitizenReport/UploadImageCard';
 import { ModalKey } from '@/constants/modal';
 import { ImageFileConfig } from '@/constants/validation';
+import {
+  useCreateUpdatePanelRequestMutation,
+  useGetPanelByIdQuery,
+  useGetPanelTypesOfficerQuery,
+} from '@/store/api/officerApiSlice';
 import { showModal } from '@/store/slice/modal';
-import { AdsPanelResponse } from '@/types/form';
-import { showSuccess } from '@/utils/toast';
+import { Panel, PanelType, UpdatePanelDto } from '@/types/officer-management';
 
 interface EditPanelFormType {
   panelType: string;
@@ -37,74 +43,60 @@ interface EditPanelFormType {
   reason: string;
 }
 
-const PanelTypes = [
-  'Hiflex table pillar',
-  'LED electronic screen pillar',
-  'Light box pillar',
-  'Hiflex wall panels',
-  'Wall mounted electronic screen',
-  'Vertical banner hanger',
-  'Horizontal banner hanger',
-  'Pillar/Panel cluster',
-  'Welcome gate',
-  'Shopping mall',
-];
-
-const panel: AdsPanelResponse = {
-  id: 3,
-  panelType: 'Pillar/Panel cluster',
-  location: {
-    id: 1,
-    address: 'Dong Khoi - Nguyen Du (Department of Culture and Sports)',
-    ward: 'Ben Nghe',
-    commue: '1',
-    positionType: 'Public land/Park/Traffic safety corridor',
-    adsType: 'Commercial advertising',
-  },
-  width: 2.5,
-  height: 10,
-  quantity: 1,
-  imageUrl:
-    'https://cdn.tuoitrethudo.com.vn/stores/news_dataimages/ngovuongtuan/122021/06/14/711e32670b0f625bf1252c028017da66.png?rt=20211206144254',
-  company: {
-    email: 'shopee@gmail.com',
-    phone: '0123456789',
-    createdContractDate: '2023-12-01',
-    expiredContractDate: '2024-01-01',
-  },
-  createdTime: '2023-12-08T11:30:53.945Z',
-  modifiedTime: '2023-12-08T11:30:53.945Z',
-};
-
 export default function PanelEditing() {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
-  const { handleSubmit, register, control, formState, setValue, watch } =
-    useForm<EditPanelFormType>({
+  const { panelId } = useParams<{ panelId: string }>();
+
+  const userId = useAppSelector((state) => state?.user?.profile?.id);
+
+  const [panel, setPanel] = useState<Panel | undefined>(undefined);
+  const [panelTypes, setPanelTypes] = useState<PanelType[]>([]);
+
+  const { data: panelData, isLoading: panelLoading } = useGetPanelByIdQuery(
+    panelId!,
+  );
+  const { data: panelTypeData, isLoading: panelTypeLoading } =
+    useGetPanelTypesOfficerQuery({});
+
+  const { handleSubmit, register, control, formState, setValue, watch, reset } =
+    useForm<UpdatePanelDto>({
       mode: 'onChange',
-      defaultValues: {
-        panelType: panel?.panelType,
-        width: panel?.width,
-        height: panel?.height,
-        quantity: panel?.quantity,
-        imageFiles: [],
-        companyEmail: panel?.company.email,
-        companyPhone: panel?.company.phone,
-        createdContractDate: panel?.company.createdContractDate,
-        expiredContractDate: panel?.company.expiredContractDate,
-        reason: '',
-      },
     });
 
   useEffect(() => {
-    // Fetch image and convert it to File
-    fetch(panel?.imageUrl)
-      .then((res) => res.blob())
-      .then((blob) => {
-        const file = new File([blob], panel?.imageUrl);
-        setValue('imageFiles', [file]);
+    if (panelData && panelTypeData && userId) {
+      setPanel(panelData?.data);
+      setPanelTypes(panelTypeData?.data);
+
+      reset({
+        belongPanelId: panelData?.data?.id,
+        locationId: panelData?.data?.location?.id,
+        userId: userId,
+        typeId: panelData?.data?.type?.id,
+        images: [],
+        width: panelData?.data?.width,
+        height: panelData?.data?.height,
+        createContractDate: panelData?.data?.createContractDate,
+        expiredContractDate: panelData?.data?.expiredContractDate,
+        companyEmail: panelData?.data?.companyEmail,
+        companyNumber: panelData?.data?.companyNumber,
+        reason: '',
       });
-  }, []);
+    }
+  }, [panelData, panelTypeData, reset, userId]);
+
+  useEffect(() => {
+    if (panel?.imageUrls) {
+      fetch(panel?.imageUrls[0])
+        .then((res) => res.blob())
+        .then((blob) => {
+          const file = new File([blob], panel?.imageUrls[0]);
+          setValue('images', [file]);
+        });
+    }
+  }, [panel?.imageUrls, setValue]);
 
   const { errors: formError } = formState;
   const formValue = watch();
@@ -112,8 +104,8 @@ export default function PanelEditing() {
   const [submitting, setSubmitting] = useState(false);
 
   const handleAddImage = useCallback(
-    (file: File) => setValue('imageFiles', [...formValue.imageFiles, file]),
-    [formValue.imageFiles, setValue],
+    (file: File) => setValue('images', [...formValue.images, file]),
+    [formValue.images, setValue],
   );
 
   const handleUpdateImage = useCallback(
@@ -136,11 +128,11 @@ export default function PanelEditing() {
   const handleDeleteImage = useCallback(
     (file: File) => {
       setValue(
-        'imageFiles',
-        formValue?.imageFiles.filter((image) => image !== file),
+        'images',
+        formValue?.images.filter((image) => image !== file),
       );
     },
-    [formValue.imageFiles, setValue],
+    [formValue.images, setValue],
   );
 
   const renderUpdateImageContainer = ({
@@ -151,66 +143,99 @@ export default function PanelEditing() {
     disabled: boolean;
   }) => <UploadImageCard open={open} disabled={disabled} />;
 
-  const onSubmit = (data: EditPanelFormType) => {
-    setSubmitting(true);
-    console.log(data);
-    setSubmitting(false);
-    showSuccess('Create the panel edit request successfully!');
+  const [updatePanel] = useCreateUpdatePanelRequestMutation();
+
+  const onSubmit = async (data: UpdatePanelDto) => {
+    try {
+      setSubmitting(true);
+
+      const formData = new FormData();
+      formData.append('belongPanelId', data.belongPanelId.toString());
+      formData.append('locationId', data.locationId.toString());
+      formData.append('userId', data.userId.toString());
+      formData.append('typeId', data.typeId.toString());
+      data.images.forEach((image) => formData.append('images', image));
+      formData.append('reason', data.reason);
+      formData.append('width', data.width.toString());
+      formData.append('height', data.height.toString());
+      data.createContractDate = new Date(data.createContractDate).toISOString();
+      data.expiredContractDate = new Date(
+        data.expiredContractDate,
+      ).toISOString();
+      formData.append('createContractDate', data.createContractDate);
+      formData.append('expiredContractDate', data.expiredContractDate);
+      formData.append('companyEmail', data.companyEmail);
+      formData.append('companyNumber', data.companyNumber);
+
+      await updatePanel(formData).unwrap();
+
+      setSubmitting(false);
+
+      navigate(-1);
+    } catch (error) {
+      console.log(error);
+    }
   };
+
+  if (panelLoading || panelTypeLoading || !panel || !panelTypes) {
+    return <CenterLoading />;
+  }
 
   return (
     <DetailWrapper label="Create Panel Editing Request">
       <Typography variant="h6">Location</Typography>
       <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-        <FormControl fullWidth>
-          <FormLabel htmlFor="lat">Address</FormLabel>
-          <ReadOnlyTextField value={panel?.location?.address} disabled />
-        </FormControl>
+        <ReadOnlyTextForm
+          field="fullAddress"
+          label="Address"
+          value={panel?.location?.fullAddress ?? ''}
+        />
 
-        <FormControl fullWidth>
-          <FormLabel htmlFor="lat">District</FormLabel>
-          <ReadOnlyTextField value={panel?.location?.commue} disabled />
-        </FormControl>
+        <ReadOnlyTextForm
+          field="ward"
+          label="Ward"
+          value={panel?.location?.ward?.name ?? ''}
+        />
 
-        <FormControl fullWidth>
-          <FormLabel htmlFor="lat">Ward</FormLabel>
-          <ReadOnlyTextField value={panel?.location?.ward} disabled />
-        </FormControl>
+        <ReadOnlyTextForm
+          field="district"
+          label="District"
+          value={panel?.location?.district?.name ?? ''}
+        />
 
-        <FormControl fullWidth>
-          <FormLabel htmlFor="lat">Position type</FormLabel>
-          <ReadOnlyTextField value={panel?.location?.positionType} disabled />
-        </FormControl>
+        <ReadOnlyTextForm
+          field="type"
+          label="Type"
+          value={panel?.location?.type?.name ?? ''}
+        />
 
-        <FormControl fullWidth>
-          <FormLabel htmlFor="lat">Advertising type</FormLabel>
-          <ReadOnlyTextField value={panel?.location?.adsType} disabled />
-        </FormControl>
+        <ReadOnlyTextForm
+          field="adType"
+          label="Advertising Type"
+          value={panel?.location?.adType?.name ?? ''}
+        />
       </Stack>
 
       <Typography variant="h6">Panel</Typography>
       <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-        <FormControl fullWidth>
-          <FormLabel htmlFor="lat">ID</FormLabel>
-          <ReadOnlyTextField value={panel?.id} disabled />
-        </FormControl>
+        <ReadOnlyTextForm field="id" label="ID" value={panel?.id ?? ''} />
 
-        <FormControl fullWidth error={!!formError.panelType}>
-          <FormLabel htmlFor="reportType">Panel type</FormLabel>
+        <FormControl fullWidth error={!!formError.typeId}>
+          <FormLabel htmlFor="typeId">Type</FormLabel>
           <Select
-            id="panelType"
-            {...register('panelType')}
-            aria-describedby="panelType-helper-text"
-            defaultValue={panel.panelType}
+            id="typeId"
+            {...register('typeId')}
+            aria-describedby="typeId-helper-text"
+            defaultValue={panel?.type?.id}
           >
-            {PanelTypes.map((type) => (
-              <MenuItem key={type} value={type}>
-                {type}
+            {panelTypes.map((type) => (
+              <MenuItem key={type?.id} value={type?.id}>
+                {type?.name}
               </MenuItem>
             ))}
           </Select>
           <FormHelperText id="panelType-helper-text">
-            {formError.panelType?.message}
+            {formError.typeId?.message}
           </FormHelperText>
         </FormControl>
 
@@ -255,29 +280,12 @@ export default function PanelEditing() {
             {formError.height?.message}
           </FormHelperText>
         </FormControl>
-
-        <FormControl fullWidth error={!!formError.quantity}>
-          <FormLabel htmlFor="quantity">Quantity</FormLabel>
-          <TextField
-            type="number"
-            {...register('quantity', {
-              required: 'The quantity is required.',
-            })}
-            id="quantity"
-            error={!!formError.quantity}
-            aria-describedby="quantity-helper-text"
-            inputProps={{ min: 1, max: 3 }}
-          />
-          <FormHelperText id="quantity-helper-text">
-            {formError.quantity?.message}
-          </FormHelperText>
-        </FormControl>
       </Stack>
 
       <FormControl>
         <FormLabel sx={{ mb: 1 }}>Upload image</FormLabel>
         <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-          {formValue.imageFiles.map((image, index) => (
+          {formValue.images.map((image, index) => (
             <ImagePreview
               key={index}
               image={image}
@@ -285,7 +293,7 @@ export default function PanelEditing() {
               onDeleteImage={handleDeleteImage}
             />
           ))}
-          {formValue.imageFiles.length < 1 && (
+          {formValue.images.length < 1 && (
             <DropFileContainer
               onDropFile={handleUpdateImage}
               acceptMIMETypes={ImageFileConfig.ACCEPTED_MINE_TYPES}
@@ -315,51 +323,51 @@ export default function PanelEditing() {
           </FormHelperText>
         </FormControl>
 
-        <FormControl fullWidth error={!!formError.companyPhone}>
-          <FormLabel htmlFor="companyPhone">Phone</FormLabel>
+        <FormControl fullWidth error={!!formError.companyNumber}>
+          <FormLabel htmlFor="companyNumber">Phone</FormLabel>
           <TextField
-            {...register('companyPhone', {
+            {...register('companyNumber', {
               required: 'The company phone is required.',
             })}
-            id="companyPhone"
+            id="companyNumber"
             placeholder="0123456789"
-            error={!!formError.companyPhone}
-            aria-describedby="companyPhone-helper-text"
+            error={!!formError.companyNumber}
+            aria-describedby="companyNumber-helper-text"
           />
-          <FormHelperText id="companyPhone-helper-text">
-            {formError.companyPhone?.message}
+          <FormHelperText id="companyNumber-helper-text">
+            {formError.companyNumber?.message}
           </FormHelperText>
         </FormControl>
 
-        <FormControl fullWidth error={!!formError.createdContractDate}>
-          <FormLabel htmlFor="createdContractDate">
-            Created contract date
+        <FormControl fullWidth error={!!formError.createContractDate}>
+          <FormLabel htmlFor="createContractDate">
+            Created Contract Date
           </FormLabel>
           <TextField
             type="date"
-            {...register('createdContractDate', {
+            {...register('createContractDate', {
               required: 'The created contract date is required.',
             })}
-            value={formValue.createdContractDate}
-            id="createdContractDate"
-            error={!!formError.createdContractDate}
-            aria-describedby="createdContractDate-helper-text"
+            value={formValue.createContractDate}
+            id="createContractDate"
+            error={!!formError.createContractDate}
+            aria-describedby="createContractDate-helper-text"
           />
-          <FormHelperText id="createdContractDate-helper-text">
-            {formError.createdContractDate?.message}
+          <FormHelperText id="createContractDate-helper-text">
+            {formError.createContractDate?.message}
           </FormHelperText>
         </FormControl>
 
         <FormControl fullWidth error={!!formError.expiredContractDate}>
           <FormLabel htmlFor="expiredContractDate">
-            Expired contract date
+            Expired Contract Date
           </FormLabel>
           <TextField
             type="date"
             {...register('expiredContractDate', {
               required: 'The expired contract date is required.',
               validate: (value) => {
-                if (value < formValue.createdContractDate) {
+                if (value < formValue.createContractDate) {
                   return 'The expired contract date must be after the created contract date.';
                 }
                 return true;

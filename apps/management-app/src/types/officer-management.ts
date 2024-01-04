@@ -116,3 +116,18 @@ export type UpdateLocationDto = {
   wardId: number;
   districtId: number;
 };
+
+export type UpdatePanelDto = {
+  belongPanelId: number;
+  locationId: number;
+  userId: string;
+  typeId: number;
+  images: File[];
+  width: string;
+  height: string;
+  createContractDate: string;
+  expiredContractDate: string;
+  companyEmail: string;
+  companyNumber: string;
+  reason: string;
+};
