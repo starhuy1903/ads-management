@@ -12,7 +12,7 @@ import {
 } from '@/store/api/citizen/locationApiSlice';
 import { isApiErrorResponse } from '@/store/api/helper';
 import { showSidebar } from '@/store/slice/sidebar';
-import { AdsLocation } from '@/types/location';
+import { AdLocation } from '@/types/location';
 import { showError } from '@/utils/toast';
 
 export default function CitizenHome() {
@@ -21,13 +21,13 @@ export default function CitizenHome() {
     useGetLocationQuery();
   const [getPanels, { isLoading: fetchingPanels }] =
     useLazyGetPanelByLocationQuery();
-  const [selectedLocation, setSelectedLocation] = useState<AdsLocation | null>(
+  const [selectedLocation, setSelectedLocation] = useState<AdLocation | null>(
     null,
   );
   // console.log({ data });
 
   const handleViewDetailAd = useCallback(
-    async (loc: AdsLocation) => {
+    async (loc: AdLocation) => {
       setSelectedLocation(loc);
       try {
         const res = await getPanels({ locationId: loc.id }).unwrap();

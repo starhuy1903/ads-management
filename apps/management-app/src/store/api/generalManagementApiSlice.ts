@@ -1,11 +1,10 @@
-import { AdsType } from '@/types/ads';
+import { AdType } from '@/types/ads';
 import {
   AdsTypeDto,
   District,
   DistrictDto,
   LocationTypeDto,
   MessageResponse,
-  PanelType,
   PanelTypeDto,
   ReportTypeDto,
   Ward,
@@ -13,6 +12,7 @@ import {
 } from '@/types/cdoManagement';
 import { GetList } from '@/types/common';
 import { LocationType } from '@/types/location';
+import { PanelType } from '@/types/panel';
 import { ReportType } from '@/types/report';
 import { apiSlice } from './baseApiSlice';
 import { getOnMutationFunction } from './helper';
@@ -199,7 +199,7 @@ export const generalManagementApiSlice = apiSlice.injectEndpoints({
       onQueryStarted: getOnMutationFunction('Location type deleted'),
     }),
     getAdsTypes: build.query<
-      GetList<AdsType>,
+      GetList<AdType>,
       { page?: number; limit?: number }
     >({
       query: (arg) => ({
@@ -210,7 +210,7 @@ export const generalManagementApiSlice = apiSlice.injectEndpoints({
         },
       }),
     }),
-    getAdsTypeById: build.query<AdsType, number>({
+    getAdsTypeById: build.query<AdType, number>({
       query: (id) => `/ads-types/${id}`,
     }),
     createAdsType: build.mutation<MessageResponse, AdsTypeDto>({

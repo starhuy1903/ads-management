@@ -1,4 +1,4 @@
-import { AdsType } from './ads';
+import { AdType } from './ads';
 import { District } from './cdoManagement';
 
 export type LocationType = {
@@ -6,7 +6,7 @@ export type LocationType = {
   name: string;
 };
 
-export interface AdsLocation {
+export interface AdLocation {
   id: number;
   lat: number;
   long: number;
@@ -21,10 +21,10 @@ export interface AdsLocation {
   updatedAt: string;
   name: string;
   belongLocationId: number;
-  status: string; // TODO: refactor
+  status: string; // TODO: use enum
   panel: any[];
   type: LocationType;
-  adType: AdsType;
+  adType: AdType;
   district: District;
   ward: {
     id: number;
