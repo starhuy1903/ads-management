@@ -82,8 +82,8 @@ export type AdsTypeDto = {
 export type GetStatictisQueryOptions = {
   dateValue: string;
   dateType: 'MONTH' | 'YEAR';
-  wards: Array<number>;
-  districts: Array<number>;
+  wardIds?: Array<number>;
+  districtIds?: Array<number>;
 };
 
 export type GetStatictisResult = {
@@ -96,8 +96,8 @@ export type GetStatictisResult = {
 };
 export interface IStatisticsViewOptions {
   mode: 'YEAR' | 'MONTH';
-  wards: Array<number>;
-  districts: Array<number>;
+  wardIds: Array<number>;
+  districtIds: Array<number>;
   year: number;
   month: number;
 }

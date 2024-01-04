@@ -3,9 +3,8 @@ import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import OutlinedInput from '@mui/material/OutlinedInput';
-import Select from '@mui/material/Select';
 import dayjs from 'dayjs';
-import { useEffect, useId, useState } from 'react';
+import { useId, useState } from 'react';
 import { useAppDispatch } from '@/store';
 import { MONTHS, OLDEST_DATA_YEAR } from '@/constants/app';
 import {
@@ -14,6 +13,7 @@ import {
 } from '@/store/api/generalManagementApiSlice';
 import { showModal } from '@/store/slice/modal';
 import { IStatisticsViewOptions } from '@/types/cdoManagement';
+import CustomSelect from '../Common/CustomSelect';
 import GeneralModal from './GeneralModal';
 
 interface StatisticsViewOptionsProps {
@@ -28,25 +28,33 @@ const StatisticsViewOptions = ({
   onModalClose,
 }: StatisticsViewOptionsProps) => {
   const dispatch = useAppDispatch();
-  const [state, setState] = useState<IStatisticsViewOptions>(viewOptions);
+  const [state, setState] = useState<
+    IStatisticsViewOptions & { district?: number }
+  >({
+    ...viewOptions,
+    district:
+      viewOptions.districtIds.length > 0
+        ? viewOptions.districtIds[0]
+        : undefined,
+  });
 
   const { data: districts, isLoading: districtLoading } = useGetDistrictsQuery(
     {},
   );
   const { data: wards, isLoading: wardLoading } = useGetWardsQuery({});
 
-  useEffect(() => {
-    if (wards) {
-      const selectedWards = wards.data.wards.filter((e) =>
-        state.wards.includes(e.id),
-      );
-      const validWards = selectedWards.filter((e) =>
-        state.districts.includes(e.district_id),
-      );
-      setState((pre) => ({ ...pre, wards: validWards.map((e) => e.id) }));
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state.districts, wards]);
+  // useEffect(() => {
+  //   if (wards) {
+  //     const selectedWards = wards.data.filter((e) =>
+  //       state.wardIds.includes(e.id),
+  //     );
+  //     const validWards = selectedWards.filter((e) =>
+  //       state.districtIds.includes(e.districtId),
+  //     );
+  //     setState((pre) => ({ ...pre, wards: validWards.map((e) => e.id) }));
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [state.districtIds, wards]);
 
   const id = useId();
 
@@ -57,7 +65,11 @@ const StatisticsViewOptions = ({
       headerText="Apply view options"
       onModalClose={onModalClose}
       onClickPrimaryButton={() => {
-        onSubmit(state);
+        onSubmit({
+          ...state,
+          districtIds:
+            state.district && state.district !== -1 ? [state.district] : [],
+        });
         dispatch(showModal(null));
       }}
       primaryButtonText="Apply"
@@ -72,57 +84,55 @@ const StatisticsViewOptions = ({
         >
           <FormControl sx={{ width: '100%' }}>
             <InputLabel id={id + '-select-districts'}>Districts</InputLabel>
-            <Select
+            <CustomSelect
               labelId={id + '-select-districts'}
-              multiple
               input={<OutlinedInput label="Districts" />}
-              value={state.districts}
+              value={state.district || -1}
               onChange={(e) => {
                 setState((pre) => ({
                   ...pre,
-                  districts: e.target.value as Array<number>,
+                  district: e.target.value as number,
+                  wardIds: [],
                 }));
               }}
               disabled={districtLoading}
             >
-              {districts?.data.districts.map((e) => (
+              <MenuItem value={-1}>All</MenuItem>
+              {districts?.data.map((e) => (
                 <MenuItem key={e.id} value={e.id}>
                   {e.name}
                 </MenuItem>
               ))}
-            </Select>
+            </CustomSelect>
           </FormControl>
           <FormControl sx={{ width: '100%' }}>
             <InputLabel id={id + '-select-wards'}>Wards</InputLabel>
-            <Select
+            <CustomSelect
               labelId={id + '-select-wards'}
               multiple
               input={<OutlinedInput label="Wards" />}
-              value={state.wards}
+              value={state.wardIds}
               onChange={(e) =>
                 setState((pre) => ({
                   ...pre,
-                  wards: e.target.value as Array<number>,
+                  wardIds: e.target.value as Array<number>,
                 }))
               }
-              disabled={wardLoading}
+              disabled={wardLoading || !state.district}
             >
               {wards &&
-                (state.districts.length < 1
-                  ? wards.data.wards
-                  : wards.data.wards.filter((e) =>
-                      state.districts.includes(e.district_id),
-                    )
-                ).map((e) => (
-                  <MenuItem key={e.id} value={e.id}>
-                    {e.name}
-                  </MenuItem>
-                ))}
-            </Select>
+                wards.data
+                  .filter((e) => e.districtId === state.district)
+                  .map((e) => (
+                    <MenuItem key={e.id} value={e.id}>
+                      {e.name}
+                    </MenuItem>
+                  ))}
+            </CustomSelect>
           </FormControl>
           <FormControl sx={{ width: '100%' }}>
             <InputLabel id={id + '-select-mode'}>View statistics in</InputLabel>
-            <Select
+            <CustomSelect
               labelId={id + '-select-mode'}
               input={<OutlinedInput label="View statistics in" />}
               value={state.mode}
@@ -136,54 +146,60 @@ const StatisticsViewOptions = ({
             >
               <MenuItem value="YEAR">Year</MenuItem>
               <MenuItem value="MONTH">Month</MenuItem>
-            </Select>
+            </CustomSelect>
           </FormControl>
-          <FormControl sx={{ width: '100%' }}>
-            <InputLabel id={id + '-select-year'}>Year</InputLabel>
-            <Select
-              labelId={id + '-select-year'}
-              multiple
-              input={<OutlinedInput label="Year" />}
-              value={state.year}
-              onChange={(e) =>
-                setState((pre) => ({
-                  ...pre,
-                  year: e.target.value as number,
-                }))
-              }
-            >
-              {Array.from(
-                { length: now.get('year') - OLDEST_DATA_YEAR + 1 },
-                (e, i) => OLDEST_DATA_YEAR + i,
-              ).map((e) => (
-                <MenuItem key={e} value={e}>
-                  {e}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          <FormControl sx={{ width: '100%' }}>
-            <InputLabel id={id + '-select-month'}>Month</InputLabel>
-            <Select
-              labelId={id + '-select-month'}
-              multiple
-              input={<OutlinedInput label="Month" />}
-              value={state.month}
-              onChange={(e) =>
-                setState((pre) => ({
-                  ...pre,
-                  month: e.target.value as number,
-                }))
-              }
-              disabled={state.mode === 'YEAR'}
-            >
-              {Array.from({ length: 12 }, (e, i) => i + 1).map((e) => (
-                <MenuItem key={e} value={e}>
-                  {MONTHS[e]}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+          <Box
+            sx={{
+              width: '100%',
+              display: 'flex',
+              columnGap: '16px',
+            }}
+          >
+            <FormControl sx={{ flex: 1 }}>
+              <InputLabel id={id + '-select-year'}>Year</InputLabel>
+              <CustomSelect
+                labelId={id + '-select-year'}
+                input={<OutlinedInput label="Year" />}
+                value={state.year}
+                onChange={(e) =>
+                  setState((pre) => ({
+                    ...pre,
+                    year: e.target.value as number,
+                  }))
+                }
+              >
+                {Array.from(
+                  { length: now.get('year') - OLDEST_DATA_YEAR + 1 },
+                  (e, i) => OLDEST_DATA_YEAR + i,
+                ).map((e) => (
+                  <MenuItem key={e} value={e}>
+                    {e}
+                  </MenuItem>
+                ))}
+              </CustomSelect>
+            </FormControl>
+            <FormControl sx={{ flex: 1 }}>
+              <InputLabel id={id + '-select-month'}>Month</InputLabel>
+              <CustomSelect
+                labelId={id + '-select-month'}
+                input={<OutlinedInput label="Month" />}
+                value={state.month}
+                onChange={(e) =>
+                  setState((pre) => ({
+                    ...pre,
+                    month: e.target.value as number,
+                  }))
+                }
+                disabled={state.mode === 'YEAR'}
+              >
+                {Array.from({ length: 12 }, (e, i) => i + 1).map((e) => (
+                  <MenuItem key={e} value={e}>
+                    {MONTHS[e]}
+                  </MenuItem>
+                ))}
+              </CustomSelect>
+            </FormControl>
+          </Box>
         </Box>
       }
     />

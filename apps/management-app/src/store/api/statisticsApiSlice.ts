@@ -15,4 +15,5 @@ export const statisticsApiSlice = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useGetStatictisQuery } = statisticsApiSlice;
+export const { useGetStatictisQuery, useLazyGetStatictisQuery } =
+  statisticsApiSlice;
