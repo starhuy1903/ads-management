@@ -1,5 +1,6 @@
 import CloseIcon from '@mui/icons-material/Close';
 import {
+  Box,
   Button,
   Dialog,
   DialogActions,
@@ -9,18 +10,27 @@ import {
   IconButton,
 } from '@mui/material';
 
+export enum FooterType {
+  SINGLE = 'single',
+  DOUBLE = 'double',
+  NONE = 'none',
+}
+
 interface GeneralModalProps {
   id?: string;
   headerText: string;
   onModalClose: () => void;
   body?: React.ReactNode;
-  primaryButtonText: string;
-  onClickPrimaryButton: () => void;
+  primaryButtonText?: string;
+  onClickPrimaryButton?: () => void;
   disabledPrimaryButton?: boolean;
   secondaryButtonText?: string;
   onClickSecondaryButton?: () => void;
   disabledSecondaryButton?: boolean;
   size?: DialogProps['maxWidth'];
+  footer?: React.ReactNode;
+  showFooter?: boolean;
+  footerType?: FooterType;
 }
 
 function GeneralModal({
@@ -34,7 +44,50 @@ function GeneralModal({
   onClickSecondaryButton,
   disabledSecondaryButton = false,
   size = 'sm',
+  showFooter = true,
+  footerType = FooterType.SINGLE,
 }: GeneralModalProps) {
+  const renderPrimaryButton = () => (
+    <Button
+      variant="contained"
+      autoFocus
+      onClick={onClickPrimaryButton}
+      disabled={disabledPrimaryButton}
+    >
+      {primaryButtonText}
+    </Button>
+  );
+
+  const renderSecondaryButton = () => (
+    <Button
+      onClick={onClickSecondaryButton ? onClickSecondaryButton : onModalClose}
+      disabled={disabledSecondaryButton}
+    >
+      {secondaryButtonText}
+    </Button>
+  );
+
+  const renderFooterButtons = () => {
+    switch (footerType) {
+      case FooterType.SINGLE: {
+        return renderPrimaryButton();
+      }
+      case FooterType.DOUBLE: {
+        return (
+          <Box>
+            {renderSecondaryButton()}
+            {renderPrimaryButton()}
+          </Box>
+        );
+      }
+      case FooterType.NONE: {
+        return null;
+      }
+      default:
+        throw new Error('Footer type does not supported');
+    }
+  };
+
   return (
     <Dialog
       open
@@ -59,24 +112,7 @@ function GeneralModal({
         <CloseIcon />
       </IconButton>
       <DialogContent>{body}</DialogContent>
-      <DialogActions>
-        <Button
-          onClick={
-            onClickSecondaryButton ? onClickSecondaryButton : onModalClose
-          }
-          disabled={disabledSecondaryButton}
-        >
-          {secondaryButtonText}
-        </Button>
-        <Button
-          variant="contained"
-          autoFocus
-          onClick={onClickPrimaryButton}
-          disabled={disabledPrimaryButton}
-        >
-          {primaryButtonText}
-        </Button>
-      </DialogActions>
+      {showFooter && <DialogActions>{renderFooterButtons()}</DialogActions>}
     </Dialog>
   );
 }

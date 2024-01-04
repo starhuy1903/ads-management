@@ -1,6 +1,10 @@
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { Box, Button, IconButton, Typography, Stack } from '@mui/material';
+import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAppDispatch } from '@/store';
+import { ModalKey } from '@/constants/modal';
+import { showModal } from '@/store/slice/modal';
 import { Panel } from '@/types/panel';
 import CenterLoading from '../CenterLoading';
 
@@ -10,6 +14,11 @@ interface AdDetailProps {
 
 export default function AdDetail({ panels }: AdDetailProps) {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
+  const handleViewPanelDetail = useCallback(() => {
+    dispatch(showModal(ModalKey.PANEL_DETAIL));
+  }, [dispatch]);
 
   if (!panels) {
     return <CenterLoading />;
@@ -18,7 +27,7 @@ export default function AdDetail({ panels }: AdDetailProps) {
   return (
     <Stack>
       {panels.map((panel) => (
-        <Box p={2}>
+        <Box p={2} key={panel.id}>
           <Box height={60} />
           <Typography variant="h4" mb={1}>
             {panel.type.name}
@@ -48,7 +57,7 @@ export default function AdDetail({ panels }: AdDetailProps) {
             </Box>
           </Box>
           <Box display="flex" justifyContent="space-between" mt={2}>
-            <IconButton>
+            <IconButton onClick={handleViewPanelDetail}>
               <InfoOutlinedIcon color="primary" />
             </IconButton>
             <Button

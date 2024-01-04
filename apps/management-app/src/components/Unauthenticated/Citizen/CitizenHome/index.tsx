@@ -1,6 +1,6 @@
 import { Box, Typography } from '@mui/material';
 import { Avatar } from '@mui/material';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Marker, Popup } from 'react-map-gl';
 import { useAppDispatch } from '@/store';
 import Maps from '@/components/Common/Maps';
@@ -48,6 +48,69 @@ export default function CitizenHome() {
     },
     [dispatch, getPanels],
   );
+
+  useEffect(() => {
+    dispatch(
+      showSidebar(SidebarKey.AD_DETAIL, {
+        panels: [
+          {
+            id: 11,
+            typeId: 1,
+            width: '10',
+            height: '20',
+            locationId: 5,
+            imageUrls: [],
+            createContractDate: '2023-12-23T00:00:00.000Z',
+            expiredContractDate: '2024-12-23T00:00:00.000Z',
+            companyEmail: 'example@example.com',
+            companyNumber: '123456789',
+            createdAt: '2024-01-02T13:54:38.051Z',
+            updatedAt: '2024-01-02T13:54:38.051Z',
+            status: 'DRAFT',
+            belongPanelId: null,
+            type: {
+              id: 1,
+              name: 'Trụ bảng hiflex',
+            },
+            location: {
+              id: 5,
+              lat: '5',
+              long: '20',
+              isPlanning: true,
+              districtId: 1,
+              wardId: 1,
+              fullAddress: '227 Nguyen Van Cu',
+              typeId: 1,
+              adTypeId: 1,
+              imageUrls: [],
+              createdAt: '2023-12-30T06:38:36.934Z',
+              updatedAt: '2023-12-30T06:38:36.934Z',
+              name: 'Location 1',
+              belongLocationId: null,
+              status: 'APPROVED',
+              district: {
+                id: 1,
+                name: 'Thành Phố Thủ Đức',
+              },
+              ward: {
+                id: 1,
+                name: 'Phường An Khánh',
+                districtId: 1,
+              },
+              type: {
+                id: 1,
+                name: 'Đất công/Công viên/Hành lang an toàn giao thông',
+              },
+              adType: {
+                id: 1,
+                name: 'Cổ động chính trị',
+              },
+            },
+          },
+        ],
+      }),
+    );
+  }, [dispatch]);
 
   const renderChildren = () => {
     return adLocationData?.data.map((loc) => (
@@ -101,7 +164,7 @@ export default function CitizenHome() {
           )}
         </Maps>
       </Box>
-      <SidebarContainer style={{ minWidth: 250 }} />
+      <SidebarContainer style={{ minWidth: 250, maxWidth: 300 }} />
     </>
   );
 }
