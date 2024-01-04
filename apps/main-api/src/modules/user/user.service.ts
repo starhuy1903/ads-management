@@ -45,9 +45,7 @@ export class UserService {
         },
       });
 
-      return {
-        user,
-      };
+      return user;
     } catch (err) {
       console.log('Error: ', err);
       throw new InternalServerErrorException({

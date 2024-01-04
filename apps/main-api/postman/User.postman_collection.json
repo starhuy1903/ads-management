@@ -1,9 +1,10 @@
 {
 	"info": {
-		"_postman_id": "c811c740-98a2-4a63-bd36-c70b5e651b5a",
+		"_postman_id": "b853d505-d97f-4769-8e66-76d62f170fe9",
 		"name": "User",
 		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
-		"_exporter_id": "24188163"
+		"_exporter_id": "16088057",
+		"_collection_link": "https://orange-zodiac-214004.postman.co/workspace/Ads-Management~f6b11e7b-c291-4ad4-8554-9e1ee60b98fb/collection/16088057-b853d505-d97f-4769-8e66-76d62f170fe9?action=share&source=collection_link&creator=16088057"
 	},
 	"item": [
 		{
@@ -17,7 +18,7 @@
 				},
 				"method": "GET",
 				"header": [],
-				"url": "{{URL}}/api/users/me"
+				"url": "{{LOCAL_URL}}/api/users/me"
 			},
 			"response": [
 				{
