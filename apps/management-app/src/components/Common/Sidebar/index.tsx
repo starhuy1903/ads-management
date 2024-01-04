@@ -1,5 +1,5 @@
 import CloseSharpIcon from '@mui/icons-material/CloseSharp';
-import { Drawer, IconButton } from '@mui/material';
+import { Box, Drawer, IconButton } from '@mui/material';
 import React, { useCallback } from 'react';
 import { useAppDispatch, useAppSelector } from '@/store';
 import { SidebarKey } from '@/constants/sidebar';
@@ -36,7 +36,7 @@ export default function SidebarContainer({
   };
 
   return (
-    <Drawer anchor="left" open={!!displaySidebar} hideBackdrop style={style}>
+    <Drawer anchor="left" open={!!displaySidebar} hideBackdrop>
       <IconButton
         aria-label="close"
         onClick={handleClose}
@@ -44,7 +44,7 @@ export default function SidebarContainer({
       >
         <CloseSharpIcon color="action" fontSize="small" />
       </IconButton>
-      {renderSidebarContent()}
+      <Box style={style}>{renderSidebarContent()}</Box>
     </Drawer>
   );
 }

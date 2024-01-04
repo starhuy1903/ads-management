@@ -30,12 +30,12 @@ export default function CitizenHome() {
     async (loc: AdsLocation) => {
       setSelectedLocation(loc);
       try {
-        const res = await getPanels({ locationId: loc.id }).unwrap;
+        const res = await getPanels({ locationId: loc.id }).unwrap();
         console.log({ res });
 
         dispatch(
           showSidebar(SidebarKey.AD_DETAIL, {
-            sidebarId: 1, // todo: remove mock
+            panels: res.data,
           }),
         );
       } catch (error) {
@@ -109,14 +109,7 @@ export default function CitizenHome() {
           )}
         </Maps>
       </Box>
-      <SidebarContainer
-        style={{
-          height: 'calc(100% - 64px)',
-          position: 'absolute',
-          top: 64,
-          left: 0,
-        }}
-      />
+      <SidebarContainer style={{ minWidth: 250 }} />
     </>
   );
 }
