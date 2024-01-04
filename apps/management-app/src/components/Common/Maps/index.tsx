@@ -18,8 +18,6 @@ interface ViewPort {
 
 export default function Maps({ children }: { children?: React.ReactNode }) {
   const [viewPort, setViewPort] = useState<ViewPort>();
-  const [showPopup, setShowPopup] = useState<boolean>(true);
-
   const markerRef = useRef<mapboxgl.Marker>();
 
   // const popup = useMemo(() => {
@@ -62,16 +60,6 @@ export default function Maps({ children }: { children?: React.ReactNode }) {
       <NavigationControl position="bottom-right" />
       {/* <ScaleControl position="bottom-left" /> */}
       {children}
-      {showPopup && (
-        <Popup
-          longitude={-100}
-          latitude={40}
-          anchor="top-left"
-          onClose={() => setShowPopup(false)}
-        >
-          You are here
-        </Popup>
-      )}
     </Map>
   );
 }

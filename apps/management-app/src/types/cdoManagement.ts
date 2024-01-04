@@ -15,31 +15,6 @@ export type Ward = {
   district: string;
 };
 
-export type PanelType = {
-  id: number;
-  name: string;
-};
-
-export type ReportType = {
-  id: number;
-  name: string;
-};
-
-export type AdsType = {
-  id: number;
-  name: string;
-};
-
-export type LocationType = {
-  id: number;
-  name: string;
-};
-
-export type GetListResult<T> = {
-  rowsCount: number;
-  data: Array<T>;
-};
-
 export type DistrictDto = {
   name: string;
 };

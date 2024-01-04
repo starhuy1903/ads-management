@@ -1,10 +1,11 @@
 {
 	"info": {
-		"_postman_id": "586ffb49-c7ad-4ae2-b915-eefa714f55be",
+		"_postman_id": "d6871b08-5ffc-426d-bee6-507a369e1099",
 		"name": "Authentication",
 		"description": "Authentication API for the ads management app",
 		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
-		"_exporter_id": "24188163"
+		"_exporter_id": "16088057",
+		"_collection_link": "https://orange-zodiac-214004.postman.co/workspace/Ads-Management~f6b11e7b-c291-4ad4-8554-9e1ee60b98fb/collection/16088057-d6871b08-5ffc-426d-bee6-507a369e1099?action=share&source=collection_link&creator=16088057"
 	},
 	"item": [
 		{
@@ -96,7 +97,7 @@
 						}
 					}
 				},
-				"url": "{{URL}}/api/auth/signin"
+				"url": "{{LOCAL_URL}}/api/auth/signin"
 			},
 			"response": [
 				{
@@ -175,7 +176,7 @@
 						"disabled": true
 					}
 				],
-				"url": "{{URL}}/api/auth/logout"
+				"url": "{{LOCAL_URL}}/api/auth/logout"
 			},
 			"response": [
 				{
@@ -309,7 +310,7 @@
 						}
 					}
 				},
-				"url": "{{URL}}/api/auth/refresh"
+				"url": "{{LOCAL_URL}}/api/auth/refresh"
 			},
 			"response": [
 				{

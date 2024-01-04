@@ -1,6 +1,6 @@
 import { GetList } from '@/types/common';
 import { CreatedReport, ReportPayload, ReportType } from '@/types/report';
-import { apiSlice } from './baseApiSlice';
+import { apiSlice } from '../baseApiSlice';
 
 export const reportApiSlice = apiSlice.injectEndpoints({
   endpoints: (build) => ({

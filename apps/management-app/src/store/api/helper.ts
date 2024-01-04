@@ -1,4 +1,5 @@
 import toast from 'react-hot-toast';
+import { RefreshResponse } from '@/types/user';
 import { setLoading } from '../slice/statusSlice';
 
 export interface ApiErrorResponse {
@@ -14,6 +15,15 @@ export function isApiErrorResponse(error: unknown): error is ApiErrorResponse {
     typeof (error as any).status === 'number'
   );
 }
+
+export const isRefreshResponse = (data: unknown): data is RefreshResponse => {
+  return (
+    typeof data === 'object' &&
+    data != null &&
+    'accessToken' in data &&
+    'refreshToken' in data
+  );
+};
 
 export const getOnMutationFunction = (success: string) => {
   return async (arg: any, api: any) => {

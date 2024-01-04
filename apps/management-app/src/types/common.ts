@@ -1,4 +1,5 @@
 export type GetList<T> = {
-  data: Array<T>,
-  totalPages: number
-}
+  data: Array<T>;
+  totalPages: number;
+  totalCount: number;
+};
