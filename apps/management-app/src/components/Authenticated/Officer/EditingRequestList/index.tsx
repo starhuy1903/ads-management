@@ -151,7 +151,7 @@ export default function EditingRequestList() {
                           <Cancel
                             onClick={() =>
                               dispatch(
-                                showModal(ModalKey.CANCEL_REQUESTT, {
+                                showModal(ModalKey.CANCEL_REQUEST, {
                                   handleDelete: () =>
                                     handleDelete(request?.id?.toString()),
                                 }),

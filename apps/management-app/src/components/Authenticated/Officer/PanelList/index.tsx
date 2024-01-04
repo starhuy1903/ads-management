@@ -28,7 +28,6 @@ const titles = [
   'Ended',
   'Created Time',
   'Updated Time',
-  'Status',
   '',
 ];
 
@@ -96,8 +95,6 @@ export default function PanelList() {
                   <TableCell align="center">
                     {formatDateTime(panel?.updatedAt)}
                   </TableCell>
-
-                  <TableCell align="center">{panel?.status}</TableCell>
                   <TableCell>
                     <Box
                       sx={{

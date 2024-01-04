@@ -4,6 +4,7 @@ import {
   GetDetailResult,
   GetListResult,
   Location,
+  LocationType,
   MessageResponse,
   Panel,
   PanelType,
@@ -30,6 +31,21 @@ export const officerManagementApiSlice = apiSlice.injectEndpoints({
     }),
     getLocationById: build.query<GetDetailResult<Location>, string>({
       query: (id) => `/locations/${id}`,
+    }),
+    getLocationTypesOfficer: build.query<
+      GetListResult<LocationType>,
+      {
+        page?: number;
+        take?: number;
+      }
+    >({
+      query: (arg) => ({
+        url: `/location-types`,
+        params: {
+          page: arg.page,
+          take: arg.take,
+        },
+      }),
     }),
     getPanels: build.query<
       GetListResult<Panel>,
@@ -130,6 +146,16 @@ export const officerManagementApiSlice = apiSlice.injectEndpoints({
     getRequestById: build.query<GetDetailResult<AdsRequest>, string>({
       query: (id) => `/ads-requests/${id}`,
     }),
+    createUpdateLocationRequest: build.mutation<MessageResponse, FormData>({
+      query: (arg) => ({
+        url: '/ads-requests/update-location',
+        method: 'POST',
+        body: arg,
+      }),
+      onQueryStarted: getOnMutationFunction(
+        'Created the location updating request',
+      ),
+    }),
     deleteRequest: build.mutation<MessageResponse, string>({
       query: (id) => ({
         url: `/ads-requests/${id}`,
@@ -145,6 +171,7 @@ export const officerManagementApiSlice = apiSlice.injectEndpoints({
 export const {
   useGetLocationsQuery,
   useGetLocationByIdQuery,
+  useGetLocationTypesOfficerQuery,
   useGetPanelsQuery,
   useGetPanelByIdQuery,
   useGetPanelTypesOfficerQuery,
@@ -153,5 +180,6 @@ export const {
   useGetReportByIdQuery,
   useGetRequestsQuery,
   useGetRequestByIdQuery,
+  useCreateUpdateLocationRequestMutation,
   useDeleteRequestMutation,
 } = officerManagementApiSlice;

@@ -46,12 +46,14 @@ export type Panel = BaseType & {
   companyNumber: string;
   createContractDate: string;
   expiredContractDate: string;
-  status: string;
+  status?: string;
   location: Location;
   type: RefType;
 };
 
 export type PanelType = RefType;
+
+export type LocationType = RefType;
 
 export type Report = BaseType & {
   fullName: string;
@@ -97,4 +99,20 @@ export type PanelDto = {
   companyNumber: string;
   createContractDate: string;
   expiredContractDate: string;
+};
+
+export type UpdateLocationDto = {
+  belongLocationId: number;
+  userId: string;
+  typeId: number;
+  adsTypeId: number;
+  name: string;
+  images: File[];
+  reason: string;
+  lat: string;
+  long: string;
+  isPlanning: boolean;
+  fullAddress: string;
+  wardId: number;
+  districtId: number;
 };

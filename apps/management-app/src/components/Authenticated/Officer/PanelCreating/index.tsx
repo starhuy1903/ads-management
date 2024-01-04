@@ -174,7 +174,7 @@ export default function PanelCreating() {
           label="Ward"
           value={
             locations.find((location) => location.id === formValue.locationId)
-              ?.ward?.name
+              ?.ward?.name ?? ''
           }
         />
 
@@ -183,7 +183,7 @@ export default function PanelCreating() {
           label="District"
           value={
             locations.find((location) => location.id === formValue.locationId)
-              ?.district?.name
+              ?.district?.name ?? ''
           }
         />
 
@@ -192,7 +192,7 @@ export default function PanelCreating() {
           label="Latitude"
           value={
             locations.find((location) => location.id === formValue.locationId)
-              ?.lat
+              ?.lat ?? ''
           }
         />
 
@@ -201,7 +201,7 @@ export default function PanelCreating() {
           label="Longtitude"
           value={
             locations.find((location) => location.id === formValue.locationId)
-              ?.long
+              ?.long ?? ''
           }
         />
       </Stack>
@@ -212,7 +212,7 @@ export default function PanelCreating() {
           label="Position Type"
           value={
             locations.find((location) => location.id === formValue.locationId)
-              ?.type?.name
+              ?.type?.name ?? ''
           }
         />
 
@@ -221,7 +221,7 @@ export default function PanelCreating() {
           label="Adverting Type"
           value={
             locations.find((location) => location.id === formValue.locationId)
-              ?.adType?.name
+              ?.adType?.name ?? ''
           }
         />
       </Stack>

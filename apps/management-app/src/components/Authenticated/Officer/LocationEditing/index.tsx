@@ -12,78 +12,98 @@ import {
 } from '@mui/material';
 import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch } from '@/store';
+import CenterLoading from '@/components/Common/CenterLoading';
 import DropFileContainer from '@/components/Common/DropFileContainer';
-import { ReadOnlyTextField } from '@/components/Common/FormComponents';
+import { ReadOnlyTextForm } from '@/components/Common/FormComponents';
 import { DetailWrapper } from '@/components/Common/Layout/ScreenWrapper';
 import ImagePreview from '@/components/Unauthenticated/Citizen/CitizenReport/ImagePreview';
 import UploadImageCard from '@/components/Unauthenticated/Citizen/CitizenReport/UploadImageCard';
 import { ModalKey } from '@/constants/modal';
 import { ImageFileConfig } from '@/constants/validation';
+import {
+  useCreateUpdateLocationRequestMutation,
+  useGetLocationByIdQuery,
+  useGetLocationTypesOfficerQuery,
+} from '@/store/api/officerApiSlice';
 import { showModal } from '@/store/slice/modal';
-import { showSuccess } from '@/utils/toast';
+import {
+  Location,
+  LocationType,
+  UpdateLocationDto,
+} from '@/types/officer-management';
 
-interface EditLocationFormType {
-  positionType: string;
-  adsType: string;
-  imageFiles: File[];
-  reason: string;
-}
-
-const PositionTypes = [
-  'Public land/Park/Traffic safety corridor',
-  'Private land/Individual houses',
-  'Shopping mall',
-  'Market',
-  'Gas station',
-  'Bus stop',
+const adsTypes = [
+  {
+    id: 1,
+    name: 'Political agitation',
+  },
+  {
+    id: 2,
+    name: 'Commercial advertising',
+  },
+  {
+    id: 3,
+    name: 'Socialization',
+  },
 ];
-
-const AdsTypes = [
-  'Political agitation',
-  'Commercial advertising',
-  'Socialization',
-];
-
-const location = {
-  id: 5,
-  address: 'Dong Khoi - Nguyen Du (Department of Culture and Sports)',
-  ward: 'Ben Nghe',
-  commue: '1',
-  lat: 10.777,
-  long: 106.666,
-  positionType: 'Public land/Park/Traffic safety corridor',
-  adsType: 'Commercial advertising',
-  imageUrl:
-    'https://piximus.net/media2/46719/cool-advertising-that-gets-straight-to-the-point-20.jpg',
-  isPlanning: true,
-  createdTime: '2023-12-08T11:30:53.945Z',
-  modifiedTime: '2023-12-08T11:30:53.945Z',
-};
 
 export default function LocationEditing() {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
-  const { handleSubmit, register, control, formState, setValue, watch } =
-    useForm<EditLocationFormType>({
+  const { locationId } = useParams<{ locationId: string }>();
+
+  // const userId = useAppSelector((state) => state?.user?.profile?.id);
+  const userId = '11';
+
+  const [location, setLocation] = useState<Location | undefined>(undefined);
+  const [locationTypes, setLocationTypes] = useState<LocationType[]>([]);
+
+  const { data: locationData, isLoading: locationLoading } =
+    useGetLocationByIdQuery(locationId!);
+  const { data: locationTypeData, isLoading: locationTypeLoading } =
+    useGetLocationTypesOfficerQuery({});
+
+  const { handleSubmit, register, control, formState, setValue, watch, reset } =
+    useForm<UpdateLocationDto>({
       mode: 'onChange',
-      defaultValues: {
-        positionType: location?.positionType,
-        adsType: location?.adsType,
-        imageFiles: [],
-        reason: '',
-      },
     });
 
   useEffect(() => {
-    // Fetch image and convert it to File
-    fetch(location?.imageUrl)
-      .then((res) => res.blob())
-      .then((blob) => {
-        const file = new File([blob], location?.imageUrl);
-        setValue('imageFiles', [file]);
+    if (locationData && locationTypeData && userId) {
+      setLocation(locationData?.data);
+      setLocationTypes(locationTypeData?.data);
+
+      reset({
+        belongLocationId: locationData?.data?.id,
+        userId: userId,
+        typeId: locationData?.data?.type?.id,
+        adsTypeId: locationData?.data?.adType?.id,
+        name: locationData?.data?.name,
+        images: [],
+        reason: '',
+        lat: locationData?.data?.lat,
+        long: locationData?.data?.long,
+        isPlanning: locationData?.data?.isPlanning,
+        fullAddress: locationData?.data?.fullAddress,
+        wardId: locationData?.data?.ward?.id,
+        districtId: locationData?.data?.district?.id,
       });
-  }, []);
+    }
+  }, [locationData, locationTypeData, reset, userId]);
+
+  useEffect(() => {
+    if (location?.imageUrls) {
+      fetch(location?.imageUrls[0])
+        .then((res) => res.blob())
+        .then((blob) => {
+          const file = new File([blob], location?.imageUrls[0]);
+          setValue('images', [file]);
+        });
+    }
+  }, [location?.imageUrls, setValue]);
 
   const { errors: formError } = formState;
   const formValue = watch();
@@ -91,8 +111,8 @@ export default function LocationEditing() {
   const [submitting, setSubmitting] = useState(false);
 
   const handleAddImage = useCallback(
-    (file: File) => setValue('imageFiles', [...formValue.imageFiles, file]),
-    [formValue.imageFiles, setValue],
+    (file: File) => setValue('images', [...formValue.images, file]),
+    [formValue.images, setValue],
   );
 
   const handleUpdateImage = useCallback(
@@ -115,11 +135,11 @@ export default function LocationEditing() {
   const handleDeleteImage = useCallback(
     (file: File) => {
       setValue(
-        'imageFiles',
-        formValue?.imageFiles.filter((image) => image !== file),
+        'images',
+        formValue?.images.filter((image) => image !== file),
       );
     },
-    [formValue.imageFiles, setValue],
+    [formValue.images, setValue],
   );
 
   const renderUpdateImageContainer = ({
@@ -130,85 +150,126 @@ export default function LocationEditing() {
     disabled: boolean;
   }) => <UploadImageCard open={open} disabled={disabled} />;
 
-  const onSubmit = (data: EditLocationFormType) => {
-    setSubmitting(true);
-    console.log(data);
-    setSubmitting(false);
-    showSuccess('Create the location edit request successfully!');
+  const [updateLocation] = useCreateUpdateLocationRequestMutation();
+
+  const onSubmit = async (data: UpdateLocationDto) => {
+    try {
+      setSubmitting(true);
+
+      const formData = new FormData();
+      formData.append('belongLocationId', data.belongLocationId.toString());
+      formData.append('userId', data.userId.toString());
+      formData.append('typeId', data.typeId.toString());
+      formData.append('adsTypeId', data.adsTypeId.toString());
+      formData.append('name', data.name);
+      data.images.forEach((image) => formData.append('images', image));
+      formData.append('reason', data.reason);
+      formData.append('lat', data.lat.toString());
+      formData.append('long', data.long.toString());
+      formData.append('isPlanning', data.isPlanning.toString());
+      formData.append('fullAddress', data.fullAddress);
+      formData.append('wardId', data.wardId.toString());
+      formData.append('districtId', data.districtId.toString());
+
+      await updateLocation(formData).unwrap();
+
+      setSubmitting(false);
+
+      // navigate(-1);
+    } catch (error) {
+      console.log(error);
+    }
   };
+
+  if (locationLoading || locationTypeLoading || !location || !locationTypes) {
+    return <CenterLoading />;
+  }
 
   return (
     <DetailWrapper label="Create Location Editing Request">
       <Typography variant="h6">Location</Typography>
       <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-        <FormControl fullWidth>
-          <FormLabel htmlFor="lat">ID</FormLabel>
-          <ReadOnlyTextField value={location?.id} disabled />
-        </FormControl>
+        <ReadOnlyTextForm field="id" label="ID" value={location?.id} />
 
-        <FormControl fullWidth>
-          <FormLabel htmlFor="lat">Address</FormLabel>
-          <ReadOnlyTextField value={location?.address} disabled />
-        </FormControl>
+        <ReadOnlyTextForm
+          field="address"
+          label="Address"
+          value={location?.fullAddress}
+        />
 
-        <FormControl fullWidth>
-          <FormLabel htmlFor="lat">District</FormLabel>
-          <ReadOnlyTextField value={location?.commue} disabled />
-        </FormControl>
+        <ReadOnlyTextForm
+          field="ward"
+          label="Ward"
+          value={location?.ward?.name}
+        />
 
-        <FormControl fullWidth>
-          <FormLabel htmlFor="lat">Ward</FormLabel>
-          <ReadOnlyTextField value={location?.ward} disabled />
-        </FormControl>
+        <ReadOnlyTextForm
+          field="district"
+          label="District"
+          value={location?.district?.name}
+        />
 
-        <FormControl fullWidth>
-          <FormLabel htmlFor="lat">Latitude</FormLabel>
-          <ReadOnlyTextField value={location?.lat} disabled />
-        </FormControl>
+        <ReadOnlyTextForm field="lat" label="Latitude" value={location?.lat} />
 
-        <FormControl fullWidth>
-          <FormLabel htmlFor="lat">Longtitude</FormLabel>
-          <ReadOnlyTextField value={location?.long} disabled />
-        </FormControl>
+        <ReadOnlyTextForm
+          field="long"
+          label="Longtitude"
+          value={location?.long}
+        />
       </Stack>
 
       <Typography variant="h6">Classification</Typography>
       <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-        <FormControl fullWidth error={!!formError.positionType}>
-          <FormLabel htmlFor="reportType">Position type</FormLabel>
-          <Select
-            id="positionType"
-            {...register('positionType')}
-            aria-describedby="positionType-helper-text"
-            defaultValue={location?.positionType}
-          >
-            {PositionTypes.map((type) => (
-              <MenuItem key={type} value={type}>
-                {type}
-              </MenuItem>
-            ))}
-          </Select>
-          <FormHelperText id="positionType-helper-text">
-            {formError.positionType?.message}
+        <FormControl fullWidth error={!!formError.name}>
+          <FormLabel htmlFor="reportType">Name</FormLabel>
+          <TextField
+            {...register('name', {
+              required: 'The name is required.',
+            })}
+            id="name"
+            error={!!formError.name}
+            aria-describedby="name-helper-text"
+          />
+          <FormHelperText id="name-helper-text">
+            {formError.name?.message}
           </FormHelperText>
         </FormControl>
 
-        <FormControl fullWidth error={!!formError.adsType}>
-          <FormLabel htmlFor="adsType">Advertising type</FormLabel>
+        <FormControl fullWidth error={!!formError.typeId}>
+          <FormLabel htmlFor="reportType">Type</FormLabel>
           <Select
-            id="adsType"
-            {...register('adsType')}
-            aria-describedby="adsType-helper-text"
-            defaultValue={location?.adsType}
+            id="typeId"
+            {...register('typeId')}
+            aria-describedby="typeId-helper-text"
+            defaultValue={location?.type?.id}
           >
-            {AdsTypes.map((type) => (
-              <MenuItem key={type} value={type}>
-                {type}
+            {locationTypes.map((type) => (
+              <MenuItem key={type?.id} value={type?.id}>
+                {type?.name}
+              </MenuItem>
+            ))}
+          </Select>
+          <FormHelperText id="typeId-helper-text">
+            {formError.typeId?.message}
+          </FormHelperText>
+        </FormControl>
+
+        <FormControl fullWidth error={!!formError.adsTypeId}>
+          <FormLabel htmlFor="adsType">Advertising Type</FormLabel>
+          <Select
+            id="adsTypeId"
+            {...register('adsTypeId')}
+            aria-describedby="adsTypeId-helper-text"
+            defaultValue={location?.adType?.id}
+          >
+            {adsTypes.map((type) => (
+              <MenuItem key={type?.id} value={type?.id}>
+                {type?.name}
               </MenuItem>
             ))}
           </Select>
           <FormHelperText id="adsType-helper-text">
-            {formError.adsType?.message}
+            {formError.adsTypeId?.message}
           </FormHelperText>
         </FormControl>
       </Stack>
@@ -216,7 +277,7 @@ export default function LocationEditing() {
       <FormControl>
         <FormLabel sx={{ mb: 1 }}>Upload image</FormLabel>
         <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-          {formValue.imageFiles.map((image, index) => (
+          {formValue.images.map((image, index) => (
             <ImagePreview
               key={index}
               image={image}
@@ -224,7 +285,7 @@ export default function LocationEditing() {
               onDeleteImage={handleDeleteImage}
             />
           ))}
-          {formValue.imageFiles.length < 1 && (
+          {formValue.images.length < 1 && (
             <DropFileContainer
               onDropFile={handleUpdateImage}
               acceptMIMETypes={ImageFileConfig.ACCEPTED_MINE_TYPES}
