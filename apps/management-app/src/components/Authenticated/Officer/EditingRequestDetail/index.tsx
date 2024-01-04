@@ -8,10 +8,10 @@ import {
 } from '@/components/Common/FormComponents';
 import { DetailWrapper } from '@/components/Common/Layout/ScreenWrapper';
 import { TargetType } from '@/constants/ads-request';
-import { LocationStatus } from '@/constants/location';
 import { useGetRequestByIdQuery } from '@/store/api/officerApiSlice';
 import { AdsRequest } from '@/types/officer-management';
 import { formatDateTime } from '@/utils/format-date';
+import { capitalize, formatRole } from '@/utils/format-string';
 
 export default function EditingRequestDetail() {
   const [request, setRequest] = useState<AdsRequest | undefined>(undefined);
@@ -42,6 +42,8 @@ export default function EditingRequestDetail() {
 
         <ReadOnlyTextField label="Target Type" value={request?.targetType} />
 
+        <ReadOnlyTextField label="Status" value={capitalize(request?.status)} />
+
         <ReadOnlyTextField
           label="Created Time"
           value={formatDateTime(request?.createdAt)}
@@ -51,10 +53,9 @@ export default function EditingRequestDetail() {
           label="Updated Time"
           value={formatDateTime(request?.updatedAt)}
         />
-
-        <ReadOnlyTextField label="Status" value={request?.status} />
       </Stack>
 
+      <Typography variant="h6">Officer</Typography>
       <Stack
         direction={{ xs: 'column', sm: 'row' }}
         spacing={2}
@@ -63,15 +64,16 @@ export default function EditingRequestDetail() {
         }}
       >
         <ReadOnlyTextField
-          label="Request Sender"
+          label="Full Name"
           value={`${request?.user?.firstName} ${request?.user?.lastName}`}
         />
 
-        <ReadOnlyTextField label="Role" value={request?.user?.role} />
+        <ReadOnlyTextField
+          label="Role"
+          value={formatRole(request?.user?.role)}
+        />
 
         <ReadOnlyTextField label="Email" value={request?.user?.email} />
-
-        <ReadOnlyTextField label="Phone" value={request?.user?.phoneNumber} />
 
         <ReadOnlyTextField label="Ward" value={request?.user?.ward?.name} />
 
@@ -120,10 +122,16 @@ export default function EditingRequestDetail() {
           </Stack>
 
           <Typography variant="h6">Location</Typography>
-          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+          <Stack
+            direction={{ xs: 'column', sm: 'row' }}
+            spacing={2}
+            sx={{
+              mb: 1,
+            }}
+          >
             <ReadOnlyTextField
-              label="ID"
-              value={request?.panel?.location?.id}
+              label="Name"
+              value={request?.panel?.location?.name}
             />
 
             <ReadOnlyTextField
@@ -140,9 +148,10 @@ export default function EditingRequestDetail() {
               label="District"
               value={request?.panel?.location?.district?.name}
             />
-
+          </Stack>
+          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
             <ReadOnlyTextField
-              label="Position Type"
+              label="Type"
               value={request?.panel?.location?.type?.name}
             />
 
@@ -198,7 +207,12 @@ export default function EditingRequestDetail() {
             <ReadOnlyTextField label="ID" value={request?.location?.id} />
 
             <ReadOnlyTextField
-              label="Created At"
+              label="Planned"
+              value={request?.location?.isPlanning ? 'Yes' : 'No'}
+            />
+
+            <ReadOnlyTextField
+              label="Created Time"
               value={
                 request?.location
                   ? formatDateTime(request?.location?.createdAt)
@@ -207,25 +221,11 @@ export default function EditingRequestDetail() {
             />
 
             <ReadOnlyTextField
-              label="Updated At"
+              label="Updated Time"
               value={
                 request?.location
                   ? formatDateTime(request?.location?.updatedAt)
                   : ''
-              }
-            />
-
-            <ReadOnlyTextField
-              label="Planned"
-              value={request?.location?.isPlanning ? 'Yes' : 'No'}
-            />
-
-            <ReadOnlyTextField
-              label="Status"
-              value={
-                request?.location?.status === LocationStatus.APPROVED
-                  ? 'Approved'
-                  : 'Pending'
               }
             />
           </Stack>
@@ -263,7 +263,7 @@ export default function EditingRequestDetail() {
           </Stack>
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
             <ReadOnlyTextField
-              label="Position Type"
+              label="Type"
               value={request?.location?.type?.name}
             />
 

@@ -25,7 +25,10 @@ export default function CancelRequest({
       onModalClose={onModalClose}
       body={body}
       primaryButtonText="Confirm"
-      onClickPrimaryButton={() => handleDelete()}
+      onClickPrimaryButton={() => {
+        handleDelete();
+        onModalClose();
+      }}
       disabledPrimaryButton={false}
     />
   );

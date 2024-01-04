@@ -10,6 +10,7 @@ import { DetailWrapper } from '@/components/Common/Layout/ScreenWrapper';
 import { useGetPanelByIdQuery } from '@/store/api/officerApiSlice';
 import { Panel } from '@/types/officer-management';
 import { formatDateTime } from '@/utils/format-date';
+import { capitalize } from '@/utils/format-string';
 
 export default function PanelDetail() {
   const [panel, setPanel] = useState<Panel | undefined>(undefined);
@@ -32,11 +33,13 @@ export default function PanelDetail() {
       <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
         <ReadOnlyTextField label="ID" value={panel?.id} />
 
-        <ReadOnlyTextField label="Panel Type" value={panel?.type?.name} />
+        <ReadOnlyTextField label="Type" value={panel?.type?.name} />
 
         <ReadOnlyTextField label="Width" value={panel?.width} />
 
         <ReadOnlyTextField label="Height" value={panel?.height} />
+
+        <ReadOnlyTextField label="Status" value={capitalize(panel?.status)} />
 
         <ReadOnlyTextField
           label="Created Time"
@@ -47,12 +50,18 @@ export default function PanelDetail() {
           label="Updated Time"
           value={formatDateTime(panel?.updatedAt)}
         />
-
-        <ReadOnlyTextField label="Status" value={panel?.status} />
       </Stack>
 
       <Typography variant="h6">Location</Typography>
-      <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+      <Stack
+        direction={{ xs: 'column', sm: 'row' }}
+        spacing={2}
+        sx={{
+          mb: 1,
+        }}
+      >
+        <ReadOnlyTextField label="Name" value={panel?.location?.name} />
+
         <ReadOnlyTextField
           label="Address"
           value={panel?.location?.fullAddress}
@@ -66,6 +75,15 @@ export default function PanelDetail() {
         />
       </Stack>
 
+      <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+        <ReadOnlyTextField label="Type" value={panel?.location?.type?.name} />
+
+        <ReadOnlyTextField
+          label="Advertising Type"
+          value={panel?.location?.adType?.name}
+        />
+      </Stack>
+
       <ImageListField images={panel?.imageUrls} />
 
       <Typography variant="h6">Company</Typography>
@@ -75,12 +93,12 @@ export default function PanelDetail() {
         <ReadOnlyTextField label="Phone" value={panel?.companyNumber} />
 
         <ReadOnlyTextField
-          label="Created Contract Date"
+          label="Created Contract Time"
           value={formatDateTime(panel?.createContractDate)}
         />
 
         <ReadOnlyTextField
-          label="Expired Contract Date"
+          label="Expired Contract Time"
           value={formatDateTime(panel?.expiredContractDate)}
         />
       </Stack>

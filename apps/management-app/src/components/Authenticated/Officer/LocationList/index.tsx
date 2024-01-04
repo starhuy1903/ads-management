@@ -16,15 +16,16 @@ import { ListWrapper } from '@/components/Common/Layout/ScreenWrapper';
 import { useGetLocationsQuery } from '@/store/api/officerApiSlice';
 import { Location } from '@/types/officer-management';
 import { formatDateTime } from '@/utils/format-date';
+import { capitalize } from '@/utils/format-string';
 
 const titles = [
   'ID',
+  'Name',
   'Address',
   'Ward',
   'District',
-  'Advertising Type',
-  'Position Type',
-  'Planning',
+  'Planned',
+  'Status',
   'Created Time',
   'Updated Time',
   '',
@@ -67,16 +68,18 @@ export default function LocationList() {
               locations.map((location: Location) => (
                 <TableRow key={location?.id}>
                   <TableCell align="center">{location?.id}</TableCell>
+                  <TableCell align="center">{location?.name}</TableCell>
                   <TableCell align="center">{location?.fullAddress}</TableCell>
                   <TableCell align="center">{location?.ward?.name}</TableCell>
                   <TableCell align="center">
                     {location?.district?.name}
                   </TableCell>
-                  <TableCell align="center">{location?.adType?.name}</TableCell>
-                  <TableCell align="center">{location?.type?.name}</TableCell>
                   <TableCell align="center">{`${
                     location?.isPlanning ? 'Yes' : 'No'
                   }`}</TableCell>
+                  <TableCell align="center">
+                    {capitalize(location?.status)}
+                  </TableCell>
                   <TableCell align="center">
                     {formatDateTime(location?.createdAt)}
                   </TableCell>

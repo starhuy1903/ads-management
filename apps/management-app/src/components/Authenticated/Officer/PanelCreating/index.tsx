@@ -135,7 +135,7 @@ export default function PanelCreating() {
 
       setSubmitting(false);
 
-      navigate(-1);
+      // navigate(-1);
     } catch (error) {
       console.log(error);
     }
@@ -150,7 +150,7 @@ export default function PanelCreating() {
       <Typography variant="h6">Choose location</Typography>
       <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
         <FormControl fullWidth error={!!formError.locationId}>
-          <FormLabel htmlFor="locationId">Location</FormLabel>
+          <FormLabel htmlFor="locationId">Location Name</FormLabel>
           <Select
             id="locationId"
             {...register('locationId')}
@@ -160,7 +160,7 @@ export default function PanelCreating() {
             {locations &&
               locations.map((location) => (
                 <MenuItem key={location.id} value={location.id}>
-                  {location.fullAddress}
+                  {location.name}
                 </MenuItem>
               ))}
           </Select>
@@ -168,6 +168,15 @@ export default function PanelCreating() {
             {formError.locationId?.message}
           </FormHelperText>
         </FormControl>
+
+        <ReadOnlyTextForm
+          field="address"
+          label="Address"
+          value={
+            locations.find((location) => location.id === formValue.locationId)
+              ?.fullAddress ?? ''
+          }
+        />
 
         <ReadOnlyTextForm
           field="ward"

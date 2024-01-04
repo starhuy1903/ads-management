@@ -14,7 +14,7 @@ import { useAppDispatch } from '@/store';
 import CenterLoading from '@/components/Common/CenterLoading';
 import { Cancel, Info } from '@/components/Common/Icons';
 import { ListWrapper } from '@/components/Common/Layout/ScreenWrapper';
-import { AdsRequestStatus } from '@/constants/ads-request';
+import { AdsRequestStatus, AdsRequestType } from '@/constants/ads-request';
 import { ModalKey } from '@/constants/modal';
 import {
   useDeleteRequestMutation,
@@ -28,6 +28,7 @@ import { showError, showSuccess } from '@/utils/toast';
 
 const titles = [
   'ID',
+  'Location Name',
   'Address',
   'Ward',
   'District',
@@ -43,10 +44,10 @@ export default function LicensingRequestList() {
   const [page, setPage] = useState<number>(1);
   const [requests, setRequests] = useState<AdsRequest[] | undefined>([]);
 
-  const { data, isLoading } = useGetRequestsQuery({
+  const { data, isLoading, refetch } = useGetRequestsQuery({
     page: page,
     take: 5,
-    type: 'APPROVED_PANEL',
+    type: AdsRequestType?.APPROVED_PANEL,
   });
 
   const [deleteRequest] = useDeleteRequestMutation();
@@ -55,6 +56,7 @@ export default function LicensingRequestList() {
     try {
       await deleteRequest(id);
       showSuccess(`Delete request #${id} successfully!`);
+      refetch();
     } catch (error) {
       console.log(error);
       showError(`Delete request #${id} failed!`);
@@ -72,7 +74,7 @@ export default function LicensingRequestList() {
   }
 
   return (
-    <ListWrapper label="List of Licensing Requests">
+    <ListWrapper label="List of Panel Licensing Requests">
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="advertising points">
           <TableHead>
@@ -89,6 +91,9 @@ export default function LicensingRequestList() {
               requests.map((request: AdsRequest) => (
                 <TableRow key={request?.id}>
                   <TableCell align="center">{request?.id}</TableCell>
+                  <TableCell align="center">
+                    {request?.panel?.location?.name}
+                  </TableCell>
                   <TableCell align="center">
                     {request?.panel?.location?.fullAddress}
                   </TableCell>

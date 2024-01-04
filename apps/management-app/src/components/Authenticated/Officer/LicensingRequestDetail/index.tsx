@@ -10,6 +10,7 @@ import { DetailWrapper } from '@/components/Common/Layout/ScreenWrapper';
 import { useGetRequestByIdQuery } from '@/store/api/officerApiSlice';
 import { AdsRequest } from '@/types/officer-management';
 import { formatDateTime } from '@/utils/format-date';
+import { capitalize, formatRole } from '@/utils/format-string';
 
 export default function LicensingRequestDetail() {
   const [request, setRequest] = useState<AdsRequest | undefined>(undefined);
@@ -27,7 +28,7 @@ export default function LicensingRequestDetail() {
   }
 
   return (
-    <DetailWrapper label="Permission Details">
+    <DetailWrapper label="Licensing Request Details">
       <Typography variant="h6">Information</Typography>
       <Stack
         direction={{ xs: 'column', sm: 'row' }}
@@ -38,6 +39,8 @@ export default function LicensingRequestDetail() {
       >
         <ReadOnlyTextField label="ID" value={request?.id} />
 
+        <ReadOnlyTextField label="Status" value={capitalize(request?.status)} />
+
         <ReadOnlyTextField
           label="Created Time"
           value={formatDateTime(request?.createdAt)}
@@ -47,10 +50,9 @@ export default function LicensingRequestDetail() {
           label="Updated Time"
           value={formatDateTime(request?.updatedAt)}
         />
-
-        <ReadOnlyTextField label="Status" value={request?.status} />
       </Stack>
 
+      <Typography variant="h6">Officer</Typography>
       <Stack
         direction={{ xs: 'column', sm: 'row' }}
         spacing={2}
@@ -59,15 +61,16 @@ export default function LicensingRequestDetail() {
         }}
       >
         <ReadOnlyTextField
-          label="Request Sender"
+          label="Full Name"
           value={`${request?.user?.firstName} ${request?.user?.lastName}`}
         />
 
-        <ReadOnlyTextField label="Role" value={request?.user?.role} />
+        <ReadOnlyTextField
+          label="Role"
+          value={formatRole(request?.user?.role)}
+        />
 
         <ReadOnlyTextField label="Email" value={request?.user?.email} />
-
-        <ReadOnlyTextField label="Phone" value={request?.user?.phoneNumber} />
 
         <ReadOnlyTextField label="Ward" value={request?.user?.ward?.name} />
 
@@ -114,8 +117,17 @@ export default function LicensingRequestDetail() {
       </Stack>
 
       <Typography variant="h6">Location</Typography>
-      <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-        <ReadOnlyTextField label="ID" value={request?.panel?.location?.id} />
+      <Stack
+        direction={{ xs: 'column', sm: 'row' }}
+        spacing={2}
+        sx={{
+          mb: 1,
+        }}
+      >
+        <ReadOnlyTextField
+          label="Name"
+          value={request?.panel?.location?.name}
+        />
 
         <ReadOnlyTextField
           label="Address"
@@ -131,9 +143,10 @@ export default function LicensingRequestDetail() {
           label="District"
           value={request?.panel?.location?.district?.name}
         />
-
+      </Stack>
+      <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
         <ReadOnlyTextField
-          label="Position Type"
+          label="Type"
           value={request?.panel?.location?.type?.name}
         />
 
@@ -155,7 +168,7 @@ export default function LicensingRequestDetail() {
         />
 
         <ReadOnlyTextField
-          label="Created Contract Date"
+          label="Created Contract Time"
           value={
             request?.panel
               ? formatDateTime(request?.panel?.createContractDate)
@@ -164,7 +177,7 @@ export default function LicensingRequestDetail() {
         />
 
         <ReadOnlyTextField
-          label="Expired Contract Date"
+          label="Expired Contract Time"
           value={
             request?.panel
               ? formatDateTime(request?.panel?.expiredContractDate)

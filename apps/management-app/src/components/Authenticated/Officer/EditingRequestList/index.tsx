@@ -29,6 +29,7 @@ import {
 import { showModal } from '@/store/slice/modal';
 import { AdsRequest } from '@/types/officer-management';
 import { formatDateTime } from '@/utils/format-date';
+import { capitalize } from '@/utils/format-string';
 import { showError, showSuccess } from '@/utils/toast';
 
 const titles = [
@@ -50,7 +51,7 @@ export default function EditingRequestList() {
   const [page, setPage] = useState<number>(1);
   const [requests, setRequests] = useState<AdsRequest[] | undefined>([]);
 
-  const { data, isLoading } = useGetRequestsQuery({
+  const { data, isLoading, refetch } = useGetRequestsQuery({
     page: page,
     take: 5,
     type: AdsRequestType.UPDATE_DATA,
@@ -63,6 +64,7 @@ export default function EditingRequestList() {
     try {
       await deleteRequest(id);
       showSuccess(`Delete request #${id} successfully!`);
+      refetch();
     } catch (error) {
       console.log(error);
       showError(`Delete request #${id} failed!`);
@@ -136,7 +138,9 @@ export default function EditingRequestList() {
                     <TableCell align="center">
                       {formatDateTime(request?.updatedAt)}
                     </TableCell>
-                    <TableCell align="center">{request?.status}</TableCell>
+                    <TableCell align="center">
+                      {capitalize(request?.status)}
+                    </TableCell>
                     <TableCell>
                       <Box
                         sx={{

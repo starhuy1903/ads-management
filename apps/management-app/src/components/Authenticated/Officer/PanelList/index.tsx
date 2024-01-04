@@ -16,16 +16,16 @@ import { ListWrapper } from '@/components/Common/Layout/ScreenWrapper';
 import { useGetPanelsQuery } from '@/store/api/officerApiSlice';
 import { Panel } from '@/types/officer-management';
 import { formatDateTime } from '@/utils/format-date';
+import { capitalize } from '@/utils/format-string';
 
 const titles = [
   'ID',
+  'Location Name',
   'Address',
   'Ward',
   'District',
-  'Panel Type',
   'Company Email',
-  'Started',
-  'Ended',
+  'Status',
   'Created Time',
   'Updated Time',
   '',
@@ -72,6 +72,7 @@ export default function PanelList() {
               panels.map((panel: Panel) => (
                 <TableRow key={panel?.id}>
                   <TableCell align="center">{panel?.id}</TableCell>
+                  <TableCell align="center">{panel?.location?.name}</TableCell>
                   <TableCell align="center">
                     {panel?.location?.fullAddress}
                   </TableCell>
@@ -81,13 +82,9 @@ export default function PanelList() {
                   <TableCell align="center">
                     {panel?.location?.district?.name}
                   </TableCell>
-                  <TableCell align="center">{panel?.type?.name}</TableCell>
                   <TableCell align="center">{panel?.companyEmail}</TableCell>
                   <TableCell align="center">
-                    {formatDateTime(panel?.createContractDate)}
-                  </TableCell>
-                  <TableCell align="center">
-                    {formatDateTime(panel?.expiredContractDate)}
+                    {capitalize(panel?.status)}
                   </TableCell>
                   <TableCell align="center">
                     {formatDateTime(panel?.createdAt)}

@@ -10,6 +10,7 @@ import { DetailWrapper } from '@/components/Common/Layout/ScreenWrapper';
 import { useGetLocationByIdQuery } from '@/store/api/officerApiSlice';
 import { Location } from '@/types/officer-management';
 import { formatDateTime } from '@/utils/format-date';
+import { capitalize } from '@/utils/format-string';
 
 export default function LocationDetail() {
   const [location, setLocation] = useState<Location | undefined>(undefined);
@@ -32,6 +33,18 @@ export default function LocationDetail() {
       <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
         <ReadOnlyTextField label="ID" value={location?.id} />
 
+        <ReadOnlyTextField label="Name" value={location?.name} />
+
+        <ReadOnlyTextField
+          label="Planned"
+          value={location?.isPlanning ? 'Yes' : 'No'}
+        />
+
+        <ReadOnlyTextField
+          label="Status"
+          value={capitalize(location?.status)}
+        />
+
         <ReadOnlyTextField
           label="Created Time"
           value={formatDateTime(location?.createdAt)}
@@ -40,11 +53,6 @@ export default function LocationDetail() {
         <ReadOnlyTextField
           label="Updated Time"
           value={formatDateTime(location?.updatedAt)}
-        />
-
-        <ReadOnlyTextField
-          label="Planned"
-          value={location?.isPlanning ? 'Yes' : 'No'}
         />
       </Stack>
 
@@ -63,12 +71,12 @@ export default function LocationDetail() {
 
       <Typography variant="h6">Classification</Typography>
       <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+        <ReadOnlyTextField label="Type" value={location?.type?.name} />
+
         <ReadOnlyTextField
           label="Advertising Type"
           value={location?.adType?.name}
         />
-
-        <ReadOnlyTextField label="Type" value={location?.type?.name} />
       </Stack>
 
       <ImageListField label="Image" images={location?.imageUrls} />
