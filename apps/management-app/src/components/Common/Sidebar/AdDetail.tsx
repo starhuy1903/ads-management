@@ -17,7 +17,11 @@ export default function AdDetail({ panels }: AdDetailProps) {
   const dispatch = useAppDispatch();
 
   const handleViewPanelDetail = useCallback(() => {
-    dispatch(showModal(ModalKey.PANEL_DETAIL));
+    dispatch(
+      showModal(ModalKey.PANEL_DETAIL, {
+        panelId: 2, // TODO: replace with real panel
+      }),
+    );
   }, [dispatch]);
 
   if (!panels) {

@@ -3,7 +3,7 @@ import { apiSlice } from '../baseApiSlice';
 
 const panelApiSlice = apiSlice.injectEndpoints({
   endpoints: (build) => ({
-    getPanelDetail: build.query<Panel, { panelId: number }>({
+    getPanelDetail: build.query<Panel, number>({
       query: (panelId) => ({
         url: `panels/${panelId}`,
       }),
@@ -11,4 +11,4 @@ const panelApiSlice = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useLazyGetPanelDetailQuery } = panelApiSlice;
+export const { useGetPanelDetailQuery } = panelApiSlice;

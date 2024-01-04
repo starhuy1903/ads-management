@@ -1,12 +1,21 @@
 import { Box } from '@mui/material';
+import { useGetPanelDetailQuery } from '@/store/api/citizen/panelApiSlice';
+import CenterLoading from '../Common/CenterLoading';
 import GeneralModal from './GeneralModal';
 
 interface PanelDetailProps {
+  panelId: number;
   onModalClose: () => void;
 }
 
-function PanelDetail({ onModalClose }: PanelDetailProps) {
-  const body = <Box>Hello</Box>;
+function PanelDetail({ panelId, onModalClose }: PanelDetailProps) {
+  const { data, isLoading } = useGetPanelDetailQuery(panelId);
+
+  const body = isLoading ? (
+    <CenterLoading />
+  ) : (
+    <Box>{JSON.stringify(data)}</Box>
+  );
 
   return (
     <GeneralModal
