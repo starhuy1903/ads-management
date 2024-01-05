@@ -49,7 +49,9 @@ export default function SidebarContainer({
       >
         <CloseSharpIcon color="action" fontSize="small" />
       </IconButton>
-      <Box style={style}>{renderSidebarContent()}</Box>
+      <Box style={style} sx={{ marginY: 6, paddingX: 2 }}>
+        {renderSidebarContent()}
+      </Box>
     </Drawer>
   );
 }
