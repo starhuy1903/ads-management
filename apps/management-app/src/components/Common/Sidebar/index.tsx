@@ -36,7 +36,12 @@ export default function SidebarContainer({
   };
 
   return (
-    <Drawer anchor="left" open={!!displaySidebar} hideBackdrop>
+    <Drawer
+      anchor="left"
+      open={!!displaySidebar}
+      hideBackdrop
+      variant="persistent"
+    >
       <IconButton
         aria-label="close"
         onClick={handleClose}
@@ -44,7 +49,9 @@ export default function SidebarContainer({
       >
         <CloseSharpIcon color="action" fontSize="small" />
       </IconButton>
-      <Box style={style}>{renderSidebarContent()}</Box>
+      <Box style={style} sx={{ marginY: 6, paddingX: 2 }}>
+        {renderSidebarContent()}
+      </Box>
     </Drawer>
   );
 }

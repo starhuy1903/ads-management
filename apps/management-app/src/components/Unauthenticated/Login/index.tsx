@@ -1,9 +1,7 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
-import { isApiErrorResponse } from '@/store/api/helper';
 import { useLoginMutation } from '@/store/api/userApiSlice';
 import { CredentialPayload } from '@/types/user';
-import { showError } from '@/utils/toast';
 
 export default function Login() {
   const [requestLogin, { isLoading }] = useLoginMutation();
@@ -13,14 +11,8 @@ export default function Login() {
     handleSubmit,
     formState: { errors },
   } = useForm<CredentialPayload>();
-  const onSubmit: SubmitHandler<CredentialPayload> = async (data) => {
-    try {
-      await requestLogin(data).unwrap();
-    } catch (err) {
-      showError(
-        isApiErrorResponse(err) ? err.data.message : 'Something went wrong',
-      );
-    }
+  const onSubmit: SubmitHandler<CredentialPayload> = (data) => {
+    requestLogin(data);
   };
 
   return (
