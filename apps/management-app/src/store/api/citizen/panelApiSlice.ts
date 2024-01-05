@@ -1,7 +1,7 @@
 import { Panel } from '@/types/panel';
-import { apiSlice } from '../baseApiSlice';
+import { apiWithToastSlice } from '../baseApiSlice';
 
-const panelApiSlice = apiSlice.injectEndpoints({
+const panelApiToastSlice = apiWithToastSlice.injectEndpoints({
   endpoints: (build) => ({
     getPanelDetail: build.query<Panel, number>({
       query: (panelId) => ({
@@ -11,4 +11,4 @@ const panelApiSlice = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useGetPanelDetailQuery } = panelApiSlice;
+export const { useGetPanelDetailQuery } = panelApiToastSlice;
