@@ -15,6 +15,7 @@ import { styled } from '@mui/material/styles';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Panel } from '@/types/panel';
+import { formatDate } from '@/utils/datetime';
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
@@ -43,8 +44,6 @@ export default function PanelCard({ data, onViewDetail }: PanelCardProps) {
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
-
-  console.log({ data });
 
   return (
     <Card raised>
@@ -98,12 +97,13 @@ export default function PanelCard({ data, onViewDetail }: PanelCardProps) {
           <Typography>
             Ngày hết hạn hợp đồng quảng cáo:{' '}
             <Typography component="span" fontWeight={500}>
-              {data.expiredContractDate}
+              {formatDate(data.expiredContractDate)}
             </Typography>
           </Typography>
           <Stack spacing={2} marginTop={2}>
             {data.imageUrls.map((imageUrl) => (
               <CardMedia
+                key={imageUrl}
                 component="img"
                 height="194"
                 image={imageUrl}
