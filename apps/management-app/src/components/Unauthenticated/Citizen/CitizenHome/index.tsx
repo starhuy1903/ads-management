@@ -55,8 +55,8 @@ export default function CitizenHome() {
             height: '20',
             locationId: 5,
             imageUrls: [
-              'https://ca.slack-edge.com/T03DP5X71-U033UBJ6K9T-082ef0590e1a-192',
-              'https://ca.slack-edge.com/T03DP5X71-U048X65EZ4J-fff38d950caf-192',
+              'https://i.ytimg.com/vi/b1IvhgUymoU/maxresdefault.jpg',
+              'https://oriagency.vn/upload/images/chien-luoc-marketing-cua-pepsi-5.jpg',
             ],
             createContractDate: '2023-12-23T00:00:00.000Z',
             expiredContractDate: '2024-12-23T00:00:00.000Z',
