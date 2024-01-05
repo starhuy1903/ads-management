@@ -1,5 +1,5 @@
 import CloseSharpIcon from '@mui/icons-material/CloseSharp';
-import { Box } from '@mui/material';
+import { Box, IconButton } from '@mui/material';
 import { useMemo } from 'react';
 
 interface ImagePreviewProps {
@@ -39,15 +39,18 @@ export default function ImagePreview({
         alt=""
         style={{ objectFit: 'cover', width: '100%', height: '100%' }}
       />
-      <Box
-        position="absolute"
-        top={8}
-        right={8}
-        sx={{ cursor: disabled ? 'none' : 'pointer' }}
+      <IconButton
+        aria-label="close"
+        sx={{
+          position: 'absolute',
+          top: 8,
+          right: 8,
+        }}
         onClick={() => onDeleteImage(image)}
+        disabled={disabled}
       >
         <CloseSharpIcon color="action" fontSize="small" />
-      </Box>
+      </IconButton>
     </Box>
   );
 }

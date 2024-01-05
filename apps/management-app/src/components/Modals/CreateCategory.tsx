@@ -76,7 +76,7 @@ function CreateCategory({ onModalClose }: CreateCategoryProps) {
       onModalClose={onModalClose}
       body={body}
       primaryButtonText="Create"
-      onClickPrimaryButton={() => handleSubmit(onSubmit)()}
+      onClickPrimaryButton={handleSubmit(onSubmit)}
       disabledPrimaryButton={false}
     />
   );

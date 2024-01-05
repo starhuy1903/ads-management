@@ -8,7 +8,9 @@ import {
 import { Mutex } from 'async-mutex';
 import { configs } from '@/configurations';
 import auth from '@/utils/auth';
+import { showError } from '@/utils/toast';
 import { logOut } from '../slice/userSlice';
+import { isRefreshResponse, toastApiError } from './helper';
 
 const mutex = new Mutex();
 
@@ -23,6 +25,7 @@ const baseQuery = fetchBaseQuery({
     }
     return headers;
   },
+  timeout: 30000,
 });
 
 const baseQueryWithReAuth: BaseQueryFn<
@@ -40,16 +43,24 @@ const baseQueryWithReAuth: BaseQueryFn<
 
       try {
         const refreshResult = await baseQuery(
-          { credentials: 'include', url: 'auth/refresh' },
+          {
+            url: 'auth/refresh',
+            method: 'POST',
+            body: { refreshToken: auth.getRefreshToken() },
+          },
           api,
           extraOptions,
         );
 
-        if (refreshResult.data) {
+        if (isRefreshResponse(refreshResult.data)) {
+          auth.setToken(
+            refreshResult.data.accessToken,
+            refreshResult.data.refreshToken,
+          );
           result = await baseQuery(args, api, extraOptions);
         } else {
           api.dispatch(logOut());
-          // window.location.href = '/login';
+          showError('Your session has expired. Please log in again.');
         }
       } finally {
         // release must be called once the mutex should be released again.
@@ -65,7 +76,25 @@ const baseQueryWithReAuth: BaseQueryFn<
   return result;
 };
 
+const queryWithToastError: BaseQueryFn<
+  string | FetchArgs,
+  unknown,
+  FetchBaseQueryError
+> = async (args, api, extraOptions) => {
+  const result = await baseQueryWithReAuth(args, api, extraOptions);
+  if (result.error) {
+    toastApiError(result.error.data);
+  }
+  return result;
+};
+
 export const apiSlice = createApi({
   baseQuery: baseQueryWithReAuth,
+  endpoints: () => ({}),
+});
+
+export const apiWithToastSlice = createApi({
+  reducerPath: 'apiWithToast',
+  baseQuery: queryWithToastError,
   endpoints: () => ({}),
 });

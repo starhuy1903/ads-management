@@ -13,6 +13,8 @@ import {
   ParseFilePipeBuilder,
   HttpException,
   HttpStatus,
+  UseGuards,
+  Req,
 } from '@nestjs/common';
 import { PanelService } from './panel.service';
 import { CreatePanelDto } from './dto/create-panel.dto';
@@ -21,6 +23,8 @@ import { PageOptionsPanelDto } from './dto/find-all-panel.dto';
 import { CustomResponse } from '../../middlewares'; // Import your CustomResponse type
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { FILE_TYPES_REGEX } from '../../constants/images';
+import { JwtGuard } from '../auth/guards';
+import { IRequestWithUser } from '../auth/interfaces';
 
 @Controller('panels')
 export class PanelController {
@@ -54,9 +58,29 @@ export class PanelController {
   }
 
   @Get()
-  async findAll(@Query() pageOptionsPanelDto: PageOptionsPanelDto) {
+  @UseGuards(JwtGuard)
+  async findAll(
+    @Req() req: IRequestWithUser,
+    @Query() pageOptionsPanelDto: PageOptionsPanelDto,
+  ) {
     try {
-      return await this.panelService.findAll(pageOptionsPanelDto);
+      const userId = req.user['sub'];
+      return await this.panelService.findAll(pageOptionsPanelDto, userId);
+    } catch (error) {
+      throw new HttpException(
+        {
+          statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+          message: error.message || 'Internal Server Error',
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  @Get('map')
+  async findAllByCrew(@Query() pageOptionsPanelDto: PageOptionsPanelDto) {
+    try {
+      return await this.panelService.findAllByCrew(pageOptionsPanelDto);
     } catch (error) {
       throw new HttpException(
         {

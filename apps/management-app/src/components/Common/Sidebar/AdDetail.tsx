@@ -1,82 +1,42 @@
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
-import {
-  Box,
-  Button,
-  IconButton,
-  CircularProgress,
-  Typography,
-} from '@mui/material';
-import { useEffect, useState } from 'react';
+import { Stack } from '@mui/material';
+import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAppDispatch } from '@/store';
+import { ModalKey } from '@/constants/modal';
+import { showModal } from '@/store/slice/modal';
+import { Panel } from '@/types/panel';
+import CenterLoading from '../CenterLoading';
+import PanelCard from '../PanelCard';
 
-export default function AdDetail() {
+interface AdDetailProps {
+  panels: Array<Panel>;
+}
+
+export default function AdDetail({ panels }: AdDetailProps) {
   const navigate = useNavigate();
-  const [data, setData] = useState<AdData | null>(null);
+  const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    setTimeout(() => {
-      setData({
-        title: 'Trụ cụm pano',
-        locationString: 'Đồng Khởi - Nguyễn Du (Sở văn hóa)',
-        height: 100,
-        width: 100,
-        quantity: 1,
-        form: 'Cổ động',
-        category: 'Đất công viên',
-      });
-    });
-  }, []);
-
-  if (!data) {
-    return (
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        height="100%"
-      >
-        <CircularProgress />
-      </Box>
+  const handleViewPanelDetail = useCallback(() => {
+    dispatch(
+      showModal(ModalKey.PANEL_DETAIL, {
+        panelId: 2, // TODO: replace with real panel
+      }),
     );
+  }, [dispatch]);
+
+  if (!panels) {
+    return <CenterLoading />;
   }
 
   return (
-    <Box p={2}>
-      <Box height={60} />
-      <Typography variant="h4" mb={1}>
-        {data.title}
-      </Typography>
-      <Typography variant="subtitle1" color="gray">
-        {data.locationString}
-      </Typography>
-      <Box mt={3}>
-        <Box display="flex">
-          <Typography mr={1}>Kich thuoc: </Typography>
-          <Typography
-            fontWeight={500}
-          >{`${data.width}m x ${data.height}m`}</Typography>
-        </Box>
-        <Box display="flex">
-          <Typography mr={1}>Hinh thuc:</Typography>
-          <Typography fontWeight={500}>{data.form}</Typography>
-        </Box>
-        <Box display="flex">
-          <Typography mr={1}>Phan loai:</Typography>
-          <Typography fontWeight={500}>{data.category}</Typography>
-        </Box>
-      </Box>
-      <Box display="flex" justifyContent="space-between" mt={2}>
-        <IconButton>
-          <InfoOutlinedIcon color="primary" />
-        </IconButton>
-        <Button
-          variant="outlined"
-          color="error"
-          onClick={() => navigate('/report')}
-        >
-          Bao cao
-        </Button>
-      </Box>
-    </Box>
+    <Stack spacing={2}>
+      {panels.map((panel) => (
+        <PanelCard
+          key={panel.id}
+          data={panel}
+          onViewDetail={handleViewPanelDetail}
+        />
+      ))}
+    </Stack>
   );
 }

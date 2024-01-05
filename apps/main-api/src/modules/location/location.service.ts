@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { CreateLocationDto } from './dto/create-location.dto';
 import { UpdateLocationDto } from './dto/update-location.dto';
 import { PageOptionsLocationDto } from './dto/find-all-location.dto';
@@ -8,7 +8,7 @@ import {
   uploadFilesFromFirebase,
 } from '../../services/files/upload';
 import { deleteFilesFromFirebase } from '../../services/files/delete';
-import { LocationStatus } from '@prisma/client';
+import { LocationStatus, UserRole } from '@prisma/client';
 
 @Injectable()
 export class LocationService {
@@ -55,7 +55,23 @@ export class LocationService {
     }
   }
 
-  async findAll(pageOptionsLocationDto: PageOptionsLocationDto) {
+  async findAll(
+    pageOptionsLocationDto: PageOptionsLocationDto,
+    userId: number,
+  ) {
+    const user = await this.prismaService.user.findUnique({
+      where: {
+        id: userId,
+      },
+    });
+
+    if (!user) {
+      throw new UnauthorizedException({
+        message: 'Unauthorized',
+      });
+    }
+
+    // Build query conditions
     const conditions = {
       orderBy: [
         {
@@ -63,11 +79,86 @@ export class LocationService {
         },
       ],
       where: {
-        districtId: { in: pageOptionsLocationDto?.districts },
-        wardId: { in: pageOptionsLocationDto?.wards },
+        districtId: {},
+        wardId: {},
         typeId: pageOptionsLocationDto?.locationTypeId,
         adTypeId: pageOptionsLocationDto?.adTypeId,
         status: pageOptionsLocationDto?.status,
+      },
+    };
+
+    if (user.role === UserRole.ward_officer) {
+      conditions.where.wardId = user.wardId;
+    } else if (user.role === UserRole.district_officer) {
+      // allowedWardIds = [{id: 1}, {id: 2}, {id: 3}, ...]
+      const allowedWardIds = await this.prismaService.ward.findMany({
+        where: {
+          districtId: user.districtId,
+        },
+        select: {
+          id: true,
+        },
+      });
+
+      // allowedWards = [1, 2, 3, ...]
+      const allowedWards = allowedWardIds.map((ward) => ward.id);
+
+      // Filter wards by district -> Only get ward which belong to district
+      const filteredWards = pageOptionsLocationDto.wards.filter((wardId) =>
+        allowedWards.includes(wardId),
+      );
+
+      conditions.where.districtId = user.districtId;
+      conditions.where.wardId = { in: filteredWards };
+    } else {
+      conditions.where.districtId = { in: pageOptionsLocationDto?.districts };
+      conditions.where.wardId = { in: pageOptionsLocationDto?.wards };
+    }
+
+    const pageOption =
+      pageOptionsLocationDto.page && pageOptionsLocationDto.take
+        ? {
+            skip: pageOptionsLocationDto.skip,
+            take: pageOptionsLocationDto.take,
+          }
+        : undefined;
+
+    const [result, totalCount] = await Promise.all([
+      this.prismaService.location.findMany({
+        include: {
+          panel: {
+            include: {
+              type: true,
+            },
+          },
+          type: true,
+          adType: true,
+          district: true,
+          ward: true,
+        },
+        ...conditions,
+        ...pageOption,
+      }),
+      this.prismaService.location.count({
+        ...conditions,
+      }),
+    ]);
+    return {
+      data: result,
+      totalPages: Math.ceil(totalCount / pageOptionsLocationDto.take),
+      totalCount,
+    };
+  }
+
+  async findAllByCrew(pageOptionsLocationDto: PageOptionsLocationDto) {
+    const conditions = {
+      orderBy: [
+        {
+          createdAt: pageOptionsLocationDto.order,
+        },
+      ],
+      where: {
+        status: LocationStatus.APPROVED,
       },
     };
     const [result, totalCount] = await Promise.all([
@@ -84,8 +175,6 @@ export class LocationService {
           ward: true,
         },
         ...conditions,
-        skip: pageOptionsLocationDto.skip,
-        take: pageOptionsLocationDto.take,
       }),
       this.prismaService.location.count({
         ...conditions,

@@ -1,3 +1,4 @@
+import { AdType } from '@/types/ads';
 import {
   AdsType,
   AdsTypeDto,
@@ -203,7 +204,7 @@ export const generalManagementApiSlice = apiSlice.injectEndpoints({
       onQueryStarted: getOnMutationFunction('Location type deleted'),
     }),
     getAdsTypes: build.query<
-      GetListResult<AdsType>,
+      GetListResult<AdType>,
       { page?: number; limit?: number }
     >({
       query: (arg) => ({
@@ -218,7 +219,7 @@ export const generalManagementApiSlice = apiSlice.injectEndpoints({
       query: (id) => `/ads-types/${id}`,
     }),
     createAdsType: build.mutation<MessageResponse, AdsTypeDto>({
-      query: (arg) => ({ url: '/adsTypes', method: 'POST', body: arg }),
+      query: (arg) => ({ url: '/ads-types', method: 'POST', body: arg }),
       onQueryStarted: getOnMutationFunction('Advertisement type created'),
     }),
     updateAdsType: build.mutation<
@@ -226,7 +227,7 @@ export const generalManagementApiSlice = apiSlice.injectEndpoints({
       { id: number; data: AdsTypeDto }
     >({
       query: (arg) => ({
-        url: `/adsTypes/${arg.id}`,
+        url: `/ads-types/${arg.id}`,
         method: 'PATCH',
         body: arg.data,
       }),
@@ -234,7 +235,7 @@ export const generalManagementApiSlice = apiSlice.injectEndpoints({
     }),
     deleteAdsTypes: build.mutation<MessageResponse, number>({
       query: (arg) => ({
-        url: `/adsTypes/${arg}`,
+        url: `/ads-types/${arg}`,
         method: 'DELETE',
       }),
       onQueryStarted: getOnMutationFunction('Advertisement type deleted'),

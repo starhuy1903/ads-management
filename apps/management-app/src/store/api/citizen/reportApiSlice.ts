@@ -1,8 +1,8 @@
 import { GetList } from '@/types/common';
 import { CreatedReport, ReportPayload, ReportType } from '@/types/report';
-import { apiSlice } from './baseApiSlice';
+import { apiWithToastSlice } from '../baseApiSlice';
 
-export const reportApiSlice = apiSlice.injectEndpoints({
+export const reportApiToastSlice = apiWithToastSlice.injectEndpoints({
   endpoints: (build) => ({
     createReport: build.mutation<CreatedReport, ReportPayload>({
       query: (body) => {
@@ -42,4 +42,4 @@ export const {
   useCreateReportMutation,
   useGetReportsQuery,
   useGetReportTypesQuery,
-} = reportApiSlice;
+} = reportApiToastSlice;

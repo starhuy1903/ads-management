@@ -28,11 +28,11 @@ import DropFileContainer from '@/components/Common/DropFileContainer';
 import TinyEditor from '@/components/Common/TinyEditor';
 import { ModalKey } from '@/constants/modal';
 import { ImageFileConfig } from '@/constants/validation';
-import { isApiErrorResponse } from '@/store/api/helper';
 import {
   useCreateReportMutation,
   useGetReportTypesQuery,
-} from '@/store/api/reportApiSlice';
+} from '@/store/api/citizen/reportApiSlice';
+import { isApiErrorResponse } from '@/store/api/helper';
 import { showModal } from '@/store/slice/modal';
 import { CreateReportForm, ReportPayload } from '@/types/report';
 import { showError, showSuccess } from '@/utils/toast';
@@ -222,7 +222,7 @@ export default function CitizenReport() {
                 >
                   {reportTypes.map((type) => (
                     <MenuItem key={type.id} value={type.id}>
-                      {type.value}
+                      {type.name}
                     </MenuItem>
                   ))}
                 </Select>

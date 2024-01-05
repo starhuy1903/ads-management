@@ -13,6 +13,8 @@ import {
   ParseFilePipeBuilder,
   HttpException,
   HttpStatus,
+  UseGuards,
+  Req,
 } from '@nestjs/common';
 import { LocationService } from './location.service';
 import { CreateLocationDto } from './dto/create-location.dto';
@@ -22,6 +24,8 @@ import { CustomResponse } from '../../middlewares'; // Import your CustomRespons
 import { PanelService } from '../panel/panel.service';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { FILE_TYPES_REGEX } from '../../constants/images';
+import { JwtGuard } from '../auth/guards';
+import { IRequestWithUser } from '../auth/interfaces';
 
 @Controller('locations')
 export class LocationController {
@@ -64,9 +68,29 @@ export class LocationController {
   }
 
   @Get()
-  async findAll(@Query() pageOptionsLocationDto: PageOptionsLocationDto) {
+  @UseGuards(JwtGuard)
+  async findAll(
+    @Req() req: IRequestWithUser,
+    @Query() pageOptionsLocationDto: PageOptionsLocationDto,
+  ) {
     try {
-      return await this.locationService.findAll(pageOptionsLocationDto);
+      const userId = req.user['sub'];
+      return await this.locationService.findAll(pageOptionsLocationDto, userId);
+    } catch (error) {
+      throw new HttpException(
+        {
+          statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+          message: error.message || 'Internal Server Error',
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  @Get('map')
+  async findAllByCrew(@Query() pageOptionsLocationDto: PageOptionsLocationDto) {
+    try {
+      return await this.locationService.findAllByCrew(pageOptionsLocationDto);
     } catch (error) {
       throw new HttpException(
         {

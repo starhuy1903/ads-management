@@ -35,7 +35,7 @@ export interface CreatedReport {
   userUuid: string;
 }
 
-export interface ReportType {
+export type ReportType = {
   id: number;
-  value: string;
-}
+  name: string;
+};

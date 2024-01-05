@@ -1,43 +1,57 @@
+import CloseSharpIcon from '@mui/icons-material/CloseSharp';
+import { Box, Drawer, IconButton } from '@mui/material';
+import React, { useCallback } from 'react';
+import { useAppDispatch, useAppSelector } from '@/store';
 import { SidebarKey } from '@/constants/sidebar';
-import { useAppSelector } from '@/store';
-import { Box } from '@mui/material';
-import { motion } from 'framer-motion';
+import { hideSidebar } from '@/store/slice/sidebar';
 import AdDetail from './AdDetail';
 
 const sidebarsMap: { [sidebarKey: string]: any } = {
   [SidebarKey.AD_DETAIL]: AdDetail,
-}
+};
 
-export default function SidebarContainer({ style }: { style?: React.CSSProperties }) {
-  const { displaySidebar, ...rest } = useAppSelector(
-    (state) => state.sidebar,
-  );
-  
+export default function SidebarContainer({
+  style,
+}: {
+  style?: React.CSSProperties;
+}) {
+  const { displaySidebar, ...rest } = useAppSelector((state) => state.sidebar);
+  const dispatch = useAppDispatch();
+
+  const handleClose = useCallback(() => {
+    dispatch(hideSidebar());
+  }, [dispatch]);
+
   const renderSidebarContent = () => {
     if (!displaySidebar) {
       return null;
     }
-  
+
     const sidebarProps = {
-      ...rest
-    }
+      ...rest,
+    };
 
     const DisplayedSidebar = sidebarsMap[displaySidebar];
     return <DisplayedSidebar {...sidebarProps} />;
-  }
+  };
 
   return (
-    <motion.div
-      initial={{ x: displaySidebar ? '-100%' : '0%' }}
-      style={{ zIndex: 1, width: displaySidebar ? 360 : 0, ...style }}
+    <Drawer
+      anchor="left"
+      open={!!displaySidebar}
+      hideBackdrop
+      variant="persistent"
     >
-      <Box
-        position="relative"
-        height="100%"
-        sx={{ background: 'white' }}
+      <IconButton
+        aria-label="close"
+        onClick={handleClose}
+        sx={{ position: 'absolute', right: 8, top: 8 }}
       >
+        <CloseSharpIcon color="action" fontSize="small" />
+      </IconButton>
+      <Box style={style} sx={{ marginY: 6, paddingX: 2 }}>
         {renderSidebarContent()}
       </Box>
-    </motion.div>
+    </Drawer>
   );
 }
