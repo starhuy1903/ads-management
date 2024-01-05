@@ -19,9 +19,13 @@ import DistrictsListView from './Authenticated/CDO/DistrictsListView';
 import LocationTypesCreate from './Authenticated/CDO/LocationTypesCreate';
 import LocationTypesDetail from './Authenticated/CDO/LocationTypesDetail';
 import LocationTypesListView from './Authenticated/CDO/LocationTypesListView';
+import ModificationRequestsDetail from './Authenticated/CDO/ModificationRequestDetail';
+import ModificationRequestsListView from './Authenticated/CDO/ModificationRequestsListView';
 import PanelTypesCreate from './Authenticated/CDO/PanelTypesCreate';
 import PanelTypesDetail from './Authenticated/CDO/PanelTypesDetail';
 import PanelTypesListView from './Authenticated/CDO/PanelTypesListView';
+import PermissionRequestsDetail from './Authenticated/CDO/PermissionRequest';
+import PermissionRequestsListView from './Authenticated/CDO/PermissionRequestsListView';
 import ReportStatistics from './Authenticated/CDO/ReportStatistics';
 import ReportTypesCreate from './Authenticated/CDO/ReportTypesCreate';
 import ReportTypesDetail from './Authenticated/CDO/ReportTypesDetail';
@@ -137,28 +141,24 @@ const CDORoutes = createBrowserRouter([
         element: <div>Ads location</div>,
       },
       {
-        path: 'types',
-        element: <div>Ads type</div>,
-      },
-      {
-        path: 'points',
-        element: <div>Ads point</div>,
-      },
-      {
         path: 'panels',
         element: <div>Ads panel</div>,
       },
       {
-        path: 'request-editing',
-        element: <div>Request editing</div>,
+        path: 'modification-requests',
+        element: <ModificationRequestsListView />,
       },
       {
-        path: 'request-permission',
-        element: <div>Request permission</div>,
+        path: 'modification-requests/:id',
+        element: <ModificationRequestsDetail />,
       },
       {
-        path: 'stats',
-        element: <div>Ads stats</div>,
+        path: 'permission-requests',
+        element: <PermissionRequestsListView />,
+      },
+      {
+        path: 'permission-requests/:id',
+        element: <PermissionRequestsDetail />,
       },
       {
         path: 'accounts',
