@@ -1,5 +1,6 @@
 import toast from 'react-hot-toast';
 import { RefreshResponse } from '@/types/user';
+import { showError } from '@/utils/toast';
 import { setLoading } from '../slice/statusSlice';
 
 export interface ApiErrorResponse {
@@ -25,8 +26,20 @@ export const isRefreshResponse = (data: unknown): data is RefreshResponse => {
   );
 };
 
+export const toastApiError = (data: unknown) => {
+  const isErrorObject =
+    typeof data === 'object' &&
+    data != null &&
+    'message' in data &&
+    typeof (data as any).message === 'string';
+  const message = isErrorObject
+    ? (data.message as string)
+    : 'Something went wrong';
+  showError(message);
+};
+
 export const getOnMutationFunction = (success: string) => {
-  return async (arg: any, api: any) => {
+  return async (_: any, api: any) => {
     toast.promise(api.queryFulfilled, {
       loading: 'Processing...',
       success: success,
