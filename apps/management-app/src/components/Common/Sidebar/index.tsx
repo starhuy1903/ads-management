@@ -36,7 +36,12 @@ export default function SidebarContainer({
   };
 
   return (
-    <Drawer anchor="left" open={!!displaySidebar} hideBackdrop>
+    <Drawer
+      anchor="left"
+      open={!!displaySidebar}
+      hideBackdrop
+      variant="persistent"
+    >
       <IconButton
         aria-label="close"
         onClick={handleClose}
