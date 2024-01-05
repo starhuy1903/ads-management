@@ -10,7 +10,7 @@ export class PageOptionsLocationDto {
 
   @IsEnum(LocationStatus)
   @IsOptional()
-  readonly status?: LocationStatus = LocationStatus.APPROVED;
+  readonly status?: LocationStatus;
 
   @Type(() => Number)
   @IsInt()
