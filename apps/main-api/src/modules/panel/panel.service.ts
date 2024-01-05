@@ -114,6 +114,13 @@ export class PanelService {
     }
 
     console.log('conditions', conditions);
+    const pageOption =
+      pageOptionsPanelDto.page && pageOptionsPanelDto.take
+        ? {
+            skip: pageOptionsPanelDto.skip,
+            take: pageOptionsPanelDto.take,
+          }
+        : undefined;
 
     const [result, totalCount] = await Promise.all([
       this.prismaService.panel.findMany({
@@ -129,8 +136,7 @@ export class PanelService {
           },
         },
         ...conditions,
-        skip: pageOptionsPanelDto.skip,
-        take: pageOptionsPanelDto.take,
+        ...pageOption,
       }),
       this.prismaService.panel.count({
         ...conditions,
