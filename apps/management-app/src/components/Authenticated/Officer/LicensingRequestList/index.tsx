@@ -46,7 +46,7 @@ export default function LicensingRequestList() {
 
   const { data, isLoading, refetch } = useGetRequestsQuery({
     page: page,
-    take: 5,
+    take: 10,
     type: AdsRequestType?.APPROVED_PANEL,
   });
 
@@ -62,6 +62,10 @@ export default function LicensingRequestList() {
       showError(`Delete request #${id} failed!`);
     }
   };
+
+  useEffect(() => {
+    refetch();
+  }, [page, refetch]);
 
   useEffect(() => {
     if (data) {

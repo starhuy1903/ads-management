@@ -53,7 +53,7 @@ export default function EditingRequestList() {
 
   const { data, isLoading, refetch } = useGetRequestsQuery({
     page: page,
-    take: 5,
+    take: 10,
     type: AdsRequestType.UPDATE_DATA,
     targetType: targetType,
   });
@@ -70,6 +70,10 @@ export default function EditingRequestList() {
       showError(`Delete request #${id} failed!`);
     }
   };
+
+  useEffect(() => {
+    refetch();
+  }, [page, refetch]);
 
   useEffect(() => {
     if (data) {

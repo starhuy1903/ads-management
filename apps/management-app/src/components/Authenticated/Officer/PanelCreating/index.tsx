@@ -135,7 +135,7 @@ export default function PanelCreating() {
 
       setSubmitting(false);
 
-      // navigate(-1);
+      navigate(-1);
     } catch (error) {
       console.log(error);
     }

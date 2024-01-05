@@ -9,6 +9,7 @@ import {
   Panel,
   PanelType,
   Report,
+  SendPanelRequestDto,
 } from '@/types/officer-management';
 import { apiSlice } from './baseApiSlice';
 import { getOnMutationFunction } from './helper';
@@ -17,7 +18,13 @@ export const officerManagementApiSlice = apiSlice.injectEndpoints({
   endpoints: (build) => ({
     getLocations: build.query<
       GetListResult<Location>,
-      { page?: number; take?: number; wards?: string; districts?: string }
+      {
+        page?: number;
+        take?: number;
+        wards?: string;
+        districts?: string;
+        status?: string;
+      }
     >({
       query: (arg) => ({
         url: `/locations`,
@@ -26,6 +33,7 @@ export const officerManagementApiSlice = apiSlice.injectEndpoints({
           take: arg.take,
           wards: arg.wards,
           districts: arg.districts,
+          status: arg.status,
         },
       }),
     }),
@@ -146,6 +154,14 @@ export const officerManagementApiSlice = apiSlice.injectEndpoints({
     getRequestById: build.query<GetDetailResult<AdsRequest>, string>({
       query: (id) => `/ads-requests/${id}`,
     }),
+    createPanelRequest: build.mutation<MessageResponse, SendPanelRequestDto>({
+      query: (arg) => ({
+        url: '/ads-requests',
+        method: 'POST',
+        body: arg,
+      }),
+      onQueryStarted: getOnMutationFunction('Create the request successfully'),
+    }),
     createUpdateLocationRequest: build.mutation<MessageResponse, FormData>({
       query: (arg) => ({
         url: '/ads-requests/update-location',
@@ -186,6 +202,7 @@ export const {
   useGetReportByIdQuery,
   useGetRequestsQuery,
   useGetRequestByIdQuery,
+  useCreatePanelRequestMutation,
   useCreateUpdateLocationRequestMutation,
   useCreateUpdatePanelRequestMutation,
   useDeleteRequestMutation,

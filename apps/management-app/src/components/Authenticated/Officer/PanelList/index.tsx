@@ -11,8 +11,9 @@ import {
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import CenterLoading from '@/components/Common/CenterLoading';
-import { Edit, Info } from '@/components/Common/Icons';
+import { Edit, Info, Response } from '@/components/Common/Icons';
 import { ListWrapper } from '@/components/Common/Layout/ScreenWrapper';
+import { PanelStatus } from '@/constants/panel';
 import { useGetPanelsQuery } from '@/store/api/officerApiSlice';
 import { Panel } from '@/types/officer-management';
 import { formatDateTime } from '@/utils/format-date';
@@ -101,6 +102,10 @@ export default function PanelList() {
                     >
                       <Info link={`/panels/${panel?.id}`} />
                       <Edit link={`/panels/${panel?.id}/edit`} />
+
+                      {panel?.status === PanelStatus?.DRAFT && (
+                        <Response link={`/panels/${panel?.id}/send-request`} />
+                      )}
                     </Box>
                   </TableCell>
                 </TableRow>

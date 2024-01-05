@@ -45,6 +45,7 @@ import PanelEditing from './Authenticated/Officer/PanelEditing';
 import PanelList from './Authenticated/Officer/PanelList';
 import PanelReportDetail from './Authenticated/Officer/PanelReportDetail';
 import PanelReportList from './Authenticated/Officer/PanelReportList';
+import PanelSendRequest from './Authenticated/Officer/PanelSendRequest';
 import ReportResponse from './Authenticated/Officer/ReportResponse';
 import ResetPassword from './Authenticated/ResetPassword';
 import CenterLoading from './Common/CenterLoading';
@@ -213,6 +214,10 @@ const officerRoutes = createBrowserRouter([
       {
         path: 'panels/create',
         element: <PanelCreating />,
+      },
+      {
+        path: 'panels/:panelId/send-request',
+        element: <PanelSendRequest />,
       },
       {
         path: 'panels/:panelId/edit',

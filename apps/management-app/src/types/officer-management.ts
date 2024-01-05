@@ -131,3 +131,9 @@ export type UpdatePanelDto = {
   companyNumber: string;
   reason: string;
 };
+
+export type SendPanelRequestDto = {
+  userId: string;
+  panelId: string;
+  reason: string;
+};

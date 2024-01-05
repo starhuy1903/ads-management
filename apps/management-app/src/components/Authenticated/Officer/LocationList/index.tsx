@@ -13,6 +13,7 @@ import { useEffect, useState } from 'react';
 import CenterLoading from '@/components/Common/CenterLoading';
 import { Edit, Info } from '@/components/Common/Icons';
 import { ListWrapper } from '@/components/Common/Layout/ScreenWrapper';
+import { LocationStatus } from '@/constants/location';
 import { useGetLocationsQuery } from '@/store/api/officerApiSlice';
 import { Location } from '@/types/officer-management';
 import { formatDateTime } from '@/utils/format-date';
@@ -38,6 +39,7 @@ export default function LocationList() {
   const { data, isLoading } = useGetLocationsQuery({
     page: page,
     take: 10,
+    status: LocationStatus?.APPROVED,
   });
 
   useEffect(() => {
