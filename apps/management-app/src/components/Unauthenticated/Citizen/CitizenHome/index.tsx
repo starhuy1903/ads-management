@@ -8,48 +8,43 @@ import SidebarContainer from '@/components/Common/Sidebar';
 import { SidebarKey } from '@/constants/sidebar';
 import {
   useGetLocationQuery,
+  useLazyGetLocationQuery,
   useLazyGetPanelByLocationQuery,
 } from '@/store/api/citizen/locationApiSlice';
-import { isApiErrorResponse } from '@/store/api/helper';
 import { showSidebar } from '@/store/slice/sidebar';
 import { AdLocation } from '@/types/location';
-import { showError } from '@/utils/toast';
 
 export default function CitizenHome() {
   const dispatch = useAppDispatch();
   const { data: adLocationData, isLoading: fetchingAdLocation } =
     useGetLocationQuery();
+  const [getLocations] = useLazyGetLocationQuery();
   const [getPanels, { isLoading: fetchingPanels }] =
     useLazyGetPanelByLocationQuery();
   const [selectedLocation, setSelectedLocation] = useState<AdLocation | null>(
     null,
   );
-  // console.log({ data });
 
   const handleViewDetailAd = useCallback(
     async (loc: AdLocation) => {
       setSelectedLocation(loc);
-      try {
-        const res = await getPanels({ locationId: loc.id }).unwrap();
-        console.log({ res });
+      const res = await getPanels(loc.id).unwrap();
+      console.log({ res });
 
-        dispatch(
-          showSidebar(SidebarKey.AD_DETAIL, {
-            panels: res.data,
-          }),
-        );
-      } catch (error) {
-        showError(
-          isApiErrorResponse(error)
-            ? error.data.message
-            : 'Something went wrong',
-        );
-      }
+      dispatch(
+        showSidebar(SidebarKey.AD_DETAIL, {
+          panels: res.data,
+        }),
+      );
     },
     [dispatch, getPanels],
   );
 
   useEffect(() => {
+    (async () => {
+      const res = await getLocations().unwrap();
+      console.log({ res });
+    })();
     dispatch(
       showSidebar(SidebarKey.AD_DETAIL, {
         panels: [
@@ -112,8 +107,8 @@ export default function CitizenHome() {
     );
   }, [dispatch]);
 
-  const renderChildren = () => {
-    return adLocationData?.data.map((loc) => (
+  const renderChildren = () =>
+    adLocationData?.data.map((loc) => (
       <Marker
         key={loc.id}
         longitude={loc.long}
@@ -127,7 +122,6 @@ export default function CitizenHome() {
         />
       </Marker>
     ));
-  };
 
   return (
     <>
