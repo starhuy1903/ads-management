@@ -164,6 +164,54 @@ export class PanelService {
           id: locationId,
         },
         typeId: pageOptionsPanelDto.typeId,
+        status: pageOptionsPanelDto.status,
+      },
+    };
+
+    const pageOption =
+      pageOptionsPanelDto.page && pageOptionsPanelDto.take
+        ? {
+            skip: pageOptionsPanelDto.skip,
+            take: pageOptionsPanelDto.take,
+          }
+        : undefined;
+
+    const [result, totalCount] = await Promise.all([
+      this.prismaService.panel.findMany({
+        include: {
+          type: true,
+          location: {
+            include: {
+              district: true,
+              ward: true,
+              type: true,
+              adType: true,
+            },
+          },
+        },
+        ...conditions,
+        ...pageOption,
+      }),
+      this.prismaService.panel.count({
+        ...conditions,
+      }),
+    ]);
+    return {
+      data: result,
+      totalPages: Math.ceil(totalCount / pageOptionsPanelDto.take),
+      totalCount,
+    };
+  }
+
+  async findAllByCrew(pageOptionsPanelDto: PageOptionsPanelDto) {
+    const conditions = {
+      orderBy: [
+        {
+          createdAt: pageOptionsPanelDto.order,
+        },
+      ],
+      where: {
+        status: PanelStatus.APPROVED,
       },
     };
     const [result, totalCount] = await Promise.all([
@@ -180,8 +228,6 @@ export class PanelService {
           },
         },
         ...conditions,
-        skip: pageOptionsPanelDto.skip,
-        take: pageOptionsPanelDto.take,
       }),
       this.prismaService.panel.count({
         ...conditions,

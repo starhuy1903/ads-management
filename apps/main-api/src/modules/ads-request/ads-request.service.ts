@@ -264,7 +264,12 @@ export class AdsRequestService {
     const [result, totalCount] = await Promise.all([
       this.prismaService.ads_request.findMany({
         include: {
-          user: true,
+          user: {
+            include: {
+              district: true,
+              ward: true,
+            },
+          },
           location: {
             include: {
               district: true,
@@ -305,7 +310,12 @@ export class AdsRequestService {
   findOne(id: number) {
     return this.prismaService.ads_request.findFirst({
       include: {
-        user: true,
+        user: {
+          include: {
+            district: true,
+            ward: true,
+          },
+        },
         location: {
           include: {
             district: true,

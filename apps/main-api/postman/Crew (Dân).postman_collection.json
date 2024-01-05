@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "bde2b120-ca8b-44b2-ba9e-91bc2f7fa1ed",
+		"_postman_id": "1e1b4c0e-c916-48d7-8c01-ae8491c36df5",
 		"name": "Crew (Dân)",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "18634609"
+		"_exporter_id": "24967219"
 	},
 	"item": [
 		{
@@ -12,39 +12,45 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{LOCAL_URL}}/api/panels?typeId=1&take=10&order=desc&districts=1&wards=1",
+					"raw": "{{LOCAL_URL}}/api/panels/map",
 					"host": [
 						"{{LOCAL_URL}}"
 					],
 					"path": [
 						"api",
-						"panels"
+						"panels",
+						"map"
 					],
 					"query": [
 						{
 							"key": "typeId",
 							"value": "1",
-							"description": "optional"
+							"description": "optional",
+							"disabled": true
 						},
 						{
 							"key": "take",
 							"value": "10",
-							"description": "optional"
+							"description": "optional",
+							"disabled": true
 						},
 						{
 							"key": "order",
 							"value": "desc",
-							"description": "optional"
+							"description": "optional",
+							"disabled": true
 						},
 						{
 							"key": "districts",
 							"value": "1",
-							"description": "optional"
+							"description": "optional",
+							"disabled": true
 						},
 						{
 							"key": "wards",
 							"value": "1",
-							"description": "optional"
+							"description": "optional",
+							"disabled": true
 						}
 					]
 				}
@@ -57,7 +63,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{LOCAL_URL}}/api/locations/5/panels?typeId=1&take=10&order=desc&districts=1&wards=1",
+					"raw": "{{LOCAL_URL}}/api/locations/5/panels",
 					"host": [
 						"{{LOCAL_URL}}"
 					],
@@ -71,27 +77,37 @@
 						{
 							"key": "typeId",
 							"value": "1",
-							"description": "optional"
+							"description": "optional",
+							"disabled": true
 						},
 						{
 							"key": "take",
 							"value": "10",
-							"description": "optional"
+							"description": "optional",
+							"disabled": true
 						},
 						{
 							"key": "order",
 							"value": "desc",
-							"description": "optional"
+							"description": "optional",
+							"disabled": true
 						},
 						{
 							"key": "districts",
 							"value": "1",
-							"description": "optional"
+							"description": "optional",
+							"disabled": true
 						},
 						{
 							"key": "wards",
 							"value": "1",
-							"description": "optional"
+							"description": "optional",
+							"disabled": true
+						},
+						{
+							"key": "status",
+							"value": "APPROVED",
+							"disabled": true
 						}
 					]
 				}
@@ -104,34 +120,20 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{LOCAL_URL}}/api/locations?typeId=1&take=10&order=desc&districts=1&wards=1",
+					"raw": "{{LOCAL_URL}}/api/locations/map",
 					"host": [
 						"{{LOCAL_URL}}"
 					],
 					"path": [
 						"api",
-						"locations"
+						"locations",
+						"map"
 					],
 					"query": [
 						{
-							"key": "typeId",
-							"value": "1"
-						},
-						{
-							"key": "take",
-							"value": "10"
-						},
-						{
-							"key": "order",
-							"value": "desc"
-						},
-						{
-							"key": "districts",
-							"value": "1"
-						},
-						{
-							"key": "wards",
-							"value": "1"
+							"key": "status",
+							"value": "APPROVED",
+							"disabled": true
 						}
 					]
 				}
@@ -246,7 +248,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{LOCAL_URL}}/api/reports/get-me?typeId=1&take=10&order=desc&userUuid=thongnguyen0123",
+					"raw": "{{LOCAL_URL}}/api/reports/get-me?userUuid=2412341234-asfasdfasdf",
 					"host": [
 						"{{LOCAL_URL}}"
 					],
@@ -259,21 +261,24 @@
 						{
 							"key": "typeId",
 							"value": "1",
-							"description": "optional"
+							"description": "optional",
+							"disabled": true
 						},
 						{
 							"key": "take",
 							"value": "10",
-							"description": "optional"
+							"description": "optional",
+							"disabled": true
 						},
 						{
 							"key": "order",
 							"value": "desc",
-							"description": "optional"
+							"description": "optional",
+							"disabled": true
 						},
 						{
 							"key": "userUuid",
-							"value": "thongnguyen0123",
+							"value": "2412341234-asfasdfasdf",
 							"description": "lấy từ localStorage"
 						}
 					]
@@ -287,7 +292,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{LOCAL_URL}}/api/report-types?typeId=1&take=10&order=desc",
+					"raw": "{{LOCAL_URL}}/api/report-types?typeId=1",
 					"host": [
 						"{{LOCAL_URL}}"
 					],
@@ -304,12 +309,14 @@
 						{
 							"key": "take",
 							"value": "10",
-							"description": "optional"
+							"description": "optional",
+							"disabled": true
 						},
 						{
 							"key": "order",
 							"value": "desc",
-							"description": "optional"
+							"description": "optional",
+							"disabled": true
 						}
 					]
 				}
@@ -322,7 +329,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{LOCAL_URL}}/api/location-types?typeId=1&take=10&order=desc",
+					"raw": "{{LOCAL_URL}}/api/location-types?typeId=1",
 					"host": [
 						"{{LOCAL_URL}}"
 					],
@@ -337,11 +344,13 @@
 						},
 						{
 							"key": "take",
-							"value": "10"
+							"value": "10",
+							"disabled": true
 						},
 						{
 							"key": "order",
-							"value": "desc"
+							"value": "desc",
+							"disabled": true
 						}
 					]
 				}
@@ -379,6 +388,12 @@
 				}
 			},
 			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "LOCAL_URL",
+			"value": "http://localhost:8194"
 		}
 	]
 }

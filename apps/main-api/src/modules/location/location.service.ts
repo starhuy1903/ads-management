@@ -150,6 +150,43 @@ export class LocationService {
     };
   }
 
+  async findAllByCrew(pageOptionsLocationDto: PageOptionsLocationDto) {
+    const conditions = {
+      orderBy: [
+        {
+          createdAt: pageOptionsLocationDto.order,
+        },
+      ],
+      where: {
+        status: LocationStatus.APPROVED,
+      },
+    };
+    const [result, totalCount] = await Promise.all([
+      this.prismaService.location.findMany({
+        include: {
+          panel: {
+            include: {
+              type: true,
+            },
+          },
+          type: true,
+          adType: true,
+          district: true,
+          ward: true,
+        },
+        ...conditions,
+      }),
+      this.prismaService.location.count({
+        ...conditions,
+      }),
+    ]);
+    return {
+      data: result,
+      totalPages: Math.ceil(totalCount / pageOptionsLocationDto.take),
+      totalCount,
+    };
+  }
+
   findOne(id: number) {
     return this.prismaService.location.findFirst({
       include: {

@@ -49,12 +49,6 @@ export class ReportTypeController {
   }
 
   @Get()
-  @UseGuards(JwtGuard)
-  @Roles(
-    UserRole.cdo,
-    UserRole.ward_officer,
-    UserRole.district_officer,
-  )
   async findAll(@Query() pageOptionsReportTypeDto: PageOptionsReportTypeDto) {
     try {
       if (!pageOptionsReportTypeDto.take || !pageOptionsReportTypeDto.page) {
