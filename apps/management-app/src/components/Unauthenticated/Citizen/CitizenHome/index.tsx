@@ -1,6 +1,6 @@
 import { Box, Typography } from '@mui/material';
 import { Avatar } from '@mui/material';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Marker, Popup } from 'react-map-gl';
 import { useAppDispatch } from '@/store';
 import Maps from '@/components/Common/Maps';
@@ -8,7 +8,6 @@ import SidebarContainer from '@/components/Common/Sidebar';
 import { SidebarKey } from '@/constants/sidebar';
 import {
   useGetLocationQuery,
-  useLazyGetLocationQuery,
   useLazyGetPanelByLocationQuery,
 } from '@/store/api/citizen/locationApiSlice';
 import { showSidebar } from '@/store/slice/sidebar';
@@ -16,11 +15,8 @@ import { AdLocation } from '@/types/location';
 
 export default function CitizenHome() {
   const dispatch = useAppDispatch();
-  const { data: adLocationData, isLoading: fetchingAdLocation } =
-    useGetLocationQuery();
-  const [getLocations] = useLazyGetLocationQuery();
-  const [getPanels, { isLoading: fetchingPanels }] =
-    useLazyGetPanelByLocationQuery();
+  const { data: adLocationData } = useGetLocationQuery();
+  const [getPanels] = useLazyGetPanelByLocationQuery();
   const [selectedLocation, setSelectedLocation] = useState<AdLocation | null>(
     null,
   );
@@ -29,7 +25,6 @@ export default function CitizenHome() {
     async (loc: AdLocation) => {
       setSelectedLocation(loc);
       const res = await getPanels(loc.id).unwrap();
-      console.log({ res });
 
       dispatch(
         showSidebar(SidebarKey.AD_DETAIL, {
@@ -39,133 +34,6 @@ export default function CitizenHome() {
     },
     [dispatch, getPanels],
   );
-
-  useEffect(() => {
-    (async () => {
-      const res = await getLocations().unwrap();
-      console.log({ res });
-    })();
-    dispatch(
-      showSidebar(SidebarKey.AD_DETAIL, {
-        panels: [
-          {
-            id: 11,
-            typeId: 1,
-            width: '10',
-            height: '20',
-            locationId: 5,
-            imageUrls: [
-              'https://i.ytimg.com/vi/b1IvhgUymoU/maxresdefault.jpg',
-              'https://oriagency.vn/upload/images/chien-luoc-marketing-cua-pepsi-5.jpg',
-            ],
-            createContractDate: '2023-12-23T00:00:00.000Z',
-            expiredContractDate: '2024-12-23T00:00:00.000Z',
-            companyEmail: 'example@example.com',
-            companyNumber: '123456789',
-            createdAt: '2024-01-02T13:54:38.051Z',
-            updatedAt: '2024-01-02T13:54:38.051Z',
-            status: 'DRAFT',
-            belongPanelId: null,
-            type: {
-              id: 1,
-              name: 'Trụ bảng hiflex',
-            },
-            location: {
-              id: 5,
-              lat: '5',
-              long: '20',
-              isPlanning: true,
-              districtId: 1,
-              wardId: 1,
-              fullAddress: '227 Nguyen Van Cu',
-              typeId: 1,
-              adTypeId: 1,
-              imageUrls: [],
-              createdAt: '2023-12-30T06:38:36.934Z',
-              updatedAt: '2023-12-30T06:38:36.934Z',
-              name: 'Location 1',
-              belongLocationId: null,
-              status: 'APPROVED',
-              district: {
-                id: 1,
-                name: 'Thành Phố Thủ Đức',
-              },
-              ward: {
-                id: 1,
-                name: 'Phường An Khánh',
-                districtId: 1,
-              },
-              type: {
-                id: 1,
-                name: 'Đất công/Công viên/Hành lang an toàn giao thông',
-              },
-              adType: {
-                id: 1,
-                name: 'Cổ động chính trị',
-              },
-            },
-          },
-          {
-            id: 12,
-            typeId: 1,
-            width: '10',
-            height: '20',
-            locationId: 5,
-            imageUrls: [
-              'https://ca.slack-edge.com/T03DP5X71-U033UBJ6K9T-082ef0590e1a-192',
-              'https://ca.slack-edge.com/T03DP5X71-U048X65EZ4J-fff38d950caf-192',
-            ],
-            createContractDate: '2023-12-23T00:00:00.000Z',
-            expiredContractDate: '2024-12-23T00:00:00.000Z',
-            companyEmail: 'example@example.com',
-            companyNumber: '123456789',
-            createdAt: '2024-01-02T13:54:38.051Z',
-            updatedAt: '2024-01-02T13:54:38.051Z',
-            status: 'DRAFT',
-            belongPanelId: null,
-            type: {
-              id: 1,
-              name: 'Trụ bảng hiflex',
-            },
-            location: {
-              id: 5,
-              lat: '5',
-              long: '20',
-              isPlanning: true,
-              districtId: 1,
-              wardId: 1,
-              fullAddress: '227 Nguyen Van Cu',
-              typeId: 1,
-              adTypeId: 1,
-              imageUrls: [],
-              createdAt: '2023-12-30T06:38:36.934Z',
-              updatedAt: '2023-12-30T06:38:36.934Z',
-              name: 'Location 1',
-              belongLocationId: null,
-              status: 'APPROVED',
-              district: {
-                id: 1,
-                name: 'Thành Phố Thủ Đức',
-              },
-              ward: {
-                id: 1,
-                name: 'Phường An Khánh',
-                districtId: 1,
-              },
-              type: {
-                id: 1,
-                name: 'Đất công/Công viên/Hành lang an toàn giao thông',
-              },
-              adType: {
-                id: 1,
-                name: 'Cổ động chính trị',
-              },
-            },
-          },
-        ],
-      }),
-    );
-  }, [dispatch]);
 
   const renderChildren = () =>
     adLocationData?.data.map((loc) => (

@@ -7,7 +7,7 @@ const locationApiToastSlice = apiWithToastSlice.injectEndpoints({
   endpoints: (build) => ({
     getLocation: build.query<GetList<AdLocation>, void>({
       query: () => ({
-        url: 'locations',
+        url: 'locations/map',
       }),
     }),
     getPanelByLocation: build.query<GetList<Panel>, number>({
@@ -18,8 +18,5 @@ const locationApiToastSlice = apiWithToastSlice.injectEndpoints({
   }),
 });
 
-export const {
-  useGetLocationQuery,
-  useLazyGetLocationQuery,
-  useLazyGetPanelByLocationQuery,
-} = locationApiToastSlice;
+export const { useGetLocationQuery, useLazyGetPanelByLocationQuery } =
+  locationApiToastSlice;
