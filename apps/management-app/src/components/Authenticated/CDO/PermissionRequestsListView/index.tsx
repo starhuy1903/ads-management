@@ -1,3 +1,5 @@
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import Skeleton from '@mui/material/Skeleton';
 import Typography from '@mui/material/Typography';
 import {
@@ -5,9 +7,21 @@ import {
   GridRowsProp,
   GridRenderCellParams,
 } from '@mui/x-data-grid';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { useGetPermissionRequestsQuery } from '@/store/api/requestManagementApiSlice';
+import { useAppDispatch } from '@/store';
+import { ModalKey } from '@/constants/modal';
+import {
+  useGetDistrictsQuery,
+  useGetWardsQuery,
+} from '@/store/api/generalManagementApiSlice';
+import { useLazyGetPermissionRequestsQuery } from '@/store/api/requestManagementApiSlice';
+import { showModal } from '@/store/slice/modal';
+import {
+  AdsRequestStatus,
+  IAdsRequestViewOptions,
+  Ward,
+} from '@/types/cdoManagement';
 import { displayTimestamp } from '@/utils/format';
 import CustomDataGrid from '../CustomDatagrid';
 import CustomLink from '../CustomLink';
@@ -15,11 +29,35 @@ import StaticActionBar from '../StaticActionBar';
 
 const PermissionRequestsListView = () => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const dispatch = useAppDispatch();
 
-  const { data, isLoading, isFetching } = useGetPermissionRequestsQuery({
-    page: parseInt(searchParams.get('page') || '1'),
-    limit: parseInt(searchParams.get('pageSize') || '10'),
+  const [viewOptions, setViewOptions] = useState<IAdsRequestViewOptions>({
+    districts: [],
+    wards: [],
+    status: AdsRequestStatus.PENDING,
+    targetType: 'Panel',
   });
+
+  const handleFilter = useCallback(() => {
+    dispatch(
+      showModal(ModalKey.ADS_REQUEST_VIEW_OPTIONS, {
+        viewOptions,
+        disableTargetType: true,
+        onSubmit: (options: IAdsRequestViewOptions) => setViewOptions(options),
+      }),
+    );
+  }, [dispatch, viewOptions]);
+
+  const [getPermissionRequests, { data, isLoading, isFetching }] =
+    useLazyGetPermissionRequestsQuery();
+
+  useEffect(() => {
+    getPermissionRequests({
+      page: parseInt(searchParams.get('page') || '1'),
+      take: parseInt(searchParams.get('pageSize') || '10'),
+      ...viewOptions,
+    });
+  }, [getPermissionRequests, searchParams, viewOptions]);
 
   const [rowCountState, setRowCountState] = useState(data?.totalCount || 0);
 
@@ -28,6 +66,9 @@ const PermissionRequestsListView = () => {
       data?.totalCount !== undefined ? data?.totalCount : prevRowCountState,
     );
   }, [data?.totalCount, setRowCountState]);
+
+  const { data: districts } = useGetDistrictsQuery({});
+  const { data: wards } = useGetWardsQuery({});
 
   const rows: GridRowsProp =
     data?.data || Array.from({ length: 10 }, (_, i) => ({ id: i }));
@@ -52,6 +93,19 @@ const PermissionRequestsListView = () => {
           field: 'reason',
           headerName: 'Reason',
           width: 300,
+          renderCell: () => (
+            <Skeleton
+              variant="text"
+              sx={{ width: '100%', fontSize: '0.875rem' }}
+            />
+          ),
+        },
+        {
+          field: 'status',
+          headerName: 'Status',
+          width: 200,
+          align: 'center',
+          headerAlign: 'center',
           renderCell: () => (
             <Skeleton
               variant="text"
@@ -111,6 +165,13 @@ const PermissionRequestsListView = () => {
         },
         { field: 'reason', headerName: 'Reason', width: 300 },
         {
+          field: 'status',
+          headerName: 'Status',
+          width: 200,
+          align: 'center',
+          headerAlign: 'center',
+        },
+        {
           field: 'createdAt',
           headerName: 'Created',
           width: 300,
@@ -143,7 +204,73 @@ const PermissionRequestsListView = () => {
         },
       ];
   return (
-    <StaticActionBar>
+    <StaticActionBar
+      actionBar={
+        <>
+          <Box
+            sx={{
+              flex: 1,
+              display: 'grid',
+              gridTemplateColumns: 'repeat(6, 1fr)',
+              gap: '8px',
+              marginBottom: '16px',
+
+              '& .MuiTypography-root': {
+                fontSize: '0.875rem',
+              },
+            }}
+          >
+            <Typography fontWeight="bold">Status:</Typography>
+            <Typography>{viewOptions.status || 'Any'}</Typography>
+            <Typography fontWeight="bold" sx={{ gridColumn: 1 }}>
+              District:
+            </Typography>
+            {districts ? (
+              <Typography>
+                {viewOptions.districts.length > 0
+                  ? districts.data.find(
+                      (e) => e.id === viewOptions.districts[0],
+                    )?.name
+                  : 'All'}
+              </Typography>
+            ) : (
+              <Skeleton
+                variant="text"
+                sx={{ width: '100%', fontSize: '0.875rem' }}
+              />
+            )}
+            <Typography fontWeight="bold">Wards:</Typography>
+            {wards ? (
+              <Typography sx={{ gridColumn: '4 / span 3' }} noWrap>
+                {viewOptions.wards.length > 0
+                  ? wards.data
+                      .reduce((accum: Array<string>, e: Ward) => {
+                        return viewOptions.wards.includes(e.id)
+                          ? accum.concat(e.name)
+                          : accum;
+                      }, [])
+                      .join(', ')
+                  : 'All'}
+              </Typography>
+            ) : (
+              <Skeleton
+                variant="text"
+                sx={{ width: '100%', fontSize: '0.875rem' }}
+              />
+            )}
+          </Box>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Button
+              variant="contained"
+              sx={{ color: 'common.white' }}
+              onClick={handleFilter}
+            >
+              Filters
+            </Button>
+          </Box>
+        </>
+      }
+    >
       <CustomDataGrid
         rows={rows}
         columns={columns}

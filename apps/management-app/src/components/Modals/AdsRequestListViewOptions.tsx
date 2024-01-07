@@ -3,39 +3,46 @@ import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import OutlinedInput from '@mui/material/OutlinedInput';
-import dayjs from 'dayjs';
 import { useId, useState } from 'react';
 import { useAppDispatch } from '@/store';
-import { MONTHS, OLDEST_DATA_YEAR } from '@/constants/app';
 import {
   useGetDistrictsQuery,
   useGetWardsQuery,
 } from '@/store/api/generalManagementApiSlice';
 import { showModal } from '@/store/slice/modal';
-import { IStatisticsViewOptions } from '@/types/cdoManagement';
+import {
+  AdsRequestStatus,
+  IAdsRequestViewOptions,
+} from '@/types/cdoManagement';
 import CustomSelect from '../Common/CustomSelect';
 import GeneralModal from './GeneralModal';
 
-interface StatisticsViewOptionsProps {
-  viewOptions: IStatisticsViewOptions;
-  onSubmit: (viewOptions: IStatisticsViewOptions) => void;
+interface AdsRequestListViewOptionsProps {
+  viewOptions: IAdsRequestViewOptions;
+  onSubmit: (viewOptions: IAdsRequestViewOptions) => void;
   onModalClose: () => void;
+  disableTargetType: boolean;
 }
 
-const StatisticsViewOptions = ({
+const AdsRequestListViewOptions = ({
   viewOptions,
   onSubmit,
   onModalClose,
-}: StatisticsViewOptionsProps) => {
+  disableTargetType = false,
+}: AdsRequestListViewOptionsProps) => {
   const dispatch = useAppDispatch();
   const [state, setState] = useState<
-    IStatisticsViewOptions & { district?: number }
+    IAdsRequestViewOptions & {
+      district?: number;
+      _status?: AdsRequestStatus | -1;
+      _targetType?: 'Panel' | 'Location' | -1;
+    }
   >({
     ...viewOptions,
     district:
-      viewOptions.districtIds.length > 0
-        ? viewOptions.districtIds[0]
-        : undefined,
+      viewOptions.districts.length > 0 ? viewOptions.districts[0] : undefined,
+    _status: viewOptions.status,
+    _targetType: viewOptions.targetType,
   });
 
   const { data: districts, isLoading: districtLoading } = useGetDistrictsQuery(
@@ -45,8 +52,6 @@ const StatisticsViewOptions = ({
 
   const id = useId();
 
-  const now = dayjs();
-
   return (
     <GeneralModal
       headerText="Apply view options"
@@ -54,8 +59,10 @@ const StatisticsViewOptions = ({
       onClickPrimaryButton={() => {
         onSubmit({
           ...state,
-          districtIds:
+          districts:
             state.district && state.district !== -1 ? [state.district] : [],
+          status: state._status !== -1 ? state._status : undefined,
+          targetType: state._targetType !== -1 ? state._targetType : undefined,
         });
         dispatch(showModal(null));
       }}
@@ -79,7 +86,7 @@ const StatisticsViewOptions = ({
                 setState((pre) => ({
                   ...pre,
                   district: e.target.value as number,
-                  wardIds: [],
+                  wards: [],
                 }));
               }}
               disabled={districtLoading}
@@ -98,11 +105,11 @@ const StatisticsViewOptions = ({
               labelId={id + '-select-wards'}
               multiple
               input={<OutlinedInput label="Wards" />}
-              value={state.wardIds}
+              value={state.wards}
               onChange={(e) =>
                 setState((pre) => ({
                   ...pre,
-                  wardIds: e.target.value as Array<number>,
+                  wards: e.target.value as Array<number>,
                 }))
               }
               disabled={wardLoading || !state.district}
@@ -118,79 +125,55 @@ const StatisticsViewOptions = ({
             </CustomSelect>
           </FormControl>
           <FormControl sx={{ width: '100%' }}>
-            <InputLabel id={id + '-select-mode'}>View statistics in</InputLabel>
+            <InputLabel id={id + '-select-status'}>Requests' status</InputLabel>
             <CustomSelect
-              labelId={id + '-select-mode'}
-              input={<OutlinedInput label="View statistics in" />}
-              value={state.mode}
+              labelId={id + '-select-status'}
+              input={<OutlinedInput label="Requests' status" />}
+              value={state._status || -1}
               onChange={(e) =>
                 setState((pre) => ({
                   ...pre,
-                  mode: e.target.value as 'YEAR' | 'MONTH',
-                  month: 1,
+                  _status: e.target.value as AdsRequestStatus,
                 }))
               }
             >
-              <MenuItem value="YEAR">Year</MenuItem>
-              <MenuItem value="MONTH">Month</MenuItem>
+              <MenuItem value={-1}>Any</MenuItem>
+              {Object.keys(AdsRequestStatus)
+                .filter((e) => isNaN(Number(e)))
+                .map((e) => {
+                  return (
+                    <MenuItem key={e} value={e}>
+                      {e}
+                    </MenuItem>
+                  );
+                })}
             </CustomSelect>
           </FormControl>
-          <Box
-            sx={{
-              width: '100%',
-              display: 'flex',
-              columnGap: '16px',
-            }}
-          >
-            <FormControl sx={{ flex: 1 }}>
-              <InputLabel id={id + '-select-year'}>Year</InputLabel>
-              <CustomSelect
-                labelId={id + '-select-year'}
-                input={<OutlinedInput label="Year" />}
-                value={state.year}
-                onChange={(e) =>
-                  setState((pre) => ({
-                    ...pre,
-                    year: e.target.value as number,
-                  }))
-                }
-              >
-                {Array.from(
-                  { length: now.get('year') - OLDEST_DATA_YEAR + 1 },
-                  (e, i) => OLDEST_DATA_YEAR + i,
-                ).map((e) => (
-                  <MenuItem key={e} value={e}>
-                    {e}
-                  </MenuItem>
-                ))}
-              </CustomSelect>
-            </FormControl>
-            <FormControl sx={{ flex: 1 }}>
-              <InputLabel id={id + '-select-month'}>Month</InputLabel>
-              <CustomSelect
-                labelId={id + '-select-month'}
-                input={<OutlinedInput label="Month" />}
-                value={state.month}
-                onChange={(e) =>
-                  setState((pre) => ({
-                    ...pre,
-                    month: e.target.value as number,
-                  }))
-                }
-                disabled={state.mode === 'YEAR'}
-              >
-                {Array.from({ length: 12 }, (e, i) => i + 1).map((e) => (
-                  <MenuItem key={e} value={e}>
-                    {MONTHS[e]}
-                  </MenuItem>
-                ))}
-              </CustomSelect>
-            </FormControl>
-          </Box>
+          <FormControl sx={{ width: '100%' }}>
+            <InputLabel id={id + '-select-targetType'}>
+              Requests' target type
+            </InputLabel>
+            <CustomSelect
+              labelId={id + '-select-targetType'}
+              input={<OutlinedInput label="Requests' target type" />}
+              value={state._targetType || -1}
+              onChange={(e) =>
+                setState((pre) => ({
+                  ...pre,
+                  _targetType: e.target.value as 'Panel' | 'Location',
+                }))
+              }
+              disabled={disableTargetType}
+            >
+              <MenuItem value={-1}>Any</MenuItem>
+              <MenuItem value="Panel">Panel</MenuItem>
+              <MenuItem value="Location">Location</MenuItem>
+            </CustomSelect>
+          </FormControl>
         </Box>
       }
     />
   );
 };
 
-export default StatisticsViewOptions;
+export default AdsRequestListViewOptions;

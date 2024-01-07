@@ -24,7 +24,7 @@ import ModificationRequestsListView from './Authenticated/CDO/ModificationReques
 import PanelTypesCreate from './Authenticated/CDO/PanelTypesCreate';
 import PanelTypesDetail from './Authenticated/CDO/PanelTypesDetail';
 import PanelTypesListView from './Authenticated/CDO/PanelTypesListView';
-import PermissionRequestsDetail from './Authenticated/CDO/PermissionRequest';
+import PermissionRequestsDetail from './Authenticated/CDO/PermissionRequestDetail';
 import PermissionRequestsListView from './Authenticated/CDO/PermissionRequestsListView';
 import ReportStatistics from './Authenticated/CDO/ReportStatistics';
 import ReportTypesCreate from './Authenticated/CDO/ReportTypesCreate';

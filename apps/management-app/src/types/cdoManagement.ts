@@ -144,10 +144,17 @@ export type PanelFull = Panel & {
   location: Location;
 };
 
+export enum AdsRequestStatus {
+  PENDING = 'PENDING',
+  APPROVED = 'APPROVED',
+  REJECTED = 'REJECTED',
+  CANCELED = 'CANCELED',
+}
+
 export type AdsRequest = {
   id: number;
   reason: string;
-  status: string;
+  status: AdsRequestStatus;
   targetType: 'Panel' | 'Location';
   locationId?: number;
   location?: Location;
@@ -158,6 +165,25 @@ export type AdsRequest = {
   updatedAt: string;
   type: 'UPDATE_DATA' | 'APPROVED_PANEL';
   user: User;
+};
+
+export type AdsRequestQueryOptions = {
+  take: number;
+  page: number;
+  type: 'UPDATE_DATA' | 'APPROVED_PANEL';
+  wards?: Array<number>;
+  districts?: Array<number>;
+  status?: AdsRequestStatus;
+  targetType?: 'Panel' | 'Location';
+};
+
+export type IAdsRequestViewOptions = {
+  take?: number;
+  page?: number;
+  wards: Array<number>;
+  districts: Array<number>;
+  status?: AdsRequestStatus;
+  targetType?: 'Panel' | 'Location';
 };
 
 export type User = {

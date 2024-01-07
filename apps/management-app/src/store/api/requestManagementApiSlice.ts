@@ -1,5 +1,6 @@
 import {
   AdsRequest,
+  IAdsRequestViewOptions,
   GetDataResult,
   GetListResult,
   MessageResponse,
@@ -11,14 +12,18 @@ export const requestManagementApiSlice = apiSlice.injectEndpoints({
   endpoints: (build) => ({
     getModificationRequests: build.query<
       GetListResult<AdsRequest>,
-      { page?: number; limit?: number }
+      IAdsRequestViewOptions
     >({
       query: (arg) => ({
         url: `/ads-requests`,
         params: {
-          page: arg.page || undefined,
-          take: arg.limit || undefined,
+          take: arg.take,
+          page: arg.page,
           type: 'UPDATE_DATA',
+          status: arg.status,
+          targetType: arg.targetType,
+          districts: arg.districts,
+          wards: arg.wards,
         },
       }),
     }),
@@ -27,14 +32,18 @@ export const requestManagementApiSlice = apiSlice.injectEndpoints({
     }),
     getPermissionRequests: build.query<
       GetListResult<AdsRequest>,
-      { page?: number; limit?: number }
+      IAdsRequestViewOptions
     >({
       query: (arg) => ({
         url: `/ads-requests`,
         params: {
-          page: arg.page || undefined,
-          take: arg.limit || undefined,
+          take: arg.take,
+          page: arg.page,
           type: 'APPROVED_PANEL',
+          status: arg.status,
+          targetType: arg.targetType,
+          districts: arg.districts,
+          wards: arg.wards,
         },
       }),
     }),
@@ -57,8 +66,10 @@ export const requestManagementApiSlice = apiSlice.injectEndpoints({
 
 export const {
   useGetModificationRequestsQuery,
+  useLazyGetModificationRequestsQuery,
   useGetModificationRequestByIdQuery,
   useGetPermissionRequestsQuery,
+  useLazyGetPermissionRequestsQuery,
   useGetPermissionRequestByIdQuery,
   useApproveRequestMutation,
   useRejectRequestMutation,
