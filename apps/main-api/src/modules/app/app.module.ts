@@ -18,6 +18,7 @@ import { PanelTypeModule } from '../panel-type/panel-type.module';
 import { DistrictModule } from '../district/district.module';
 import { WardModule } from '../ward/ward.module';
 import { UserModule } from '../user/user.module';
+import { AdvertisementTypeModule } from '../advertisement-type/advertisement-type.module';
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { UserModule } from '../user/user.module';
     DistrictModule,
     WardModule,
     UserModule,
+    AdvertisementTypeModule,
   ],
   controllers: [AppController],
   providers: [AppService],

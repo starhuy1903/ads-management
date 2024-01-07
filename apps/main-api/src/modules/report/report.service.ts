@@ -56,17 +56,23 @@ export class ReportService {
       if (createReportDto.targetType == TargetType.LOCATION) {
         data.location = { connect: { id: createReportDto.locationId } };
       } else {
-        data.panel = { connect: { id: createReportDto.panelId } };
+        data.panel = {
+          connect: { id: createReportDto.panelId },
+        };
       }
       const result = await this.prismaService.report.create({
         data,
+        include: {
+          location: true,
+          panel: { include: { location: true } },
+        },
       });
 
       try {
         this.eventEmitter.emit(NotificationType.new_report, { result });
       } catch (notificationError) {
         // silent
-        console.error('Fail to push notification!!!');
+        console.error('Fail to push notification!!!: ', notificationError);
       }
 
       return result;
@@ -253,8 +259,8 @@ export class ReportService {
     });
   }
 
-  update(id: number, updateReportDto: UpdateReportDto) {
-    return this.prismaService.report.update({
+  async update(id: number, updateReportDto: UpdateReportDto) {
+    const result = await this.prismaService.report.update({
       where: {
         id: id,
       },
@@ -263,6 +269,14 @@ export class ReportService {
         status: updateReportDto?.status,
       },
     });
+
+    try {
+      this.eventEmitter.emit(NotificationType.update_status_report, { result });
+    } catch (notificationError) {
+      // silent
+      console.error('Fail to push notification!!!: ', notificationError);
+    }
+    return result;
   }
 
   remove(id: number) {
@@ -328,16 +342,6 @@ export class ReportService {
   }
 
   async getStatistic(getStatisticDto: GetStatisticDto) {
-    const conditions = {
-      where: {
-        location: {
-          districtId: { in: getStatisticDto?.districtIds },
-          wardId: { in: getStatisticDto?.wardIds },
-        },
-        createdAt: undefined,
-      },
-    };
-
     if (getStatisticDto.dateType === EDateType.MONTH) {
       const startDate = moment(getStatisticDto?.dateValue)
         .startOf('month')
@@ -348,16 +352,39 @@ export class ReportService {
         .utc()
         .toDate();
 
-      conditions.where.createdAt = {
-        gte: startDate,
-        lte: endDate,
+      const conditions = {
+        where: {
+          OR: [
+            {
+              location: {
+                districtId: { in: getStatisticDto?.districtIds },
+                wardId: { in: getStatisticDto?.wardIds },
+              },
+            },
+            {
+              panel: {
+                location: {
+                  districtId: { in: getStatisticDto?.districtIds },
+                  wardId: { in: getStatisticDto?.wardIds },
+                },
+              },
+            },
+          ],
+          createdAt: {
+            gte: startDate,
+            lte: endDate,
+          },
+        },
       };
 
       const reports = await this.prismaService.report.findMany({
-        where: {
-          createdAt: {
-            gte: startDate,
-            lt: endDate,
+        ...conditions,
+        include: {
+          location: true,
+          panel: {
+            include: {
+              location: true,
+            },
           },
         },
       });
@@ -389,6 +416,10 @@ export class ReportService {
 
       const conditions = {
         where: {
+          location: {
+            districtId: { in: getStatisticDto?.districtIds },
+            wardId: { in: getStatisticDto?.wardIds },
+          },
           createdAt: {
             gte: startDate,
             lte: endDate,
