@@ -33,12 +33,15 @@ import { JwtGuard } from '../auth/guards';
 import { NotificationType } from '../../constants/notification';
 import { GetStatisticDto } from './dto/get-statistic.dto';
 import { IRequestWithUser } from '../auth/interfaces';
+import { UserService } from '../user/user.service';
+import { isNil } from 'lodash';
 
 @Controller('reports')
 export class ReportController {
   constructor(
     private readonly reportService: ReportService,
     private readonly eventEmitter: EventEmitter2,
+    private readonly userService: UserService,
   ) {}
 
   @UseGuards(JwtGuard)
@@ -130,22 +133,55 @@ export class ReportController {
   @Roles(UserRole.ward_officer)
   @Roles(UserRole.district_officer)
   @Roles(UserRole.cdo)
-  sseCreateNewReport(@Param() params: { userId: string }) {
+  async sseCreateNewReport(@Param() params: { userId: string }) {
     const { userId } = params;
     try {
+      const user = await this.userService.getUserInfoByUserId(+userId);
+
       return fromEvent(this.eventEmitter, NotificationType.new_report).pipe(
         map((data) => {
           const report = data['result'];
-          // eslint-disable-next-line no-constant-condition
-          if (true)
-            //TODO: check report belong to officer based on officer id
-            return { data: report, type: NotificationType.new_report };
-          else return null;
+          const userDistrict = user?.district?.id;
+          const userWard = user?.ward?.id;
+          if (!isNil(userDistrict)) {
+            const reportDistrictId =
+              report?.location?.districtId ??
+              report?.panel?.location?.districtId ??
+              null;
+
+            if (isNil(reportDistrictId)) {
+              return null;
+            }
+
+            if (reportDistrictId === userDistrict)
+              return JSON.stringify({
+                data: report,
+                type: NotificationType.new_report,
+              });
+          } else if (!isNil(userWard)) {
+            const reportWardId =
+              report?.location?.wardId ??
+              report?.panel?.location?.wardId ??
+              null;
+
+            if (isNil(reportWardId)) {
+              return null;
+            }
+
+            if (reportWardId === userWard) {
+              return JSON.stringify({
+                data: report,
+                type: NotificationType.new_report,
+              });
+            }
+          }
+
+          return null;
         }),
       );
     } catch (error) {
       console.error('Unexpected notification server error!');
-      return { data: null };
+      return null;
     }
   }
 
@@ -159,17 +195,17 @@ export class ReportController {
       ).pipe(
         map((data) => {
           const report = data['result'];
-          if (report?.user_uuid === userUuid)
-            return {
+          if (report?.userUuid === userUuid) {
+            return JSON.stringify({
               data: report,
               type: NotificationType.update_status_report,
-            };
-          else return null;
+            });
+          } else return null;
         }),
       );
     } catch (error) {
       console.error('Unexpected notification server error!');
-      return { data: null };
+      return null;
     }
   }
 
