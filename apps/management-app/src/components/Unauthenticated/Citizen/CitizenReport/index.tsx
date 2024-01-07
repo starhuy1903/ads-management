@@ -20,6 +20,7 @@ import {
   useController,
   useForm,
 } from 'react-hook-form';
+import { useSearchParams } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import { configs } from '@/configurations';
 import { useAppDispatch } from '@/store';
@@ -32,14 +33,18 @@ import {
   useCreateReportMutation,
   useGetReportTypesQuery,
 } from '@/store/api/citizen/reportApiSlice';
-import { isApiErrorResponse } from '@/store/api/helper';
 import { showModal } from '@/store/slice/modal';
 import { CreateReportForm, ReportPayload } from '@/types/report';
-import { showError, showSuccess } from '@/utils/toast';
+import reportStorage from '@/utils/sent-report';
+import { showSuccess } from '@/utils/toast';
 import ImagePreview from './ImagePreview';
 import UploadImageCard from './UploadImageCard';
 
 export default function CitizenReport() {
+  const [searchParams] = useSearchParams();
+  const locationId = searchParams.get('location');
+  const panelId = searchParams.get('panel');
+
   const dispatch = useAppDispatch();
   const [createReport, { isLoading }] = useCreateReportMutation();
   const { data: reportTypesRes, isSuccess: hasReportTypesData } =
@@ -116,21 +121,22 @@ export default function CitizenReport() {
 
   const onSubmit: SubmitHandler<CreateReportForm> = async (data) => {
     console.log(data);
-    const submitData: ReportPayload = {
+    const targetObject = locationId
+      ? { targetType: 'Location', locationId: Number(locationId) }
+      : { targetType: 'Panel', panelId: Number(panelId) };
+
+    const submitData = {
       ...data,
       userUuid: uuidv4(),
-      targetType: 'Location',
-    };
+      ...targetObject,
+    } as ReportPayload;
+
     try {
       const res = await createReport(submitData).unwrap();
-      console.log({ res });
-
-      // TODO: store userId to local storage
-      showSuccess('Report submitted successfully!');
-    } catch (err) {
-      showError(
-        isApiErrorResponse(err) ? err.data.message : 'Something went wrong',
-      );
+      reportStorage.addReportId(res.userUuid);
+      showSuccess('Submitted report successfully!');
+    } catch (error) {
+      // handled error
     }
   };
 

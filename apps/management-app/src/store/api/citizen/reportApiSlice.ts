@@ -24,6 +24,7 @@ export const reportApiToastSlice = apiWithToastSlice.injectEndpoints({
           },
         };
       },
+      transformResponse: (response: { data: CreatedReport }) => response.data,
     }),
     getReports: build.query<any, any>({
       query: () => ({

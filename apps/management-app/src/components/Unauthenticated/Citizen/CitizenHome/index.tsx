@@ -1,38 +1,28 @@
-import { Box, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 import { Avatar } from '@mui/material';
-import { useCallback, useState } from 'react';
-import { Marker, Popup } from 'react-map-gl';
+import { useCallback } from 'react';
+import { Marker } from 'react-map-gl';
 import { useAppDispatch } from '@/store';
 import Maps from '@/components/Common/Maps';
 import SidebarContainer from '@/components/Common/Sidebar';
 import { SidebarKey } from '@/constants/sidebar';
-import {
-  useGetLocationQuery,
-  useLazyGetPanelByLocationQuery,
-} from '@/store/api/citizen/locationApiSlice';
+import { useGetLocationQuery } from '@/store/api/citizen/locationApiSlice';
 import { showSidebar } from '@/store/slice/sidebar';
 import { AdLocation } from '@/types/location';
 
 export default function CitizenHome() {
   const dispatch = useAppDispatch();
   const { data: adLocationData } = useGetLocationQuery();
-  const [getPanels] = useLazyGetPanelByLocationQuery();
-  const [selectedLocation, setSelectedLocation] = useState<AdLocation | null>(
-    null,
-  );
 
   const handleViewDetailAd = useCallback(
-    async (loc: AdLocation) => {
-      setSelectedLocation(loc);
-      const res = await getPanels(loc.id).unwrap();
-
+    (loc: AdLocation) => {
       dispatch(
         showSidebar(SidebarKey.AD_DETAIL, {
-          panels: res.data,
+          location: loc,
         }),
       );
     },
-    [dispatch, getPanels],
+    [dispatch],
   );
 
   const renderChildren = () =>
@@ -64,7 +54,7 @@ export default function CitizenHome() {
       >
         <Maps>
           {renderChildren()}
-          {selectedLocation && (
+          {/* {selectedLocation && (
             <Popup
               closeOnClick={false}
               longitude={selectedLocation.long}
@@ -83,7 +73,7 @@ export default function CitizenHome() {
                 </Typography>
               </Box>
             </Popup>
-          )}
+          )} */}
         </Maps>
       </Box>
       <SidebarContainer style={{ minWidth: 250, maxWidth: 300 }} />

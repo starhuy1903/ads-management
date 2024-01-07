@@ -34,10 +34,9 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
 
 interface PanelCardProps {
   data: Panel;
-  onViewDetail: () => void;
 }
 
-export default function PanelCard({ data, onViewDetail }: PanelCardProps) {
+export default function PanelCard({ data }: PanelCardProps) {
   const navigate = useNavigate();
   const [expanded, setExpanded] = useState(false);
 
@@ -46,7 +45,7 @@ export default function PanelCard({ data, onViewDetail }: PanelCardProps) {
   };
 
   return (
-    <Card raised>
+    <Card raised sx={{ background: 'rgb(224 242 254)' }}>
       <CardHeader
         title={data.type.name}
         subheader={data.location.fullAddress}

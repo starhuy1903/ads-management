@@ -1,42 +1,47 @@
-import { Stack } from '@mui/material';
-import { useCallback } from 'react';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  Stack,
+  Typography,
+} from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { useAppDispatch } from '@/store';
-import { ModalKey } from '@/constants/modal';
-import { showModal } from '@/store/slice/modal';
-import { Panel } from '@/types/panel';
+import { useGetPanelByLocationQuery } from '@/store/api/citizen/locationApiSlice';
+import { AdLocation } from '@/types/location';
 import CenterLoading from '../CenterLoading';
+import LocationCard from '../LocationCard';
 import PanelCard from '../PanelCard';
 
 interface AdDetailProps {
-  panels: Array<Panel>;
+  location: AdLocation;
 }
 
-export default function AdDetail({ panels }: AdDetailProps) {
+export default function AdDetail({ location }: AdDetailProps) {
+  const { data: panels, isSuccess } = useGetPanelByLocationQuery(location.id);
+
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
-
-  const handleViewPanelDetail = useCallback(() => {
-    dispatch(
-      showModal(ModalKey.PANEL_DETAIL, {
-        panelId: 2, // TODO: replace with real panel
-      }),
-    );
-  }, [dispatch]);
-
-  if (!panels) {
+  if (!location || !isSuccess) {
     return <CenterLoading />;
   }
 
   return (
     <Stack spacing={2}>
-      {panels.map((panel) => (
-        <PanelCard
-          key={panel.id}
-          data={panel}
-          onViewDetail={handleViewPanelDetail}
-        />
-      ))}
+      <LocationCard data={location} />
+      {/* No data */}
+      {panels.length === 0 ? (
+        <Card sx={{ background: 'rgb(224 242 254)' }}>
+          <CardHeader title="Thông tin bảng quảng cáo" />
+          <CardContent>
+            <Typography fontWeight={500}>Chưa có dữ liệu</Typography>
+          </CardContent>
+        </Card>
+      ) : (
+        <>
+          {panels.map((panel) => (
+            <PanelCard key={panel.id} data={panel} />
+          ))}
+        </>
+      )}
     </Stack>
   );
 }

@@ -10,13 +10,14 @@ const locationApiToastSlice = apiWithToastSlice.injectEndpoints({
         url: 'locations/map',
       }),
     }),
-    getPanelByLocation: build.query<GetList<Panel>, number>({
+    getPanelByLocation: build.query<Panel[], number>({
       query: (locationId) => ({
         url: `locations/${locationId}/panels`,
       }),
+      transformResponse: (response: { data: Panel[] }) => response.data,
     }),
   }),
 });
 
-export const { useGetLocationQuery, useLazyGetPanelByLocationQuery } =
+export const { useGetLocationQuery, useGetPanelByLocationQuery } =
   locationApiToastSlice;
