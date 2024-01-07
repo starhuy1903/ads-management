@@ -21,19 +21,21 @@ export class RecaptchaMiddleware implements NestMiddleware {
     } // Bypass for development
 
     try {
-      const response = await axios.post(
-        `https://www.google.com/recaptcha/api/siteverify`,
-        {
+      const response = await axios({
+        method: 'post',
+        url: `https://www.google.com/recaptcha/api/siteverify`,
+        data: {
           secret: process.env.GOOGLE_RECAPTCHA_SECRET_KEY,
           response: recaptchaToken,
           remoteip,
         },
-      );
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
 
       if (!response.data.success) {
         return res.error({
           message: 'Validate Captcha failed!',
-          statusCode: 403,
+          statusCode: 429,
         });
       }
 
