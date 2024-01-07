@@ -12,7 +12,7 @@ import {
 } from '@mui/material';
 import IconButton, { IconButtonProps } from '@mui/material/IconButton';
 import { styled } from '@mui/material/styles';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Panel } from '@/types/panel';
 import { formatDate } from '@/utils/datetime';
@@ -39,6 +39,10 @@ interface PanelCardProps {
 export default function PanelCard({ data }: PanelCardProps) {
   const navigate = useNavigate();
   const [expanded, setExpanded] = useState(false);
+
+  const goToReportPage = useCallback(() => {
+    navigate(`/report?panel=${data.id}`);
+  }, [navigate, data.id]);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -77,7 +81,7 @@ export default function PanelCard({ data }: PanelCardProps) {
         <Button
           variant="outlined"
           color="error"
-          onClick={() => navigate('/report')}
+          onClick={goToReportPage}
           sx={{ textTransform: 'uppercase' }}
         >
           Báo cáo vi phạm
