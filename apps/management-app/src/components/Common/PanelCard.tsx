@@ -12,7 +12,7 @@ import {
 } from '@mui/material';
 import IconButton, { IconButtonProps } from '@mui/material/IconButton';
 import { styled } from '@mui/material/styles';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Panel } from '@/types/panel';
 import { formatDate } from '@/utils/datetime';
@@ -34,19 +34,22 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
 
 interface PanelCardProps {
   data: Panel;
-  onViewDetail: () => void;
 }
 
-export default function PanelCard({ data, onViewDetail }: PanelCardProps) {
+export default function PanelCard({ data }: PanelCardProps) {
   const navigate = useNavigate();
   const [expanded, setExpanded] = useState(false);
+
+  const goToReportPage = useCallback(() => {
+    navigate(`/report?panel=${data.id}`);
+  }, [navigate, data.id]);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
 
   return (
-    <Card raised>
+    <Card raised sx={{ background: 'rgb(224 242 254)' }}>
       <CardHeader
         title={data.type.name}
         subheader={data.location.fullAddress}
@@ -78,7 +81,7 @@ export default function PanelCard({ data, onViewDetail }: PanelCardProps) {
         <Button
           variant="outlined"
           color="error"
-          onClick={() => navigate('/report')}
+          onClick={goToReportPage}
           sx={{ textTransform: 'uppercase' }}
         >
           Báo cáo vi phạm
