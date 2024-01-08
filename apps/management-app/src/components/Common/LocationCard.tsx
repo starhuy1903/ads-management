@@ -32,7 +32,7 @@ export default function LocationCard({ data }: LocationCardProps) {
         <Typography fontStyle="italic">{data.type.name}</Typography>
         <Typography>{data.fullAddress}</Typography>
         <Typography fontWeight={500} fontStyle="italic">
-          {data.isPlaning ? 'CHƯA QUY HOẠCH' : 'ĐÃ QUY HOẠCH'}
+          {data.isPlanning ? 'CHƯA QUY HOẠCH' : 'ĐÃ QUY HOẠCH'}
         </Typography>
       </CardContent>
       <CardActions>
