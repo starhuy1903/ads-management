@@ -24,30 +24,17 @@ import { ModalKey } from '@/constants/modal';
 import { ImageFileConfig } from '@/constants/validation';
 import {
   useCreateUpdateLocationRequestMutation,
+  useGetAdsTypesOfficerQuery,
   useGetLocationByIdQuery,
   useGetLocationTypesOfficerQuery,
 } from '@/store/api/officerApiSlice';
 import { showModal } from '@/store/slice/modal';
 import {
+  AdsType,
   Location,
   LocationType,
   UpdateLocationDto,
 } from '@/types/officer-management';
-
-const adsTypes = [
-  {
-    id: 1,
-    name: 'Political agitation',
-  },
-  {
-    id: 2,
-    name: 'Commercial advertising',
-  },
-  {
-    id: 3,
-    name: 'Socialization',
-  },
-];
 
 export default function LocationEditing() {
   const dispatch = useAppDispatch();
@@ -59,11 +46,14 @@ export default function LocationEditing() {
 
   const [location, setLocation] = useState<Location | undefined>(undefined);
   const [locationTypes, setLocationTypes] = useState<LocationType[]>([]);
+  const [adsTypes, setAdsTypes] = useState<AdsType[]>([]);
 
   const { data: locationData, isLoading: locationLoading } =
     useGetLocationByIdQuery(locationId!);
   const { data: locationTypeData, isLoading: locationTypeLoading } =
     useGetLocationTypesOfficerQuery({});
+  const { data: adsTypeData, isLoading: adsTypeLoading } =
+    useGetAdsTypesOfficerQuery({});
 
   const { handleSubmit, register, control, formState, setValue, watch, reset } =
     useForm<UpdateLocationDto>({
@@ -71,9 +61,10 @@ export default function LocationEditing() {
     });
 
   useEffect(() => {
-    if (locationData && locationTypeData && userId) {
+    if (locationData && locationTypeData && adsTypeData && userId) {
       setLocation(locationData?.data);
       setLocationTypes(locationTypeData?.data);
+      setAdsTypes(adsTypeData?.data);
 
       reset({
         belongLocationId: locationData?.data?.id,
@@ -91,7 +82,7 @@ export default function LocationEditing() {
         districtId: locationData?.data?.district?.id,
       });
     }
-  }, [locationData, locationTypeData, reset, userId]);
+  }, [locationData, locationTypeData, adsTypeData, reset, userId]);
 
   useEffect(() => {
     if (location?.imageUrls) {
@@ -180,7 +171,14 @@ export default function LocationEditing() {
     }
   };
 
-  if (locationLoading || locationTypeLoading || !location || !locationTypes) {
+  if (
+    locationLoading ||
+    locationTypeLoading ||
+    adsTypeLoading ||
+    !location ||
+    !locationTypes ||
+    !adsTypes
+  ) {
     return <CenterLoading />;
   }
 

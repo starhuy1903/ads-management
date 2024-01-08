@@ -1,6 +1,7 @@
 import { AdsRequestStatus } from '@/constants/ads-request';
 import {
   AdsRequest,
+  AdsType,
   GetDetailResult,
   GetListResult,
   Location,
@@ -187,6 +188,21 @@ export const officerManagementApiSlice = apiSlice.injectEndpoints({
         },
       }),
     }),
+    getAdsTypesOfficer: build.query<
+      GetListResult<AdsType>,
+      {
+        page?: number;
+        take?: number;
+      }
+    >({
+      query: (arg) => ({
+        url: `/advertisement-types`,
+        params: {
+          page: arg.page,
+          take: arg.take,
+        },
+      }),
+    }),
   }),
 });
 
@@ -206,4 +222,5 @@ export const {
   useCreateUpdateLocationRequestMutation,
   useCreateUpdatePanelRequestMutation,
   useDeleteRequestMutation,
+  useGetAdsTypesOfficerQuery,
 } = officerManagementApiSlice;

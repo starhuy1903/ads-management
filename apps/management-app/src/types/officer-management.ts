@@ -55,6 +55,8 @@ export type PanelType = RefType;
 
 export type LocationType = RefType;
 
+export type AdsType = RefType;
+
 export type Report = BaseType & {
   fullName: string;
   email: string;
