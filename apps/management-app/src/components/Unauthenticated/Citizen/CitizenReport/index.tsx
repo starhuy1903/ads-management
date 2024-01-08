@@ -35,7 +35,6 @@ import {
 } from '@/store/api/citizen/reportApiSlice';
 import { showModal } from '@/store/slice/modal';
 import { CreateReportForm, ReportPayload } from '@/types/report';
-import reportStorage from '@/utils/sent-report';
 import { showSuccess } from '@/utils/toast';
 import ImagePreview from './ImagePreview';
 import UploadImageCard from './UploadImageCard';
