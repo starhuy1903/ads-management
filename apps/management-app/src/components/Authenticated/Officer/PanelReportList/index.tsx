@@ -16,6 +16,7 @@ import { ListWrapper } from '@/components/Common/Layout/ScreenWrapper';
 import { useGetReportsQuery } from '@/store/api/officerApiSlice';
 import { Report } from '@/types/officer-management';
 import { formatDateTime } from '@/utils/format-date';
+import { capitalize } from '@/utils/format-string';
 
 const titles = [
   'ID',
@@ -78,7 +79,9 @@ export default function PanelReportList() {
                   <TableCell align="center">
                     {formatDateTime(report?.updatedAt)}
                   </TableCell>
-                  <TableCell align="center">{report?.status}</TableCell>
+                  <TableCell align="center">
+                    {capitalize(report?.status)}
+                  </TableCell>
                   <TableCell>
                     <Box
                       sx={{

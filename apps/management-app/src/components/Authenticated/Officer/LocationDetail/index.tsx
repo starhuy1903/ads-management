@@ -29,8 +29,14 @@ export default function LocationDetail() {
 
   return (
     <DetailWrapper label="Advertising Location Details">
-      <Typography variant="h6">Information</Typography>
-      <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+      <Typography variant="h6">Location</Typography>
+      <Stack
+        direction={{ xs: 'column', sm: 'row' }}
+        spacing={2}
+        sx={{
+          mb: 1,
+        }}
+      >
         <ReadOnlyTextField label="ID" value={location?.id} />
 
         <ReadOnlyTextField label="Name" value={location?.name} />
@@ -55,8 +61,6 @@ export default function LocationDetail() {
           value={formatDateTime(location?.updatedAt)}
         />
       </Stack>
-
-      <Typography variant="h6">Location</Typography>
       <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
         <ReadOnlyTextField label="Address" value={location?.fullAddress} />
 

@@ -11,6 +11,7 @@ import { DetailWrapper } from '@/components/Common/Layout/ScreenWrapper';
 import { useGetReportByIdQuery } from '@/store/api/officerApiSlice';
 import { Report } from '@/types/officer-management';
 import { formatDateTime } from '@/utils/format-date';
+import { capitalize } from '@/utils/format-string';
 
 export default function LocationReportDetail() {
   const [report, setReport] = useState<Report | undefined>(undefined);
@@ -29,25 +30,14 @@ export default function LocationReportDetail() {
 
   return (
     <DetailWrapper label="Location Report Details">
-      {/* Report information */}
-      <Typography variant="h6">Report information</Typography>
-      <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-        <ReadOnlyTextField label="ID" value={report?.id} />
-
-        <ReadOnlyTextField label="Type" value={report?.reportType?.name} />
-
-        <ReadOnlyTextField
-          label="Created Time"
-          value={formatDateTime(report?.createdAt)}
-        />
-
-        <ReadOnlyTextField
-          label="Updated Time"
-          value={formatDateTime(report?.updatedAt)}
-        />
-
-        <ReadOnlyTextField label="Status" value={report?.status} />
-      </Stack>
+      <Typography
+        variant="h5"
+        sx={{
+          fontWeight: 'medium',
+        }}
+      >
+        Location Information
+      </Typography>
 
       <Typography variant="h6">Location</Typography>
       <Stack
@@ -58,6 +48,18 @@ export default function LocationReportDetail() {
         }}
       >
         <ReadOnlyTextField label="ID" value={report?.location?.id} />
+
+        <ReadOnlyTextField label="Name" value={report?.location?.name} />
+
+        <ReadOnlyTextField
+          label="Planned"
+          value={report?.location?.isPlanning ? 'Yes' : 'No'}
+        />
+
+        <ReadOnlyTextField
+          label="Status"
+          value={capitalize(report?.location?.status)}
+        />
 
         <ReadOnlyTextField
           label="Created Time"
@@ -71,11 +73,6 @@ export default function LocationReportDetail() {
           value={
             report?.location ? formatDateTime(report?.location?.updatedAt) : ''
           }
-        />
-
-        <ReadOnlyTextField
-          label="Panned"
-          value={report?.location?.isPlanning ? 'Yes' : 'No'}
         />
       </Stack>
       <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
@@ -91,24 +88,55 @@ export default function LocationReportDetail() {
           value={report?.location?.district?.name}
         />
 
-        <ReadOnlyTextField label="Lat" value={report?.location?.lat} />
+        <ReadOnlyTextField label="Latitude" value={report?.location?.lat} />
 
-        <ReadOnlyTextField label="Long" value={report?.location?.long} />
+        <ReadOnlyTextField label="Longtitude" value={report?.location?.long} />
       </Stack>
 
-      {/* Reporter */}
-      <Typography variant="h6">Reporter information</Typography>
-      <Stack
-        direction={{ xs: 'column', sm: 'row' }}
-        spacing={2}
+      <Typography variant="h6">Classification</Typography>
+      <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+        <ReadOnlyTextField label="Type" value={report?.location?.type?.name} />
+
+        <ReadOnlyTextField
+          label="Advertising Type"
+          value={report?.location?.adType?.name}
+        />
+      </Stack>
+
+      <ImageListField images={report?.location?.imageUrls} />
+
+      <Typography
+        variant="h5"
         sx={{
-          mb: 1,
+          fontWeight: 'medium',
         }}
       >
-        <ReadOnlyTextField label="Full name" value={report?.fullName} />
+        Report Information
+      </Typography>
+
+      <Typography variant="h6">Report</Typography>
+      <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+        <ReadOnlyTextField label="ID" value={report?.id} />
+
+        <ReadOnlyTextField label="Type" value={report?.reportType?.name} />
+
+        <ReadOnlyTextField label="Full Name" value={report?.fullName} />
 
         <ReadOnlyTextField label="Email" value={report?.email} />
+
+        <ReadOnlyTextField label="Status" value={capitalize(report?.status)} />
+
+        <ReadOnlyTextField
+          label="Created Time"
+          value={formatDateTime(report?.createdAt)}
+        />
+
+        <ReadOnlyTextField
+          label="Updated Time"
+          value={formatDateTime(report?.updatedAt)}
+        />
       </Stack>
+
       <TextField
         label="Content"
         fullWidth
@@ -122,9 +150,19 @@ export default function LocationReportDetail() {
 
       <ImageListField images={report?.imageUrls} />
 
-      {/* Solution */}
       <Typography variant="h6">Solution</Typography>
-      {report?.resolvedContent === '' ? (
+      {report?.resolvedContent.length > 1 ? (
+        <TextField
+          label="Response content"
+          fullWidth
+          InputProps={{
+            readOnly: true,
+          }}
+          value={report?.resolvedContent}
+          multiline
+          rows={3}
+        />
+      ) : (
         <>
           <Typography
             variant="body1"
@@ -143,17 +181,6 @@ export default function LocationReportDetail() {
             </Button>
           </Link>
         </>
-      ) : (
-        <TextField
-          label="Response content"
-          fullWidth
-          InputProps={{
-            readOnly: true,
-          }}
-          value={report?.resolvedContent}
-          multiline
-          rows={3}
-        />
       )}
     </DetailWrapper>
   );

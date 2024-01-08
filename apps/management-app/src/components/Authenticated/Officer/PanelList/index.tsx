@@ -26,9 +26,9 @@ const titles = [
   'Ward',
   'District',
   'Company Email',
-  'Status',
   'Created Time',
   'Updated Time',
+  'Status',
   '',
 ];
 
@@ -85,13 +85,13 @@ export default function PanelList() {
                   </TableCell>
                   <TableCell align="center">{panel?.companyEmail}</TableCell>
                   <TableCell align="center">
-                    {capitalize(panel?.status)}
-                  </TableCell>
-                  <TableCell align="center">
                     {formatDateTime(panel?.createdAt)}
                   </TableCell>
                   <TableCell align="center">
                     {formatDateTime(panel?.updatedAt)}
+                  </TableCell>
+                  <TableCell align="center">
+                    {capitalize(panel?.status)}
                   </TableCell>
                   <TableCell>
                     <Box

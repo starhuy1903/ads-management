@@ -26,9 +26,9 @@ const titles = [
   'Ward',
   'District',
   'Planned',
-  'Status',
   'Created Time',
   'Updated Time',
+  'Status',
   '',
 ];
 
@@ -80,13 +80,13 @@ export default function LocationList() {
                     location?.isPlanning ? 'Yes' : 'No'
                   }`}</TableCell>
                   <TableCell align="center">
-                    {capitalize(location?.status)}
-                  </TableCell>
-                  <TableCell align="center">
                     {formatDateTime(location?.createdAt)}
                   </TableCell>
                   <TableCell align="center">
                     {formatDateTime(location?.updatedAt)}
+                  </TableCell>
+                  <TableCell align="center">
+                    {capitalize(location?.status)}
                   </TableCell>
                   <TableCell>
                     <Box

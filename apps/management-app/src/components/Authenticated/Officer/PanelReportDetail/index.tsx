@@ -11,6 +11,7 @@ import { DetailWrapper } from '@/components/Common/Layout/ScreenWrapper';
 import { useGetReportByIdQuery } from '@/store/api/officerApiSlice';
 import { Report } from '@/types/officer-management';
 import { formatDateTime } from '@/utils/format-date';
+import { capitalize } from '@/utils/format-string';
 
 export default function PanelReportDetail() {
   const [report, setReport] = useState<Report | undefined>(undefined);
@@ -29,24 +30,45 @@ export default function PanelReportDetail() {
 
   return (
     <DetailWrapper label="Panel Report Details">
-      {/* Report information */}
-      <Typography variant="h6">Report information</Typography>
-      <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-        <ReadOnlyTextField label="ID" value={report?.id} />
+      <Typography
+        variant="h5"
+        sx={{
+          fontWeight: 'medium',
+        }}
+      >
+        Panel Information
+      </Typography>
 
-        <ReadOnlyTextField label="Type" value={report?.reportType?.name} />
+      <Typography variant="h6">Panel</Typography>
+      <Stack
+        direction={{ xs: 'column', sm: 'row' }}
+        spacing={2}
+        sx={{
+          mb: 1,
+        }}
+      >
+        <ReadOnlyTextField label="ID" value={report?.panel?.id} />
+
+        <ReadOnlyTextField label="Type" value={report?.panel?.type?.name} />
+
+        <ReadOnlyTextField label="Width" value={report?.panel?.width} />
+
+        <ReadOnlyTextField label="Height" value={report?.panel?.height} />
+
+        <ReadOnlyTextField
+          label="Status"
+          value={capitalize(report?.panel?.status)}
+        />
 
         <ReadOnlyTextField
           label="Created Time"
-          value={formatDateTime(report?.createdAt)}
+          value={report?.panel ? formatDateTime(report?.panel?.createdAt) : ''}
         />
 
         <ReadOnlyTextField
           label="Updated Time"
-          value={formatDateTime(report?.updatedAt)}
+          value={report?.panel ? formatDateTime(report?.panel?.updatedAt) : ''}
         />
-
-        <ReadOnlyTextField label="Status" value={report?.status} />
       </Stack>
 
       <Typography variant="h6">Location</Typography>
@@ -57,47 +79,38 @@ export default function PanelReportDetail() {
           mb: 1,
         }}
       >
-        <ReadOnlyTextField label="ID" value={report?.location?.id} />
+        <ReadOnlyTextField label="Name" value={report?.panel?.location?.name} />
 
         <ReadOnlyTextField
-          label="Created Time"
-          value={
-            report?.location ? formatDateTime(report?.location?.createdAt) : ''
-          }
+          label="Address"
+          value={report?.panel?.location?.fullAddress}
         />
 
         <ReadOnlyTextField
-          label="Updated Time"
-          value={
-            report?.location ? formatDateTime(report?.location?.updatedAt) : ''
-          }
+          label="Ward"
+          value={report?.panel?.location?.ward?.name}
         />
 
         <ReadOnlyTextField
-          label="Panned"
-          value={report?.location?.isPlanning ? 'Yes' : 'No'}
+          label="District"
+          value={report?.panel?.location?.district?.name}
         />
       </Stack>
       <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
         <ReadOnlyTextField
-          label="Address"
-          value={report?.location?.fullAddress}
+          label="Type"
+          value={report?.panel?.location?.type?.name}
         />
-
-        <ReadOnlyTextField label="Ward" value={report?.location?.ward?.name} />
 
         <ReadOnlyTextField
-          label="District"
-          value={report?.location?.district?.name}
+          label="Advertising Type"
+          value={report?.panel?.location?.adType?.name}
         />
-
-        <ReadOnlyTextField label="Lat" value={report?.location?.lat} />
-
-        <ReadOnlyTextField label="Long" value={report?.location?.long} />
       </Stack>
 
-      {/* Reporter */}
-      <Typography variant="h6">Reporter information</Typography>
+      <ImageListField images={report?.panel?.imageUrls} />
+
+      <Typography variant="h6">Company</Typography>
       <Stack
         direction={{ xs: 'column', sm: 'row' }}
         spacing={2}
@@ -105,9 +118,65 @@ export default function PanelReportDetail() {
           mb: 1,
         }}
       >
-        <ReadOnlyTextField label="Full name" value={report?.fullName} />
+        <ReadOnlyTextField label="Email" value={report?.panel?.companyEmail} />
+
+        <ReadOnlyTextField label="Phone" value={report?.panel?.companyNumber} />
+
+        <ReadOnlyTextField
+          label="Created Contract Time"
+          value={
+            report?.panel
+              ? formatDateTime(report?.panel?.createContractDate)
+              : ''
+          }
+        />
+
+        <ReadOnlyTextField
+          label="Expired Contract Time"
+          value={
+            report?.panel
+              ? formatDateTime(report?.panel?.expiredContractDate)
+              : ''
+          }
+        />
+      </Stack>
+
+      <Typography
+        variant="h5"
+        sx={{
+          fontWeight: 'medium',
+        }}
+      >
+        Report Information
+      </Typography>
+
+      <Typography variant="h6">Report</Typography>
+      <Stack
+        direction={{ xs: 'column', sm: 'row' }}
+        spacing={2}
+        sx={{
+          mb: 1,
+        }}
+      >
+        <ReadOnlyTextField label="ID" value={report?.id} />
+
+        <ReadOnlyTextField label="Full Name" value={report?.fullName} />
 
         <ReadOnlyTextField label="Email" value={report?.email} />
+
+        <ReadOnlyTextField label="Type" value={report?.reportType?.name} />
+
+        <ReadOnlyTextField label="Status" value={capitalize(report?.status)} />
+
+        <ReadOnlyTextField
+          label="Created Time"
+          value={formatDateTime(report?.createdAt)}
+        />
+
+        <ReadOnlyTextField
+          label="Updated Time"
+          value={formatDateTime(report?.updatedAt)}
+        />
       </Stack>
       <TextField
         label="Content"
@@ -120,31 +189,10 @@ export default function PanelReportDetail() {
         rows={5}
       />
 
-      {/* Images */}
       <ImageListField images={report?.imageUrls} />
 
-      {/* Solution */}
       <Typography variant="h6">Solution</Typography>
-      {report?.resolvedContent === '' ? (
-        <>
-          <Typography
-            variant="body1"
-            sx={{ mb: 2, fontStyle: 'italic', color: 'gray' }}
-          >
-            Not processed yet.
-          </Typography>
-
-          <Link to={`/location-reports/${report?.id}/response`}>
-            <Button
-              variant="contained"
-              color="primary"
-              sx={{ mt: 2, color: 'white' }}
-            >
-              Respond to report
-            </Button>
-          </Link>
-        </>
-      ) : (
+      {report?.resolvedContent.length > 1 ? (
         <TextField
           label="Response content"
           fullWidth
@@ -155,6 +203,25 @@ export default function PanelReportDetail() {
           multiline
           rows={3}
         />
+      ) : (
+        <>
+          <Typography
+            variant="body1"
+            sx={{ mb: 2, fontStyle: 'italic', color: 'gray' }}
+          >
+            Not processed yet.
+          </Typography>
+
+          <Link to={`/panel-reports/${report?.id}/response`}>
+            <Button
+              variant="contained"
+              color="primary"
+              sx={{ mt: 2, color: 'white' }}
+            >
+              Respond to report
+            </Button>
+          </Link>
+        </>
       )}
     </DetailWrapper>
   );
