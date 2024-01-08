@@ -54,6 +54,10 @@ export class UserService {
     }
   }
 
+  async getUserInfoByUserId(userId: number) {
+    return await this.getUserInfo(userId);
+  }
+
   async updateUserInfo(userId: number, dto: UpdateUserDto) {
     // Check if user exists
     const user = await this.prismaService.user.findUnique({

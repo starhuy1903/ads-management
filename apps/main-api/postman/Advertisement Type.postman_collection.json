@@ -1,0 +1,125 @@
+{
+	"info": {
+		"_postman_id": "7edfb5ab-4f55-4c7c-9f4b-93f4c5f11c68",
+		"name": "Advertisement Type",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18634609"
+	},
+	"item": [
+		{
+			"name": "Find all",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{LOCAL_URL}}/api/advertisement-types",
+					"host": [
+						"{{LOCAL_URL}}"
+					],
+					"path": [
+						"api",
+						"advertisement-types"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{LOCAL_URL}}/api/advertisement-types/1",
+					"host": [
+						"{{LOCAL_URL}}"
+					],
+					"path": [
+						"api",
+						"advertisement-types",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find one",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{LOCAL_URL}}/api/advertisement-types/1",
+					"host": [
+						"{{LOCAL_URL}}"
+					],
+					"path": [
+						"api",
+						"advertisement-types",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"test\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{LOCAL_URL}}/api/advertisement-types",
+					"host": [
+						"{{LOCAL_URL}}"
+					],
+					"path": [
+						"api",
+						"advertisement-types"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"test Update\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{LOCAL_URL}}/api/advertisement-types/1",
+					"host": [
+						"{{LOCAL_URL}}"
+					],
+					"path": [
+						"api",
+						"advertisement-types",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
