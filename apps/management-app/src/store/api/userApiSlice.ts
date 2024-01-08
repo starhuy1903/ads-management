@@ -11,9 +11,9 @@ import {
   VerifyPayload,
 } from '../../types/user';
 import { setIsLoggedIn, setProfile } from '../slice/userSlice';
-import { apiSlice } from './baseApiSlice';
+import { apiSlice, apiWithToastSlice } from './baseApiSlice';
 
-export const userApiSlice = apiSlice.injectEndpoints({
+const userApiToastSlice = apiWithToastSlice.injectEndpoints({
   endpoints: (build) => ({
     login: build.mutation<LoginResponse, CredentialPayload>({
       query: (body) => ({
@@ -27,13 +27,6 @@ export const userApiSlice = apiSlice.injectEndpoints({
         dispatch(setIsLoggedIn(true));
         auth.setToken(data.accessToken, data.refreshToken);
       },
-    }),
-    logout: build.mutation<MessageResponse, LogoutPayload>({
-      query: (body) => ({
-        url: 'auth/logout',
-        method: 'POST',
-        body,
-      }),
     }),
     verify: build.mutation<MessageResponse, VerifyPayload>({
       query: (body) => ({
@@ -69,11 +62,24 @@ export const userApiSlice = apiSlice.injectEndpoints({
   }),
 });
 
+const userApiSlice = apiSlice.injectEndpoints({
+  endpoints: (build) => ({
+    logout: build.mutation<MessageResponse, LogoutPayload>({
+      query: (body) => ({
+        url: 'auth/logout',
+        method: 'POST',
+        body,
+      }),
+    }),
+  }),
+});
+
 export const {
   useLoginMutation,
   useLazyGetProfileQuery,
-  useLogoutMutation,
   useVerifyMutation,
   useForgotPasswordMutation,
   useResetPasswordMutation,
-} = userApiSlice;
+} = userApiToastSlice;
+
+export const { useLogoutMutation } = userApiSlice;

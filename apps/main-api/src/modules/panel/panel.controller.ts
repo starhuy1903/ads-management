@@ -77,6 +77,21 @@ export class PanelController {
     }
   }
 
+  @Get('map')
+  async findAllByCrew(@Query() pageOptionsPanelDto: PageOptionsPanelDto) {
+    try {
+      return await this.panelService.findAllByCrew(pageOptionsPanelDto);
+    } catch (error) {
+      throw new HttpException(
+        {
+          statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+          message: error.message || 'Internal Server Error',
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
   @Get(':id')
   async findOne(@Param('id') id: string, @Res() res: CustomResponse) {
     try {

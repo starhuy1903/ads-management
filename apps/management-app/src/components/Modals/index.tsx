@@ -3,16 +3,16 @@ import { ModalKey } from '@/constants/modal';
 import { showModal } from '@/store/slice/modal';
 import CancelRequest from './CancelRequest';
 import CreateCategory from './CreateCategory';
-import CreateItem from './CreateItem';
 import CropImage from './CropImage';
 import GeneralModal from './GeneralModal';
+import PanelDetail from './PanelDetail';
 
 const modalsMap: { [modalKey: string]: any } = {
   [ModalKey.CREATE_CATEGORY]: CreateCategory,
-  [ModalKey.CERATE_ITEM]: CreateItem,
   [ModalKey.CROP_IMAGE]: CropImage,
   [ModalKey.GENERAL]: GeneralModal,
   [ModalKey.CANCEL_REQUEST]: CancelRequest,
+  [ModalKey.PANEL_DETAIL]: PanelDetail,
 };
 
 export function ModalContainer() {

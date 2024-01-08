@@ -1,4 +1,4 @@
-import { AdsLocation } from './location';
+import { AdLocation } from './location';
 
 export type PanelType = {
   id: number;
@@ -18,8 +18,8 @@ export type Panel = {
   companyNumber: string;
   createdAt: string;
   updatedAt: string;
-  status: string;
-  belongPanelId: number;
+  status: string; // TODO: use enum "APPROVED"
+  belongPanelId: number | null;
   type: PanelType;
-  location: AdsLocation;
+  location: AdLocation;
 };

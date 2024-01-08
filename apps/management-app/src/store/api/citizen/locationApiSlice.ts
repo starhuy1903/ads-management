@@ -1,22 +1,23 @@
 import { GetList } from '@/types/common';
-import { AdsLocation } from '@/types/location';
+import { AdLocation } from '@/types/location';
 import { Panel } from '@/types/panel';
-import { apiSlice } from '../baseApiSlice';
+import { apiWithToastSlice } from '../baseApiSlice';
 
-const locationApiSlice = apiSlice.injectEndpoints({
+const locationApiToastSlice = apiWithToastSlice.injectEndpoints({
   endpoints: (build) => ({
-    getLocation: build.query<GetList<AdsLocation>, void>({
+    getLocation: build.query<GetList<AdLocation>, void>({
       query: () => ({
-        url: 'locations',
+        url: 'locations/map',
       }),
     }),
-    getPanelByLocation: build.query<GetList<Panel>, { locationId: number }>({
+    getPanelByLocation: build.query<Panel[], number>({
       query: (locationId) => ({
         url: `locations/${locationId}/panels`,
       }),
+      transformResponse: (response: { data: Panel[] }) => response.data,
     }),
   }),
 });
 
-export const { useGetLocationQuery, useLazyGetPanelByLocationQuery } =
-  locationApiSlice;
+export const { useGetLocationQuery, useGetPanelByLocationQuery } =
+  locationApiToastSlice;

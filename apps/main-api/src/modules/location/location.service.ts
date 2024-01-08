@@ -115,6 +115,14 @@ export class LocationService {
       conditions.where.wardId = { in: pageOptionsLocationDto?.wards };
     }
 
+    const pageOption =
+      pageOptionsLocationDto.page && pageOptionsLocationDto.take
+        ? {
+            skip: pageOptionsLocationDto.skip,
+            take: pageOptionsLocationDto.take,
+          }
+        : undefined;
+
     const [result, totalCount] = await Promise.all([
       this.prismaService.location.findMany({
         include: {
@@ -129,8 +137,44 @@ export class LocationService {
           ward: true,
         },
         ...conditions,
-        skip: pageOptionsLocationDto.skip,
-        take: pageOptionsLocationDto.take,
+        ...pageOption,
+      }),
+      this.prismaService.location.count({
+        ...conditions,
+      }),
+    ]);
+    return {
+      data: result,
+      totalPages: Math.ceil(totalCount / pageOptionsLocationDto.take),
+      totalCount,
+    };
+  }
+
+  async findAllByCrew(pageOptionsLocationDto: PageOptionsLocationDto) {
+    const conditions = {
+      orderBy: [
+        {
+          createdAt: pageOptionsLocationDto.order,
+        },
+      ],
+      where: {
+        status: LocationStatus.APPROVED,
+      },
+    };
+    const [result, totalCount] = await Promise.all([
+      this.prismaService.location.findMany({
+        include: {
+          panel: {
+            include: {
+              type: true,
+            },
+          },
+          type: true,
+          adType: true,
+          district: true,
+          ward: true,
+        },
+        ...conditions,
       }),
       this.prismaService.location.count({
         ...conditions,

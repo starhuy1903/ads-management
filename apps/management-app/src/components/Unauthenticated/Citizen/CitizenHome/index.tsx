@@ -1,56 +1,32 @@
-import { Box, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 import { Avatar } from '@mui/material';
-import { useCallback, useState } from 'react';
-import { Marker, Popup } from 'react-map-gl';
+import { useCallback } from 'react';
+import { Marker } from 'react-map-gl';
 import { useAppDispatch } from '@/store';
 import Maps from '@/components/Common/Maps';
 import SidebarContainer from '@/components/Common/Sidebar';
 import { SidebarKey } from '@/constants/sidebar';
-import {
-  useGetLocationQuery,
-  useLazyGetPanelByLocationQuery,
-} from '@/store/api/citizen/locationApiSlice';
-import { isApiErrorResponse } from '@/store/api/helper';
+import { useGetLocationQuery } from '@/store/api/citizen/locationApiSlice';
 import { showSidebar } from '@/store/slice/sidebar';
-import { AdsLocation } from '@/types/location';
-import { showError } from '@/utils/toast';
+import { AdLocation } from '@/types/location';
 
 export default function CitizenHome() {
   const dispatch = useAppDispatch();
-  const { data: adLocationData, isLoading: fetchingAdLocation } =
-    useGetLocationQuery();
-  const [getPanels, { isLoading: fetchingPanels }] =
-    useLazyGetPanelByLocationQuery();
-  const [selectedLocation, setSelectedLocation] = useState<AdsLocation | null>(
-    null,
-  );
-  // console.log({ data });
+  const { data: adLocationData } = useGetLocationQuery();
 
   const handleViewDetailAd = useCallback(
-    async (loc: AdsLocation) => {
-      setSelectedLocation(loc);
-      try {
-        const res = await getPanels({ locationId: loc.id }).unwrap();
-        console.log({ res });
-
-        dispatch(
-          showSidebar(SidebarKey.AD_DETAIL, {
-            panels: res.data,
-          }),
-        );
-      } catch (error) {
-        showError(
-          isApiErrorResponse(error)
-            ? error.data.message
-            : 'Something went wrong',
-        );
-      }
+    (loc: AdLocation) => {
+      dispatch(
+        showSidebar(SidebarKey.AD_DETAIL, {
+          location: loc,
+        }),
+      );
     },
-    [dispatch, getPanels],
+    [dispatch],
   );
 
-  const renderChildren = () => {
-    return adLocationData?.data.map((loc) => (
+  const renderChildren = () =>
+    adLocationData?.data.map((loc) => (
       <Marker
         key={loc.id}
         longitude={loc.long}
@@ -64,7 +40,6 @@ export default function CitizenHome() {
         />
       </Marker>
     ));
-  };
 
   return (
     <>
@@ -79,7 +54,7 @@ export default function CitizenHome() {
       >
         <Maps>
           {renderChildren()}
-          {selectedLocation && (
+          {/* {selectedLocation && (
             <Popup
               closeOnClick={false}
               longitude={selectedLocation.long}
@@ -98,10 +73,10 @@ export default function CitizenHome() {
                 </Typography>
               </Box>
             </Popup>
-          )}
+          )} */}
         </Maps>
       </Box>
-      <SidebarContainer style={{ minWidth: 250 }} />
+      <SidebarContainer style={{ minWidth: 250, maxWidth: 300 }} />
     </>
   );
 }

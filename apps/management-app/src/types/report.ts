@@ -10,12 +10,19 @@ export interface CreateReportForm {
 
 export type ReportTargetType = 'Location' | 'Panel';
 
-export interface ReportPayload extends CreateReportForm {
+type LocationReport = {
   userUuid: string;
-  targetType: ReportTargetType;
-  panelId?: number;
-  locationId?: number;
-}
+  targetType: 'Location';
+  locationId: number;
+} & CreateReportForm;
+
+type PanelReport = {
+  userUuid: string;
+  targetType: 'Panel';
+  panelId: number;
+} & CreateReportForm;
+
+export type ReportPayload = LocationReport | PanelReport;
 
 export interface CreatedReport {
   id: number;

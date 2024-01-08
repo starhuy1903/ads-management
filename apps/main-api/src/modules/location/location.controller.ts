@@ -87,6 +87,21 @@ export class LocationController {
     }
   }
 
+  @Get('map')
+  async findAllByCrew(@Query() pageOptionsLocationDto: PageOptionsLocationDto) {
+    try {
+      return await this.locationService.findAllByCrew(pageOptionsLocationDto);
+    } catch (error) {
+      throw new HttpException(
+        {
+          statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+          message: error.message || 'Internal Server Error',
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
   @Get(':id/panels')
   async findAllPanelByLocation(
     @Query() pageOptionsLocationDto: PageOptionsLocationDto,
