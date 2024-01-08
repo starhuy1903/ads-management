@@ -1,5 +1,6 @@
 import { GetList } from '@/types/common';
 import { CreatedReport, ReportPayload, ReportType } from '@/types/report';
+import reportStorage from '@/utils/sent-report';
 import { apiWithToastSlice } from '../baseApiSlice';
 
 export const reportApiToastSlice = apiWithToastSlice.injectEndpoints({
@@ -11,7 +12,7 @@ export const reportApiToastSlice = apiWithToastSlice.injectEndpoints({
           if (key === 'captcha') {
             return;
           }
-          bodyFormData.append(key, value as string | Blob);
+          bodyFormData.append(key, value);
         });
 
         return {
@@ -19,10 +20,13 @@ export const reportApiToastSlice = apiWithToastSlice.injectEndpoints({
           method: 'POST',
           body: bodyFormData,
           headers: {
-            'Content-Type': 'multipart/form-data;',
             'Recaptcha-Token': body.captcha,
           },
         };
+      },
+      onQueryStarted: async (_, { queryFulfilled }) => {
+        const { data } = await queryFulfilled;
+        reportStorage.addReportId(data.userUuid);
       },
       transformResponse: (response: { data: CreatedReport }) => response.data,
     }),

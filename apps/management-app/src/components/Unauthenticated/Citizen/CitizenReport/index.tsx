@@ -120,7 +120,6 @@ export default function CitizenReport() {
   }) => <UploadImageCard open={open} disabled={disabled} />;
 
   const onSubmit: SubmitHandler<CreateReportForm> = async (data) => {
-    console.log(data);
     const targetObject = locationId
       ? { targetType: 'Location', locationId: Number(locationId) }
       : { targetType: 'Panel', panelId: Number(panelId) };
@@ -132,8 +131,7 @@ export default function CitizenReport() {
     } as ReportPayload;
 
     try {
-      const res = await createReport(submitData).unwrap();
-      reportStorage.addReportId(res.userUuid);
+      await createReport(submitData).unwrap();
       showSuccess('Submitted report successfully!');
     } catch (error) {
       // handled error
