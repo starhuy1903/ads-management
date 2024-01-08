@@ -36,11 +36,15 @@ export default function LocationList() {
   const [page, setPage] = useState<number>(1);
   const [locations, setLocations] = useState<Location[] | undefined>([]);
 
-  const { data, isLoading } = useGetLocationsQuery({
+  const { data, isLoading, refetch } = useGetLocationsQuery({
     page: page,
     take: 10,
     status: LocationStatus?.APPROVED,
   });
+
+  useEffect(() => {
+    refetch();
+  }, [locations, page, refetch]);
 
   useEffect(() => {
     if (data) {

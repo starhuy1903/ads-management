@@ -50,6 +50,10 @@ export default function LicensingRequestList() {
     type: AdsRequestType?.APPROVED_PANEL,
   });
 
+  useEffect(() => {
+    refetch();
+  }, [requests, page, refetch]);
+
   const [deleteRequest] = useDeleteRequestMutation();
 
   const handleDelete = async (id: string) => {
@@ -62,10 +66,6 @@ export default function LicensingRequestList() {
       showError(`Delete request #${id} failed!`);
     }
   };
-
-  useEffect(() => {
-    refetch();
-  }, [page, refetch]);
 
   useEffect(() => {
     if (data) {

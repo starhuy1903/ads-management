@@ -28,7 +28,11 @@ export default function ReportResponse() {
 
   const [report, setReport] = useState<Report | undefined>(undefined);
   const { reportId } = useParams<{ reportId: string }>();
-  const { data, isLoading } = useGetReportByIdQuery(reportId!);
+  const { data, isLoading, refetch } = useGetReportByIdQuery(reportId!);
+
+  useEffect(() => {
+    refetch();
+  }, [report, refetch]);
 
   const { handleSubmit, register, formState, control, reset } =
     useForm<UpdateReportDto>({

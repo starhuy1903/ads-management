@@ -15,7 +15,11 @@ import { capitalize } from '@/utils/format-string';
 export default function PanelDetail() {
   const [panel, setPanel] = useState<Panel | undefined>(undefined);
   const { panelId } = useParams<{ panelId: string }>();
-  const { data, isLoading } = useGetPanelByIdQuery(panelId!);
+  const { data, isLoading, refetch } = useGetPanelByIdQuery(panelId!);
+
+  useEffect(() => {
+    refetch();
+  }, [panel, refetch]);
 
   useEffect(() => {
     if (data) {

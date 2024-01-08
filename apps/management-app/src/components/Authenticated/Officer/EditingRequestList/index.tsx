@@ -58,6 +58,10 @@ export default function EditingRequestList() {
     targetType: targetType,
   });
 
+  useEffect(() => {
+    refetch();
+  }, [requests, page, refetch]);
+
   const [deleteRequest] = useDeleteRequestMutation();
 
   const handleDelete = async (id: string) => {
@@ -70,10 +74,6 @@ export default function EditingRequestList() {
       showError(`Delete request #${id} failed!`);
     }
   };
-
-  useEffect(() => {
-    refetch();
-  }, [page, refetch]);
 
   useEffect(() => {
     if (data) {

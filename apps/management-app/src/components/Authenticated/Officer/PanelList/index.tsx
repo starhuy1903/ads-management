@@ -36,10 +36,14 @@ export default function PanelList() {
   const [page, setPage] = useState<number>(1);
   const [panels, setPanels] = useState<Panel[] | undefined>([]);
 
-  const { data, isLoading } = useGetPanelsQuery({
+  const { data, isLoading, refetch } = useGetPanelsQuery({
     page: page,
     take: 10,
   });
+
+  useEffect(() => {
+    refetch();
+  }, [panels, refetch]);
 
   useEffect(() => {
     if (data) {

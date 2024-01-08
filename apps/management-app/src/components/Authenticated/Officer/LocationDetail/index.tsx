@@ -15,7 +15,11 @@ import { capitalize } from '@/utils/format-string';
 export default function LocationDetail() {
   const [location, setLocation] = useState<Location | undefined>(undefined);
   const { locationId } = useParams<{ locationId: string }>();
-  const { data, isLoading } = useGetLocationByIdQuery(locationId!);
+  const { data, isLoading, refetch } = useGetLocationByIdQuery(locationId!);
+
+  useEffect(() => {
+    refetch();
+  }, [location, refetch]);
 
   useEffect(() => {
     if (data) {
