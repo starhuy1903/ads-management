@@ -33,12 +33,16 @@ export default function LocationReportList() {
   const [page, setPage] = useState<number>(1);
   const [reports, setReports] = useState<Report[] | undefined>([]);
 
-  const { data, isLoading } = useGetReportsQuery({
+  const { data, isLoading, refetch } = useGetReportsQuery({
     page: page,
     take: 10,
     targetType: 'Location',
     typeId: 1,
   });
+
+  useEffect(() => {
+    refetch();
+  }, [reports, refetch]);
 
   useEffect(() => {
     if (data) {

@@ -8,6 +8,7 @@ import {
   ReadOnlyTextField,
 } from '@/components/Common/FormComponents';
 import { DetailWrapper } from '@/components/Common/Layout/ScreenWrapper';
+import { ReportStatus } from '@/constants/report';
 import { useGetReportByIdQuery } from '@/store/api/officerApiSlice';
 import { Report } from '@/types/officer-management';
 import { formatDateTime } from '@/utils/format-date';
@@ -16,7 +17,11 @@ import { capitalize } from '@/utils/format-string';
 export default function LocationReportDetail() {
   const [report, setReport] = useState<Report | undefined>(undefined);
   const { reportId } = useParams<{ reportId: string }>();
-  const { data, isLoading } = useGetReportByIdQuery(reportId!);
+  const { data, isLoading, refetch } = useGetReportByIdQuery(reportId!);
+
+  useEffect(() => {
+    refetch();
+  }, [report, refetch]);
 
   useEffect(() => {
     if (data) {
@@ -149,9 +154,15 @@ export default function LocationReportDetail() {
       />
 
       <ImageListField images={report?.imageUrls} />
-
       <Typography variant="h6">Solution</Typography>
-      {report?.resolvedContent.length > 1 ? (
+      {report?.status === ReportStatus?.NEW ? (
+        <Typography
+          variant="body1"
+          sx={{ mb: 2, fontStyle: 'italic', color: 'gray' }}
+        >
+          Not processed yet.
+        </Typography>
+      ) : (
         <TextField
           label="Response content"
           fullWidth
@@ -162,26 +173,19 @@ export default function LocationReportDetail() {
           multiline
           rows={3}
         />
-      ) : (
-        <>
-          <Typography
-            variant="body1"
-            sx={{ mb: 2, fontStyle: 'italic', color: 'gray' }}
-          >
-            Not processed yet.
-          </Typography>
-
-          <Link to={`/location-reports/${report?.id}/response`}>
-            <Button
-              variant="contained"
-              color="primary"
-              sx={{ mt: 2, color: 'white' }}
-            >
-              Respond to report
-            </Button>
-          </Link>
-        </>
       )}
+
+      <Link to={`/reports/${report?.id}/response`}>
+        <Button
+          variant="contained"
+          color="primary"
+          sx={{ mt: 2, color: 'white' }}
+        >
+          {report?.status === ReportStatus?.NEW
+            ? 'Respond to report'
+            : 'Update response'}
+        </Button>
+      </Link>
     </DetailWrapper>
   );
 }

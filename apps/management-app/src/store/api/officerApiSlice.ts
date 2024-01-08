@@ -11,6 +11,7 @@ import {
   PanelType,
   Report,
   SendPanelRequestDto,
+  UpdateReportDto,
 } from '@/types/officer-management';
 import { apiSlice } from './baseApiSlice';
 import { getOnMutationFunction } from './helper';
@@ -127,6 +128,17 @@ export const officerManagementApiSlice = apiSlice.injectEndpoints({
     getReportById: build.query<GetDetailResult<Report>, string>({
       query: (id) => `/reports/${id}`,
     }),
+    updateReport: build.mutation<MessageResponse, UpdateReportDto>({
+      query: (arg) => ({
+        url: `/reports/${arg.id}`,
+        method: 'PATCH',
+        body: {
+          status: arg.status,
+          resolvedContent: arg?.resolvedContent,
+        },
+      }),
+      onQueryStarted: getOnMutationFunction('Respond the report successfully'),
+    }),
     getRequests: build.query<
       GetListResult<AdsRequest>,
       {
@@ -216,6 +228,7 @@ export const {
   useCreatePanelMutation,
   useGetReportsQuery,
   useGetReportByIdQuery,
+  useUpdateReportMutation,
   useGetRequestsQuery,
   useGetRequestByIdQuery,
   useCreatePanelRequestMutation,

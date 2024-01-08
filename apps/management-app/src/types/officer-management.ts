@@ -139,3 +139,9 @@ export type SendPanelRequestDto = {
   panelId: string;
   reason: string;
 };
+
+export type UpdateReportDto = {
+  id: number;
+  status: string;
+  resolvedContent?: string;
+};
