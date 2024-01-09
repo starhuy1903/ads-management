@@ -1,7 +1,7 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  isShowingAdPanel: false,
+  isShowingPlannedLocation: false,
   isShowingViolatedReport: false,
 };
 
@@ -9,8 +9,8 @@ export const mapsSlice = createSlice({
   name: 'maps',
   initialState,
   reducers: {
-    setIsShowingAdPanel: (state, action: PayloadAction<boolean>) => {
-      state.isShowingAdPanel = action.payload;
+    setIsShowingPlannedLocation: (state, action: PayloadAction<boolean>) => {
+      state.isShowingPlannedLocation = action.payload;
     },
     setIsShowingViolatedReport: (state, action: PayloadAction<boolean>) => {
       state.isShowingViolatedReport = action.payload;
@@ -18,5 +18,5 @@ export const mapsSlice = createSlice({
   },
 });
 
-export const { setIsShowingAdPanel, setIsShowingViolatedReport } =
+export const { setIsShowingPlannedLocation, setIsShowingViolatedReport } =
   mapsSlice.actions;

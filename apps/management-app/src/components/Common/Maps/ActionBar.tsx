@@ -1,18 +1,18 @@
 import { Switch, FormControlLabel } from '@mui/material';
 
 interface ActionBarProps {
-  isShowingAdPanel?: boolean;
+  isShowingPlannedLocation?: boolean;
   isShowingViolatedReport?: boolean;
-  isGettingAllPanels?: boolean;
+  isGettingAllLocations?: boolean;
   isGettingViolatedReport?: boolean;
   onToggleAdPanel: (value: boolean) => void;
   onToggleViolationReport: (value: boolean) => void;
 }
 
 const ActionBar = ({
-  isShowingAdPanel = false,
+  isShowingPlannedLocation = false,
   isShowingViolatedReport = false,
-  isGettingAllPanels = false,
+  isGettingAllLocations: isGettingAllPanels = false,
   isGettingViolatedReport = false,
   onToggleAdPanel,
   onToggleViolationReport,
@@ -22,14 +22,14 @@ const ActionBar = ({
       <FormControlLabel
         control={
           <Switch
-            checked={isShowingAdPanel}
+            checked={isShowingPlannedLocation}
             onChange={(e) => onToggleAdPanel(e.target.checked)}
             name="adsTable"
             color="primary"
             disabled={isGettingAllPanels}
           />
         }
-        label="Bảng QC"
+        label="Điểm QC đã quy hoạch"
       />
       <FormControlLabel
         control={
