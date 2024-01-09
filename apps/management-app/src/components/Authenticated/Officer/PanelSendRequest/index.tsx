@@ -6,18 +6,49 @@ import {
   FormLabel,
   TextField,
 } from '@mui/material';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAppSelector } from '@/store';
 import { DetailWrapper } from '@/components/Common/Layout/ScreenWrapper';
+import { MAX_ID_LENGTH } from '@/constants/url-params';
+import { useLazyGetPanelByIdQuery } from '@/store/api/officer/panelApiSlide';
 import { useCreatePanelRequestMutation } from '@/store/api/officer/requestApiSlide';
 import { showError, showSuccess } from '@/utils/toast';
+import { isString, isValidLength } from '@/utils/validate';
 
 export default function PanelSendRequest() {
-  const { panelId } = useParams<{ panelId: string }>();
   const navigate = useNavigate();
 
+  const { panelId } = useParams<{ panelId: string }>();
   const userId = useAppSelector((state) => state?.user?.profile?.id);
+
+  const [getPanel] = useLazyGetPanelByIdQuery();
+
+  useEffect(() => {
+    if (
+      !panelId ||
+      !isString(panelId) ||
+      !isValidLength(panelId, MAX_ID_LENGTH)
+    ) {
+      navigate('/panels', { replace: true });
+      return;
+    }
+
+    async function fetchData() {
+      try {
+        const res = await getPanel(panelId!, true).unwrap();
+        if (!res) {
+          navigate('/panels', { replace: true });
+        }
+      } catch (error) {
+        console.log(error);
+        navigate('/panels', { replace: true });
+      }
+    }
+
+    fetchData();
+  }, [getPanel, panelId]);
 
   const { handleSubmit, register, formState, control } = useForm<{
     reason: string;

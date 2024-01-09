@@ -122,7 +122,9 @@ export const officerManagementApiSlice = apiSlice.injectEndpoints({
 
 export const {
   useGetRequestsQuery,
+  useLazyGetRequestsQuery,
   useGetRequestByIdQuery,
+  useLazyGetRequestByIdQuery,
   useCreatePanelRequestMutation,
   useCreateUpdateLocationRequestMutation,
   useCreateUpdatePanelRequestMutation,

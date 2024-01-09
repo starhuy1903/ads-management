@@ -50,6 +50,8 @@ export const officerReportApiSlice = apiSlice.injectEndpoints({
 
 export const {
   useGetReportsQuery,
+  useLazyGetReportsQuery,
   useGetReportByIdQuery,
+  useLazyGetReportByIdQuery,
   useUpdateReportMutation,
 } = officerReportApiSlice;

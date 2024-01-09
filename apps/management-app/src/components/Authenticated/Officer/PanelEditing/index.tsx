@@ -21,10 +21,11 @@ import { DetailWrapper } from '@/components/Common/Layout/ScreenWrapper';
 import ImagePreview from '@/components/Unauthenticated/Citizen/CitizenReport/ImagePreview';
 import UploadImageCard from '@/components/Unauthenticated/Citizen/CitizenReport/UploadImageCard';
 import { ModalKey } from '@/constants/modal';
+import { MAX_ID_LENGTH } from '@/constants/url-params';
 import { ImageFileConfig } from '@/constants/validation';
 import {
-  useGetPanelByIdQuery,
-  useGetPanelTypesOfficerQuery,
+  useLazyGetPanelByIdQuery,
+  useLazyGetPanelTypesOfficerQuery,
 } from '@/store/api/officer/panelApiSlide';
 import { useCreateUpdatePanelRequestMutation } from '@/store/api/officer/requestApiSlide';
 import { showModal } from '@/store/slice/modal';
@@ -32,6 +33,7 @@ import { Panel, PanelType, UpdatePanelDto } from '@/types/officer-management';
 import { formatDateTime } from '@/utils/datetime';
 import { capitalize } from '@/utils/format-string';
 import { showError, showSuccess } from '@/utils/toast';
+import { isString, isValidLength } from '@/utils/validate';
 
 export default function PanelEditing() {
   const dispatch = useAppDispatch();
@@ -44,38 +46,59 @@ export default function PanelEditing() {
   const [panel, setPanel] = useState<Panel | null>(null);
   const [panelTypes, setPanelTypes] = useState<PanelType[]>([]);
 
-  const { data: panelData, isLoading: panelLoading } = useGetPanelByIdQuery(
-    panelId!,
-  );
-  const { data: panelTypeData, isLoading: panelTypeLoading } =
-    useGetPanelTypesOfficerQuery();
+  const [getPanel, { isLoading: panelLoading }] = useLazyGetPanelByIdQuery();
+  const [getPanelTypes, { isLoading: panelTypesLoading }] =
+    useLazyGetPanelTypesOfficerQuery();
 
   const { handleSubmit, register, control, formState, setValue, watch, reset } =
     useForm<UpdatePanelDto>({
       mode: 'onChange',
     });
 
-  useEffect(() => {
-    if (panelData && panelTypeData && userId) {
-      setPanel(panelData);
-      setPanelTypes(panelTypeData);
+  function handleInvalidRequest() {
+    setPanel(null);
+    navigate('/panels', { replace: true });
+  }
 
-      reset({
-        belongPanelId: panelData.id,
-        locationId: panelData.location.id,
-        userId: userId,
-        typeId: panelData.type.id,
-        images: [],
-        width: panelData.width,
-        height: panelData.height,
-        createContractDate: panelData.createContractDate,
-        expiredContractDate: panelData.expiredContractDate,
-        companyEmail: panelData.companyEmail,
-        companyNumber: panelData.companyNumber,
-        reason: '',
-      });
+  useEffect(() => {
+    if (
+      !panelId ||
+      !isString(panelId) ||
+      !isValidLength(panelId, MAX_ID_LENGTH)
+    ) {
+      handleInvalidRequest();
+      return;
     }
-  }, [panelData, panelTypeData, reset, userId]);
+    async function fetchData() {
+      try {
+        const panelData = await getPanel(panelId!, true).unwrap();
+        const panelTypesData = await getPanelTypes().unwrap();
+
+        setPanel(panelData);
+        setPanelTypes(panelTypesData);
+
+        reset({
+          belongPanelId: panelData.id,
+          locationId: panelData.location.id,
+          userId: userId,
+          typeId: panelData.type.id,
+          images: [],
+          width: panelData.width,
+          height: panelData.height,
+          createContractDate: panelData.createContractDate,
+          expiredContractDate: panelData.expiredContractDate,
+          companyEmail: panelData.companyEmail,
+          companyNumber: panelData.companyNumber,
+          reason: '',
+        });
+      } catch (error) {
+        console.log(error);
+        handleInvalidRequest();
+      }
+    }
+
+    fetchData();
+  }, [getPanel, getPanelTypes, panelId, reset, userId]);
 
   useEffect(() => {
     if (panel?.imageUrls) {
@@ -146,7 +169,7 @@ export default function PanelEditing() {
     }
   };
 
-  if (panelLoading || panelTypeLoading || !panel || !panelTypes) {
+  if (panelLoading || panelTypesLoading || !panel || !panelTypes) {
     return <CenterLoading />;
   }
 

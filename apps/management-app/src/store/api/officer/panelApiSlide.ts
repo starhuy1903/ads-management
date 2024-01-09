@@ -72,7 +72,10 @@ export const officerPanelApiSlice = apiSlice.injectEndpoints({
 
 export const {
   useGetPanelsQuery,
+  useLazyGetPanelsQuery,
   useGetPanelByIdQuery,
+  useLazyGetPanelByIdQuery,
   useGetPanelTypesOfficerQuery,
+  useLazyGetPanelTypesOfficerQuery,
   useCreatePanelMutation,
 } = officerPanelApiSlice;

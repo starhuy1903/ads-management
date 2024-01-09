@@ -21,11 +21,12 @@ import { DetailWrapper } from '@/components/Common/Layout/ScreenWrapper';
 import ImagePreview from '@/components/Unauthenticated/Citizen/CitizenReport/ImagePreview';
 import UploadImageCard from '@/components/Unauthenticated/Citizen/CitizenReport/UploadImageCard';
 import { ModalKey } from '@/constants/modal';
+import { MAX_ID_LENGTH } from '@/constants/url-params';
 import { ImageFileConfig } from '@/constants/validation';
 import {
-  useGetAdsTypesOfficerQuery,
-  useGetLocationByIdQuery,
-  useGetLocationTypesOfficerQuery,
+  useLazyGetAdsTypesOfficerQuery,
+  useLazyGetLocationByIdQuery,
+  useLazyGetLocationTypesOfficerQuery,
 } from '@/store/api/officer/locationApiSlice';
 import { useCreateUpdateLocationRequestMutation } from '@/store/api/officer/requestApiSlide';
 import { showModal } from '@/store/slice/modal';
@@ -38,54 +39,79 @@ import {
 import { formatDateTime } from '@/utils/datetime';
 import { capitalize } from '@/utils/format-string';
 import { showError, showSuccess } from '@/utils/toast';
+import { isString, isValidLength } from '@/utils/validate';
 
 export default function LocationEditing() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const { locationId } = useParams<{ locationId: string }>();
-
   const userId = useAppSelector((state) => state?.user?.profile?.id);
 
   const [location, setLocation] = useState<Location | null>(null);
   const [locationTypes, setLocationTypes] = useState<LocationType[]>([]);
   const [adsTypes, setAdsTypes] = useState<AdsType[]>([]);
 
-  const { data: locationData, isLoading: locationLoading } =
-    useGetLocationByIdQuery(locationId!);
-  const { data: locationTypeData, isLoading: locationTypeLoading } =
-    useGetLocationTypesOfficerQuery();
-  const { data: adsTypeData, isLoading: adsTypeLoading } =
-    useGetAdsTypesOfficerQuery();
+  const [getLocation, { isLoading: locationLoading }] =
+    useLazyGetLocationByIdQuery();
+  const [getLocationTypes, { isLoading: locationTypesLoading }] =
+    useLazyGetLocationTypesOfficerQuery();
+  const [getAdsTypes, { isLoading: adsTypesLoading }] =
+    useLazyGetAdsTypesOfficerQuery();
 
   const { handleSubmit, register, control, formState, setValue, watch, reset } =
     useForm<UpdateLocationDto>({
       mode: 'onChange',
     });
 
-  useEffect(() => {
-    if (locationData && locationTypeData && adsTypeData && userId) {
-      setLocation(locationData);
-      setLocationTypes(locationTypeData);
-      setAdsTypes(adsTypeData);
+  function handleInvalidRequest() {
+    setLocation(null);
+    navigate('/locations', { replace: true });
+  }
 
-      reset({
-        belongLocationId: locationData.id,
-        userId: userId,
-        typeId: locationData.type.id,
-        adsTypeId: locationData.adType.id,
-        name: locationData.name,
-        images: [],
-        reason: '',
-        lat: locationData.lat,
-        long: locationData.long,
-        isPlanning: locationData.isPlanning,
-        fullAddress: locationData.fullAddress,
-        wardId: locationData.ward.id,
-        districtId: locationData.district.id,
-      });
+  useEffect(() => {
+    if (
+      !locationId ||
+      !isString(locationId) ||
+      !isValidLength(locationId, MAX_ID_LENGTH)
+    ) {
+      handleInvalidRequest();
+      return;
     }
-  }, [locationData, locationTypeData, adsTypeData, reset, userId]);
+
+    async function fetchData() {
+      try {
+        const locationData = await getLocation(locationId!, true).unwrap();
+        const locationTypesData = await getLocationTypes().unwrap();
+        const adsTypesData = await getAdsTypes().unwrap();
+
+        setLocation(locationData);
+        setLocationTypes(locationTypesData);
+        setAdsTypes(adsTypesData);
+
+        reset({
+          belongLocationId: locationData.id,
+          userId: userId,
+          typeId: locationData.type.id,
+          adsTypeId: locationData.adType.id,
+          name: locationData.name,
+          images: [],
+          reason: '',
+          lat: locationData.lat,
+          long: locationData.long,
+          isPlanning: locationData.isPlanning,
+          fullAddress: locationData.fullAddress,
+          wardId: locationData.ward.id,
+          districtId: locationData.district.id,
+        });
+      } catch (error) {
+        console.log(error);
+        handleInvalidRequest();
+      }
+    }
+
+    fetchData();
+  }, [getAdsTypes, getLocation, getLocationTypes, locationId, userId]);
 
   useEffect(() => {
     if (location?.imageUrls) {
@@ -158,8 +184,8 @@ export default function LocationEditing() {
 
   if (
     locationLoading ||
-    locationTypeLoading ||
-    adsTypeLoading ||
+    locationTypesLoading ||
+    adsTypesLoading ||
     !location ||
     !locationTypes ||
     !adsTypes

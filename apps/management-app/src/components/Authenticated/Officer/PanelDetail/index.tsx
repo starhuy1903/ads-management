@@ -1,31 +1,54 @@
 import { Stack, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import CenterLoading from '@/components/Common/CenterLoading';
 import {
   ImageListField,
   ReadOnlyTextField,
 } from '@/components/Common/FormComponents';
 import { DetailWrapper } from '@/components/Common/Layout/ScreenWrapper';
-import { useGetPanelByIdQuery } from '@/store/api/officer/panelApiSlide';
+import { MAX_ID_LENGTH } from '@/constants/url-params';
+import { useLazyGetPanelByIdQuery } from '@/store/api/officer/panelApiSlide';
 import { Panel } from '@/types/officer-management';
 import { formatDateTime } from '@/utils/datetime';
 import { capitalize } from '@/utils/format-string';
+import { isString, isValidLength } from '@/utils/validate';
 
 export default function PanelDetail() {
+  const navigate = useNavigate();
+
   const [panel, setPanel] = useState<Panel | null>(null);
   const { panelId } = useParams<{ panelId: string }>();
-  const { data, isLoading, refetch } = useGetPanelByIdQuery(panelId!);
+
+  const [getPanel, { isLoading }] = useLazyGetPanelByIdQuery();
+
+  function handleInvalidRequest() {
+    setPanel(null);
+    navigate('/panels', { replace: true });
+  }
 
   useEffect(() => {
-    refetch();
-  }, [panel, refetch]);
-
-  useEffect(() => {
-    if (data) {
-      setPanel(data);
+    if (
+      !panelId ||
+      !isString(panelId) ||
+      !isValidLength(panelId, MAX_ID_LENGTH)
+    ) {
+      handleInvalidRequest();
+      return;
     }
-  }, [data]);
+
+    async function fetchData() {
+      try {
+        const res = await getPanel(panelId!, true).unwrap();
+        setPanel(res);
+      } catch (error) {
+        console.log(error);
+        handleInvalidRequest();
+      }
+    }
+
+    fetchData();
+  }, [getPanel, panelId]);
 
   if (isLoading || !panel) {
     return <CenterLoading />;

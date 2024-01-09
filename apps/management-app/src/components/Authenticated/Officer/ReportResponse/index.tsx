@@ -16,41 +16,62 @@ import CenterLoading from '@/components/Common/CenterLoading';
 import { ReadOnlyTextForm } from '@/components/Common/FormComponents';
 import { DetailWrapper } from '@/components/Common/Layout/ScreenWrapper';
 import { ReportStatus } from '@/constants/report';
+import { MAX_ID_LENGTH } from '@/constants/url-params';
 import {
-  useGetReportByIdQuery,
+  useLazyGetReportByIdQuery,
   useUpdateReportMutation,
 } from '@/store/api/officer/reportApiSlice';
 import { Report, UpdateReportDto } from '@/types/officer-management';
 import { capitalize } from '@/utils/format-string';
 import { showError, showSuccess } from '@/utils/toast';
+import { isString, isValidLength } from '@/utils/validate';
 
 export default function ReportResponse() {
   const navigate = useNavigate();
 
   const [report, setReport] = useState<Report | null>(null);
   const { reportId } = useParams<{ reportId: string }>();
-  const { data, isLoading, refetch } = useGetReportByIdQuery(reportId!);
-
-  useEffect(() => {
-    refetch();
-  }, [report, refetch]);
+  const [getReport, { isLoading }] = useLazyGetReportByIdQuery();
 
   const { handleSubmit, register, formState, control, reset } =
     useForm<UpdateReportDto>({
       mode: 'onChange',
     });
 
-  useEffect(() => {
-    if (data) {
-      setReport(data);
+  function handleInvalidRequest() {
+    setReport(null);
+    navigate('/location-reports', { replace: true });
+  }
 
-      reset({
-        id: data.id,
-        status: data.status,
-        resolvedContent: data.resolvedContent,
-      });
+  useEffect(() => {
+    if (
+      !reportId ||
+      !isString(reportId) ||
+      !isValidLength(reportId, MAX_ID_LENGTH)
+    ) {
+      handleInvalidRequest();
+      return;
     }
-  }, [data, reset]);
+
+    async function fetchData() {
+      try {
+        const res = await getReport(reportId!, true).unwrap();
+
+        setReport(res);
+
+        reset({
+          id: res.id,
+          status: res.status,
+          resolvedContent: res.resolvedContent,
+        });
+      } catch (error) {
+        console.log(error);
+        handleInvalidRequest();
+      }
+    }
+
+    fetchData();
+  }, [getReport, reportId, reset]);
 
   const { errors: formError } = formState;
 

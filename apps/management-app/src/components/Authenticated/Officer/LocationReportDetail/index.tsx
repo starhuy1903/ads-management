@@ -1,7 +1,7 @@
 import { Button, Stack, TextField, Typography } from '@mui/material';
 import 'moment-timezone';
 import { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import CenterLoading from '@/components/Common/CenterLoading';
 import {
   ImageListField,
@@ -9,25 +9,48 @@ import {
 } from '@/components/Common/FormComponents';
 import { DetailWrapper } from '@/components/Common/Layout/ScreenWrapper';
 import { ReportStatus } from '@/constants/report';
-import { useGetReportByIdQuery } from '@/store/api/officer/reportApiSlice';
+import { MAX_ID_LENGTH } from '@/constants/url-params';
+import { useLazyGetReportByIdQuery } from '@/store/api/officer/reportApiSlice';
 import { Report } from '@/types/officer-management';
 import { formatDateTime } from '@/utils/datetime';
 import { capitalize } from '@/utils/format-string';
+import { isString, isValidLength } from '@/utils/validate';
 
 export default function LocationReportDetail() {
+  const navigate = useNavigate();
+
   const [report, setReport] = useState<Report | null>(null);
   const { reportId } = useParams<{ reportId: string }>();
-  const { data, isLoading, refetch } = useGetReportByIdQuery(reportId!);
+
+  const [getReport, { isLoading }] = useLazyGetReportByIdQuery();
+
+  function handleInvalidRequest() {
+    setReport(null);
+    navigate('/location-reports', { replace: true });
+  }
 
   useEffect(() => {
-    refetch();
-  }, [report, refetch]);
-
-  useEffect(() => {
-    if (data) {
-      setReport(data);
+    if (
+      !reportId ||
+      !isString(reportId) ||
+      !isValidLength(reportId, MAX_ID_LENGTH)
+    ) {
+      handleInvalidRequest();
+      return;
     }
-  }, [data]);
+
+    async function fetchData() {
+      try {
+        const res = await getReport(reportId!, true).unwrap();
+        setReport(res);
+      } catch (error) {
+        console.log(error);
+        handleInvalidRequest();
+      }
+    }
+
+    fetchData();
+  }, [getReport, reportId]);
 
   if (isLoading || !report) {
     return <CenterLoading />;

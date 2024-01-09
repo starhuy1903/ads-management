@@ -50,7 +50,11 @@ export const officerLocationApiSlice = apiSlice.injectEndpoints({
 
 export const {
   useGetLocationsQuery,
+  useLazyGetLocationsQuery,
   useGetLocationByIdQuery,
+  useLazyGetLocationByIdQuery,
   useGetLocationTypesOfficerQuery,
+  useLazyGetLocationTypesOfficerQuery,
   useGetAdsTypesOfficerQuery,
+  useLazyGetAdsTypesOfficerQuery,
 } = officerLocationApiSlice;
