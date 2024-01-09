@@ -15,59 +15,84 @@ import { useNavigate, useParams } from 'react-router-dom';
 import CenterLoading from '@/components/Common/CenterLoading';
 import { ReadOnlyTextForm } from '@/components/Common/FormComponents';
 import { DetailWrapper } from '@/components/Common/Layout/ScreenWrapper';
+import { TargetType } from '@/constants/ads-request';
 import { ReportStatus } from '@/constants/report';
+import { MAX_ID_LENGTH } from '@/constants/url-params';
 import {
-  useGetReportByIdQuery,
+  useLazyGetReportByIdQuery,
   useUpdateReportMutation,
-} from '@/store/api/officerApiSlice';
+} from '@/store/api/officer/reportApiSlice';
 import { Report, UpdateReportDto } from '@/types/officer-management';
 import { capitalize } from '@/utils/format-string';
+import { showError, showSuccess } from '@/utils/toast';
+import { isString, isValidLength } from '@/utils/validate';
 
 export default function ReportResponse() {
   const navigate = useNavigate();
 
-  const [report, setReport] = useState<Report | undefined>(undefined);
+  const [report, setReport] = useState<Report | null>(null);
   const { reportId } = useParams<{ reportId: string }>();
-  const { data, isLoading, refetch } = useGetReportByIdQuery(reportId!);
-
-  useEffect(() => {
-    refetch();
-  }, [report, refetch]);
+  const [getReport, { isLoading }] = useLazyGetReportByIdQuery();
 
   const { handleSubmit, register, formState, control, reset } =
     useForm<UpdateReportDto>({
       mode: 'onChange',
     });
 
-  useEffect(() => {
-    if (data) {
-      setReport(data?.data);
+  function handleInvalidRequest() {
+    setReport(null);
+    navigate('/location-reports', { replace: true });
+  }
 
-      reset({
-        id: data?.data?.id,
-        status: data?.data?.status,
-        resolvedContent: data?.data?.resolvedContent,
-      });
+  useEffect(() => {
+    if (
+      !reportId ||
+      !isString(reportId) ||
+      !isValidLength(reportId, MAX_ID_LENGTH)
+    ) {
+      handleInvalidRequest();
+      return;
     }
-  }, [data, reset]);
+
+    async function fetchData() {
+      try {
+        const res = await getReport(reportId!, true).unwrap();
+
+        setReport(res);
+
+        reset({
+          id: res.id,
+          status: res.status,
+          resolvedContent: res.resolvedContent,
+        });
+      } catch (error) {
+        console.log(error);
+        handleInvalidRequest();
+      }
+    }
+
+    fetchData();
+  }, [getReport, reportId, reset]);
 
   const { errors: formError } = formState;
 
-  const [submitting, setSubmitting] = useState(false);
-
-  const [updateReport] = useUpdateReportMutation();
+  const [updateReport, { isLoading: isSubmitting }] = useUpdateReportMutation();
 
   const onSubmit = async (data: UpdateReportDto) => {
     try {
-      setSubmitting(true);
-
       await updateReport(data).unwrap();
 
-      setSubmitting(false);
+      showSuccess('Response sent successfully');
 
-      navigate(-1);
+      if (report?.targetType === TargetType?.LOCATION) {
+        navigate('/location-reports');
+        return;
+      }
+
+      navigate('/panel-reports');
     } catch (error) {
       console.log(error);
+      showError('Response sent failed');
     }
   };
 
@@ -76,7 +101,7 @@ export default function ReportResponse() {
   }
 
   return (
-    <DetailWrapper label={`Respond The Report #${report?.id}`}>
+    <DetailWrapper label={`Respond Report #${report?.id}`}>
       <Stack
         direction={{ xs: 'column', sm: 'row' }}
         spacing={2}
@@ -135,7 +160,7 @@ export default function ReportResponse() {
       <Button
         variant="contained"
         color="primary"
-        disabled={submitting}
+        disabled={isSubmitting}
         onClick={handleSubmit(onSubmit)}
         sx={{ color: 'white' }}
       >

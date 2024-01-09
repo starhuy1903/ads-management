@@ -25,12 +25,12 @@ import { ModalKey } from '@/constants/modal';
 import {
   useDeleteRequestMutation,
   useGetRequestsQuery,
-} from '@/store/api/officerApiSlice';
+} from '@/store/api/officer/requestApiSlide';
 import { showModal } from '@/store/slice/modal';
 import { AdsRequest } from '@/types/officer-management';
-import { formatDateTime } from '@/utils/format-date';
 import { capitalize } from '@/utils/format-string';
 import { showError, showSuccess } from '@/utils/toast';
+import { formatDateTime } from '@/utils/datetime';
 
 const titles = [
   'ID',
@@ -49,7 +49,7 @@ export default function EditingRequestList() {
 
   const [targetType, setTargetType] = useState<TargetType>(TargetType.PANEL);
   const [page, setPage] = useState<number>(1);
-  const [requests, setRequests] = useState<AdsRequest[] | undefined>([]);
+  const [requests, setRequests] = useState<AdsRequest[]>([]);
 
   const { data, isLoading, refetch } = useGetRequestsQuery({
     page: page,
@@ -86,7 +86,7 @@ export default function EditingRequestList() {
   }
 
   return (
-    <ListWrapper label="List of Licensing Requests">
+    <ListWrapper label="Editing Requests">
       <Box
         sx={{
           width: '100%',

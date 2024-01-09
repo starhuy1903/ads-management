@@ -22,30 +22,31 @@ import ImagePreview from '@/components/Unauthenticated/Citizen/CitizenReport/Ima
 import UploadImageCard from '@/components/Unauthenticated/Citizen/CitizenReport/UploadImageCard';
 import { ModalKey } from '@/constants/modal';
 import { ImageFileConfig } from '@/constants/validation';
+import { useGetLocationsQuery } from '@/store/api/officer/locationApiSlice';
 import {
   useCreatePanelMutation,
-  useGetLocationsQuery,
   useGetPanelTypesOfficerQuery,
-} from '@/store/api/officerApiSlice';
+} from '@/store/api/officer/panelApiSlide';
 import { showModal } from '@/store/slice/modal';
 import { Location, PanelDto, PanelType } from '@/types/officer-management';
+import { showError, showSuccess } from '@/utils/toast';
 
 export default function PanelCreating() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const [locations, setLocations] = useState<Location[] | undefined>([]);
+  const [locations, setLocations] = useState<Location[]>([]);
   const [panelTypes, setPanelTypes] = useState<PanelType[]>([]);
 
   const { data: locationData, isLoading: locationLoading } =
     useGetLocationsQuery({});
   const { data: panelTypeData, isLoading: panelTypeLoading } =
-    useGetPanelTypesOfficerQuery({});
+    useGetPanelTypesOfficerQuery();
 
   useEffect(() => {
     if (locationData && panelTypeData) {
       setLocations(locationData.data);
-      setPanelTypes(panelTypeData.data);
+      setPanelTypes(panelTypeData);
     }
   }, [locationData, panelTypeData]);
 
@@ -67,8 +68,6 @@ export default function PanelCreating() {
 
   const { errors: formError } = formState;
   const formValue = watch();
-
-  const [submitting, setSubmitting] = useState(false);
 
   const handleAddImage = useCallback(
     (file: File) => setValue('images', [...formValue.images, file]),
@@ -110,34 +109,17 @@ export default function PanelCreating() {
     disabled: boolean;
   }) => <UploadImageCard open={open} disabled={disabled} />;
 
-  const [createPanel] = useCreatePanelMutation();
+  const [createPanel, { isLoading: isSubmitting }] = useCreatePanelMutation();
 
   const onSubmit = async (data: PanelDto) => {
     try {
-      setSubmitting(true);
+      await createPanel(data).unwrap();
 
-      const formData = new FormData();
-      formData.append('typeId', data.typeId.toString());
-      formData.append('width', data.width.toString());
-      formData.append('height', data.height.toString());
-      formData.append('locationId', data.locationId.toString());
-      formData.append('companyEmail', data.companyEmail);
-      formData.append('companyNumber', data.companyNumber);
-      data.createContractDate = new Date(data.createContractDate).toISOString();
-      data.expiredContractDate = new Date(
-        data.expiredContractDate,
-      ).toISOString();
-      formData.append('createContractDate', data.createContractDate);
-      formData.append('expiredContractDate', data.expiredContractDate);
-      data.images.forEach((image) => formData.append('images', image));
-
-      await createPanel(formData).unwrap();
-
-      setSubmitting(false);
-
-      navigate(-1);
+      showSuccess('Draft panel created successfully');
+      navigate('/panels');
     } catch (error) {
       console.log(error);
+      showError('Draft panel created failed');
     }
   };
 
@@ -306,7 +288,7 @@ export default function PanelCreating() {
             <ImagePreview
               key={index}
               image={image}
-              disabled={submitting}
+              disabled={isSubmitting}
               onDeleteImage={handleDeleteImage}
             />
           ))}
@@ -315,7 +297,7 @@ export default function PanelCreating() {
               onDropFile={handleUpdateImage}
               acceptMIMETypes={ImageFileConfig.ACCEPTED_MINE_TYPES}
               renderChildren={renderUpdateImageContainer}
-              disabled={submitting}
+              disabled={isSubmitting}
               maxSize={ImageFileConfig.MAX_SIZE}
             />
           )}
@@ -402,7 +384,7 @@ export default function PanelCreating() {
       <Button
         variant="contained"
         color="primary"
-        disabled={submitting}
+        disabled={isSubmitting}
         onClick={handleSubmit(onSubmit)}
         sx={{ mt: 2, color: 'white' }}
       >

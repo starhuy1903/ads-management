@@ -6,19 +6,49 @@ import {
   FormLabel,
   TextField,
 } from '@mui/material';
-import { useState } from 'react';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAppSelector } from '@/store';
 import { DetailWrapper } from '@/components/Common/Layout/ScreenWrapper';
-import { useCreatePanelRequestMutation } from '@/store/api/officerApiSlice';
-import { showError } from '@/utils/toast';
+import { MAX_ID_LENGTH } from '@/constants/url-params';
+import { useLazyGetPanelByIdQuery } from '@/store/api/officer/panelApiSlide';
+import { useCreatePanelRequestMutation } from '@/store/api/officer/requestApiSlide';
+import { showError, showSuccess } from '@/utils/toast';
+import { isString, isValidLength } from '@/utils/validate';
 
 export default function PanelSendRequest() {
-  const { panelId } = useParams<{ panelId: string }>();
   const navigate = useNavigate();
 
+  const { panelId } = useParams<{ panelId: string }>();
   const userId = useAppSelector((state) => state?.user?.profile?.id);
+
+  const [getPanel] = useLazyGetPanelByIdQuery();
+
+  useEffect(() => {
+    if (
+      !panelId ||
+      !isString(panelId) ||
+      !isValidLength(panelId, MAX_ID_LENGTH)
+    ) {
+      navigate('/panels', { replace: true });
+      return;
+    }
+
+    async function fetchData() {
+      try {
+        const res = await getPanel(panelId!, true).unwrap();
+        if (!res) {
+          navigate('/panels', { replace: true });
+        }
+      } catch (error) {
+        console.log(error);
+        navigate('/panels', { replace: true });
+      }
+    }
+
+    fetchData();
+  }, [getPanel, panelId]);
 
   const { handleSubmit, register, formState, control } = useForm<{
     reason: string;
@@ -28,22 +58,18 @@ export default function PanelSendRequest() {
 
   const { errors: formError } = formState;
 
-  const [submitting, setSubmitting] = useState(false);
-
-  const [sendPanelRequest] = useCreatePanelRequestMutation();
+  const [sendPanelRequest, { isLoading: isSubmitting }] =
+    useCreatePanelRequestMutation();
 
   const onSubmit = async ({ reason }: { reason: string }) => {
     try {
       if (userId && panelId) {
-        setSubmitting(true);
-
         await sendPanelRequest({ userId, panelId, reason }).unwrap();
 
-        setSubmitting(false);
-
-        navigate(-1);
+        showSuccess('Licensing request sent successfully');
+        navigate('/panels');
       } else {
-        showError('This panel is not available.');
+        showError('Licensing request sent failed');
       }
     } catch (error) {
       console.log(error);
@@ -72,7 +98,7 @@ export default function PanelSendRequest() {
       <Button
         variant="contained"
         color="primary"
-        disabled={submitting}
+        disabled={isSubmitting}
         onClick={handleSubmit(onSubmit)}
         sx={{ color: 'white' }}
       >

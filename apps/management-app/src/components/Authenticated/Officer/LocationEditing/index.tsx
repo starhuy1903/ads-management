@@ -21,13 +21,14 @@ import { DetailWrapper } from '@/components/Common/Layout/ScreenWrapper';
 import ImagePreview from '@/components/Unauthenticated/Citizen/CitizenReport/ImagePreview';
 import UploadImageCard from '@/components/Unauthenticated/Citizen/CitizenReport/UploadImageCard';
 import { ModalKey } from '@/constants/modal';
+import { MAX_ID_LENGTH } from '@/constants/url-params';
 import { ImageFileConfig } from '@/constants/validation';
 import {
-  useCreateUpdateLocationRequestMutation,
-  useGetAdsTypesOfficerQuery,
-  useGetLocationByIdQuery,
-  useGetLocationTypesOfficerQuery,
-} from '@/store/api/officerApiSlice';
+  useLazyGetAdsTypesOfficerQuery,
+  useLazyGetLocationByIdQuery,
+  useLazyGetLocationTypesOfficerQuery,
+} from '@/store/api/officer/locationApiSlice';
+import { useCreateUpdateLocationRequestMutation } from '@/store/api/officer/requestApiSlide';
 import { showModal } from '@/store/slice/modal';
 import {
   AdsType,
@@ -35,58 +36,86 @@ import {
   LocationType,
   UpdateLocationDto,
 } from '@/types/officer-management';
+import { formatDateTime } from '@/utils/datetime';
+import { capitalize } from '@/utils/format-string';
+import { showError, showSuccess } from '@/utils/toast';
+import { isString, isValidLength } from '@/utils/validate';
 
 export default function LocationEditing() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const { locationId } = useParams<{ locationId: string }>();
+  const userId = useAppSelector((state) => state?.user?.profile?.id);
 
-  const userId = useAppSelector((state) => state.user.profile?.id);
-
-  const [location, setLocation] = useState<Location | undefined>(undefined);
+  const [location, setLocation] = useState<Location | null>(null);
   const [locationTypes, setLocationTypes] = useState<LocationType[]>([]);
   const [adsTypes, setAdsTypes] = useState<AdsType[]>([]);
 
-  const { data: locationData, isLoading: locationLoading } =
-    useGetLocationByIdQuery(locationId!);
-  const { data: locationTypeData, isLoading: locationTypeLoading } =
-    useGetLocationTypesOfficerQuery({});
-  const { data: adsTypeData, isLoading: adsTypeLoading } =
-    useGetAdsTypesOfficerQuery({});
+  const [getLocation, { isLoading: locationLoading }] =
+    useLazyGetLocationByIdQuery();
+  const [getLocationTypes, { isLoading: locationTypesLoading }] =
+    useLazyGetLocationTypesOfficerQuery();
+  const [getAdsTypes, { isLoading: adsTypesLoading }] =
+    useLazyGetAdsTypesOfficerQuery();
 
   const { handleSubmit, register, control, formState, setValue, watch, reset } =
     useForm<UpdateLocationDto>({
       mode: 'onChange',
     });
 
-  useEffect(() => {
-    if (locationData && locationTypeData && adsTypeData && userId) {
-      setLocation(locationData.data);
-      setLocationTypes(locationTypeData?.data);
-      setAdsTypes(adsTypeData?.data);
+  function handleInvalidRequest() {
+    setLocation(null);
+    navigate('/locations', { replace: true });
+  }
 
-      reset({
-        belongLocationId: locationData.data?.id,
-        userId: userId,
-        typeId: locationData?.data?.type?.id,
-        adsTypeId: locationData?.data?.adType?.id,
-        name: locationData?.data?.name,
-        images: [],
-        reason: '',
-        lat: locationData?.data?.lat,
-        long: locationData?.data?.long,
-        isPlanning: locationData?.data?.isPlanning,
-        fullAddress: locationData?.data?.fullAddress,
-        wardId: locationData?.data?.ward?.id,
-        districtId: locationData?.data?.district?.id,
-      });
+  useEffect(() => {
+    if (
+      !locationId ||
+      !isString(locationId) ||
+      !isValidLength(locationId, MAX_ID_LENGTH)
+    ) {
+      handleInvalidRequest();
+      return;
     }
-  }, [locationData, locationTypeData, adsTypeData, reset, userId]);
+
+    async function fetchData() {
+      try {
+        const locationData = await getLocation(locationId!, true).unwrap();
+        const locationTypesData = await getLocationTypes().unwrap();
+        const adsTypesData = await getAdsTypes().unwrap();
+
+        setLocation(locationData);
+        setLocationTypes(locationTypesData);
+        setAdsTypes(adsTypesData);
+
+        reset({
+          belongLocationId: locationData.id,
+          userId: userId,
+          typeId: locationData.type.id,
+          adsTypeId: locationData.adType.id,
+          name: locationData.name,
+          images: [],
+          reason: '',
+          lat: locationData.lat,
+          long: locationData.long,
+          isPlanning: locationData.isPlanning,
+          fullAddress: locationData.fullAddress,
+          wardId: locationData.ward.id,
+          districtId: locationData.district.id,
+        });
+      } catch (error) {
+        console.log(error);
+        handleInvalidRequest();
+      }
+    }
+
+    fetchData();
+  }, [getAdsTypes, getLocation, getLocationTypes, locationId, userId]);
 
   useEffect(() => {
     if (location?.imageUrls) {
-      fetch(location?.imageUrls[0])
+      fetch(location.imageUrls[0])
         .then((res) => res.blob())
         .then((blob) => {
           const file = new File([blob], location?.imageUrls[0]);
@@ -97,8 +126,6 @@ export default function LocationEditing() {
 
   const { errors: formError } = formState;
   const formValue = watch();
-
-  const [submitting, setSubmitting] = useState(false);
 
   const handleAddImage = useCallback(
     (file: File) => setValue('images', [...formValue.images, file]),
@@ -140,42 +167,25 @@ export default function LocationEditing() {
     disabled: boolean;
   }) => <UploadImageCard open={open} disabled={disabled} />;
 
-  const [updateLocation, { isLoading }] =
+  const [updateLocation, { isLoading: isSubmitting }] =
     useCreateUpdateLocationRequestMutation();
 
   const onSubmit = async (data: UpdateLocationDto) => {
     try {
-      setSubmitting(true);
+      await updateLocation(data).unwrap();
 
-      const formData = new FormData();
-      formData.append('belongLocationId', data.belongLocationId.toString());
-      formData.append('userId', data.userId.toString());
-      formData.append('typeId', data.typeId.toString());
-      formData.append('adsTypeId', data.adsTypeId.toString());
-      formData.append('name', data.name);
-      data.images.forEach((image) => formData.append('images', image));
-      formData.append('reason', data.reason);
-      formData.append('lat', data.lat.toString());
-      formData.append('long', data.long.toString());
-      formData.append('isPlanning', data.isPlanning.toString());
-      formData.append('fullAddress', data.fullAddress);
-      formData.append('wardId', data.wardId.toString());
-      formData.append('districtId', data.districtId.toString());
-
-      await updateLocation(formData).unwrap();
-
-      setSubmitting(false);
-
-      navigate(-1);
+      showSuccess('Editing request sent successfully');
+      navigate('/locations');
     } catch (error) {
       console.log(error);
+      showError('Editing request sent failed');
     }
   };
 
   if (
     locationLoading ||
-    locationTypeLoading ||
-    adsTypeLoading ||
+    locationTypesLoading ||
+    adsTypesLoading ||
     !location ||
     !locationTypes ||
     !adsTypes
@@ -184,11 +194,40 @@ export default function LocationEditing() {
   }
 
   return (
-    <DetailWrapper label="Create Location Editing Request">
+    <DetailWrapper
+      label={`
+      Update Location #${location?.id}
+    `}
+    >
       <Typography variant="h6">Location</Typography>
       <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
         <ReadOnlyTextForm field="id" label="ID" value={location?.id} />
 
+        <ReadOnlyTextForm
+          field="name"
+          label="Planned"
+          value={location?.isPlanning ? 'Yes' : 'No'}
+        />
+
+        <ReadOnlyTextForm
+          field="status"
+          label="Status"
+          value={capitalize(location?.status)}
+        />
+
+        <ReadOnlyTextForm
+          field="createdTime"
+          label="Created Time"
+          value={formatDateTime(location?.createdAt)}
+        />
+
+        <ReadOnlyTextForm
+          field="updatedTime"
+          label="Updated Time"
+          value={formatDateTime(location?.updatedAt)}
+        />
+      </Stack>
+      <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
         <ReadOnlyTextForm
           field="address"
           label="Address"
@@ -216,7 +255,7 @@ export default function LocationEditing() {
         />
       </Stack>
 
-      <Typography variant="h6">Classification</Typography>
+      <Typography variant="h6">Updateable Fields</Typography>
       <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
         <FormControl fullWidth error={!!formError.name}>
           <FormLabel htmlFor="name">Name</FormLabel>
@@ -273,13 +312,13 @@ export default function LocationEditing() {
       </Stack>
 
       <FormControl>
-        <FormLabel sx={{ mb: 1 }}>Upload image</FormLabel>
+        <FormLabel sx={{ mb: 1 }}>Image</FormLabel>
         <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
           {formValue.images.map((image, index) => (
             <ImagePreview
               key={index}
               image={image}
-              disabled={submitting}
+              disabled={isSubmitting}
               onDeleteImage={handleDeleteImage}
             />
           ))}
@@ -288,21 +327,13 @@ export default function LocationEditing() {
               onDropFile={handleUpdateImage}
               acceptMIMETypes={ImageFileConfig.ACCEPTED_MINE_TYPES}
               renderChildren={renderUpdateImageContainer}
-              disabled={submitting}
+              disabled={isSubmitting}
               maxSize={ImageFileConfig.MAX_SIZE}
             />
           )}
         </Stack>
       </FormControl>
 
-      <Typography
-        variant="h6"
-        sx={{
-          mt: 2,
-        }}
-      >
-        Update reason
-      </Typography>
       <FormControl fullWidth error={!!formError.reason}>
         <FormLabel htmlFor="reason">Reason</FormLabel>
         <TextField
@@ -323,7 +354,7 @@ export default function LocationEditing() {
       <Button
         variant="contained"
         color="primary"
-        disabled={submitting}
+        disabled={isSubmitting}
         onClick={handleSubmit(onSubmit)}
         sx={{ mt: 2, color: 'white' }}
       >

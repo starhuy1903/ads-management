@@ -1,38 +1,65 @@
 import { Stack, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import CenterLoading from '@/components/Common/CenterLoading';
 import {
   ImageListField,
   ReadOnlyTextField,
 } from '@/components/Common/FormComponents';
 import { DetailWrapper } from '@/components/Common/Layout/ScreenWrapper';
-import { useGetLocationByIdQuery } from '@/store/api/officerApiSlice';
+import { MAX_ID_LENGTH } from '@/constants/url-params';
+import { useLazyGetLocationByIdQuery } from '@/store/api/officer/locationApiSlice';
 import { Location } from '@/types/officer-management';
-import { formatDateTime } from '@/utils/format-date';
+import { formatDateTime } from '@/utils/datetime';
 import { capitalize } from '@/utils/format-string';
+import { isString, isValidLength } from '@/utils/validate';
 
 export default function LocationDetail() {
-  const [location, setLocation] = useState<Location | undefined>(undefined);
+  const navigate = useNavigate();
+
+  const [location, setLocation] = useState<Location | null>(null);
   const { locationId } = useParams<{ locationId: string }>();
-  const { data, isLoading, refetch } = useGetLocationByIdQuery(locationId!);
+
+  const [getLocation, { isLoading }] = useLazyGetLocationByIdQuery();
+
+  function handleInvalidRequest() {
+    setLocation(null);
+    navigate('/locations', { replace: true });
+  }
 
   useEffect(() => {
-    refetch();
-  }, [location, refetch]);
-
-  useEffect(() => {
-    if (data) {
-      setLocation(data?.data);
+    if (
+      !locationId ||
+      !isString(locationId) ||
+      !isValidLength(locationId, MAX_ID_LENGTH)
+    ) {
+      handleInvalidRequest();
+      return;
     }
-  }, [data]);
+
+    async function fetchData() {
+      try {
+        const res = await getLocation(locationId!, true).unwrap();
+        setLocation(res);
+      } catch (error) {
+        console.log(error);
+        handleInvalidRequest();
+      }
+    }
+
+    fetchData();
+  }, [getLocation, locationId]);
 
   if (isLoading || !location) {
     return <CenterLoading />;
   }
 
   return (
-    <DetailWrapper label="Advertising Location Details">
+    <DetailWrapper
+      label={`
+      Location #${location?.id}
+    `}
+    >
       <Typography variant="h6">Location</Typography>
       <Stack
         direction={{ xs: 'column', sm: 'row' }}

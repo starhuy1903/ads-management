@@ -13,9 +13,9 @@ import { useEffect, useState } from 'react';
 import CenterLoading from '@/components/Common/CenterLoading';
 import { Info, Response } from '@/components/Common/Icons';
 import { ListWrapper } from '@/components/Common/Layout/ScreenWrapper';
-import { useGetReportsQuery } from '@/store/api/officerApiSlice';
+import { useGetReportsQuery } from '@/store/api/officer/reportApiSlice';
 import { Report } from '@/types/officer-management';
-import { formatDateTime } from '@/utils/format-date';
+import { formatDateTime } from '@/utils/datetime';
 import { capitalize } from '@/utils/format-string';
 
 const titles = [
@@ -31,7 +31,7 @@ const titles = [
 
 export default function PanelReportList() {
   const [page, setPage] = useState<number>(1);
-  const [reports, setReports] = useState<Report[] | undefined>([]);
+  const [reports, setReports] = useState<Report[]>([]);
 
   const { data, isLoading, refetch } = useGetReportsQuery({
     page: page,
@@ -55,7 +55,7 @@ export default function PanelReportList() {
   }
 
   return (
-    <ListWrapper label="List of Panel Reports">
+    <ListWrapper label="Panel Reports">
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="panel reports">
           <TableHead>

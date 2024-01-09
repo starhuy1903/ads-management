@@ -1,6 +1,6 @@
 import { Stack, TextField, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import CenterLoading from '@/components/Common/CenterLoading';
 import {
   ImageListField,
@@ -8,28 +8,65 @@ import {
 } from '@/components/Common/FormComponents';
 import { DetailWrapper } from '@/components/Common/Layout/ScreenWrapper';
 import { TargetType } from '@/constants/ads-request';
-import { useGetRequestByIdQuery } from '@/store/api/officerApiSlice';
+import { MAX_ID_LENGTH } from '@/constants/url-params';
+import { UserRole } from '@/constants/user';
+import { useLazyGetRequestByIdQuery } from '@/store/api/officer/requestApiSlide';
 import { AdsRequest } from '@/types/officer-management';
-import { formatDateTime } from '@/utils/format-date';
+import { formatDateTime } from '@/utils/datetime';
 import { capitalize, formatRole } from '@/utils/format-string';
+import { isString, isValidLength } from '@/utils/validate';
 
 export default function EditingRequestDetail() {
-  const [request, setRequest] = useState<AdsRequest | undefined>(undefined);
+  const navigate = useNavigate();
+
+  const [request, setRequest] = useState<AdsRequest | null>(null);
   const { requestId } = useParams<{ requestId: string }>();
-  const { data, isLoading } = useGetRequestByIdQuery(requestId!);
+
+  const [getRequest, { isLoading }] = useLazyGetRequestByIdQuery();
+
+  function handleInvalidRequest() {
+    setRequest(null);
+    navigate('/editing-requests', { replace: true });
+  }
 
   useEffect(() => {
-    if (data) {
-      setRequest(data?.data);
+    if (
+      !requestId ||
+      !isString(requestId) ||
+      !isValidLength(requestId, MAX_ID_LENGTH)
+    ) {
+      handleInvalidRequest();
+      return;
     }
-  }, [data]);
+
+    async function fetchData() {
+      try {
+        const res = await getRequest(requestId!, true).unwrap();
+        setRequest(res);
+      } catch (error) {
+        console.log(error);
+        handleInvalidRequest();
+      }
+    }
+
+    fetchData();
+  }, [getRequest, requestId]);
 
   if (isLoading || !request) {
     return <CenterLoading />;
   }
 
   return (
-    <DetailWrapper label="Editing Request Details">
+    <DetailWrapper label={`Editing Request #${request?.id}`}>
+      <Typography
+        variant="h5"
+        sx={{
+          fontWeight: 'medium',
+        }}
+      >
+        Request Information
+      </Typography>
+
       <Typography variant="h6">Information</Typography>
       <Stack
         direction={{ xs: 'column', sm: 'row' }}
@@ -75,25 +112,37 @@ export default function EditingRequestDetail() {
 
         <ReadOnlyTextField label="Email" value={request?.user?.email} />
 
-        <ReadOnlyTextField label="Ward" value={request?.user?.ward?.name} />
+        {request?.user?.role === UserRole.WARD_OFFICER && (
+          <>
+            <ReadOnlyTextField label="Ward" value={request?.user?.ward?.name} />
 
-        <ReadOnlyTextField
-          label="District"
-          value={request?.user?.district?.name}
-        />
+            <ReadOnlyTextField
+              label="District"
+              value={request?.user?.ward?.district?.name}
+            />
+          </>
+        )}
+
+        {request?.user?.role === UserRole.DISTRICT_OFFICER && (
+          <ReadOnlyTextField
+            label="District"
+            value={request?.user?.district?.name}
+          />
+        )}
       </Stack>
 
-      <TextField
-        label="Reason"
-        value={request?.reason}
-        multiline
-        rows={4}
-        fullWidth
-      />
+      <Typography
+        variant="h5"
+        sx={{
+          fontWeight: 'medium',
+        }}
+      >
+        Edited Information
+      </Typography>
 
       {request?.targetType === TargetType.PANEL ? (
         <>
-          <Typography variant="h6">Updated Panel</Typography>
+          <Typography variant="h6">Panel</Typography>
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
             <ReadOnlyTextField label="ID" value={request?.panel?.id} />
 
@@ -196,7 +245,7 @@ export default function EditingRequestDetail() {
         </>
       ) : (
         <>
-          <Typography variant="h6">Updated Location</Typography>
+          <Typography variant="h6">Location</Typography>
           <Stack
             direction={{ xs: 'column', sm: 'row' }}
             spacing={2}
@@ -261,6 +310,8 @@ export default function EditingRequestDetail() {
               value={request?.location?.long}
             />
           </Stack>
+
+          <Typography variant="h6">Classification</Typography>
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
             <ReadOnlyTextField
               label="Type"
@@ -276,6 +327,15 @@ export default function EditingRequestDetail() {
           <ImageListField images={request?.location?.imageUrls} />
         </>
       )}
+
+      <Typography variant="h6">Reason For Editing</Typography>
+      <TextField
+        label="Reason"
+        value={request?.reason}
+        multiline
+        rows={4}
+        fullWidth
+      />
     </DetailWrapper>
   );
 }

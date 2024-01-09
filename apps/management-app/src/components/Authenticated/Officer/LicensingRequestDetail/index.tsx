@@ -1,42 +1,72 @@
 import { Stack, TextField, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import CenterLoading from '@/components/Common/CenterLoading';
 import {
   ImageListField,
   ReadOnlyTextField,
 } from '@/components/Common/FormComponents';
 import { DetailWrapper } from '@/components/Common/Layout/ScreenWrapper';
-import { useGetRequestByIdQuery } from '@/store/api/officerApiSlice';
+import { MAX_ID_LENGTH } from '@/constants/url-params';
+import { useLazyGetRequestByIdQuery } from '@/store/api/officer/requestApiSlide';
 import { AdsRequest } from '@/types/officer-management';
-import { formatDateTime } from '@/utils/format-date';
+import { formatDateTime } from '@/utils/datetime';
 import { capitalize, formatRole } from '@/utils/format-string';
+import { isString, isValidLength } from '@/utils/validate';
 
 export default function LicensingRequestDetail() {
-  const [request, setRequest] = useState<AdsRequest | undefined>(undefined);
+  const navigate = useNavigate();
+
+  const [request, setRequest] = useState<AdsRequest | null>(null);
   const { requestId } = useParams<{ requestId: string }>();
-  const { data, isLoading } = useGetRequestByIdQuery(requestId!);
+
+  const [getRequest, { isLoading }] = useLazyGetRequestByIdQuery();
+
+  function handleInvalidRequest() {
+    setRequest(null);
+    navigate('/licensing-requests', { replace: true });
+  }
 
   useEffect(() => {
-    if (data) {
-      setRequest(data?.data);
+    if (
+      !requestId ||
+      !isString(requestId) ||
+      !isValidLength(requestId, MAX_ID_LENGTH)
+    ) {
+      handleInvalidRequest();
+      return;
     }
-  }, [data]);
+
+    async function fetchData() {
+      try {
+        const res = await getRequest(requestId!, true).unwrap();
+        setRequest(res);
+      } catch (error) {
+        console.log(error);
+        handleInvalidRequest();
+      }
+    }
+
+    fetchData();
+  }, [getRequest, requestId]);
 
   if (isLoading || !request) {
     return <CenterLoading />;
   }
 
   return (
-    <DetailWrapper label="Licensing Request Details">
-      <Typography variant="h6">Information</Typography>
-      <Stack
-        direction={{ xs: 'column', sm: 'row' }}
-        spacing={2}
+    <DetailWrapper label={`Panel Licensing Request #${request?.id}`}>
+      <Typography
+        variant="h5"
         sx={{
-          mb: 1,
+          fontWeight: 'medium',
         }}
       >
+        Request Information
+      </Typography>
+
+      <Typography variant="h6">Information</Typography>
+      <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
         <ReadOnlyTextField label="ID" value={request?.id} />
 
         <ReadOnlyTextField label="Status" value={capitalize(request?.status)} />
@@ -80,13 +110,14 @@ export default function LicensingRequestDetail() {
         />
       </Stack>
 
-      <TextField
-        label="Reason"
-        value={request?.reason}
-        multiline
-        rows={4}
-        fullWidth
-      />
+      <Typography
+        variant="h5"
+        sx={{
+          fontWeight: 'medium',
+        }}
+      >
+        Panel Information
+      </Typography>
 
       <Typography variant="h6">Panel</Typography>
       <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
@@ -185,6 +216,14 @@ export default function LicensingRequestDetail() {
           }
         />
       </Stack>
+
+      <TextField
+        label="Reason"
+        value={request?.reason}
+        multiline
+        rows={4}
+        fullWidth
+      />
     </DetailWrapper>
   );
 }

@@ -19,10 +19,10 @@ import { ModalKey } from '@/constants/modal';
 import {
   useDeleteRequestMutation,
   useGetRequestsQuery,
-} from '@/store/api/officerApiSlice';
+} from '@/store/api/officer/requestApiSlide';
 import { showModal } from '@/store/slice/modal';
 import { AdsRequest } from '@/types/officer-management';
-import { formatDateTime } from '@/utils/format-date';
+import { formatDateTime } from '@/utils/datetime';
 import { capitalize } from '@/utils/format-string';
 import { showError, showSuccess } from '@/utils/toast';
 
@@ -42,7 +42,7 @@ export default function LicensingRequestList() {
   const dispatch = useAppDispatch();
 
   const [page, setPage] = useState<number>(1);
-  const [requests, setRequests] = useState<AdsRequest[] | undefined>([]);
+  const [requests, setRequests] = useState<AdsRequest[]>([]);
 
   const { data, isLoading, refetch } = useGetRequestsQuery({
     page: page,
@@ -78,7 +78,7 @@ export default function LicensingRequestList() {
   }
 
   return (
-    <ListWrapper label="List of Panel Licensing Requests">
+    <ListWrapper label="Panel Licensing Requests">
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="advertising points">
           <TableHead>

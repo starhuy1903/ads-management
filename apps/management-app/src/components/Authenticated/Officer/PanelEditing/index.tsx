@@ -21,27 +21,19 @@ import { DetailWrapper } from '@/components/Common/Layout/ScreenWrapper';
 import ImagePreview from '@/components/Unauthenticated/Citizen/CitizenReport/ImagePreview';
 import UploadImageCard from '@/components/Unauthenticated/Citizen/CitizenReport/UploadImageCard';
 import { ModalKey } from '@/constants/modal';
+import { MAX_ID_LENGTH } from '@/constants/url-params';
 import { ImageFileConfig } from '@/constants/validation';
 import {
-  useCreateUpdatePanelRequestMutation,
-  useGetPanelByIdQuery,
-  useGetPanelTypesOfficerQuery,
-} from '@/store/api/officerApiSlice';
+  useLazyGetPanelByIdQuery,
+  useLazyGetPanelTypesOfficerQuery,
+} from '@/store/api/officer/panelApiSlide';
+import { useCreateUpdatePanelRequestMutation } from '@/store/api/officer/requestApiSlide';
 import { showModal } from '@/store/slice/modal';
 import { Panel, PanelType, UpdatePanelDto } from '@/types/officer-management';
-
-interface EditPanelFormType {
-  panelType: string;
-  width: number;
-  height: number;
-  quantity: number;
-  imageFiles: File[];
-  companyEmail: string;
-  companyPhone: string;
-  createdContractDate: string;
-  expiredContractDate: string;
-  reason: string;
-}
+import { formatDateTime } from '@/utils/datetime';
+import { capitalize } from '@/utils/format-string';
+import { showError, showSuccess } from '@/utils/toast';
+import { isString, isValidLength } from '@/utils/validate';
 
 export default function PanelEditing() {
   const dispatch = useAppDispatch();
@@ -51,45 +43,66 @@ export default function PanelEditing() {
 
   const userId = useAppSelector((state) => state?.user?.profile?.id);
 
-  const [panel, setPanel] = useState<Panel | undefined>(undefined);
+  const [panel, setPanel] = useState<Panel | null>(null);
   const [panelTypes, setPanelTypes] = useState<PanelType[]>([]);
 
-  const { data: panelData, isLoading: panelLoading } = useGetPanelByIdQuery(
-    panelId!,
-  );
-  const { data: panelTypeData, isLoading: panelTypeLoading } =
-    useGetPanelTypesOfficerQuery({});
+  const [getPanel, { isLoading: panelLoading }] = useLazyGetPanelByIdQuery();
+  const [getPanelTypes, { isLoading: panelTypesLoading }] =
+    useLazyGetPanelTypesOfficerQuery();
 
   const { handleSubmit, register, control, formState, setValue, watch, reset } =
     useForm<UpdatePanelDto>({
       mode: 'onChange',
     });
 
-  useEffect(() => {
-    if (panelData && panelTypeData && userId) {
-      setPanel(panelData?.data);
-      setPanelTypes(panelTypeData?.data);
+  function handleInvalidRequest() {
+    setPanel(null);
+    navigate('/panels', { replace: true });
+  }
 
-      reset({
-        belongPanelId: panelData?.data?.id,
-        locationId: panelData?.data?.location?.id,
-        userId: userId,
-        typeId: panelData?.data?.type?.id,
-        images: [],
-        width: panelData?.data?.width,
-        height: panelData?.data?.height,
-        createContractDate: panelData?.data?.createContractDate,
-        expiredContractDate: panelData?.data?.expiredContractDate,
-        companyEmail: panelData?.data?.companyEmail,
-        companyNumber: panelData?.data?.companyNumber,
-        reason: '',
-      });
+  useEffect(() => {
+    if (
+      !panelId ||
+      !isString(panelId) ||
+      !isValidLength(panelId, MAX_ID_LENGTH)
+    ) {
+      handleInvalidRequest();
+      return;
     }
-  }, [panelData, panelTypeData, reset, userId]);
+    async function fetchData() {
+      try {
+        const panelData = await getPanel(panelId!, true).unwrap();
+        const panelTypesData = await getPanelTypes().unwrap();
+
+        setPanel(panelData);
+        setPanelTypes(panelTypesData);
+
+        reset({
+          belongPanelId: panelData.id,
+          locationId: panelData.location.id,
+          userId: userId,
+          typeId: panelData.type.id,
+          images: [],
+          width: panelData.width,
+          height: panelData.height,
+          createContractDate: panelData.createContractDate,
+          expiredContractDate: panelData.expiredContractDate,
+          companyEmail: panelData.companyEmail,
+          companyNumber: panelData.companyNumber,
+          reason: '',
+        });
+      } catch (error) {
+        console.log(error);
+        handleInvalidRequest();
+      }
+    }
+
+    fetchData();
+  }, [getPanel, getPanelTypes, panelId, reset, userId]);
 
   useEffect(() => {
     if (panel?.imageUrls) {
-      fetch(panel?.imageUrls[0])
+      fetch(panel.imageUrls[0])
         .then((res) => res.blob())
         .then((blob) => {
           const file = new File([blob], panel?.imageUrls[0]);
@@ -100,8 +113,6 @@ export default function PanelEditing() {
 
   const { errors: formError } = formState;
   const formValue = watch();
-
-  const [submitting, setSubmitting] = useState(false);
 
   const handleAddImage = useCallback(
     (file: File) => setValue('images', [...formValue.images, file]),
@@ -143,48 +154,58 @@ export default function PanelEditing() {
     disabled: boolean;
   }) => <UploadImageCard open={open} disabled={disabled} />;
 
-  const [updatePanel] = useCreateUpdatePanelRequestMutation();
+  const [updatePanel, { isLoading: isSubmitting }] =
+    useCreateUpdatePanelRequestMutation();
 
   const onSubmit = async (data: UpdatePanelDto) => {
     try {
-      setSubmitting(true);
+      await updatePanel(data).unwrap();
 
-      const formData = new FormData();
-      formData.append('belongPanelId', data.belongPanelId.toString());
-      formData.append('locationId', data.locationId.toString());
-      formData.append('userId', data.userId.toString());
-      formData.append('typeId', data.typeId.toString());
-      data.images.forEach((image) => formData.append('images', image));
-      formData.append('reason', data.reason);
-      formData.append('width', data.width.toString());
-      formData.append('height', data.height.toString());
-      data.createContractDate = new Date(data.createContractDate).toISOString();
-      data.expiredContractDate = new Date(
-        data.expiredContractDate,
-      ).toISOString();
-      formData.append('createContractDate', data.createContractDate);
-      formData.append('expiredContractDate', data.expiredContractDate);
-      formData.append('companyEmail', data.companyEmail);
-      formData.append('companyNumber', data.companyNumber);
-
-      await updatePanel(formData).unwrap();
-
-      setSubmitting(false);
-
-      navigate(-1);
+      showSuccess('Editing request sent successfully');
+      navigate('/panels');
     } catch (error) {
       console.log(error);
+      showError('Editing request sent failed');
     }
   };
 
-  if (panelLoading || panelTypeLoading || !panel || !panelTypes) {
+  if (panelLoading || panelTypesLoading || !panel || !panelTypes) {
     return <CenterLoading />;
   }
 
   return (
-    <DetailWrapper label="Create Panel Editing Request">
+    <DetailWrapper label={`Update Panel #${panel?.id}`}>
+      <Typography variant="h6">Panel</Typography>
+      <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+        <ReadOnlyTextForm field="id" label="ID" value={panel?.id ?? ''} />
+
+        <ReadOnlyTextForm
+          field="status"
+          label="Status"
+          value={capitalize(panel?.status)}
+        />
+
+        <ReadOnlyTextForm
+          field="createdTime"
+          label="Created Time"
+          value={formatDateTime(panel?.createdAt)}
+        />
+
+        <ReadOnlyTextForm
+          field="updatedTime"
+          label="Updated Time"
+          value={formatDateTime(panel?.updatedAt)}
+        />
+      </Stack>
+
       <Typography variant="h6">Location</Typography>
       <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+        <ReadOnlyTextForm
+          field="name"
+          label="Name"
+          value={panel?.location?.name ?? ''}
+        />
+
         <ReadOnlyTextForm
           field="fullAddress"
           label="Address"
@@ -202,7 +223,8 @@ export default function PanelEditing() {
           label="District"
           value={panel?.location?.district?.name ?? ''}
         />
-
+      </Stack>
+      <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
         <ReadOnlyTextForm
           field="type"
           label="Type"
@@ -216,10 +238,8 @@ export default function PanelEditing() {
         />
       </Stack>
 
-      <Typography variant="h6">Panel</Typography>
+      <Typography variant="h6">Updateable Fields</Typography>
       <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-        <ReadOnlyTextForm field="id" label="ID" value={panel?.id ?? ''} />
-
         <FormControl fullWidth error={!!formError.typeId}>
           <FormLabel htmlFor="typeId">Type</FormLabel>
           <Select
@@ -282,33 +302,9 @@ export default function PanelEditing() {
         </FormControl>
       </Stack>
 
-      <FormControl>
-        <FormLabel sx={{ mb: 1 }}>Upload image</FormLabel>
-        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-          {formValue.images.map((image, index) => (
-            <ImagePreview
-              key={index}
-              image={image}
-              disabled={submitting}
-              onDeleteImage={handleDeleteImage}
-            />
-          ))}
-          {formValue.images.length < 1 && (
-            <DropFileContainer
-              onDropFile={handleUpdateImage}
-              acceptMIMETypes={ImageFileConfig.ACCEPTED_MINE_TYPES}
-              renderChildren={renderUpdateImageContainer}
-              disabled={submitting}
-              maxSize={ImageFileConfig.MAX_SIZE}
-            />
-          )}
-        </Stack>
-      </FormControl>
-
-      <Typography variant="h6">Company</Typography>
       <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
         <FormControl fullWidth error={!!formError.companyEmail}>
-          <FormLabel htmlFor="companyEmail">Email</FormLabel>
+          <FormLabel htmlFor="companyEmail">Company Email</FormLabel>
           <TextField
             {...register('companyEmail', {
               required: 'The company email is required.',
@@ -324,7 +320,7 @@ export default function PanelEditing() {
         </FormControl>
 
         <FormControl fullWidth error={!!formError.companyNumber}>
-          <FormLabel htmlFor="companyNumber">Phone</FormLabel>
+          <FormLabel htmlFor="companyNumber">Company Phone</FormLabel>
           <TextField
             {...register('companyNumber', {
               required: 'The company phone is required.',
@@ -384,7 +380,29 @@ export default function PanelEditing() {
         </FormControl>
       </Stack>
 
-      <Typography variant="h6">Update reason</Typography>
+      <FormControl>
+        <FormLabel sx={{ mb: 1 }}>Image</FormLabel>
+        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+          {formValue.images.map((image, index) => (
+            <ImagePreview
+              key={index}
+              image={image}
+              disabled={isSubmitting}
+              onDeleteImage={handleDeleteImage}
+            />
+          ))}
+          {formValue.images.length < 1 && (
+            <DropFileContainer
+              onDropFile={handleUpdateImage}
+              acceptMIMETypes={ImageFileConfig.ACCEPTED_MINE_TYPES}
+              renderChildren={renderUpdateImageContainer}
+              disabled={isSubmitting}
+              maxSize={ImageFileConfig.MAX_SIZE}
+            />
+          )}
+        </Stack>
+      </FormControl>
+
       <FormControl fullWidth error={!!formError.reason}>
         <FormLabel htmlFor="reason">Reason</FormLabel>
         <TextField
@@ -405,7 +423,7 @@ export default function PanelEditing() {
       <Button
         variant="contained"
         color="primary"
-        disabled={submitting}
+        disabled={isSubmitting}
         onClick={handleSubmit(onSubmit)}
         sx={{ mt: 2, color: 'white' }}
       >

@@ -14,9 +14,9 @@ import CenterLoading from '@/components/Common/CenterLoading';
 import { Edit, Info, Response } from '@/components/Common/Icons';
 import { ListWrapper } from '@/components/Common/Layout/ScreenWrapper';
 import { PanelStatus } from '@/constants/panel';
-import { useGetPanelsQuery } from '@/store/api/officerApiSlice';
+import { useGetPanelsQuery } from '@/store/api/officer/panelApiSlide';
 import { Panel } from '@/types/officer-management';
-import { formatDateTime } from '@/utils/format-date';
+import { formatDateTime } from '@/utils/datetime';
 import { capitalize } from '@/utils/format-string';
 
 const titles = [
@@ -34,7 +34,7 @@ const titles = [
 
 export default function PanelList() {
   const [page, setPage] = useState<number>(1);
-  const [panels, setPanels] = useState<Panel[] | undefined>([]);
+  const [panels, setPanels] = useState<Panel[]>([]);
 
   const { data, isLoading, refetch } = useGetPanelsQuery({
     page: page,
@@ -56,11 +56,7 @@ export default function PanelList() {
   }
 
   return (
-    <ListWrapper
-      label="List of Advertising Panels"
-      btnLabel="Create"
-      btnLink={'/panels/create'}
-    >
+    <ListWrapper label="Panels" btnLabel="Create" btnLink={'/panels/create'}>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="panels">
           <TableHead>
