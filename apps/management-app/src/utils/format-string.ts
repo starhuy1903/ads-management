@@ -1,6 +1,9 @@
 import _ from 'lodash';
 
-export function capitalize(str: string | undefined) {
+export function capitalize(str?: string) {
+  if (!str) {
+    return '';
+  }
   return _.capitalize(str);
 }
 

@@ -6,7 +6,6 @@ import {
   FormLabel,
   TextField,
 } from '@mui/material';
-import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAppSelector } from '@/store';
@@ -28,18 +27,13 @@ export default function PanelSendRequest() {
 
   const { errors: formError } = formState;
 
-  const [submitting, setSubmitting] = useState(false);
-
-  const [sendPanelRequest] = useCreatePanelRequestMutation();
+  const [sendPanelRequest, { isLoading: isSubmitting }] =
+    useCreatePanelRequestMutation();
 
   const onSubmit = async ({ reason }: { reason: string }) => {
     try {
       if (userId && panelId) {
-        setSubmitting(true);
-
         await sendPanelRequest({ userId, panelId, reason }).unwrap();
-
-        setSubmitting(false);
 
         navigate(-1);
       } else {
@@ -72,7 +66,7 @@ export default function PanelSendRequest() {
       <Button
         variant="contained"
         color="primary"
-        disabled={submitting}
+        disabled={isSubmitting}
         onClick={handleSubmit(onSubmit)}
         sx={{ color: 'white' }}
       >

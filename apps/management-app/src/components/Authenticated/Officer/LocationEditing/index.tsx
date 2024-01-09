@@ -100,8 +100,6 @@ export default function LocationEditing() {
   const { errors: formError } = formState;
   const formValue = watch();
 
-  const [submitting, setSubmitting] = useState(false);
-
   const handleAddImage = useCallback(
     (file: File) => setValue('images', [...formValue.images, file]),
     [formValue.images, setValue],
@@ -142,15 +140,12 @@ export default function LocationEditing() {
     disabled: boolean;
   }) => <UploadImageCard open={open} disabled={disabled} />;
 
-  const [updateLocation] = useCreateUpdateLocationRequestMutation();
+  const [updateLocation, { isLoading: isSubmitting }] =
+    useCreateUpdateLocationRequestMutation();
 
   const onSubmit = async (data: UpdateLocationDto) => {
     try {
-      setSubmitting(true);
-
       await updateLocation(data).unwrap();
-
-      setSubmitting(false);
 
       navigate(-1);
     } catch (error) {
@@ -294,7 +289,7 @@ export default function LocationEditing() {
             <ImagePreview
               key={index}
               image={image}
-              disabled={submitting}
+              disabled={isSubmitting}
               onDeleteImage={handleDeleteImage}
             />
           ))}
@@ -303,7 +298,7 @@ export default function LocationEditing() {
               onDropFile={handleUpdateImage}
               acceptMIMETypes={ImageFileConfig.ACCEPTED_MINE_TYPES}
               renderChildren={renderUpdateImageContainer}
-              disabled={submitting}
+              disabled={isSubmitting}
               maxSize={ImageFileConfig.MAX_SIZE}
             />
           )}
@@ -330,7 +325,7 @@ export default function LocationEditing() {
       <Button
         variant="contained"
         color="primary"
-        disabled={submitting}
+        disabled={isSubmitting}
         onClick={handleSubmit(onSubmit)}
         sx={{ mt: 2, color: 'white' }}
       >

@@ -53,17 +53,11 @@ export default function ReportResponse() {
 
   const { errors: formError } = formState;
 
-  const [submitting, setSubmitting] = useState(false);
-
-  const [updateReport] = useUpdateReportMutation();
+  const [updateReport, { isLoading: isSubmitting }] = useUpdateReportMutation();
 
   const onSubmit = async (data: UpdateReportDto) => {
     try {
-      setSubmitting(true);
-
       await updateReport(data).unwrap();
-
-      setSubmitting(false);
 
       navigate(-1);
     } catch (error) {
@@ -135,7 +129,7 @@ export default function ReportResponse() {
       <Button
         variant="contained"
         color="primary"
-        disabled={submitting}
+        disabled={isSubmitting}
         onClick={handleSubmit(onSubmit)}
         sx={{ color: 'white' }}
       >
