@@ -6,6 +6,7 @@ import {
 } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { apiSlice, apiWithToastSlice } from './api/baseApiSlice';
+import { mapsSlice } from './slice/mapsSlice';
 import { modalSlice } from './slice/modal';
 import { sidebarSlice } from './slice/sidebar';
 import { statusSlice } from './slice/statusSlice';
@@ -16,6 +17,7 @@ const combinedReducer = combineReducers({
   modal: modalSlice.reducer,
   sidebar: sidebarSlice.reducer,
   status: statusSlice.reducer,
+  maps: mapsSlice.reducer,
   [apiSlice.reducerPath]: apiSlice.reducer,
   [apiWithToastSlice.reducerPath]: apiWithToastSlice.reducer,
 });
