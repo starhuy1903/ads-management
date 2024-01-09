@@ -42,7 +42,7 @@ export default function LicensingRequestList() {
   const dispatch = useAppDispatch();
 
   const [page, setPage] = useState<number>(1);
-  const [requests, setRequests] = useState<AdsRequest[] | undefined>([]);
+  const [requests, setRequests] = useState<AdsRequest[]>([]);
 
   const { data, isLoading, refetch } = useGetRequestsQuery({
     page: page,

@@ -13,7 +13,7 @@ import { formatDateTime } from '@/utils/format-date';
 import { capitalize } from '@/utils/format-string';
 
 export default function LocationDetail() {
-  const [location, setLocation] = useState<Location | undefined>(undefined);
+  const [location, setLocation] = useState<Location | null>(null);
   const { locationId } = useParams<{ locationId: string }>();
   const { data, isLoading, refetch } = useGetLocationByIdQuery(locationId!);
 

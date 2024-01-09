@@ -34,7 +34,7 @@ const titles = [
 
 export default function LocationList() {
   const [page, setPage] = useState<number>(1);
-  const [locations, setLocations] = useState<Location[] | undefined>([]);
+  const [locations, setLocations] = useState<Location[]>([]);
 
   const { data, isLoading, refetch } = useGetLocationsQuery({
     page: page,

@@ -13,7 +13,7 @@ import { formatDateTime } from '@/utils/format-date';
 import { capitalize } from '@/utils/format-string';
 
 export default function PanelDetail() {
-  const [panel, setPanel] = useState<Panel | undefined>(undefined);
+  const [panel, setPanel] = useState<Panel | null>(null);
   const { panelId } = useParams<{ panelId: string }>();
   const { data, isLoading, refetch } = useGetPanelByIdQuery(panelId!);
 

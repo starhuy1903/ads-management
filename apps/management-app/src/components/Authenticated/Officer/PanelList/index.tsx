@@ -34,7 +34,7 @@ const titles = [
 
 export default function PanelList() {
   const [page, setPage] = useState<number>(1);
-  const [panels, setPanels] = useState<Panel[] | undefined>([]);
+  const [panels, setPanels] = useState<Panel[]>([]);
 
   const { data, isLoading, refetch } = useGetPanelsQuery({
     page: page,

@@ -49,7 +49,7 @@ export default function EditingRequestList() {
 
   const [targetType, setTargetType] = useState<TargetType>(TargetType.PANEL);
   const [page, setPage] = useState<number>(1);
-  const [requests, setRequests] = useState<AdsRequest[] | undefined>([]);
+  const [requests, setRequests] = useState<AdsRequest[]>([]);
 
   const { data, isLoading, refetch } = useGetRequestsQuery({
     page: page,

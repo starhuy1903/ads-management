@@ -34,7 +34,7 @@ export default function PanelCreating() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const [locations, setLocations] = useState<Location[] | undefined>([]);
+  const [locations, setLocations] = useState<Location[]>([]);
   const [panelTypes, setPanelTypes] = useState<PanelType[]>([]);
 
   const { data: locationData, isLoading: locationLoading } =

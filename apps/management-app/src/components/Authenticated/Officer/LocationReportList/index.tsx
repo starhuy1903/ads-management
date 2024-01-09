@@ -31,7 +31,7 @@ const titles = [
 
 export default function LocationReportList() {
   const [page, setPage] = useState<number>(1);
-  const [reports, setReports] = useState<Report[] | undefined>([]);
+  const [reports, setReports] = useState<Report[]>([]);
 
   const { data, isLoading, refetch } = useGetReportsQuery({
     page: page,

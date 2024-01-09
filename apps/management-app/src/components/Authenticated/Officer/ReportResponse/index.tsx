@@ -26,7 +26,7 @@ import { capitalize } from '@/utils/format-string';
 export default function ReportResponse() {
   const navigate = useNavigate();
 
-  const [report, setReport] = useState<Report | undefined>(undefined);
+  const [report, setReport] = useState<Report | null>(null);
   const { reportId } = useParams<{ reportId: string }>();
   const { data, isLoading, refetch } = useGetReportByIdQuery(reportId!);
 

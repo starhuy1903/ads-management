@@ -13,7 +13,7 @@ import { formatDateTime } from '@/utils/format-date';
 import { capitalize, formatRole } from '@/utils/format-string';
 
 export default function LicensingRequestDetail() {
-  const [request, setRequest] = useState<AdsRequest | undefined>(undefined);
+  const [request, setRequest] = useState<AdsRequest | null>(null);
   const { requestId } = useParams<{ requestId: string }>();
   const { data, isLoading } = useGetRequestByIdQuery(requestId!);
 

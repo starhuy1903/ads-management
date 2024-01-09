@@ -40,7 +40,7 @@ export default function PanelEditing() {
 
   const userId = useAppSelector((state) => state?.user?.profile?.id);
 
-  const [panel, setPanel] = useState<Panel | undefined>(undefined);
+  const [panel, setPanel] = useState<Panel | null>(null);
   const [panelTypes, setPanelTypes] = useState<PanelType[]>([]);
 
   const { data: panelData, isLoading: panelLoading } = useGetPanelByIdQuery(

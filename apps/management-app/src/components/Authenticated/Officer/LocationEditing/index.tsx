@@ -46,7 +46,7 @@ export default function LocationEditing() {
 
   const userId = useAppSelector((state) => state?.user?.profile?.id);
 
-  const [location, setLocation] = useState<Location | undefined>(undefined);
+  const [location, setLocation] = useState<Location | null>(null);
   const [locationTypes, setLocationTypes] = useState<LocationType[]>([]);
   const [adsTypes, setAdsTypes] = useState<AdsType[]>([]);
 
