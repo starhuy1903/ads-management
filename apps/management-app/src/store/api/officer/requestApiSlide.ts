@@ -8,7 +8,6 @@ import {
   UpdatePanelDto,
 } from '@/types/officer-management';
 import { apiSlice } from '../baseApiSlice';
-import { getOnMutationFunction } from '../helper';
 
 export const officerManagementApiSlice = apiSlice.injectEndpoints({
   endpoints: (build) => ({
@@ -47,7 +46,6 @@ export const officerManagementApiSlice = apiSlice.injectEndpoints({
         method: 'POST',
         body: arg,
       }),
-      onQueryStarted: getOnMutationFunction('Create the request successfully'),
     }),
     createUpdateLocationRequest: build.mutation<
       MessageResponse,
@@ -79,7 +77,6 @@ export const officerManagementApiSlice = apiSlice.injectEndpoints({
           body: bodyFormData,
         };
       },
-      onQueryStarted: getOnMutationFunction('Create the request successfully'),
     }),
     createUpdatePanelRequest: build.mutation<MessageResponse, UpdatePanelDto>({
       query: (body) => {
@@ -110,7 +107,6 @@ export const officerManagementApiSlice = apiSlice.injectEndpoints({
           body: bodyFormData,
         };
       },
-      onQueryStarted: getOnMutationFunction('Create the request successfully'),
     }),
     deleteRequest: build.mutation<MessageResponse, string>({
       query: (id) => ({

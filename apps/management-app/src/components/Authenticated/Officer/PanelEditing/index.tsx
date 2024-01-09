@@ -31,6 +31,7 @@ import { showModal } from '@/store/slice/modal';
 import { Panel, PanelType, UpdatePanelDto } from '@/types/officer-management';
 import { formatDateTime } from '@/utils/datetime';
 import { capitalize } from '@/utils/format-string';
+import { showError, showSuccess } from '@/utils/toast';
 
 export default function PanelEditing() {
   const dispatch = useAppDispatch();
@@ -137,9 +138,11 @@ export default function PanelEditing() {
     try {
       await updatePanel(data).unwrap();
 
-      navigate(-1);
+      showSuccess('Editing request sent successfully');
+      navigate('/panels');
     } catch (error) {
       console.log(error);
+      showError('Editing request sent failed');
     }
   };
 

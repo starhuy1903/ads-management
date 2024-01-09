@@ -29,6 +29,7 @@ import {
 } from '@/store/api/officer/panelApiSlide';
 import { showModal } from '@/store/slice/modal';
 import { Location, PanelDto, PanelType } from '@/types/officer-management';
+import { showError, showSuccess } from '@/utils/toast';
 
 export default function PanelCreating() {
   const dispatch = useAppDispatch();
@@ -113,9 +114,12 @@ export default function PanelCreating() {
   const onSubmit = async (data: PanelDto) => {
     try {
       await createPanel(data).unwrap();
-      navigate(-1);
+
+      showSuccess('Draft panel created successfully');
+      navigate('/panels');
     } catch (error) {
       console.log(error);
+      showError('Draft panel created failed');
     }
   };
 

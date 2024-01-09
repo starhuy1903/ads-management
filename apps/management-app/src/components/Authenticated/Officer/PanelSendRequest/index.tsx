@@ -11,7 +11,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useAppSelector } from '@/store';
 import { DetailWrapper } from '@/components/Common/Layout/ScreenWrapper';
 import { useCreatePanelRequestMutation } from '@/store/api/officer/requestApiSlide';
-import { showError } from '@/utils/toast';
+import { showError, showSuccess } from '@/utils/toast';
 
 export default function PanelSendRequest() {
   const { panelId } = useParams<{ panelId: string }>();
@@ -35,9 +35,10 @@ export default function PanelSendRequest() {
       if (userId && panelId) {
         await sendPanelRequest({ userId, panelId, reason }).unwrap();
 
-        navigate(-1);
+        showSuccess('Licensing request sent successfully');
+        navigate('/panels');
       } else {
-        showError('This panel is not available.');
+        showError('Licensing request sent failed');
       }
     } catch (error) {
       console.log(error);

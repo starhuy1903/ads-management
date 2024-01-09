@@ -22,6 +22,7 @@ import {
 } from '@/store/api/officer/reportApiSlice';
 import { Report, UpdateReportDto } from '@/types/officer-management';
 import { capitalize } from '@/utils/format-string';
+import { showError, showSuccess } from '@/utils/toast';
 
 export default function ReportResponse() {
   const navigate = useNavigate();
@@ -59,9 +60,11 @@ export default function ReportResponse() {
     try {
       await updateReport(data).unwrap();
 
-      navigate(-1);
+      showSuccess('Response sent successfully');
+      navigate('/editing-requests');
     } catch (error) {
       console.log(error);
+      showError('Response sent failed');
     }
   };
 

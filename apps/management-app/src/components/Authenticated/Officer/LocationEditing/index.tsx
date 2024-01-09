@@ -37,6 +37,7 @@ import {
 } from '@/types/officer-management';
 import { formatDateTime } from '@/utils/datetime';
 import { capitalize } from '@/utils/format-string';
+import { showError, showSuccess } from '@/utils/toast';
 
 export default function LocationEditing() {
   const dispatch = useAppDispatch();
@@ -147,9 +148,11 @@ export default function LocationEditing() {
     try {
       await updateLocation(data).unwrap();
 
-      navigate(-1);
+      showSuccess('Editing request sent successfully');
+      navigate('/locations');
     } catch (error) {
       console.log(error);
+      showError('Editing request sent failed');
     }
   };
 

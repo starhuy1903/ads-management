@@ -6,7 +6,6 @@ import {
   PanelType,
 } from '@/types/officer-management';
 import { apiSlice } from '../baseApiSlice';
-import { getOnMutationFunction } from '../helper';
 
 export const officerPanelApiSlice = apiSlice.injectEndpoints({
   endpoints: (build) => ({
@@ -67,9 +66,6 @@ export const officerPanelApiSlice = apiSlice.injectEndpoints({
           body: bodyFormData,
         };
       },
-      onQueryStarted: getOnMutationFunction(
-        'Created the panel licensing request',
-      ),
     }),
   }),
 });

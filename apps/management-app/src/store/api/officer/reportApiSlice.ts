@@ -5,7 +5,6 @@ import {
   UpdateReportDto,
 } from '@/types/officer-management';
 import { apiSlice } from '../baseApiSlice';
-import { getOnMutationFunction } from '../helper';
 
 export const officerReportApiSlice = apiSlice.injectEndpoints({
   endpoints: (build) => ({
@@ -45,7 +44,6 @@ export const officerReportApiSlice = apiSlice.injectEndpoints({
           resolvedContent: arg?.resolvedContent,
         },
       }),
-      onQueryStarted: getOnMutationFunction('Respond the report successfully'),
     }),
   }),
 });
