@@ -29,7 +29,7 @@ import {
 import { useCreateUpdatePanelRequestMutation } from '@/store/api/officer/requestApiSlide';
 import { showModal } from '@/store/slice/modal';
 import { Panel, PanelType, UpdatePanelDto } from '@/types/officer-management';
-import { formatDateTime } from '@/utils/format-date';
+import { formatDateTime } from '@/utils/datetime';
 import { capitalize } from '@/utils/format-string';
 
 export default function PanelEditing() {

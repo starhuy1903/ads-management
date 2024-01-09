@@ -15,7 +15,7 @@ import { Info, Response } from '@/components/Common/Icons';
 import { ListWrapper } from '@/components/Common/Layout/ScreenWrapper';
 import { useGetReportsQuery } from '@/store/api/officer/reportApiSlice';
 import { Report } from '@/types/officer-management';
-import { formatDateTime } from '@/utils/format-date';
+import { formatDateTime } from '@/utils/datetime';
 import { capitalize } from '@/utils/format-string';
 
 const titles = [

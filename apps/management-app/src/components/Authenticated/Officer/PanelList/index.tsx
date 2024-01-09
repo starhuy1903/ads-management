@@ -16,7 +16,7 @@ import { ListWrapper } from '@/components/Common/Layout/ScreenWrapper';
 import { PanelStatus } from '@/constants/panel';
 import { useGetPanelsQuery } from '@/store/api/officer/panelApiSlide';
 import { Panel } from '@/types/officer-management';
-import { formatDateTime } from '@/utils/format-date';
+import { formatDateTime } from '@/utils/datetime';
 import { capitalize } from '@/utils/format-string';
 
 const titles = [

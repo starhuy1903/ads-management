@@ -22,7 +22,7 @@ import {
 } from '@/store/api/officer/requestApiSlide';
 import { showModal } from '@/store/slice/modal';
 import { AdsRequest } from '@/types/officer-management';
-import { formatDateTime } from '@/utils/format-date';
+import { formatDateTime } from '@/utils/datetime';
 import { capitalize } from '@/utils/format-string';
 import { showError, showSuccess } from '@/utils/toast';
 

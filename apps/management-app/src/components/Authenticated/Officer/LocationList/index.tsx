@@ -16,7 +16,7 @@ import { ListWrapper } from '@/components/Common/Layout/ScreenWrapper';
 import { LocationStatus } from '@/constants/location';
 import { useGetLocationsQuery } from '@/store/api/officer/locationApiSlice';
 import { Location } from '@/types/officer-management';
-import { formatDateTime } from '@/utils/format-date';
+import { formatDateTime } from '@/utils/datetime';
 import { capitalize } from '@/utils/format-string';
 
 const titles = [

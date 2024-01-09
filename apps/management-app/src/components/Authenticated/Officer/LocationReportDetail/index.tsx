@@ -11,7 +11,7 @@ import { DetailWrapper } from '@/components/Common/Layout/ScreenWrapper';
 import { ReportStatus } from '@/constants/report';
 import { useGetReportByIdQuery } from '@/store/api/officer/reportApiSlice';
 import { Report } from '@/types/officer-management';
-import { formatDateTime } from '@/utils/format-date';
+import { formatDateTime } from '@/utils/datetime';
 import { capitalize } from '@/utils/format-string';
 
 export default function LocationReportDetail() {

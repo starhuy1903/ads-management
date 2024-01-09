@@ -9,7 +9,7 @@ import {
 import { DetailWrapper } from '@/components/Common/Layout/ScreenWrapper';
 import { useGetRequestByIdQuery } from '@/store/api/officer/requestApiSlide';
 import { AdsRequest } from '@/types/officer-management';
-import { formatDateTime } from '@/utils/format-date';
+import { formatDateTime } from '@/utils/datetime';
 import { capitalize, formatRole } from '@/utils/format-string';
 
 export default function LicensingRequestDetail() {
