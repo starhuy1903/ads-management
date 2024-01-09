@@ -227,7 +227,7 @@ export const {
   useGetPanelTypesOfficerQuery,
   useCreatePanelMutation,
   useGetReportsQuery,
-  useGetReportByIdQuery,
+  useLazyGetReportByIdQuery,
   useUpdateReportMutation,
   useGetRequestsQuery,
   useGetRequestByIdQuery,

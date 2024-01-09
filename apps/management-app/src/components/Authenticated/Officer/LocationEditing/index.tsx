@@ -42,7 +42,7 @@ export default function LocationEditing() {
 
   const { locationId } = useParams<{ locationId: string }>();
 
-  const userId = useAppSelector((state) => state?.user?.profile?.id);
+  const userId = useAppSelector((state) => state.user.profile?.id);
 
   const [location, setLocation] = useState<Location | undefined>(undefined);
   const [locationTypes, setLocationTypes] = useState<LocationType[]>([]);
@@ -62,12 +62,12 @@ export default function LocationEditing() {
 
   useEffect(() => {
     if (locationData && locationTypeData && adsTypeData && userId) {
-      setLocation(locationData?.data);
+      setLocation(locationData.data);
       setLocationTypes(locationTypeData?.data);
       setAdsTypes(adsTypeData?.data);
 
       reset({
-        belongLocationId: locationData?.data?.id,
+        belongLocationId: locationData.data?.id,
         userId: userId,
         typeId: locationData?.data?.type?.id,
         adsTypeId: locationData?.data?.adType?.id,
@@ -140,7 +140,8 @@ export default function LocationEditing() {
     disabled: boolean;
   }) => <UploadImageCard open={open} disabled={disabled} />;
 
-  const [updateLocation] = useCreateUpdateLocationRequestMutation();
+  const [updateLocation, { isLoading }] =
+    useCreateUpdateLocationRequestMutation();
 
   const onSubmit = async (data: UpdateLocationDto) => {
     try {
