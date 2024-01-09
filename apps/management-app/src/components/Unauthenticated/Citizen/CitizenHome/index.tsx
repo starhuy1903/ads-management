@@ -1,6 +1,6 @@
 import { Box } from '@mui/material';
 import { Avatar } from '@mui/material';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Marker } from 'react-map-gl';
 import { useAppDispatch, useAppSelector } from '@/store';
 import Maps from '@/components/Common/Maps';
@@ -9,14 +9,34 @@ import SidebarContainer from '@/components/Common/Sidebar';
 import { SidebarKey } from '@/constants/sidebar';
 import { useLazyGetLocationQuery } from '@/store/api/citizen/locationApiSlice';
 import { useLazyGetAllPanelsQuery } from '@/store/api/citizen/panelApiSlice';
-import { setIsShowingAdPanel } from '@/store/slice/mapsSlice';
+import { useGetSentReportsQuery } from '@/store/api/citizen/reportApiSlice';
+import {
+  setIsShowingAdPanel,
+  setIsShowingViolatedReport,
+} from '@/store/slice/mapsSlice';
 import { showSidebar } from '@/store/slice/sidebar';
 import { AdLocation } from '@/types/location';
 import { Panel } from '@/types/panel';
+import anonymousUser from '@/utils/anonymous-user';
 
 export default function CitizenHome() {
   const dispatch = useAppDispatch();
-  const { isShowingAdPanel } = useAppSelector((state) => state.maps);
+  const { isShowingAdPanel, isShowingViolatedReport } = useAppSelector(
+    (state) => state.maps,
+  );
+  const { data: vioReports, isLoading: fetchingViolatedReport } =
+    useGetSentReportsQuery(anonymousUser.getUserUuid());
+
+  const vioLocationReports = useMemo(
+    () => vioReports?.data.filter((report) => report.targetType === 'Location'),
+    [vioReports?.data],
+  );
+
+  const vioPanelReports = useMemo(
+    () => vioReports?.data.filter((report) => report.targetType === 'Panel'),
+    [vioReports?.data],
+  );
+
   const [getAllPanels, { isLoading: fetchingAllPanels }] =
     useLazyGetAllPanelsQuery();
   const [getAllAdLocations, { isLoading: fetchingAllAdsLocation }] =
@@ -68,7 +88,7 @@ export default function CitizenHome() {
   }, [getAllPanels]);
 
   const handleToggleAdPanels = useCallback(
-    async (value: boolean) => {
+    (value: boolean) => {
       dispatch(setIsShowingAdPanel(value));
       if (value) {
         handleGetAllPanels();
@@ -79,37 +99,59 @@ export default function CitizenHome() {
     [handleGetAllPanels, handleGetAdLocation, dispatch],
   );
 
+  const handleToggleViolationReport = useCallback(
+    (value: boolean) => {
+      dispatch(setIsShowingViolatedReport(value));
+    },
+    [dispatch],
+  );
+
   const renderPanelMarkers = () =>
-    panelData?.map((panel) => (
-      <Marker
-        key={panel.id}
-        longitude={panel.location.long}
-        latitude={panel.location.lat}
-        anchor="center"
-      >
-        <Avatar
-          sx={{ bgcolor: 'blue', width: 20, height: 20, fontSize: '12px' }}
-          children="BC"
-          onClick={() => handleViewPanelDetail(panel)}
-        />
-      </Marker>
-    ));
+    panelData?.map((panel) => {
+      const bgColor =
+        isShowingViolatedReport &&
+        vioPanelReports?.find((report) => report.panelId === panel.id)
+          ? 'red'
+          : 'blue';
+      return (
+        <Marker
+          key={panel.id}
+          longitude={panel.location.long}
+          latitude={panel.location.lat}
+          anchor="center"
+        >
+          <Avatar
+            sx={{ bgcolor: bgColor, width: 20, height: 20, fontSize: '12px' }}
+            children="BC"
+            onClick={() => handleViewPanelDetail(panel)}
+          />
+        </Marker>
+      );
+    });
 
   const renderLocationMarkers = () =>
-    adLocationData?.map((loc) => (
-      <Marker
-        key={loc.id}
-        longitude={loc.long}
-        latitude={loc.lat}
-        anchor="center"
-      >
-        <Avatar
-          sx={{ bgcolor: 'blue', width: 20, height: 20, fontSize: '12px' }}
-          children=""
-          onClick={() => handleViewLocationDetail(loc)}
-        />
-      </Marker>
-    ));
+    adLocationData?.map((loc) => {
+      const bgColor =
+        isShowingViolatedReport &&
+        vioLocationReports?.find((report) => report.locationId === loc.id)
+          ? 'red'
+          : 'blue';
+
+      return (
+        <Marker
+          key={loc.id}
+          longitude={loc.long}
+          latitude={loc.lat}
+          anchor="center"
+        >
+          <Avatar
+            sx={{ bgcolor: bgColor, width: 20, height: 20, fontSize: '12px' }}
+            children=""
+            onClick={() => handleViewLocationDetail(loc)}
+          />
+        </Marker>
+      );
+    });
 
   useEffect(() => {
     if (!mounted) {
@@ -143,9 +185,11 @@ export default function CitizenHome() {
           >
             <ActionBar
               isShowingAdPanel={isShowingAdPanel}
+              isShowingViolatedReport={isShowingViolatedReport}
               isGettingAllPanels={fetchingAllPanels || fetchingAllAdsLocation}
+              isGettingViolatedReport={fetchingViolatedReport}
               onToggleAdPanel={handleToggleAdPanels}
-              onToggleViolationReport={() => ({})}
+              onToggleViolationReport={handleToggleViolationReport}
             />
           </Box>
         </Maps>

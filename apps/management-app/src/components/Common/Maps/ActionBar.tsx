@@ -1,31 +1,22 @@
 import { Switch, FormControlLabel } from '@mui/material';
-import { ChangeEvent, useCallback, useState } from 'react';
 
 interface ActionBarProps {
   isShowingAdPanel?: boolean;
+  isShowingViolatedReport?: boolean;
   isGettingAllPanels?: boolean;
+  isGettingViolatedReport?: boolean;
   onToggleAdPanel: (value: boolean) => void;
-  onToggleViolationReport: () => void;
+  onToggleViolationReport: (value: boolean) => void;
 }
 
 const ActionBar = ({
   isShowingAdPanel = false,
+  isShowingViolatedReport = false,
   isGettingAllPanels = false,
+  isGettingViolatedReport = false,
   onToggleAdPanel,
   onToggleViolationReport,
 }: ActionBarProps) => {
-  const [isShowingViolationReport, setIsShowingViolationReport] =
-    useState(false);
-
-  const handleViolationReportToggle = useCallback(
-    (e: ChangeEvent<HTMLInputElement>) => {
-      const value = e.target.checked;
-      setIsShowingViolationReport(value);
-      value && onToggleViolationReport();
-    },
-    [onToggleViolationReport],
-  );
-
   return (
     <div>
       <FormControlLabel
@@ -43,10 +34,11 @@ const ActionBar = ({
       <FormControlLabel
         control={
           <Switch
-            checked={isShowingViolationReport}
-            onChange={handleViolationReportToggle}
+            checked={isShowingViolatedReport}
+            onChange={(e) => onToggleViolationReport(e.target.checked)}
             name="violationReport"
             color="primary"
+            disabled={isGettingViolatedReport}
           />
         }
         label="Báo cáo vi phạm"
