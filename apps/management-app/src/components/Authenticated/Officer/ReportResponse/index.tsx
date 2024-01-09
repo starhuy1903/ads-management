@@ -15,6 +15,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import CenterLoading from '@/components/Common/CenterLoading';
 import { ReadOnlyTextForm } from '@/components/Common/FormComponents';
 import { DetailWrapper } from '@/components/Common/Layout/ScreenWrapper';
+import { TargetType } from '@/constants/ads-request';
 import { ReportStatus } from '@/constants/report';
 import { MAX_ID_LENGTH } from '@/constants/url-params';
 import {
@@ -82,7 +83,13 @@ export default function ReportResponse() {
       await updateReport(data).unwrap();
 
       showSuccess('Response sent successfully');
-      navigate('/editing-requests');
+
+      if (report?.targetType === TargetType?.LOCATION) {
+        navigate('/location-reports');
+        return;
+      }
+
+      navigate('/panel-reports');
     } catch (error) {
       console.log(error);
       showError('Response sent failed');

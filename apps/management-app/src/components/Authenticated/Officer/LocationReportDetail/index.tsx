@@ -64,6 +64,71 @@ export default function LocationReportDetail() {
           fontWeight: 'medium',
         }}
       >
+        Report Information
+      </Typography>
+
+      <Typography variant="h6">Report</Typography>
+      <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+        <ReadOnlyTextField label="ID" value={report?.id} />
+
+        <ReadOnlyTextField label="Type" value={report?.reportType?.name} />
+
+        <ReadOnlyTextField label="Full Name" value={report?.fullName} />
+
+        <ReadOnlyTextField label="Email" value={report?.email} />
+
+        <ReadOnlyTextField label="Status" value={capitalize(report?.status)} />
+
+        <ReadOnlyTextField
+          label="Created Time"
+          value={formatDateTime(report?.createdAt)}
+        />
+
+        <ReadOnlyTextField
+          label="Updated Time"
+          value={formatDateTime(report?.updatedAt)}
+        />
+      </Stack>
+
+      <TextField
+        label="Content"
+        fullWidth
+        InputProps={{
+          readOnly: true,
+        }}
+        value={report?.content}
+        multiline
+        rows={5}
+      />
+
+      <ImageListField images={report?.imageUrls} />
+      <Typography variant="h6">Solution</Typography>
+      {report?.status === ReportStatus?.NEW ? (
+        <Typography
+          variant="body1"
+          sx={{ mb: 2, fontStyle: 'italic', color: 'gray' }}
+        >
+          Not processed yet.
+        </Typography>
+      ) : (
+        <TextField
+          label="Response content"
+          fullWidth
+          InputProps={{
+            readOnly: true,
+          }}
+          value={report?.resolvedContent}
+          multiline
+          rows={3}
+        />
+      )}
+
+      <Typography
+        variant="h5"
+        sx={{
+          fontWeight: 'medium',
+        }}
+      >
         Location Information
       </Typography>
 
@@ -132,71 +197,6 @@ export default function LocationReportDetail() {
       </Stack>
 
       <ImageListField images={report?.location?.imageUrls} />
-
-      <Typography
-        variant="h5"
-        sx={{
-          fontWeight: 'medium',
-        }}
-      >
-        Report Information
-      </Typography>
-
-      <Typography variant="h6">Report</Typography>
-      <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-        <ReadOnlyTextField label="ID" value={report?.id} />
-
-        <ReadOnlyTextField label="Type" value={report?.reportType?.name} />
-
-        <ReadOnlyTextField label="Full Name" value={report?.fullName} />
-
-        <ReadOnlyTextField label="Email" value={report?.email} />
-
-        <ReadOnlyTextField label="Status" value={capitalize(report?.status)} />
-
-        <ReadOnlyTextField
-          label="Created Time"
-          value={formatDateTime(report?.createdAt)}
-        />
-
-        <ReadOnlyTextField
-          label="Updated Time"
-          value={formatDateTime(report?.updatedAt)}
-        />
-      </Stack>
-
-      <TextField
-        label="Content"
-        fullWidth
-        InputProps={{
-          readOnly: true,
-        }}
-        value={report?.content}
-        multiline
-        rows={5}
-      />
-
-      <ImageListField images={report?.imageUrls} />
-      <Typography variant="h6">Solution</Typography>
-      {report?.status === ReportStatus?.NEW ? (
-        <Typography
-          variant="body1"
-          sx={{ mb: 2, fontStyle: 'italic', color: 'gray' }}
-        >
-          Not processed yet.
-        </Typography>
-      ) : (
-        <TextField
-          label="Response content"
-          fullWidth
-          InputProps={{
-            readOnly: true,
-          }}
-          value={report?.resolvedContent}
-          multiline
-          rows={3}
-        />
-      )}
 
       <Link to={`/reports/${report?.id}/response`}>
         <Button
