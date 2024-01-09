@@ -9,10 +9,6 @@ export type GetListResult<T> = {
   totalCount?: number;
 };
 
-export type GetDetailResult<T> = {
-  data?: T;
-};
-
 type BaseType = {
   id: number;
   createdAt: string;
@@ -76,7 +72,9 @@ export type User = BaseType & {
   lastName: string;
   phoneNumber: string;
   role: string;
-  ward?: RefType;
+  ward?: RefType & {
+    district?: RefType;
+  };
   district?: RefType;
 };
 

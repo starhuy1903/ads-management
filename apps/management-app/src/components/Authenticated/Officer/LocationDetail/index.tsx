@@ -7,7 +7,7 @@ import {
   ReadOnlyTextField,
 } from '@/components/Common/FormComponents';
 import { DetailWrapper } from '@/components/Common/Layout/ScreenWrapper';
-import { useGetLocationByIdQuery } from '@/store/api/officerApiSlice';
+import { useGetLocationByIdQuery } from '@/store/api/officer/locationApiSlice';
 import { Location } from '@/types/officer-management';
 import { formatDateTime } from '@/utils/format-date';
 import { capitalize } from '@/utils/format-string';
@@ -23,7 +23,7 @@ export default function LocationDetail() {
 
   useEffect(() => {
     if (data) {
-      setLocation(data?.data);
+      setLocation(data);
     }
   }, [data]);
 
@@ -32,7 +32,11 @@ export default function LocationDetail() {
   }
 
   return (
-    <DetailWrapper label="Advertising Location Details">
+    <DetailWrapper
+      label={`
+      Location #${location?.id}
+    `}
+    >
       <Typography variant="h6">Location</Typography>
       <Stack
         direction={{ xs: 'column', sm: 'row' }}

@@ -13,7 +13,7 @@ import { useEffect, useState } from 'react';
 import CenterLoading from '@/components/Common/CenterLoading';
 import { Info, Response } from '@/components/Common/Icons';
 import { ListWrapper } from '@/components/Common/Layout/ScreenWrapper';
-import { useGetReportsQuery } from '@/store/api/officerApiSlice';
+import { useGetReportsQuery } from '@/store/api/officer/reportApiSlice';
 import { Report } from '@/types/officer-management';
 import { formatDateTime } from '@/utils/format-date';
 import { capitalize } from '@/utils/format-string';
@@ -55,7 +55,7 @@ export default function PanelReportList() {
   }
 
   return (
-    <ListWrapper label="List of Panel Reports">
+    <ListWrapper label="Panel Reports">
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="panel reports">
           <TableHead>

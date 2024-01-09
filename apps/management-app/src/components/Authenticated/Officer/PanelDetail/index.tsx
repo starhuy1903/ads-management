@@ -7,7 +7,7 @@ import {
   ReadOnlyTextField,
 } from '@/components/Common/FormComponents';
 import { DetailWrapper } from '@/components/Common/Layout/ScreenWrapper';
-import { useGetPanelByIdQuery } from '@/store/api/officerApiSlice';
+import { useGetPanelByIdQuery } from '@/store/api/officer/panelApiSlide';
 import { Panel } from '@/types/officer-management';
 import { formatDateTime } from '@/utils/format-date';
 import { capitalize } from '@/utils/format-string';
@@ -23,7 +23,7 @@ export default function PanelDetail() {
 
   useEffect(() => {
     if (data) {
-      setPanel(data?.data);
+      setPanel(data);
     }
   }, [data]);
 
@@ -32,7 +32,7 @@ export default function PanelDetail() {
   }
 
   return (
-    <DetailWrapper label="Advertising Panel Details">
+    <DetailWrapper label={`Panel #${panel?.id}`}>
       <Typography variant="h6">Panel</Typography>
       <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
         <ReadOnlyTextField label="ID" value={panel?.id} />

@@ -11,7 +11,7 @@ import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAppSelector } from '@/store';
 import { DetailWrapper } from '@/components/Common/Layout/ScreenWrapper';
-import { useCreatePanelRequestMutation } from '@/store/api/officerApiSlice';
+import { useCreatePanelRequestMutation } from '@/store/api/officer/requestApiSlide';
 import { showError } from '@/utils/toast';
 
 export default function PanelSendRequest() {

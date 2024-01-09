@@ -14,7 +14,7 @@ import CenterLoading from '@/components/Common/CenterLoading';
 import { Edit, Info } from '@/components/Common/Icons';
 import { ListWrapper } from '@/components/Common/Layout/ScreenWrapper';
 import { LocationStatus } from '@/constants/location';
-import { useGetLocationsQuery } from '@/store/api/officerApiSlice';
+import { useGetLocationsQuery } from '@/store/api/officer/locationApiSlice';
 import { Location } from '@/types/officer-management';
 import { formatDateTime } from '@/utils/format-date';
 import { capitalize } from '@/utils/format-string';
@@ -57,7 +57,7 @@ export default function LocationList() {
   }
 
   return (
-    <ListWrapper label="List of Advertising Locations">
+    <ListWrapper label="Locations">
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="locations">
           <TableHead>

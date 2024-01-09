@@ -19,7 +19,7 @@ import { ReportStatus } from '@/constants/report';
 import {
   useGetReportByIdQuery,
   useUpdateReportMutation,
-} from '@/store/api/officerApiSlice';
+} from '@/store/api/officer/reportApiSlice';
 import { Report, UpdateReportDto } from '@/types/officer-management';
 import { capitalize } from '@/utils/format-string';
 
@@ -41,12 +41,12 @@ export default function ReportResponse() {
 
   useEffect(() => {
     if (data) {
-      setReport(data?.data);
+      setReport(data);
 
       reset({
-        id: data?.data?.id,
-        status: data?.data?.status,
-        resolvedContent: data?.data?.resolvedContent,
+        id: data.id,
+        status: data.status,
+        resolvedContent: data.resolvedContent,
       });
     }
   }, [data, reset]);
@@ -76,7 +76,7 @@ export default function ReportResponse() {
   }
 
   return (
-    <DetailWrapper label={`Respond The Report #${report?.id}`}>
+    <DetailWrapper label={`Respond Report #${report?.id}`}>
       <Stack
         direction={{ xs: 'column', sm: 'row' }}
         spacing={2}

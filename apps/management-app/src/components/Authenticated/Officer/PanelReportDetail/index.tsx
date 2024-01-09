@@ -9,7 +9,7 @@ import {
 } from '@/components/Common/FormComponents';
 import { DetailWrapper } from '@/components/Common/Layout/ScreenWrapper';
 import { ReportStatus } from '@/constants/report';
-import { useGetReportByIdQuery } from '@/store/api/officerApiSlice';
+import { useGetReportByIdQuery } from '@/store/api/officer/reportApiSlice';
 import { Report } from '@/types/officer-management';
 import { formatDateTime } from '@/utils/format-date';
 import { capitalize } from '@/utils/format-string';
@@ -25,7 +25,7 @@ export default function PanelReportDetail() {
 
   useEffect(() => {
     if (data) {
-      setReport(data?.data);
+      setReport(data);
     }
   }, [data]);
 
@@ -34,7 +34,7 @@ export default function PanelReportDetail() {
   }
 
   return (
-    <DetailWrapper label="Panel Report Details">
+    <DetailWrapper label={`Panel Report #${report?.id}`}>
       <Typography
         variant="h5"
         sx={{

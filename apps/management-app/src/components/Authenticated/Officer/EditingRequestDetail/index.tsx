@@ -8,7 +8,8 @@ import {
 } from '@/components/Common/FormComponents';
 import { DetailWrapper } from '@/components/Common/Layout/ScreenWrapper';
 import { TargetType } from '@/constants/ads-request';
-import { useGetRequestByIdQuery } from '@/store/api/officerApiSlice';
+import { UserRole } from '@/constants/user';
+import { useGetRequestByIdQuery } from '@/store/api/officer/requestApiSlide';
 import { AdsRequest } from '@/types/officer-management';
 import { formatDateTime } from '@/utils/format-date';
 import { capitalize, formatRole } from '@/utils/format-string';
@@ -20,7 +21,7 @@ export default function EditingRequestDetail() {
 
   useEffect(() => {
     if (data) {
-      setRequest(data?.data);
+      setRequest(data);
     }
   }, [data]);
 
@@ -29,7 +30,16 @@ export default function EditingRequestDetail() {
   }
 
   return (
-    <DetailWrapper label="Editing Request Details">
+    <DetailWrapper label={`Editing Request #${request?.id}`}>
+      <Typography
+        variant="h5"
+        sx={{
+          fontWeight: 'medium',
+        }}
+      >
+        Request Information
+      </Typography>
+
       <Typography variant="h6">Information</Typography>
       <Stack
         direction={{ xs: 'column', sm: 'row' }}
@@ -75,25 +85,37 @@ export default function EditingRequestDetail() {
 
         <ReadOnlyTextField label="Email" value={request?.user?.email} />
 
-        <ReadOnlyTextField label="Ward" value={request?.user?.ward?.name} />
+        {request?.user?.role === UserRole.WARD_OFFICER && (
+          <>
+            <ReadOnlyTextField label="Ward" value={request?.user?.ward?.name} />
 
-        <ReadOnlyTextField
-          label="District"
-          value={request?.user?.district?.name}
-        />
+            <ReadOnlyTextField
+              label="District"
+              value={request?.user?.ward?.district?.name}
+            />
+          </>
+        )}
+
+        {request?.user?.role === UserRole.DISTRICT_OFFICER && (
+          <ReadOnlyTextField
+            label="District"
+            value={request?.user?.district?.name}
+          />
+        )}
       </Stack>
 
-      <TextField
-        label="Reason"
-        value={request?.reason}
-        multiline
-        rows={4}
-        fullWidth
-      />
+      <Typography
+        variant="h5"
+        sx={{
+          fontWeight: 'medium',
+        }}
+      >
+        Edited Information
+      </Typography>
 
       {request?.targetType === TargetType.PANEL ? (
         <>
-          <Typography variant="h6">Updated Panel</Typography>
+          <Typography variant="h6">Panel</Typography>
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
             <ReadOnlyTextField label="ID" value={request?.panel?.id} />
 
@@ -196,7 +218,7 @@ export default function EditingRequestDetail() {
         </>
       ) : (
         <>
-          <Typography variant="h6">Updated Location</Typography>
+          <Typography variant="h6">Location</Typography>
           <Stack
             direction={{ xs: 'column', sm: 'row' }}
             spacing={2}
@@ -261,6 +283,8 @@ export default function EditingRequestDetail() {
               value={request?.location?.long}
             />
           </Stack>
+
+          <Typography variant="h6">Classification</Typography>
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
             <ReadOnlyTextField
               label="Type"
@@ -276,6 +300,15 @@ export default function EditingRequestDetail() {
           <ImageListField images={request?.location?.imageUrls} />
         </>
       )}
+
+      <Typography variant="h6">Reason For Editing</Typography>
+      <TextField
+        label="Reason"
+        value={request?.reason}
+        multiline
+        rows={4}
+        fullWidth
+      />
     </DetailWrapper>
   );
 }

@@ -22,11 +22,11 @@ import ImagePreview from '@/components/Unauthenticated/Citizen/CitizenReport/Ima
 import UploadImageCard from '@/components/Unauthenticated/Citizen/CitizenReport/UploadImageCard';
 import { ModalKey } from '@/constants/modal';
 import { ImageFileConfig } from '@/constants/validation';
+import { useGetLocationsQuery } from '@/store/api/officer/locationApiSlice';
 import {
   useCreatePanelMutation,
-  useGetLocationsQuery,
   useGetPanelTypesOfficerQuery,
-} from '@/store/api/officerApiSlice';
+} from '@/store/api/officer/panelApiSlide';
 import { showModal } from '@/store/slice/modal';
 import { Location, PanelDto, PanelType } from '@/types/officer-management';
 
@@ -40,12 +40,12 @@ export default function PanelCreating() {
   const { data: locationData, isLoading: locationLoading } =
     useGetLocationsQuery({});
   const { data: panelTypeData, isLoading: panelTypeLoading } =
-    useGetPanelTypesOfficerQuery({});
+    useGetPanelTypesOfficerQuery();
 
   useEffect(() => {
     if (locationData && panelTypeData) {
       setLocations(locationData.data);
-      setPanelTypes(panelTypeData.data);
+      setPanelTypes(panelTypeData);
     }
   }, [locationData, panelTypeData]);
 
@@ -116,22 +116,7 @@ export default function PanelCreating() {
     try {
       setSubmitting(true);
 
-      const formData = new FormData();
-      formData.append('typeId', data.typeId.toString());
-      formData.append('width', data.width.toString());
-      formData.append('height', data.height.toString());
-      formData.append('locationId', data.locationId.toString());
-      formData.append('companyEmail', data.companyEmail);
-      formData.append('companyNumber', data.companyNumber);
-      data.createContractDate = new Date(data.createContractDate).toISOString();
-      data.expiredContractDate = new Date(
-        data.expiredContractDate,
-      ).toISOString();
-      formData.append('createContractDate', data.createContractDate);
-      formData.append('expiredContractDate', data.expiredContractDate);
-      data.images.forEach((image) => formData.append('images', image));
-
-      await createPanel(formData).unwrap();
+      await createPanel(data).unwrap();
 
       setSubmitting(false);
 

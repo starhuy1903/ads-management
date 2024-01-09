@@ -19,7 +19,7 @@ import { ModalKey } from '@/constants/modal';
 import {
   useDeleteRequestMutation,
   useGetRequestsQuery,
-} from '@/store/api/officerApiSlice';
+} from '@/store/api/officer/requestApiSlide';
 import { showModal } from '@/store/slice/modal';
 import { AdsRequest } from '@/types/officer-management';
 import { formatDateTime } from '@/utils/format-date';
@@ -78,7 +78,7 @@ export default function LicensingRequestList() {
   }
 
   return (
-    <ListWrapper label="List of Panel Licensing Requests">
+    <ListWrapper label="Panel Licensing Requests">
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="advertising points">
           <TableHead>

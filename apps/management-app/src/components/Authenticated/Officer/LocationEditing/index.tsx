@@ -23,11 +23,11 @@ import UploadImageCard from '@/components/Unauthenticated/Citizen/CitizenReport/
 import { ModalKey } from '@/constants/modal';
 import { ImageFileConfig } from '@/constants/validation';
 import {
-  useCreateUpdateLocationRequestMutation,
   useGetAdsTypesOfficerQuery,
   useGetLocationByIdQuery,
   useGetLocationTypesOfficerQuery,
-} from '@/store/api/officerApiSlice';
+} from '@/store/api/officer/locationApiSlice';
+import { useCreateUpdateLocationRequestMutation } from '@/store/api/officer/requestApiSlide';
 import { showModal } from '@/store/slice/modal';
 import {
   AdsType,
@@ -35,6 +35,8 @@ import {
   LocationType,
   UpdateLocationDto,
 } from '@/types/officer-management';
+import { formatDateTime } from '@/utils/format-date';
+import { capitalize } from '@/utils/format-string';
 
 export default function LocationEditing() {
   const dispatch = useAppDispatch();
@@ -51,9 +53,9 @@ export default function LocationEditing() {
   const { data: locationData, isLoading: locationLoading } =
     useGetLocationByIdQuery(locationId!);
   const { data: locationTypeData, isLoading: locationTypeLoading } =
-    useGetLocationTypesOfficerQuery({});
+    useGetLocationTypesOfficerQuery();
   const { data: adsTypeData, isLoading: adsTypeLoading } =
-    useGetAdsTypesOfficerQuery({});
+    useGetAdsTypesOfficerQuery();
 
   const { handleSubmit, register, control, formState, setValue, watch, reset } =
     useForm<UpdateLocationDto>({
@@ -62,31 +64,31 @@ export default function LocationEditing() {
 
   useEffect(() => {
     if (locationData && locationTypeData && adsTypeData && userId) {
-      setLocation(locationData?.data);
-      setLocationTypes(locationTypeData?.data);
-      setAdsTypes(adsTypeData?.data);
+      setLocation(locationData);
+      setLocationTypes(locationTypeData);
+      setAdsTypes(adsTypeData);
 
       reset({
-        belongLocationId: locationData?.data?.id,
+        belongLocationId: locationData.id,
         userId: userId,
-        typeId: locationData?.data?.type?.id,
-        adsTypeId: locationData?.data?.adType?.id,
-        name: locationData?.data?.name,
+        typeId: locationData.type.id,
+        adsTypeId: locationData.adType.id,
+        name: locationData.name,
         images: [],
         reason: '',
-        lat: locationData?.data?.lat,
-        long: locationData?.data?.long,
-        isPlanning: locationData?.data?.isPlanning,
-        fullAddress: locationData?.data?.fullAddress,
-        wardId: locationData?.data?.ward?.id,
-        districtId: locationData?.data?.district?.id,
+        lat: locationData.lat,
+        long: locationData.long,
+        isPlanning: locationData.isPlanning,
+        fullAddress: locationData.fullAddress,
+        wardId: locationData.ward.id,
+        districtId: locationData.district.id,
       });
     }
   }, [locationData, locationTypeData, adsTypeData, reset, userId]);
 
   useEffect(() => {
     if (location?.imageUrls) {
-      fetch(location?.imageUrls[0])
+      fetch(location.imageUrls[0])
         .then((res) => res.blob())
         .then((blob) => {
           const file = new File([blob], location?.imageUrls[0]);
@@ -146,22 +148,7 @@ export default function LocationEditing() {
     try {
       setSubmitting(true);
 
-      const formData = new FormData();
-      formData.append('belongLocationId', data.belongLocationId.toString());
-      formData.append('userId', data.userId.toString());
-      formData.append('typeId', data.typeId.toString());
-      formData.append('adsTypeId', data.adsTypeId.toString());
-      formData.append('name', data.name);
-      data.images.forEach((image) => formData.append('images', image));
-      formData.append('reason', data.reason);
-      formData.append('lat', data.lat.toString());
-      formData.append('long', data.long.toString());
-      formData.append('isPlanning', data.isPlanning.toString());
-      formData.append('fullAddress', data.fullAddress);
-      formData.append('wardId', data.wardId.toString());
-      formData.append('districtId', data.districtId.toString());
-
-      await updateLocation(formData).unwrap();
+      await updateLocation(data).unwrap();
 
       setSubmitting(false);
 
@@ -183,11 +170,40 @@ export default function LocationEditing() {
   }
 
   return (
-    <DetailWrapper label="Create Location Editing Request">
+    <DetailWrapper
+      label={`
+      Update Location #${location?.id}
+    `}
+    >
       <Typography variant="h6">Location</Typography>
       <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
         <ReadOnlyTextForm field="id" label="ID" value={location?.id} />
 
+        <ReadOnlyTextForm
+          field="name"
+          label="Planned"
+          value={location?.isPlanning ? 'Yes' : 'No'}
+        />
+
+        <ReadOnlyTextForm
+          field="status"
+          label="Status"
+          value={capitalize(location?.status)}
+        />
+
+        <ReadOnlyTextForm
+          field="createdTime"
+          label="Created Time"
+          value={formatDateTime(location?.createdAt)}
+        />
+
+        <ReadOnlyTextForm
+          field="updatedTime"
+          label="Updated Time"
+          value={formatDateTime(location?.updatedAt)}
+        />
+      </Stack>
+      <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
         <ReadOnlyTextForm
           field="address"
           label="Address"
@@ -215,7 +231,7 @@ export default function LocationEditing() {
         />
       </Stack>
 
-      <Typography variant="h6">Classification</Typography>
+      <Typography variant="h6">Updateable Fields</Typography>
       <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
         <FormControl fullWidth error={!!formError.name}>
           <FormLabel htmlFor="name">Name</FormLabel>
@@ -272,7 +288,7 @@ export default function LocationEditing() {
       </Stack>
 
       <FormControl>
-        <FormLabel sx={{ mb: 1 }}>Upload image</FormLabel>
+        <FormLabel sx={{ mb: 1 }}>Image</FormLabel>
         <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
           {formValue.images.map((image, index) => (
             <ImagePreview
@@ -294,14 +310,6 @@ export default function LocationEditing() {
         </Stack>
       </FormControl>
 
-      <Typography
-        variant="h6"
-        sx={{
-          mt: 2,
-        }}
-      >
-        Update reason
-      </Typography>
       <FormControl fullWidth error={!!formError.reason}>
         <FormLabel htmlFor="reason">Reason</FormLabel>
         <TextField

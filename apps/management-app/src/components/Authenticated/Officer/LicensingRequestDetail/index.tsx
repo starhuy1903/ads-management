@@ -7,7 +7,7 @@ import {
   ReadOnlyTextField,
 } from '@/components/Common/FormComponents';
 import { DetailWrapper } from '@/components/Common/Layout/ScreenWrapper';
-import { useGetRequestByIdQuery } from '@/store/api/officerApiSlice';
+import { useGetRequestByIdQuery } from '@/store/api/officer/requestApiSlide';
 import { AdsRequest } from '@/types/officer-management';
 import { formatDateTime } from '@/utils/format-date';
 import { capitalize, formatRole } from '@/utils/format-string';
@@ -19,7 +19,7 @@ export default function LicensingRequestDetail() {
 
   useEffect(() => {
     if (data) {
-      setRequest(data?.data);
+      setRequest(data);
     }
   }, [data]);
 
@@ -28,15 +28,18 @@ export default function LicensingRequestDetail() {
   }
 
   return (
-    <DetailWrapper label="Licensing Request Details">
-      <Typography variant="h6">Information</Typography>
-      <Stack
-        direction={{ xs: 'column', sm: 'row' }}
-        spacing={2}
+    <DetailWrapper label={`Panel Licensing Request #${request?.id}`}>
+      <Typography
+        variant="h5"
         sx={{
-          mb: 1,
+          fontWeight: 'medium',
         }}
       >
+        Request Information
+      </Typography>
+
+      <Typography variant="h6">Information</Typography>
+      <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
         <ReadOnlyTextField label="ID" value={request?.id} />
 
         <ReadOnlyTextField label="Status" value={capitalize(request?.status)} />
@@ -80,13 +83,14 @@ export default function LicensingRequestDetail() {
         />
       </Stack>
 
-      <TextField
-        label="Reason"
-        value={request?.reason}
-        multiline
-        rows={4}
-        fullWidth
-      />
+      <Typography
+        variant="h5"
+        sx={{
+          fontWeight: 'medium',
+        }}
+      >
+        Panel Information
+      </Typography>
 
       <Typography variant="h6">Panel</Typography>
       <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
@@ -185,6 +189,14 @@ export default function LicensingRequestDetail() {
           }
         />
       </Stack>
+
+      <TextField
+        label="Reason"
+        value={request?.reason}
+        multiline
+        rows={4}
+        fullWidth
+      />
     </DetailWrapper>
   );
 }
