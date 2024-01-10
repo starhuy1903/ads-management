@@ -48,7 +48,7 @@ const MenuProps = {
   PaperProps: {
     style: {
       maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
+      width: 200,
     },
   },
 };
@@ -83,7 +83,7 @@ function WardSelect({
   };
 
   return (
-    <FormControl sx={{ m: 1, width: 300 }}>
+    <FormControl sx={{ width: 250, marginBottom: 2 }}>
       <InputLabel id="select-wards">Wards</InputLabel>
       <Select
         labelId="select-wards"
@@ -117,8 +117,6 @@ export default function LocationList() {
   const [locations, setLocations] = useState<Location[]>([]);
   const [wards, setWards] = useState<number[]>([]);
 
-  console.log(locations);
-
   const { data, isLoading, refetch } = useGetLocationsQuery({
     page: page,
     take: 10,
@@ -142,65 +140,73 @@ export default function LocationList() {
 
   return (
     <ListWrapper label="Locations">
-      <WardSelect wards={wards} setWards={setWards} />
+      <Box
+        sx={{
+          width: '100%',
+        }}
+      >
+        <WardSelect wards={wards} setWards={setWards} />
 
-      <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="locations">
-          <TableHead>
-            <TableRow>
-              {titles.map((title) => (
-                <TableCell align="center" key={title}>
-                  {title}
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {locations?.length !== 0 ? (
-              locations.map((location: Location) => (
-                <TableRow key={location?.id}>
-                  <TableCell align="center">{location?.id}</TableCell>
-                  <TableCell align="center">{location?.name}</TableCell>
-                  <TableCell align="center">{location?.fullAddress}</TableCell>
-                  <TableCell align="center">{location?.ward?.name}</TableCell>
-                  <TableCell align="center">
-                    {location?.district?.name}
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 650 }} aria-label="locations">
+            <TableHead>
+              <TableRow>
+                {titles.map((title) => (
+                  <TableCell align="center" key={title}>
+                    {title}
                   </TableCell>
-                  <TableCell align="center">{`${
-                    location?.isPlanning ? 'Yes' : 'No'
-                  }`}</TableCell>
-                  <TableCell align="center">
-                    {formatDateTime(location?.createdAt)}
-                  </TableCell>
-                  <TableCell align="center">
-                    {formatDateTime(location?.updatedAt)}
-                  </TableCell>
-                  <TableCell align="center">
-                    {capitalize(location?.status)}
-                  </TableCell>
-                  <TableCell>
-                    <Box
-                      sx={{
-                        display: 'flex',
-                        gap: 2,
-                      }}
-                    >
-                      <Info link={`/locations/${location?.id}`} />
-                      <Edit link={`/locations/${location?.id}/edit`} />
-                    </Box>
+                ))}
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {locations?.length !== 0 ? (
+                locations.map((location: Location) => (
+                  <TableRow key={location?.id}>
+                    <TableCell align="center">{location?.id}</TableCell>
+                    <TableCell align="center">{location?.name}</TableCell>
+                    <TableCell align="center">
+                      {location?.fullAddress}
+                    </TableCell>
+                    <TableCell align="center">{location?.ward?.name}</TableCell>
+                    <TableCell align="center">
+                      {location?.district?.name}
+                    </TableCell>
+                    <TableCell align="center">{`${
+                      location?.isPlanning ? 'Yes' : 'No'
+                    }`}</TableCell>
+                    <TableCell align="center">
+                      {formatDateTime(location?.createdAt)}
+                    </TableCell>
+                    <TableCell align="center">
+                      {formatDateTime(location?.updatedAt)}
+                    </TableCell>
+                    <TableCell align="center">
+                      {capitalize(location?.status)}
+                    </TableCell>
+                    <TableCell>
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          gap: 2,
+                        }}
+                      >
+                        <Info link={`/locations/${location?.id}`} />
+                        <Edit link={`/locations/${location?.id}/edit`} />
+                      </Box>
+                    </TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell align="center" colSpan={9}>
+                    No results
                   </TableCell>
                 </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell align="center" colSpan={9}>
-                  No results
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </TableContainer>
+              )}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Box>
 
       <Pagination
         count={data?.totalPages}

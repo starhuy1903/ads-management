@@ -19,29 +19,24 @@ export const officerLocationApiSlice = apiSlice.injectEndpoints({
       }
     >({
       query: (arg) => {
-        let wards = '';
-
-        if (arg.wards) {
-          wards = arg.wards.join(',');
+        if (arg.wards && arg?.wards?.length > 0) {
+          return {
+            url: `/locations`,
+            params: {
+              page: arg.page,
+              take: arg.take,
+              wards: arg.wards.join(','),
+              districts: arg.districts,
+              status: arg.status,
+            },
+          };
         }
-
-        console.log({
-          url: `/locations`,
-          params: {
-            page: arg.page,
-            take: arg.take,
-            wards: wards,
-            districts: arg.districts,
-            status: arg.status,
-          },
-        });
 
         return {
           url: `/locations`,
           params: {
             page: arg.page,
             take: arg.take,
-            wards: wards,
             districts: arg.districts,
             status: arg.status,
           },
