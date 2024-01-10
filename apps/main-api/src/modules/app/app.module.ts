@@ -19,6 +19,8 @@ import { DistrictModule } from '../district/district.module';
 import { WardModule } from '../ward/ward.module';
 import { UserModule } from '../user/user.module';
 import { AdvertisementTypeModule } from '../advertisement-type/advertisement-type.module';
+import { APP_FILTER } from '@nestjs/core';
+import { AllExceptionsFilter } from '../exception-filter/filter';
 
 @Module({
   imports: [
@@ -45,7 +47,13 @@ import { AdvertisementTypeModule } from '../advertisement-type/advertisement-typ
     AdvertisementTypeModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_FILTER,
+      useClass: AllExceptionsFilter,
+    },
+  ],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

@@ -40,7 +40,7 @@ export class DistrictController {
       });
     } catch (error) {
       return res.error({
-        statusCode: 500,
+        statusCode: error.status || 500,
         message: error.message || 'Internal Server Error',
       });
     }
@@ -48,11 +48,7 @@ export class DistrictController {
 
   @Get()
   @UseGuards(JwtGuard)
-  @Roles(
-    UserRole.cdo,
-    UserRole.ward_officer,
-    UserRole.district_officer,
-  )
+  @Roles(UserRole.cdo, UserRole.ward_officer, UserRole.district_officer)
   async findAll(@Query() pageOptionsDistrictDto: PageOptionsDistrictDto) {
     try {
       if (!pageOptionsDistrictDto.take || !pageOptionsDistrictDto.page) {
@@ -79,7 +75,7 @@ export class DistrictController {
       return res.success({ data: district });
     } catch (error) {
       return res.error({
-        statusCode: 500,
+        statusCode: error.status || 500,
         message: error.message || 'Internal Server Error',
       });
     }
@@ -104,7 +100,7 @@ export class DistrictController {
       });
     } catch (error) {
       return res.error({
-        statusCode: 500,
+        statusCode: error.status || 500,
         message: error.message || 'Internal Server Error',
       });
     }
@@ -119,7 +115,7 @@ export class DistrictController {
       return res.success({ message: 'District deleted successfully' });
     } catch (error) {
       return res.error({
-        statusCode: 500,
+        statusCode: error.status || 500,
         message: error.message || 'Internal Server Error',
       });
     }

@@ -63,7 +63,7 @@ export class LocationController {
       });
     } catch (error) {
       return res.error({
-        statusCode: 500,
+        statusCode: error.status || 500,
         message: error.message || 'Internal Server Error',
       });
     }
@@ -132,7 +132,7 @@ export class LocationController {
       return res.success({ data: location });
     } catch (error) {
       return res.error({
-        statusCode: 500,
+        statusCode: error.status || 500,
         message: error.message || 'Internal Server Error',
       });
     }
@@ -169,7 +169,7 @@ export class LocationController {
       });
     } catch (error) {
       return res.error({
-        statusCode: 500,
+        statusCode: error.status || 500,
         message: error.message || 'Internal Server Error',
       });
     }
@@ -184,7 +184,7 @@ export class LocationController {
       return res.success({ message: 'Location deleted successfully' });
     } catch (error) {
       return res.error({
-        statusCode: 500,
+        statusCode: error.status || 500,
         message: error.message || 'Internal Server Error',
       });
     }

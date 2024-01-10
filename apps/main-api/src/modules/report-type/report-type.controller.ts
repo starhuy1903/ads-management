@@ -42,7 +42,7 @@ export class ReportTypeController {
       });
     } catch (error) {
       return res.error({
-        statusCode: 500,
+        statusCode: error.status || 500,
         message: error.message || 'Internal Server Error',
       });
     }
@@ -85,7 +85,7 @@ export class ReportTypeController {
       });
     } catch (error) {
       return res.error({
-        statusCode: 500,
+        statusCode: error.status || 500,
         message: error.message || 'Internal Server Error',
       });
     }
@@ -100,7 +100,7 @@ export class ReportTypeController {
       return res.success({ message: 'ReportType deleted successfully' });
     } catch (error) {
       return res.error({
-        statusCode: 500,
+        statusCode: error.status || 500,
         message: error.message || 'Internal Server Error',
       });
     }

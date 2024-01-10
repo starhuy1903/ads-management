@@ -40,7 +40,7 @@ export class PanelTypeController {
       });
     } catch (error) {
       return res.error({
-        statusCode: 500,
+        statusCode: error.status || 500,
         message: error.message || 'Internal Server Error',
       });
     }
@@ -83,7 +83,7 @@ export class PanelTypeController {
       });
     } catch (error) {
       return res.error({
-        statusCode: 500,
+        statusCode: error.status || 500,
         message: error.message || 'Internal Server Error',
       });
     }
@@ -98,7 +98,7 @@ export class PanelTypeController {
       return res.success({ message: 'PanelType deleted successfully' });
     } catch (error) {
       return res.error({
-        statusCode: 500,
+        statusCode: error.status || 500,
         message: error.message || 'Internal Server Error',
       });
     }
