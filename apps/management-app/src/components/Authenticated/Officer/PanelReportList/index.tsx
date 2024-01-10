@@ -102,7 +102,7 @@ export default function PanelReportList() {
             ) : (
               <TableRow>
                 <TableCell align="center" colSpan={9}>
-                  No rows
+                  No results
                 </TableCell>
               </TableRow>
             )}

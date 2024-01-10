@@ -69,7 +69,7 @@ export default function PanelList() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {panels &&
+            {panels?.length !== 0 ? (
               panels.map((panel: Panel) => (
                 <TableRow key={panel?.id}>
                   <TableCell align="center">{panel?.id}</TableCell>
@@ -109,7 +109,14 @@ export default function PanelList() {
                     </Box>
                   </TableCell>
                 </TableRow>
-              ))}
+              ))
+            ) : (
+              <TableRow>
+                <TableCell align="center" colSpan={9}>
+                  No results
+                </TableCell>
+              </TableRow>
+            )}
           </TableBody>
         </Table>
       </TableContainer>

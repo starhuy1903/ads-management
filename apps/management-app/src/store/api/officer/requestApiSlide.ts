@@ -9,7 +9,7 @@ import {
 } from '@/types/officer-management';
 import { apiSlice } from '../baseApiSlice';
 
-export const officerManagementApiSlice = apiSlice.injectEndpoints({
+export const officerRequestApiSlice = apiSlice.injectEndpoints({
   endpoints: (build) => ({
     getRequests: build.query<
       GetListResult<AdsRequest>,
@@ -129,4 +129,4 @@ export const {
   useCreateUpdateLocationRequestMutation,
   useCreateUpdatePanelRequestMutation,
   useDeleteRequestMutation,
-} = officerManagementApiSlice;
+} = officerRequestApiSlice;

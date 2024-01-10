@@ -145,7 +145,7 @@ export default function LicensingRequestList() {
             ) : (
               <TableRow>
                 <TableCell align="center" colSpan={8}>
-                  No rows
+                  No results
                 </TableCell>
               </TableRow>
             )}

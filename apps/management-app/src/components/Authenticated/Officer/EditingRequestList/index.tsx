@@ -28,9 +28,9 @@ import {
 } from '@/store/api/officer/requestApiSlide';
 import { showModal } from '@/store/slice/modal';
 import { AdsRequest } from '@/types/officer-management';
+import { formatDateTime } from '@/utils/datetime';
 import { capitalize } from '@/utils/format-string';
 import { showError, showSuccess } from '@/utils/toast';
-import { formatDateTime } from '@/utils/datetime';
 
 const titles = [
   'ID',
@@ -174,7 +174,7 @@ export default function EditingRequestList() {
               ) : (
                 <TableRow>
                   <TableCell align="center" colSpan={8}>
-                    No rows
+                    No results
                   </TableCell>
                 </TableRow>
               )}

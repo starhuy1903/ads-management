@@ -1,7 +1,15 @@
 import {
   Box,
+  Checkbox,
+  FormControl,
+  InputLabel,
+  ListItemText,
+  MenuItem,
+  OutlinedInput,
   Pagination,
   Paper,
+  Select,
+  SelectChangeEvent,
   Table,
   TableBody,
   TableCell,
@@ -10,12 +18,14 @@ import {
   TableRow,
 } from '@mui/material';
 import { useEffect, useState } from 'react';
+import { useAppSelector } from '@/store';
 import CenterLoading from '@/components/Common/CenterLoading';
 import { Edit, Info } from '@/components/Common/Icons';
 import { ListWrapper } from '@/components/Common/Layout/ScreenWrapper';
 import { LocationStatus } from '@/constants/location';
 import { useGetLocationsQuery } from '@/store/api/officer/locationApiSlice';
-import { Location } from '@/types/officer-management';
+import { useGetWardsByDistrictIdQuery } from '@/store/api/officer/wardApiSlide';
+import { Location, Ward } from '@/types/officer-management';
 import { formatDateTime } from '@/utils/datetime';
 import { capitalize } from '@/utils/format-string';
 
@@ -32,19 +42,93 @@ const titles = [
   '',
 ];
 
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
+
+function WardSelect({
+  wards,
+  setWards,
+}: {
+  wards: number[];
+  setWards: (wards: number[]) => void;
+}) {
+  const districtId = '18';
+
+  const [allWards, setAllWards] = useState<Ward[]>([]);
+
+  const { data } = useGetWardsByDistrictIdQuery(districtId);
+
+  useEffect(() => {
+    if (data) {
+      setAllWards(data);
+    }
+  }, [data]);
+
+  const handleChange = (event: SelectChangeEvent<number[]>) => {
+    const {
+      target: { value },
+    } = event;
+
+    setWards(
+      typeof value === 'string' ? value.split(',').map((id) => +id) : value,
+    );
+  };
+
+  return (
+    <FormControl sx={{ m: 1, width: 300 }}>
+      <InputLabel id="select-wards">Wards</InputLabel>
+      <Select
+        labelId="select-wards"
+        id="select-wards"
+        multiple
+        value={wards}
+        onChange={handleChange}
+        input={<OutlinedInput label="Wards" />}
+        renderValue={(selectedIds) =>
+          selectedIds
+            .map((id) => allWards.find((ward) => ward.id === id)?.name)
+            .join(', ')
+        }
+        MenuProps={MenuProps}
+      >
+        {allWards.map((ward) => (
+          <MenuItem key={ward?.id} value={ward?.id}>
+            <Checkbox checked={wards.indexOf(ward?.id) > -1} />
+            <ListItemText primary={ward?.name} />
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
+  );
+}
+
 export default function LocationList() {
+  const role = useAppSelector((state) => state.user?.profile?.role);
+
   const [page, setPage] = useState<number>(1);
   const [locations, setLocations] = useState<Location[]>([]);
+  const [wards, setWards] = useState<number[]>([]);
+
+  console.log(locations);
 
   const { data, isLoading, refetch } = useGetLocationsQuery({
     page: page,
     take: 10,
     status: LocationStatus?.APPROVED,
+    wards: wards,
   });
 
   useEffect(() => {
     refetch();
-  }, [locations, page, refetch]);
+  }, [locations, page, refetch, wards]);
 
   useEffect(() => {
     if (data) {
@@ -58,6 +142,8 @@ export default function LocationList() {
 
   return (
     <ListWrapper label="Locations">
+      <WardSelect wards={wards} setWards={setWards} />
+
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="locations">
           <TableHead>
@@ -108,7 +194,7 @@ export default function LocationList() {
             ) : (
               <TableRow>
                 <TableCell align="center" colSpan={9}>
-                  No rows
+                  No results
                 </TableCell>
               </TableRow>
             )}
