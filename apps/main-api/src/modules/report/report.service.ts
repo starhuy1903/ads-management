@@ -102,88 +102,80 @@ export class ReportService {
         },
       ],
       where: {
+        OR: undefined,
         typeId: pageOptionsReportDto.typeId,
         targetType: pageOptionsReportDto.targetType,
         status: pageOptionsReportDto.status,
-        location: undefined,
-        panel: undefined,
       },
     };
 
-    if (pageOptionsReportDto.targetType == TargetType.LOCATION) {
-      if (user.role === UserRole.ward_officer) {
-        conditions.where.location = {
-          wardId: user.wardId,
-        };
-      } else if (user.role === UserRole.district_officer) {
-        // allowedWardIds = [{id: 1}, {id: 2}, {id: 3}, ...]
-        const allowedWardIds = await this.prismaService.ward.findMany({
-          where: {
-            districtId: user.districtId,
-          },
-          select: {
-            id: true,
-          },
-        });
-
-        // allowedWards = [1, 2, 3, ...]
-        const allowedWards = allowedWardIds.map((ward) => ward.id);
-
-        // Filter wards by district -> Only get ward which belong to district
-        const filteredWards = pageOptionsReportDto.wards.filter((wardId) =>
-          allowedWards.includes(wardId),
-        );
-
-        conditions.where.location = {
-          districtId: user.districtId,
-          wardId: { in: filteredWards },
-        };
-      } else {
-        conditions.where.location = {
-          districtId: { in: pageOptionsReportDto?.districts },
-          wardId: { in: pageOptionsReportDto?.wards },
-        };
-      }
-    } else if (pageOptionsReportDto.targetType == TargetType.PANEL) {
-      // Initialize
-      conditions.where.panel = {};
-
-      if (user.role === UserRole.ward_officer) {
-        conditions.where.panel = {
+    if (user.role === UserRole.ward_officer) {
+      conditions.where.OR = [
+        {
           location: {
             wardId: user.wardId,
           },
-        };
-      } else if (user.role === UserRole.district_officer) {
-        // allowedWardIds = [{id: 1}, {id: 2}, {id: 3}, ...]
-        const allowedWardIds = await this.prismaService.ward.findMany({
-          where: {
-            districtId: user.districtId,
+        },
+        {
+          panel: {
+            location: {
+              wardId: user.wardId,
+            },
           },
-          select: {
-            id: true,
-          },
-        });
-        // allowedWards = [1, 2, 3, ...]
-        const allowedWards = allowedWardIds.map((ward) => ward.id);
-        // Filter wards by district -> Only get ward which belong to district
-        const filteredWards = pageOptionsReportDto.wards.filter((wardId) =>
-          allowedWards.includes(wardId),
-        );
-        conditions.where.panel = {
+        },
+      ];
+    } else if (user.role === UserRole.district_officer) {
+      // allowedWardIds = [{id: 1}, {id: 2}, {id: 3}, ...]
+      const allowedWardIds = await this.prismaService.ward.findMany({
+        where: {
+          districtId: user.districtId,
+        },
+        select: {
+          id: true,
+        },
+      });
+
+      // allowedWards = [1, 2, 3, ...]
+      const allowedWards = allowedWardIds.map((ward) => ward.id);
+
+      // Filter wards by district -> Only get ward which belong to district
+      const filteredWards = pageOptionsReportDto.wards.filter((wardId) =>
+        allowedWards.includes(wardId),
+      );
+
+      conditions.where.OR = [
+        {
           location: {
             districtId: user.districtId,
             wardId: { in: filteredWards },
           },
-        };
-      } else {
-        conditions.where.panel = {
+        },
+        {
+          panel: {
+            location: {
+              districtId: user.districtId,
+              wardId: { in: filteredWards },
+            },
+          },
+        },
+      ];
+    } else {
+      conditions.where.OR = [
+        {
           location: {
             districtId: { in: pageOptionsReportDto?.districts },
             wardId: { in: pageOptionsReportDto?.wards },
           },
-        };
-      }
+        },
+        {
+          panel: {
+            location: {
+              districtId: { in: pageOptionsReportDto?.districts },
+              wardId: { in: pageOptionsReportDto?.wards },
+            },
+          },
+        },
+      ];
     }
 
     const [result, totalCount] = await Promise.all([

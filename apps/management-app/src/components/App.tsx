@@ -8,8 +8,6 @@ import {
 import { useAppSelector } from '@/store';
 import { useLazyGetProfileQuery } from '@/store/api/userApiSlice';
 import { checkRole } from '@/store/slice/userSlice';
-import AdsLocation from './Authenticated/AdsLocation';
-import AdsPermission from './Authenticated/AdsPermission';
 import AdsTypesCreate from './Authenticated/CDO/AdsTypesCreate';
 import AdsTypesDetail from './Authenticated/CDO/AdsTypesDetail';
 import AdsTypesListView from './Authenticated/CDO/AdsTypesListView';
@@ -28,14 +26,27 @@ import ReportTypesListView from './Authenticated/CDO/ReportTypesListView';
 import WardsCreate from './Authenticated/CDO/WardsCreate';
 import WardsDetail from './Authenticated/CDO/WardsDetail';
 import WardsListView from './Authenticated/CDO/WardsListView';
-import CreateAdsPermission from './Authenticated/CreateAdsPermission';
-import CreateEditing from './Authenticated/CreateEditing';
 import Dashboard from './Authenticated/Dashboard';
 import Home from './Authenticated/Home';
 import CDOLayout from './Authenticated/Layout/CDOLayout';
 import OfficerLayout from './Authenticated/Layout/OfficerLayout';
-import ReportDetail from './Authenticated/ReportDetail';
-import ReportTable from './Authenticated/ReportTable';
+import EditingRequestDetail from './Authenticated/Officer/EditingRequestDetail';
+import EditingRequestList from './Authenticated/Officer/EditingRequestList';
+import LicensingRequestDetail from './Authenticated/Officer/LicensingRequestDetail';
+import LicensingRequestList from './Authenticated/Officer/LicensingRequestList';
+import LocationDetail from './Authenticated/Officer/LocationDetail';
+import LocationEditing from './Authenticated/Officer/LocationEditing';
+import LocationList from './Authenticated/Officer/LocationList';
+import LocationReportDetail from './Authenticated/Officer/LocationReportDetail';
+import LocationReportList from './Authenticated/Officer/LocationReportList';
+import PanelCreating from './Authenticated/Officer/PanelCreating';
+import PanelDetail from './Authenticated/Officer/PanelDetail';
+import PanelEditing from './Authenticated/Officer/PanelEditing';
+import PanelList from './Authenticated/Officer/PanelList';
+import PanelReportDetail from './Authenticated/Officer/PanelReportDetail';
+import PanelReportList from './Authenticated/Officer/PanelReportList';
+import PanelSendRequest from './Authenticated/Officer/PanelSendRequest';
+import ReportResponse from './Authenticated/Officer/ReportResponse';
 import ResetPassword from './Authenticated/ResetPassword';
 import CenterLoading from './Common/CenterLoading';
 import PageLayout from './Common/Layout/PageLayout';
@@ -182,27 +193,71 @@ const officerRoutes = createBrowserRouter([
       },
       {
         path: 'locations',
-        element: <AdsLocation />,
+        element: <LocationList />,
       },
       {
-        path: 'locations/edit',
-        element: <CreateEditing />,
+        path: 'locations/:locationId',
+        element: <LocationDetail />,
       },
       {
-        path: 'reports',
-        element: <ReportTable />,
+        path: 'locations/:locationId/edit',
+        element: <LocationEditing />,
       },
       {
-        path: 'reports/:reportId',
-        element: <ReportDetail />,
+        path: 'panels',
+        element: <PanelList />,
       },
       {
-        path: 'permissions',
-        element: <AdsPermission />,
+        path: 'panels/:panelId',
+        element: <PanelDetail />,
       },
       {
-        path: 'permissions/new',
-        element: <CreateAdsPermission />,
+        path: 'panels/create',
+        element: <PanelCreating />,
+      },
+      {
+        path: 'panels/:panelId/send-request',
+        element: <PanelSendRequest />,
+      },
+      {
+        path: 'panels/:panelId/edit',
+        element: <PanelEditing />,
+      },
+      {
+        path: 'location-reports',
+        element: <LocationReportList />,
+      },
+      {
+        path: 'location-reports/:reportId',
+        element: <LocationReportDetail />,
+      },
+      {
+        path: 'panel-reports',
+        element: <PanelReportList />,
+      },
+      {
+        path: 'panel-reports/:reportId',
+        element: <PanelReportDetail />,
+      },
+      {
+        path: 'reports/:reportId/response',
+        element: <ReportResponse />,
+      },
+      {
+        path: 'licensing-requests',
+        element: <LicensingRequestList />,
+      },
+      {
+        path: 'licensing-requests/:requestId',
+        element: <LicensingRequestDetail />,
+      },
+      {
+        path: 'editing-requests',
+        element: <EditingRequestList />,
+      },
+      {
+        path: 'editing-requests/:requestId',
+        element: <EditingRequestDetail />,
       },
     ],
   },

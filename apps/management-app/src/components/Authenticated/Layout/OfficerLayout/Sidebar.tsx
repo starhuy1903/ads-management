@@ -53,21 +53,41 @@ function Sidebar({ open, handleOnClose }: SidebarProps) {
             padding: '0 16px',
           }}
         >
-          <NavGroupWrapper title="Management">
+          <NavGroupWrapper title="  Management">
+            <NavItem title="Home" icon={<CategoryOutlinedIcon />} href="/" />
             <NavItem
-              title="Location"
+              title="Locations"
               icon={<CategoryOutlinedIcon />}
               href="/locations"
             />
             <NavItem
-              title="Report"
+              title="Panels"
               icon={<CategoryOutlinedIcon />}
-              href="/reports"
+              href="/panels"
+            />
+          </NavGroupWrapper>
+          <NavGroupWrapper title="Reports">
+            <NavItem
+              title="Location Reports"
+              icon={<CategoryOutlinedIcon />}
+              href="/location-reports"
             />
             <NavItem
-              title="Permission"
+              title="Panel Reports"
               icon={<CategoryOutlinedIcon />}
-              href="/permissions"
+              href="/panel-reports"
+            />
+          </NavGroupWrapper>
+          <NavGroupWrapper title="Requests">
+            <NavItem
+              title="Licensing Requests"
+              icon={<CategoryOutlinedIcon />}
+              href="/licensing-requests"
+            />
+            <NavItem
+              title="Editing Requests"
+              icon={<CategoryOutlinedIcon />}
+              href="/editing-requests"
             />
           </NavGroupWrapper>
         </PerfectScrollbar>
