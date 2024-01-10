@@ -12,6 +12,7 @@ import { useGetSentReportsQuery } from '@/store/api/citizen/reportApiSlice';
 import {
   setIsShowingPlannedLocation,
   setIsShowingViolatedReport,
+  setSelectedLocation,
 } from '@/store/slice/mapsSlice';
 import { showSidebar } from '@/store/slice/sidebar';
 import { AdLocation } from '@/types/location';
@@ -19,9 +20,20 @@ import anonymousUser from '@/utils/anonymous-user';
 
 export default function CitizenHome() {
   const dispatch = useAppDispatch();
-  const { isShowingPlannedLocation, isShowingViolatedReport } = useAppSelector(
-    (state) => state.maps,
-  );
+  const {
+    isShowingPlannedLocation,
+    isShowingViolatedReport,
+    selectedLocation,
+  } = useAppSelector((state) => state.maps);
+
+  const selectedViewPort = selectedLocation
+    ? {
+        zoom: 15,
+        latitude: selectedLocation.lat,
+        longitude: selectedLocation.long,
+      }
+    : undefined;
+
   const { data: adLocationData, isLoading: fetchingAllAdsLocation } =
     useGetLocationQuery();
   const { data: vioReports, isLoading: fetchingViolatedReport } =
@@ -34,6 +46,7 @@ export default function CitizenHome() {
 
   const handleViewLocationDetail = useCallback(
     (loc: AdLocation) => {
+      dispatch(setSelectedLocation(loc));
       dispatch(
         showSidebar(SidebarKey.AD_DETAIL, {
           location: loc,
@@ -63,6 +76,7 @@ export default function CitizenHome() {
       const isViolatedLocation = vioLocationReports?.find(
         (report) => report.locationId === loc.id,
       );
+      const isSelected = selectedLocation?.id === loc.id;
 
       if (loc.isPlanning && isShowingPlannedLocation) {
         return null;
@@ -86,7 +100,13 @@ export default function CitizenHome() {
           anchor="center"
         >
           <Avatar
-            sx={{ bgcolor: bgColor, width: 20, height: 20, fontSize: '12px' }}
+            sx={{
+              bgcolor: bgColor,
+              width: 20,
+              height: 20,
+              fontSize: '10px',
+              border: isSelected ? '2px solid rgb(103 232 249);' : 'none',
+            }}
             children={hasAdPanel ? 'QC' : ''}
             onClick={() => handleViewLocationDetail(loc)}
           />
@@ -105,7 +125,7 @@ export default function CitizenHome() {
         zIndex={-1}
         display="flex"
       >
-        <Maps>
+        <Maps selectedViewPort={selectedViewPort}>
           {renderLocationMarkers()}
           <Box
             sx={{
