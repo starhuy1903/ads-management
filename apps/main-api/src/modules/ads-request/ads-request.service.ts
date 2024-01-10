@@ -213,10 +213,13 @@ export class AdsRequestService {
       // allowedWards = [1, 2, 3, ...]
       const allowedWards = allowedWardIds.map((ward) => ward.id);
 
+      let filteredWards = allowedWards;
       // Filter wards by district -> Only get ward which belong to district
-      const filteredWards = pageOptionsAdsRequestDto.wards.filter((wardId) =>
-        allowedWards.includes(wardId),
-      );
+      if (pageOptionsAdsRequestDto.wards) {
+        filteredWards = pageOptionsAdsRequestDto.wards.filter((wardId) =>
+          allowedWards.includes(wardId),
+        );
+      }
 
       conditions.where.OR = [
         {

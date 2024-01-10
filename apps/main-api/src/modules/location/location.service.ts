@@ -103,10 +103,13 @@ export class LocationService {
       // allowedWards = [1, 2, 3, ...]
       const allowedWards = allowedWardIds.map((ward) => ward.id);
 
+      let filteredWards = allowedWards;
       // Filter wards by district -> Only get ward which belong to district
-      const filteredWards = pageOptionsLocationDto.wards.filter((wardId) =>
-        allowedWards.includes(wardId),
-      );
+      if (pageOptionsLocationDto.wards) {
+        filteredWards = pageOptionsLocationDto.wards.filter((wardId) =>
+          allowedWards.includes(wardId),
+        );
+      }
 
       conditions.where.districtId = user.districtId;
       conditions.where.wardId = { in: filteredWards };
