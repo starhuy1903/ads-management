@@ -60,6 +60,9 @@ export default function CitizenHome() {
   const renderLocationMarkers = () =>
     adLocationData?.data.map((loc) => {
       let bgColor;
+      const isViolatedLocation = vioLocationReports?.find(
+        (report) => report.locationId === loc.id,
+      );
 
       if (loc.isPlanning && isShowingPlannedLocation) {
         return null;
@@ -67,10 +70,7 @@ export default function CitizenHome() {
 
       if (loc.isPlanning && !isShowingPlannedLocation) {
         bgColor = 'rgb(245 158 11)';
-      } else if (
-        isShowingViolatedReport &&
-        vioLocationReports?.find((report) => report.locationId === loc.id)
-      ) {
+      } else if (isShowingViolatedReport && isViolatedLocation) {
         bgColor = 'red';
       } else {
         bgColor = 'blue';
