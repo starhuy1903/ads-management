@@ -44,14 +44,19 @@ export class DistrictService {
           }
         : undefined;
     const conditions = {
+      orderBy: [
+        {
+          id: pageOptionsDistrictDto.order,
+        },
+      ],
       where: {
         districtId: districtId,
       },
     };
     const [result, totalCount] = await Promise.all([
       this.prismaService.ward.findMany({
-        ...pageOption,
         ...conditions,
+        ...pageOption,
       }),
       this.prismaService.ward.count({ ...conditions }),
     ]);

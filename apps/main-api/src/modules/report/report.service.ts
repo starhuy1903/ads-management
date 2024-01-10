@@ -145,10 +145,13 @@ export class ReportService {
       // allowedWards = [1, 2, 3, ...]
       const allowedWards = allowedWardIds.map((ward) => ward.id);
 
+      let filteredWards = allowedWards;
       // Filter wards by district -> Only get ward which belong to district
-      const filteredWards = pageOptionsReportDto.wards.filter((wardId) =>
-        allowedWards.includes(wardId),
-      );
+      if (pageOptionsReportDto.wards) {
+        filteredWards = pageOptionsReportDto.wards.filter((wardId) =>
+          allowedWards.includes(wardId),
+        );
+      }
 
       conditions.where.OR = [
         {
