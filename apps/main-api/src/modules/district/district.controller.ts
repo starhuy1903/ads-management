@@ -66,6 +66,27 @@ export class DistrictController {
     }
   }
 
+  @Get(':id/wards')
+  async findAllWardByDistrict(
+    @Query() pageOptionsDistrictDto: PageOptionsDistrictDto,
+    @Param('id') id: string,
+  ) {
+    try {
+      return await this.districtService.findAllWardByDistrict(
+        pageOptionsDistrictDto,
+        +id,
+      );
+    } catch (error) {
+      throw new HttpException(
+        {
+          statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+          message: error.message || 'Internal Server Error',
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
   @Get(':id')
   @UseGuards(JwtGuard)
   @Roles(UserRole.cdo)

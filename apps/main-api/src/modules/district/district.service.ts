@@ -32,6 +32,36 @@ export class DistrictService {
     };
   }
 
+  async findAllWardByDistrict(
+    pageOptionsDistrictDto: PageOptionsDistrictDto,
+    districtId: number,
+  ) {
+    const pageOption =
+      pageOptionsDistrictDto.page && pageOptionsDistrictDto.take
+        ? {
+            skip: pageOptionsDistrictDto.skip,
+            take: pageOptionsDistrictDto.take,
+          }
+        : undefined;
+    const conditions = {
+      where: {
+        districtId: districtId,
+      },
+    };
+    const [result, totalCount] = await Promise.all([
+      this.prismaService.ward.findMany({
+        ...pageOption,
+        ...conditions,
+      }),
+      this.prismaService.ward.count({ ...conditions }),
+    ]);
+    return {
+      data: result,
+      totalPages: Math.ceil(totalCount / pageOptionsDistrictDto.take),
+      totalCount,
+    };
+  }
+
   async findAllWithoutPagination() {
     const result = await this.prismaService.district.findMany({});
     return {
