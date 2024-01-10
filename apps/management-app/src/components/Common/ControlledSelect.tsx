@@ -5,22 +5,22 @@ import { useId } from 'react';
 import { Control, Controller } from 'react-hook-form';
 import CustomSelect from './CustomSelect';
 
-interface ControlledSelectProps {
+interface ControlledSelectProps<T extends number | string> {
   control: Control<any>;
   name: string;
   label?: string;
   options: Array<{
-    value: string;
+    value: T;
     label: string;
   }>;
 }
 
-const ControlledSelect = ({
+const ControlledSelect = <T extends number | string>({
   control,
   name,
   label = name,
   options,
-}: ControlledSelectProps) => {
+}: ControlledSelectProps<T>) => {
   const id = useId();
 
   return (

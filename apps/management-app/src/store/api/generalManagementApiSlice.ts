@@ -208,7 +208,7 @@ export const generalManagementApiSlice = apiSlice.injectEndpoints({
       { page?: number; limit?: number }
     >({
       query: (arg) => ({
-        url: `/adsTypes`,
+        url: `/advertisement-types`,
         params: {
           page: arg.page,
           take: arg.limit,
@@ -216,10 +216,14 @@ export const generalManagementApiSlice = apiSlice.injectEndpoints({
       }),
     }),
     getAdsTypeById: build.query<GetDataResult<AdsType>, number>({
-      query: (id) => `/ads-types/${id}`,
+      query: (id) => `/advertisement-types/${id}`,
     }),
     createAdsType: build.mutation<MessageResponse, AdsTypeDto>({
-      query: (arg) => ({ url: '/ads-types', method: 'POST', body: arg }),
+      query: (arg) => ({
+        url: '/advertisement-types',
+        method: 'POST',
+        body: arg,
+      }),
       onQueryStarted: getOnMutationFunction('Advertisement type created'),
     }),
     updateAdsType: build.mutation<
@@ -227,7 +231,7 @@ export const generalManagementApiSlice = apiSlice.injectEndpoints({
       { id: number; data: AdsTypeDto }
     >({
       query: (arg) => ({
-        url: `/ads-types/${arg.id}`,
+        url: `/advertisement-types/${arg.id}`,
         method: 'PATCH',
         body: arg.data,
       }),
@@ -252,30 +256,35 @@ export const {
   useUpdateDistrictMutation,
   useDeleteDistrictsMutation,
   useGetWardsQuery,
+  useLazyGetWardsQuery,
   useGetWardByIdQuery,
   useLazyGetWardByIdQuery,
   useCreateWardMutation,
   useUpdateWardMutation,
   useDeleteWardsMutation,
   useGetPanelTypesQuery,
+  useLazyGetPanelTypesQuery,
   useGetPanelTypeByIdQuery,
   useLazyGetPanelTypeByIdQuery,
   useCreatePanelTypeMutation,
   useUpdatePanelTypeMutation,
   useDeletePanelTypesMutation,
   useGetReportTypesQuery,
+  useLazyGetReportTypesQuery,
   useGetReportTypeByIdQuery,
   useLazyGetReportTypeByIdQuery,
   useCreateReportTypeMutation,
   useUpdateReportTypeMutation,
   useDeleteReportTypesMutation,
   useGetLocationTypesQuery,
+  useLazyGetLocationTypesQuery,
   useGetLocationTypeByIdQuery,
   useLazyGetLocationTypeByIdQuery,
   useCreateLocationTypeMutation,
   useUpdateLocationTypeMutation,
   useDeleteLocationTypesMutation,
   useGetAdsTypesQuery,
+  useLazyGetAdsTypesQuery,
   useGetAdsTypeByIdQuery,
   useLazyGetAdsTypeByIdQuery,
   useCreateAdsTypeMutation,

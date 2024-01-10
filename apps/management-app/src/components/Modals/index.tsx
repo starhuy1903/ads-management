@@ -2,9 +2,11 @@ import { useAppDispatch, useAppSelector } from '@/store';
 import { ModalKey } from '@/constants/modal';
 import { showModal } from '@/store/slice/modal';
 import AdsRequestListViewOptions from './AdsRequestListViewOptions';
+import CoordinatePicking from './CoordinatePicking';
 import CreateCategory from './CreateCategory';
 import CropImage from './CropImage';
 import GeneralModal from './GeneralModal';
+import LocationPicking from './LocationPicking';
 import PanelDetail from './PanelDetail';
 import StatisticsViewOptions from './StatisticsViewOptions';
 
@@ -15,6 +17,8 @@ const modalsMap: { [modalKey: string]: any } = {
   [ModalKey.STATISTICS_VIEW_OPTIONS]: StatisticsViewOptions,
   [ModalKey.ADS_REQUEST_VIEW_OPTIONS]: AdsRequestListViewOptions,
   [ModalKey.PANEL_DETAIL]: PanelDetail,
+  [ModalKey.COORDINATE_PICKING]: CoordinatePicking,
+  [ModalKey.LOCATION_PICKING]: LocationPicking,
 };
 
 export function ModalContainer() {

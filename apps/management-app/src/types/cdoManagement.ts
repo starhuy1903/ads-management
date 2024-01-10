@@ -200,3 +200,29 @@ export type User = {
   districtId?: number;
   role: 'ward_officer' | 'district_officer' | 'cdo';
 };
+
+export type LocationDto = {
+  name: string;
+  lat: number;
+  long: number;
+  isPlanning: boolean;
+  districtId: number;
+  wardId: number;
+  fullAddress: string;
+  typeId: number;
+  adsTypeId: number;
+  image?: Array<File>;
+  imageUrls?: Array<string>;
+};
+
+export type PanelDto = {
+  typeId: number;
+  width: number;
+  height: number;
+  locationId: number;
+  image?: Array<File>;
+  createContractDate: string;
+  expiredContractDate: string;
+  companyEmail: string;
+  companyNumber: string;
+};

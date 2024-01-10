@@ -19,3 +19,8 @@ export enum MONTHS {
   }
   
   export const OLDEST_DATA_YEAR = 2022;
+
+  export const INITIAL_MAP_CENTER = {
+    lat: 10.7625844,
+    lng: 106.6816852
+  }

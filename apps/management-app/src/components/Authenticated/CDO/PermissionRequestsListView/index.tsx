@@ -177,7 +177,7 @@ const PermissionRequestsListView = () => {
           width: 300,
           sortable: false,
           renderCell: (params: GridRenderCellParams) => (
-            <Typography>{displayTimestamp(params.value)}</Typography>
+            <Typography fontSize="0.875rem">{displayTimestamp(params.value)}</Typography>
           ),
         },
         {
@@ -186,7 +186,7 @@ const PermissionRequestsListView = () => {
           width: 300,
           sortable: false,
           renderCell: (params: GridRenderCellParams) => (
-            <Typography>{displayTimestamp(params.value)}</Typography>
+            <Typography fontSize="0.875rem">{displayTimestamp(params.value)}</Typography>
           ),
         },
         {
