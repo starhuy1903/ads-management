@@ -56,7 +56,7 @@ export class ReportController {
       return res.success({ data: results });
     } catch (error) {
       return res.error({
-        statusCode: 500,
+        statusCode: error.status || 500,
         message: error.message,
       });
     }
@@ -83,7 +83,7 @@ export class ReportController {
       return res.success({ data: response });
     } catch (error) {
       return res.error({
-        statusCode: 500,
+        statusCode: error.status || 500,
         message: error.message,
       });
     }
@@ -216,7 +216,7 @@ export class ReportController {
       return res.success({ data: report });
     } catch (error) {
       return res.error({
-        statusCode: 500,
+        statusCode: error.status || 500,
         message: error.message,
       });
     }
@@ -236,7 +236,7 @@ export class ReportController {
       return res.success({ data: updatedReport });
     } catch (error) {
       return res.error({
-        statusCode: 500,
+        statusCode: error.status || 500,
         message: error.message,
       });
     }
@@ -249,7 +249,7 @@ export class ReportController {
       return res.success({ message: 'Report deleted successfully' });
     } catch (error) {
       return res.error({
-        statusCode: 500,
+        statusCode: error.status || 500,
         message: error.message,
       });
     }

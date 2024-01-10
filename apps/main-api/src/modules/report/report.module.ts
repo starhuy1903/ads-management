@@ -10,8 +10,10 @@ import { RecaptchaMiddleware } from '../../middlewares/captcha';
 import { JwtStrategy } from '../auth/strategy';
 import { RolesGuard } from '../auth/guards';
 import { UserService } from '../user/user.service';
+import { MailModule } from '../../services/mail/mail.module';
 
 @Module({
+  imports: [MailModule],
   controllers: [ReportController],
   providers: [ReportService, JwtStrategy, RolesGuard, UserService],
 })

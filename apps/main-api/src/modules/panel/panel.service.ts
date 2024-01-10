@@ -97,10 +97,13 @@ export class PanelService {
       // allowedWards = [1, 2, 3, ...]
       const allowedWards = allowedWardIds.map((ward) => ward.id);
 
+      let filteredWards = allowedWards;
       // Filter wards by district -> Only get ward which belong to district
-      const filteredWards = pageOptionsPanelDto.wards.filter((wardId) =>
-        allowedWards.includes(wardId),
-      );
+      if (pageOptionsPanelDto.wards) {
+        filteredWards = pageOptionsPanelDto.wards.filter((wardId) =>
+          allowedWards.includes(wardId),
+        );
+      }
 
       conditions.where.location = {
         districtId: user.districtId,
@@ -259,11 +262,59 @@ export class PanelService {
     });
   }
 
-  async update(id: number, updatePanelDto: UpdatePanelDto) {
-    return `This action updates a #${id} panel`;
+  async update(
+    id: number,
+    updatePanelDto: UpdatePanelDto,
+    images?: Express.Multer.File[],
+  ) {
+    let imageUrls = [];
+    try {
+      if (images.length) {
+        const uploadImagesData = await uploadFilesFromFirebase(
+          images,
+          EUploadFolder.report,
+        );
+        if (!uploadImagesData.success) {
+          throw new Error('Failed to upload images!');
+        }
+        imageUrls = uploadImagesData.urls;
+
+        const updateData = {
+          typeId: updatePanelDto.typeId,
+          width: updatePanelDto.width,
+          height: updatePanelDto.height,
+          locationId: updatePanelDto.locationId,
+          createContractDate: updatePanelDto.createContractDate,
+          expiredContractDate: updatePanelDto.expiredContractDate,
+          companyEmail: updatePanelDto.companyEmail,
+          companyNumber: updatePanelDto.companyNumber,
+          imageUrls: undefined,
+        };
+
+        if (imageUrls.length > 0) {
+          updateData.imageUrls = imageUrls;
+        }
+
+        const result = await this.prismaService.panel.update({
+          where: {
+            id: id,
+          },
+          data: updateData,
+        });
+
+        return result;
+      }
+    } catch (error) {
+      if (!imageUrls.length) await deleteFilesFromFirebase(imageUrls);
+      throw new Error(error);
+    }
   }
 
   async remove(id: number) {
-    return `This action removes a #${id} panel`;
+    return await this.prismaService.panel.delete({
+      where: {
+        id: id,
+      },
+    });
   }
 }

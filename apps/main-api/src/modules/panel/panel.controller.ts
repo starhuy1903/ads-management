@@ -25,6 +25,8 @@ import { FilesInterceptor } from '@nestjs/platform-express';
 import { FILE_TYPES_REGEX } from '../../constants/images';
 import { JwtGuard } from '../auth/guards';
 import { IRequestWithUser } from '../auth/interfaces';
+import { UserRole } from '@prisma/client';
+import { Roles } from '../auth/decorators';
 
 @Controller('panels')
 export class PanelController {
@@ -51,7 +53,7 @@ export class PanelController {
       return res.success({ data: panel });
     } catch (error) {
       return res.error({
-        statusCode: 500,
+        statusCode: error.status || 500,
         message: error.message,
       });
     }
@@ -99,37 +101,56 @@ export class PanelController {
       return res.success({ data: panel });
     } catch (error) {
       return res.error({
-        statusCode: 500,
+        statusCode: error.status || 500,
         message: error.message,
       });
     }
   }
 
   @Patch(':id')
+  @UseGuards(JwtGuard)
+  @Roles(UserRole.cdo)
+  @UseInterceptors(FilesInterceptor('images', 2))
   async update(
     @Param('id') id: string,
     @Body() updatePanelDto: UpdatePanelDto,
     @Res() res: CustomResponse,
+    @UploadedFiles(
+      new ParseFilePipeBuilder()
+        .addFileTypeValidator({
+          fileType: FILE_TYPES_REGEX,
+        })
+        .build({
+          fileIsRequired: false,
+        }),
+    )
+    images?: Express.Multer.File[],
   ) {
     try {
-      const updatedPanel = await this.panelService.update(+id, updatePanelDto);
+      const updatedPanel = await this.panelService.update(
+        +id,
+        updatePanelDto,
+        images,
+      );
       return res.success({ data: updatedPanel });
     } catch (error) {
       return res.error({
-        statusCode: 500,
+        statusCode: error.status || 500,
         message: error.message,
       });
     }
   }
 
   @Delete(':id')
+  @UseGuards(JwtGuard)
+  @Roles(UserRole.cdo)
   async remove(@Param('id') id: string, @Res() res: CustomResponse) {
     try {
       await this.panelService.remove(+id);
       return res.success({ message: 'Panel deleted successfully' });
     } catch (error) {
       return res.error({
-        statusCode: 500,
+        statusCode: error.status || 500,
         message: error.message,
       });
     }

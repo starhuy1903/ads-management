@@ -10,7 +10,7 @@ export interface AdLocation {
   id: number;
   lat: number;
   long: number;
-  isPlaning: boolean;
+  isPlanning: boolean;
   districtId: number;
   wardId: number;
   fullAddress: string;

@@ -3,6 +3,7 @@ import { ModalKey } from '@/constants/modal';
 import { showModal } from '@/store/slice/modal';
 import AdsRequestListViewOptions from './AdsRequestListViewOptions';
 import CoordinatePicking from './CoordinatePicking';
+import CancelRequest from './CancelRequest';
 import CreateCategory from './CreateCategory';
 import CropImage from './CropImage';
 import GeneralModal from './GeneralModal';
@@ -16,6 +17,7 @@ const modalsMap: { [modalKey: string]: any } = {
   [ModalKey.GENERAL]: GeneralModal,
   [ModalKey.STATISTICS_VIEW_OPTIONS]: StatisticsViewOptions,
   [ModalKey.ADS_REQUEST_VIEW_OPTIONS]: AdsRequestListViewOptions,
+  [ModalKey.CANCEL_REQUEST]: CancelRequest,
   [ModalKey.PANEL_DETAIL]: PanelDetail,
   [ModalKey.COORDINATE_PICKING]: CoordinatePicking,
   [ModalKey.LOCATION_PICKING]: LocationPicking,

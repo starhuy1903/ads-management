@@ -40,3 +40,7 @@ testem.log
 Thumbs.db
 
 .env
+.nx/
+
+#logs
+*logs

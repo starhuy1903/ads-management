@@ -40,7 +40,7 @@ export class WardController {
       });
     } catch (error) {
       return res.error({
-        statusCode: 500,
+        statusCode: error.status || 500,
         message: error.message || 'Internal Server Error',
       });
     }
@@ -49,11 +49,7 @@ export class WardController {
   @Get()
   @UseGuards(JwtGuard)
   @Roles(UserRole.cdo)
-  @Roles(
-    UserRole.cdo,
-    UserRole.ward_officer,
-    UserRole.district_officer,
-  )
+  @Roles(UserRole.cdo, UserRole.ward_officer, UserRole.district_officer)
   async findAll(@Query() pageOptionsWardDto: PageOptionsWardDto) {
     try {
       if (!pageOptionsWardDto.take || !pageOptionsWardDto.page) {
@@ -80,7 +76,7 @@ export class WardController {
       return res.success({ data: ward });
     } catch (error) {
       return res.error({
-        statusCode: 500,
+        statusCode: error.status || 500,
         message: error.message || 'Internal Server Error',
       });
     }
@@ -102,7 +98,7 @@ export class WardController {
       });
     } catch (error) {
       return res.error({
-        statusCode: 500,
+        statusCode: error.status || 500,
         message: error.message || 'Internal Server Error',
       });
     }
@@ -117,7 +113,7 @@ export class WardController {
       return res.success({ message: 'Ward deleted successfully' });
     } catch (error) {
       return res.error({
-        statusCode: 500,
+        statusCode: error.status || 500,
         message: error.message || 'Internal Server Error',
       });
     }

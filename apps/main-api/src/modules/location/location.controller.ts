@@ -26,6 +26,8 @@ import { FilesInterceptor } from '@nestjs/platform-express';
 import { FILE_TYPES_REGEX } from '../../constants/images';
 import { JwtGuard } from '../auth/guards';
 import { IRequestWithUser } from '../auth/interfaces';
+import { UserRole } from '@prisma/client';
+import { Roles } from '../auth/decorators';
 
 @Controller('locations')
 export class LocationController {
@@ -61,7 +63,7 @@ export class LocationController {
       });
     } catch (error) {
       return res.error({
-        statusCode: 500,
+        statusCode: error.status || 500,
         message: error.message || 'Internal Server Error',
       });
     }
@@ -130,22 +132,36 @@ export class LocationController {
       return res.success({ data: location });
     } catch (error) {
       return res.error({
-        statusCode: 500,
+        statusCode: error.status || 500,
         message: error.message || 'Internal Server Error',
       });
     }
   }
 
   @Patch(':id')
+  @UseGuards(JwtGuard)
+  @Roles(UserRole.cdo)
+  @UseInterceptors(FilesInterceptor('images', 2))
   async update(
     @Param('id') id: string,
     @Body() updateLocationDto: UpdateLocationDto,
     @Res() res: CustomResponse,
+    @UploadedFiles(
+      new ParseFilePipeBuilder()
+        .addFileTypeValidator({
+          fileType: FILE_TYPES_REGEX,
+        })
+        .build({
+          fileIsRequired: false,
+        }),
+    )
+    images?: Express.Multer.File[],
   ) {
     try {
       const updatedLocation = await this.locationService.update(
         +id,
         updateLocationDto,
+        images,
       );
       return res.success({
         data: updatedLocation,
@@ -153,20 +169,22 @@ export class LocationController {
       });
     } catch (error) {
       return res.error({
-        statusCode: 500,
+        statusCode: error.status || 500,
         message: error.message || 'Internal Server Error',
       });
     }
   }
 
   @Delete(':id')
+  @UseGuards(JwtGuard)
+  @Roles(UserRole.cdo)
   async remove(@Param('id') id: string, @Res() res: CustomResponse) {
     try {
       await this.locationService.remove(+id);
       return res.success({ message: 'Location deleted successfully' });
     } catch (error) {
       return res.error({
-        statusCode: 500,
+        statusCode: error.status || 500,
         message: error.message || 'Internal Server Error',
       });
     }

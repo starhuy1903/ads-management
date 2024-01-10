@@ -103,10 +103,13 @@ export class LocationService {
       // allowedWards = [1, 2, 3, ...]
       const allowedWards = allowedWardIds.map((ward) => ward.id);
 
+      let filteredWards = allowedWards;
       // Filter wards by district -> Only get ward which belong to district
-      const filteredWards = pageOptionsLocationDto.wards.filter((wardId) =>
-        allowedWards.includes(wardId),
-      );
+      if (pageOptionsLocationDto.wards) {
+        filteredWards = pageOptionsLocationDto.wards.filter((wardId) =>
+          allowedWards.includes(wardId),
+        );
+      }
 
       conditions.where.districtId = user.districtId;
       conditions.where.wardId = { in: filteredWards };
@@ -206,11 +209,60 @@ export class LocationService {
     });
   }
 
-  update(id: number, updateLocationDto: UpdateLocationDto) {
-    return `This action updates a #${id} location`;
+  async update(
+    id: number,
+    updateLocationDto: UpdateLocationDto,
+    images?: Express.Multer.File[],
+  ) {
+    let imageUrls = [];
+    try {
+      if (images.length) {
+        const uploadImagesData = await uploadFilesFromFirebase(
+          images,
+          EUploadFolder.report,
+        );
+        if (!uploadImagesData.success) {
+          throw new Error('Failed to upload images!');
+        }
+        imageUrls = uploadImagesData.urls;
+
+        const updateData = {
+          typeId: updateLocationDto.typeId,
+          adTypeId: updateLocationDto.adsTypeId,
+          long: updateLocationDto.long,
+          lat: updateLocationDto.lat,
+          isPlanning: updateLocationDto.isPlanning,
+          districtId: updateLocationDto.districtId,
+          wardId: updateLocationDto.wardId,
+          fullAddress: updateLocationDto.fullAddress,
+          name: updateLocationDto.name,
+          imageUrls: undefined,
+        };
+
+        if (imageUrls.length > 0) {
+          updateData.imageUrls = imageUrls;
+        }
+
+        const result = await this.prismaService.location.update({
+          where: {
+            id: id,
+          },
+          data: updateData,
+        });
+
+        return result;
+      }
+    } catch (error) {
+      if (!imageUrls.length) await deleteFilesFromFirebase(imageUrls);
+      throw new Error(error);
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} location`;
+  async remove(id: number) {
+    return await this.prismaService.location.delete({
+      where: {
+        id: id,
+      },
+    });
   }
 }
