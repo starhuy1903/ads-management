@@ -6,7 +6,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { PrismaService } from '../../services/prisma/prisma.service';
-import { SignInDto, CreateUserDto } from './dto';
+import { SignInDto, CreateUserDto, ChangePasswordDto } from './dto';
 import * as argon from 'argon2';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { JwtService } from '@nestjs/jwt';
@@ -167,6 +167,8 @@ export class AuthService {
           phoneNumber: user.phoneNumber,
           dob: user.dob,
           role: user.role,
+          wardId: user.wardId,
+          districtId: user.districtId,
         },
       };
     } catch (err) {
@@ -275,6 +277,60 @@ export class AuthService {
     }
 
     return await this.generateTokens(payload);
+  }
+
+  async changePassword(userId: number, dto: ChangePasswordDto) {
+    // Find user
+    const user = await this.prismaService.user.findUnique({
+      where: {
+        id: userId,
+      },
+    });
+
+    if (!user) {
+      throw new UnauthorizedException({
+        message: 'Unauthorized',
+      });
+    }
+
+    // Check if old password is the same as new password
+    if (dto.oldPassword === dto.newPassword) {
+      throw new BadRequestException({
+        message: 'New password must be different from old password',
+      });
+    }
+
+    // Check old password
+    const isMatch = await argon.verify(user.password, dto.oldPassword);
+    if (!isMatch) {
+      throw new UnauthorizedException({
+        message: 'Old password is incorrect',
+      });
+    }
+
+    // Hash new password
+    const hash = await argon.hash(dto.newPassword);
+
+    // Update user password
+    try {
+      await this.prismaService.user.update({
+        where: {
+          id: userId,
+        },
+        data: {
+          password: hash,
+        },
+      });
+
+      return {};
+    } catch (err) {
+      // Add logger
+      console.log(err);
+
+      throw new InternalServerErrorException({
+        message: 'Something went wrong',
+      });
+    }
   }
 
   async forgotPassword(email: string) {
