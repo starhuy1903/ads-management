@@ -1,4 +1,9 @@
-import CategoryOutlinedIcon from '@mui/icons-material/CategoryOutlined';
+import AssignmentIcon from '@mui/icons-material/Assignment';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import EditIcon from '@mui/icons-material/Edit';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+import ReportIcon from '@mui/icons-material/Report';
+import VideoLabelIcon from '@mui/icons-material/VideoLabel';
 import { Box, Drawer, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import PerfectScrollbar from 'react-perfect-scrollbar';
@@ -53,40 +58,38 @@ function Sidebar({ open, handleOnClose }: SidebarProps) {
             padding: '0 16px',
           }}
         >
-          <NavGroupWrapper title="  Management">
-            <NavItem title="Home" icon={<CategoryOutlinedIcon />} href="/" />
+          <NavGroupWrapper>
+            <NavItem title="Dashboard" icon={<DashboardIcon />} href="/" />
+          </NavGroupWrapper>
+          <NavGroupWrapper title="General Management">
             <NavItem
               title="Locations"
-              icon={<CategoryOutlinedIcon />}
+              icon={<LocationOnIcon />}
               href="/locations"
             />
-            <NavItem
-              title="Panels"
-              icon={<CategoryOutlinedIcon />}
-              href="/panels"
-            />
+            <NavItem title="Panels" icon={<VideoLabelIcon />} href="/panels" />
           </NavGroupWrapper>
           <NavGroupWrapper title="Reports">
             <NavItem
               title="Location Reports"
-              icon={<CategoryOutlinedIcon />}
+              icon={<ReportIcon />}
               href="/location-reports"
             />
             <NavItem
               title="Panel Reports"
-              icon={<CategoryOutlinedIcon />}
+              icon={<ReportIcon />}
               href="/panel-reports"
             />
           </NavGroupWrapper>
           <NavGroupWrapper title="Requests">
             <NavItem
               title="Licensing Requests"
-              icon={<CategoryOutlinedIcon />}
+              icon={<AssignmentIcon />}
               href="/licensing-requests"
             />
             <NavItem
               title="Editing Requests"
-              icon={<CategoryOutlinedIcon />}
+              icon={<EditIcon />}
               href="/editing-requests"
             />
           </NavGroupWrapper>
