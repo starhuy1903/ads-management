@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "4761e287-9491-4fff-8d3a-1914c5b16657",
+		"_postman_id": "702c460b-af26-4c16-bf4e-89bf38f764e1",
 		"name": "CDO (Cán bộ sở)",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "18634609"
+		"_exporter_id": "24967219"
 	},
 	"item": [
 		{
@@ -430,6 +430,219 @@
 			"response": []
 		},
 		{
+			"name": "Cập nhật Panel",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoiY2hpaGllbjIwMDI3MUBnbWFpbC5jb20iLCJyb2xlIjoiY2RvIiwiaWF0IjoxNzA0OTc2NjE5LCJleHAiOjE3MDQ5NzY5MTl9.f2f2kWNXKbJcXkmBQp0BrMp7SlYKE_22LjZYag7fTEA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "images",
+							"type": "file",
+							"src": "postman-cloud:///1eea1b4c-b6bf-4820-b8e0-34ce8e6ff798"
+						},
+						{
+							"key": "typeId",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "width",
+							"value": "10",
+							"type": "text"
+						},
+						{
+							"key": "height",
+							"value": "20",
+							"type": "text"
+						},
+						{
+							"key": "locationId",
+							"value": "5",
+							"type": "text"
+						},
+						{
+							"key": "createContractDate",
+							"value": "2023-12-23T00:00:00.000Z",
+							"type": "text"
+						},
+						{
+							"key": "expiredContractDate",
+							"value": "2024-12-23T00:00:00.000Z",
+							"type": "text"
+						},
+						{
+							"key": "companyEmail",
+							"value": "example@example.com",
+							"type": "text"
+						},
+						{
+							"key": "companyNumber",
+							"value": "123456789",
+							"type": "text"
+						},
+						{
+							"key": "userId",
+							"value": "2",
+							"type": "text"
+						},
+						{
+							"key": "reason",
+							"value": "abc",
+							"type": "text"
+						},
+						{
+							"key": "belongPanelId",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "status",
+							"value": "AWAITING_UPDATE",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8194/api/panels/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8194",
+					"path": [
+						"api",
+						"panels",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cập nhật location",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoiY2hpaGllbjIwMDI3MUBnbWFpbC5jb20iLCJyb2xlIjoiY2RvIiwiaWF0IjoxNzA0OTc2NjE5LCJleHAiOjE3MDQ5NzY5MTl9.f2f2kWNXKbJcXkmBQp0BrMp7SlYKE_22LjZYag7fTEA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "images",
+							"type": "file",
+							"src": "postman-cloud:///1eea1b4c-b6bf-4820-b8e0-34ce8e6ff798"
+						},
+						{
+							"key": "typeId",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "adsTypeId",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "long",
+							"value": "20",
+							"type": "text"
+						},
+						{
+							"key": "lat",
+							"value": "5",
+							"type": "text"
+						},
+						{
+							"key": "isPlanning",
+							"value": "true",
+							"type": "text"
+						},
+						{
+							"key": "districtId",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "wardId",
+							"value": "2",
+							"type": "text"
+						},
+						{
+							"key": "fullAddress",
+							"value": "kkjhkhkbkb ",
+							"type": "text"
+						},
+						{
+							"key": "name",
+							"value": "akjhskjhskj",
+							"type": "text"
+						},
+						{
+							"key": "userId",
+							"value": "4",
+							"type": "text"
+						},
+						{
+							"key": "reason",
+							"value": "lkjlklkjlk",
+							"type": "text"
+						},
+						{
+							"key": "belongLocationId",
+							"value": "5",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "status",
+							"value": "AWAITING_UPDATE",
+							"type": "text"
+						},
+						{
+							"key": "imageUrls[]",
+							"value": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8194/api/locations/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8194",
+					"path": [
+						"api",
+						"locations",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Xóa district",
 			"request": {
 				"method": "DELETE",
@@ -447,6 +660,12 @@
 				}
 			},
 			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "LOCAL_URL",
+			"value": "http://localhost:8194"
 		}
 	]
 }

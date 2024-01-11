@@ -289,6 +289,8 @@ export class PanelService {
           companyEmail: updatePanelDto.companyEmail,
           companyNumber: updatePanelDto.companyNumber,
           imageUrls: undefined,
+          belongPanelId: updatePanelDto.belongPanelId,
+          status: updatePanelDto.status,
         };
 
         if (imageUrls.length > 0) {
