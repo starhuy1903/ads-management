@@ -312,7 +312,11 @@ export class AdsRequestService {
         user: {
           include: {
             district: true,
-            ward: true,
+            ward: {
+              include: {
+                district: true,
+              },
+            },
           },
         },
         location: {
