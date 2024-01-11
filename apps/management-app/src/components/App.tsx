@@ -49,7 +49,7 @@ import PanelSendRequest from './Authenticated/Officer/PanelSendRequest';
 import ReportResponse from './Authenticated/Officer/ReportResponse';
 import ResetPassword from './Authenticated/ResetPassword';
 import CenterLoading from './Common/CenterLoading';
-import ChangePassword from './Common/ChangePassword';
+import ChangePassword from './Authenticated/ChangePassword';
 import PageLayout from './Common/Layout/PageLayout';
 import CitizenHome from './Unauthenticated/Citizen/CitizenHome';
 import CitizenReport from './Unauthenticated/Citizen/CitizenReport';
