@@ -46,11 +46,6 @@ const ModificationRequestsListView = () => {
     );
   }, [dispatch, viewOptions]);
 
-  // const { data, isLoading, isFetching } = useGetModificationRequestsQuery({
-  //   page: parseInt(searchParams.get('page') || '1'),
-  //   limit: parseInt(searchParams.get('pageSize') || '10'),
-  // });
-
   const [getModificationRequests, { data, isLoading, isFetching }] =
     useLazyGetModificationRequestsQuery();
 
@@ -290,7 +285,7 @@ const ModificationRequestsListView = () => {
               sx={{ color: 'common.white' }}
               onClick={handleFilter}
             >
-              Filters
+              Options
             </Button>
           </Box>
         </>

@@ -201,7 +201,7 @@ const ReportStatistics = () => {
               sx={{ color: 'common.white' }}
               onClick={handleFilter}
             >
-              Filters
+              Options
             </Button>
           </Box>
         </>

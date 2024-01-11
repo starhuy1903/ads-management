@@ -94,6 +94,17 @@ export type IStatisticsViewOptions = {
   month: number;
 };
 
+export enum LocationStatus {
+  APPROVED = 'APPROVED',
+  AWAITING_UPDATE = 'AWAITING_UPDATE',
+}
+
+export enum PanelStatus {
+  DRAFT = 'DRAFT',
+  APPROVED = 'APPROVED',
+  AWAITING_UPDATE = 'AWAITING_UPDATE',
+}
+
 export type Location = {
   id: number;
   lat: number;
@@ -108,7 +119,7 @@ export type Location = {
   createdAt: string;
   updatedAt: string;
   name: string;
-  status: 'APPROVED' | 'AWAITING_UPDATE';
+  status: LocationStatus;
   // panel: Array<Panel>;
   type: LocationType;
   adType: AdsType;
@@ -134,7 +145,7 @@ export type Panel = {
   companyNumber: string;
   createdAt: string;
   updatedAt: string;
-  status: 'DRAFT' | 'APPROVED' | 'AWAITING_UPDATE';
+  status: PanelStatus;
   type: PanelType;
   // location: Location;
   belongPanelId?: number;
@@ -225,4 +236,33 @@ export type PanelDto = {
   expiredContractDate: string;
   companyEmail: string;
   companyNumber: string;
+};
+
+export type IPanelListViewOptions = {
+  status?: PanelStatus;
+  typeId?: number;
+  districts: Array<number>;
+  wards: Array<number>;
+};
+
+export type ILocationListViewOptions = {
+  status?: LocationStatus;
+  locationTypeId?: number;
+  adTypeId?: number;
+  districts: Array<number>;
+  wards: Array<number>;
+};
+
+export type LocationListQueryOptions = ILocationListViewOptions & {
+  page?: number;
+  limit?: number;
+  districts?: Array<number>;
+  wards?: Array<number>;
+};
+
+export type PanelListQueryOptions = IPanelListViewOptions & {
+  page?: number;
+  limit?: number;
+  districts?: Array<number>;
+  wards?: Array<number>;
 };

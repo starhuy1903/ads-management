@@ -1,5 +1,7 @@
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
+import FilterAltIcon from '@mui/icons-material/FilterAlt';
+import Box from '@mui/material/Box';
 import Fab from '@mui/material/Fab';
 import IconButton from '@mui/material/IconButton';
 import Skeleton from '@mui/material/Skeleton';
@@ -9,15 +11,21 @@ import {
   GridRowsProp,
   GridRenderCellParams,
 } from '@mui/x-data-grid';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAppDispatch } from '@/store';
 import { ModalKey } from '@/constants/modal';
 import {
   useDeletePanelsMutation,
-  useGetPanelsQuery,
+  useLazyGetPanelsQuery,
 } from '@/store/api/adsManagementApiSlice';
+import {
+  useGetDistrictsQuery,
+  useGetPanelTypesQuery,
+  useGetWardsQuery,
+} from '@/store/api/generalManagementApiSlice';
 import { showModal } from '@/store/slice/modal';
+import { IPanelListViewOptions, Ward } from '@/types/cdoManagement';
 import { displayTimestamp } from '@/utils/format';
 import CustomDataGrid from '../CustomDatagrid';
 import CustomLink from '../CustomLink';
@@ -30,10 +38,33 @@ const PanelsListView = () => {
 
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const { data, isLoading, isFetching, refetch } = useGetPanelsQuery({
-    page: parseInt(searchParams.get('page') || '1'),
-    limit: parseInt(searchParams.get('pageSize') || '10'),
+  const [viewOptions, setViewOptions] = useState<IPanelListViewOptions>({
+    districts: [],
+    wards: [],
   });
+
+  const handleFilter = useCallback(() => {
+    dispatch(
+      showModal(ModalKey.PANEL_VIEW_OPTIONS, {
+        viewOptions,
+        onSubmit: (options: IPanelListViewOptions) => setViewOptions(options),
+      }),
+    );
+  }, [dispatch, viewOptions]);
+
+  const { data: districts } = useGetDistrictsQuery({});
+  const { data: wards } = useGetWardsQuery({});
+  const { data: panelTypes } = useGetPanelTypesQuery({});
+
+  const [getPanels, { data, isLoading, isFetching }] = useLazyGetPanelsQuery();
+
+  useEffect(() => {
+    getPanels({
+      page: parseInt(searchParams.get('page') || '1'),
+      limit: parseInt(searchParams.get('pageSize') || '10'),
+      ...viewOptions,
+    });
+  }, [getPanels, searchParams, viewOptions]);
 
   const [rowCountState, setRowCountState] = useState(data?.totalCount || 0);
 
@@ -168,6 +199,19 @@ const PanelsListView = () => {
           ),
         },
         {
+          field: 'status',
+          headerName: 'Status',
+          width: 150,
+          align: 'center',
+          headerAlign: 'center',
+          renderCell: () => (
+            <Skeleton
+              variant="text"
+              sx={{ width: '100%', fontSize: '0.875rem' }}
+            />
+          ),
+        },
+        {
           field: 'createdAt',
           headerName: 'Created at',
           width: 300,
@@ -233,7 +277,7 @@ const PanelsListView = () => {
           headerName: 'Type',
           width: 200,
           renderCell: (params: GridRenderCellParams) => (
-            <Typography fontSize="0.875rem">{params.value.name}</Typography>
+            <Typography fontSize="0.875rem">{params.value?.name}</Typography>
           ),
         },
         {
@@ -261,8 +305,8 @@ const PanelsListView = () => {
           headerName: 'Location',
           width: 200,
           renderCell: (params: GridRenderCellParams) => (
-            <CustomLink to={'/locations/' + params.value.id}>
-              <Typography fontSize="0.875rem">{params.value.name}</Typography>
+            <CustomLink to={'/locations/' + params.value?.id}>
+              <Typography fontSize="0.875rem">{params.value?.name}</Typography>
             </CustomLink>
           ),
         },
@@ -288,6 +332,13 @@ const PanelsListView = () => {
         },
         { field: 'companyEmail', headerName: 'Company email', width: 250 },
         { field: 'companyNumber', headerName: 'Company number', width: 200 },
+        {
+          field: 'status',
+          headerName: 'Status',
+          width: 200,
+          align: 'center',
+          headerAlign: 'center',
+        },
         {
           field: 'createdAt',
           headerName: 'Created',
@@ -342,7 +393,11 @@ const PanelsListView = () => {
                       try {
                         dispatch(showModal(null));
                         await deletePanels(params.row.id).unwrap();
-                        await refetch();
+                        await getPanels({
+                          page: parseInt(searchParams.get('page') || '1'),
+                          limit: parseInt(searchParams.get('pageSize') || '10'),
+                          ...viewOptions,
+                        });
                       } catch (error) {
                         /* empty */
                       }
@@ -357,13 +412,80 @@ const PanelsListView = () => {
   return (
     <StaticActionBar
       actionBar={
-        <Fab
-          color="primary"
-          size="medium"
-          onClick={() => navigate('/panels/create')}
-        >
-          <AddIcon sx={{ color: (theme) => theme.palette.common.white }} />
-        </Fab>
+        <>
+          <Box
+            sx={{
+              flex: 1,
+              display: 'grid',
+              gridTemplateColumns: 'repeat(6, 1fr)',
+              gap: '8px',
+              marginBottom: '16px',
+
+              '& .MuiTypography-root': {
+                fontSize: '0.875rem',
+              },
+            }}
+          >
+            <Typography fontWeight="bold">Status:</Typography>
+            <Typography>{viewOptions.status || 'Any'}</Typography>
+            <Typography fontWeight="bold">Panel type:</Typography>
+            <Typography>
+              {panelTypes?.data.find((e) => e.id === viewOptions.typeId)
+                ?.name || 'Any'}
+            </Typography>
+
+            <Typography fontWeight="bold" sx={{ gridColumn: 1 }}>
+              District:
+            </Typography>
+            {districts ? (
+              <Typography>
+                {viewOptions.districts.length > 0
+                  ? districts?.data.find(
+                      (e) => e.id === viewOptions.districts[0],
+                    )?.name
+                  : 'All'}
+              </Typography>
+            ) : (
+              <Skeleton
+                variant="text"
+                sx={{ width: '100%', fontSize: '0.875rem' }}
+              />
+            )}
+            <Typography fontWeight="bold">Wards:</Typography>
+            {wards ? (
+              <Typography sx={{ gridColumn: '4 / span 3' }} noWrap>
+                {viewOptions.wards.length > 0
+                  ? wards?.data
+                      .reduce((accum: Array<string>, e: Ward) => {
+                        return viewOptions.wards.includes(e.id)
+                          ? accum.concat(e.name)
+                          : accum;
+                      }, [])
+                      .join(', ')
+                  : 'All'}
+              </Typography>
+            ) : (
+              <Skeleton
+                variant="text"
+                sx={{ width: '100%', fontSize: '0.875rem' }}
+              />
+            )}
+          </Box>
+          <Box sx={{ display: 'flex', gap: '8px' }}>
+            <Fab color="primary" size="medium" onClick={handleFilter}>
+              <FilterAltIcon
+                sx={{ color: (theme) => theme.palette.common.white }}
+              />
+            </Fab>
+            <Fab
+              color="primary"
+              size="medium"
+              onClick={() => navigate('/panels/create')}
+            >
+              <AddIcon sx={{ color: (theme) => theme.palette.common.white }} />
+            </Fab>
+          </Box>
+        </>
       }
     >
       <CustomDataGrid

@@ -1,6 +1,8 @@
 import {
   GetDataResult,
   GetListResult,
+  LocationListQueryOptions,
+  PanelListQueryOptions,
   LocationDto,
   LocationFull,
   MessageResponse,
@@ -14,13 +16,21 @@ export const adsManagementApiSlice = apiSlice.injectEndpoints({
   endpoints: (build) => ({
     getLocations: build.query<
       GetListResult<LocationFull>,
-      { page?: number; limit?: number }
+      LocationListQueryOptions
     >({
       query: (arg) => ({
         url: `/locations`,
         params: {
           page: arg.page,
           take: arg.limit,
+          status: arg.status,
+          locationTypeId: arg.locationTypeId,
+          adTypeId: arg.adTypeId,
+          districts:
+            arg.districts && arg.districts.length > 0
+              ? arg.districts
+              : undefined,
+          wards: arg.wards && arg.wards.length > 0 ? arg.wards : undefined,
         },
       }),
     }),
@@ -56,7 +66,7 @@ export const adsManagementApiSlice = apiSlice.injectEndpoints({
         });
 
         return {
-          url: '/locations',
+          url: `/locations/${arg.id}`,
           method: 'PATCH',
           body: bodyFormData,
           // headers: {
@@ -73,15 +83,19 @@ export const adsManagementApiSlice = apiSlice.injectEndpoints({
       }),
       onQueryStarted: getOnMutationFunction('Location deleted'),
     }),
-    getPanels: build.query<
-      GetListResult<PanelFull>,
-      { page?: number; limit?: number }
-    >({
+    getPanels: build.query<GetListResult<PanelFull>, PanelListQueryOptions>({
       query: (arg) => ({
         url: `/panels`,
         params: {
           page: arg.page,
           take: arg.limit,
+          status: arg.status,
+          typeId: arg.typeId,
+          districts:
+            arg.districts && arg.districts.length > 0
+              ? arg.districts
+              : undefined,
+          wards: arg.wards && arg.wards.length > 0 ? arg.wards : undefined,
         },
       }),
     }),
@@ -117,7 +131,7 @@ export const adsManagementApiSlice = apiSlice.injectEndpoints({
         });
 
         return {
-          url: '/panels',
+          url: `/panels/${arg.id}`,
           method: 'PATCH',
           body: bodyFormData,
           // headers: {

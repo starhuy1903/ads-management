@@ -471,7 +471,7 @@ const LocationsDetail = () => {
                 </Box>
               ))}
             </Box> */}
-            <Box sx={{ gridColumn: '2' }}>
+            <Box sx={{ gridColumn: '1 / span 2' }}>
               {isLoading ? (
                 <Skeleton variant="rounded" />
               ) : (

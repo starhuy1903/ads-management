@@ -10,6 +10,8 @@ import GeneralModal from './GeneralModal';
 import LocationPicking from './LocationPicking';
 import PanelDetail from './PanelDetail';
 import StatisticsViewOptions from './StatisticsViewOptions';
+import LocationListViewOptions from './LocationListViewOptions';
+import PanelListViewOptions from './PanelListViewOptions';
 
 const modalsMap: { [modalKey: string]: any } = {
   [ModalKey.CREATE_CATEGORY]: CreateCategory,
@@ -21,6 +23,8 @@ const modalsMap: { [modalKey: string]: any } = {
   [ModalKey.PANEL_DETAIL]: PanelDetail,
   [ModalKey.COORDINATE_PICKING]: CoordinatePicking,
   [ModalKey.LOCATION_PICKING]: LocationPicking,
+  [ModalKey.LOCATION_VIEW_OPTIONS]: LocationListViewOptions,
+  [ModalKey.PANEL_VIEW_OPTIONS]: PanelListViewOptions,
 };
 
 export function ModalContainer() {

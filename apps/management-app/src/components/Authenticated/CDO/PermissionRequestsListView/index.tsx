@@ -265,7 +265,7 @@ const PermissionRequestsListView = () => {
               sx={{ color: 'common.white' }}
               onClick={handleFilter}
             >
-              Filters
+              Options
             </Button>
           </Box>
         </>
