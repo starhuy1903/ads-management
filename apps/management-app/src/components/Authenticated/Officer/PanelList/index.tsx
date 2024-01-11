@@ -10,11 +10,13 @@ import {
   TableRow,
 } from '@mui/material';
 import { useEffect, useState } from 'react';
+import { useAppSelector } from '@/store';
 import CenterLoading from '@/components/Common/CenterLoading';
 import { Edit, Info, Response } from '@/components/Common/Icons';
 import { ListWrapper } from '@/components/Common/Layout/ScreenWrapper';
 import WardSelect from '@/components/Common/WardSelect';
 import { PanelStatus } from '@/constants/panel';
+import { UserRole } from '@/constants/user';
 import { useGetPanelsQuery } from '@/store/api/officer/panelApiSlide';
 import { Panel } from '@/types/officer-management';
 import { formatDateTime } from '@/utils/datetime';
@@ -34,6 +36,8 @@ const titles = [
 ];
 
 export default function PanelList() {
+  const role = useAppSelector((state) => state.user?.profile?.role);
+
   const [page, setPage] = useState<number>(1);
   const [panels, setPanels] = useState<Panel[]>([]);
   const [wards, setWards] = useState<number[]>([]);
@@ -65,7 +69,9 @@ export default function PanelList() {
           width: '100%',
         }}
       >
-        <WardSelect wards={wards} setWards={setWards} />
+        {role === UserRole?.DISTRICT_OFFICER && (
+          <WardSelect wards={wards} setWards={setWards} />
+        )}
 
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 650 }} aria-label="panels">

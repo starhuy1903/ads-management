@@ -1,4 +1,5 @@
 import { UserRole } from '@/constants/user';
+import { District, Ward } from './officer-management';
 
 export type CredentialPayload = {
   email: string;
@@ -48,6 +49,8 @@ export type UserProfile = {
   role: UserRole;
   dob: string;
   phoneNumber: string;
+  ward?: Ward;
+  district?: District;
 };
 
 export type RefreshResponse = {

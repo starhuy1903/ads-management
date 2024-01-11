@@ -9,6 +9,7 @@ import {
   SelectChangeEvent,
 } from '@mui/material';
 import { useEffect, useState } from 'react';
+import { useAppSelector } from '@/store';
 import { useGetWardsByDistrictIdQuery } from '@/store/api/officer/wardApiSlide';
 import { Ward } from '@/types/officer-management';
 
@@ -30,11 +31,13 @@ export default function WardSelect({
   wards: number[];
   setWards: (wards: number[]) => void;
 }) {
-  const districtId = '18';
+  const districtId = useAppSelector(
+    (state) => state.user?.profile?.district?.id,
+  );
+
+  const { data } = useGetWardsByDistrictIdQuery(districtId!);
 
   const [allWards, setAllWards] = useState<Ward[]>([]);
-
-  const { data } = useGetWardsByDistrictIdQuery(districtId);
 
   useEffect(() => {
     if (data) {

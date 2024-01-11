@@ -16,6 +16,7 @@ import { Edit, Info } from '@/components/Common/Icons';
 import { ListWrapper } from '@/components/Common/Layout/ScreenWrapper';
 import WardSelect from '@/components/Common/WardSelect';
 import { LocationStatus } from '@/constants/location';
+import { UserRole } from '@/constants/user';
 import { useGetLocationsQuery } from '@/store/api/officer/locationApiSlice';
 import { Location } from '@/types/officer-management';
 import { formatDateTime } from '@/utils/datetime';
@@ -69,7 +70,9 @@ export default function LocationList() {
           width: '100%',
         }}
       >
-        <WardSelect wards={wards} setWards={setWards} />
+        {role === UserRole?.DISTRICT_OFFICER && (
+          <WardSelect wards={wards} setWards={setWards} />
+        )}
 
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 650 }} aria-label="locations">

@@ -3,7 +3,7 @@ import { apiSlice } from '../baseApiSlice';
 
 export const officerWardApiSlice = apiSlice.injectEndpoints({
   endpoints: (build) => ({
-    getWardsByDistrictId: build.query<Ward[], string>({
+    getWardsByDistrictId: build.query<Ward[], number>({
       query: (districtId) => ({
         url: `/districts/${districtId}/wards`,
       }),
