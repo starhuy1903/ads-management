@@ -278,34 +278,33 @@ export class PanelService {
           throw new Error('Failed to upload images!');
         }
         imageUrls = uploadImagesData.urls;
-
-        const updateData = {
-          typeId: updatePanelDto.typeId,
-          width: updatePanelDto.width,
-          height: updatePanelDto.height,
-          locationId: updatePanelDto.locationId,
-          createContractDate: updatePanelDto.createContractDate,
-          expiredContractDate: updatePanelDto.expiredContractDate,
-          companyEmail: updatePanelDto.companyEmail,
-          companyNumber: updatePanelDto.companyNumber,
-          imageUrls: undefined,
-          belongPanelId: updatePanelDto.belongPanelId,
-          status: updatePanelDto.status,
-        };
-
-        if (imageUrls.length > 0) {
-          updateData.imageUrls = imageUrls;
-        }
-
-        const result = await this.prismaService.panel.update({
-          where: {
-            id: id,
-          },
-          data: updateData,
-        });
-
-        return result;
       }
+      const updateData = {
+        typeId: updatePanelDto.typeId,
+        width: updatePanelDto.width,
+        height: updatePanelDto.height,
+        locationId: updatePanelDto.locationId,
+        createContractDate: updatePanelDto.createContractDate,
+        expiredContractDate: updatePanelDto.expiredContractDate,
+        companyEmail: updatePanelDto.companyEmail,
+        companyNumber: updatePanelDto.companyNumber,
+        imageUrls: undefined,
+        belongPanelId: updatePanelDto.belongPanelId,
+        status: updatePanelDto.status,
+      };
+
+      if (imageUrls.length > 0) {
+        updateData.imageUrls = imageUrls;
+      }
+
+      const result = await this.prismaService.panel.update({
+        where: {
+          id: id,
+        },
+        data: updateData,
+      });
+
+      return result;
     } catch (error) {
       if (!imageUrls.length) await deleteFilesFromFirebase(imageUrls);
       throw new Error(error);
