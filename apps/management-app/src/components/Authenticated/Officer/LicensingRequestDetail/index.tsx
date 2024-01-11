@@ -8,6 +8,7 @@ import {
 } from '@/components/Common/FormComponents';
 import { DetailWrapper } from '@/components/Common/Layout/ScreenWrapper';
 import { MAX_ID_LENGTH } from '@/constants/url-params';
+import { UserRole } from '@/constants/user';
 import { useLazyGetRequestByIdQuery } from '@/store/api/officer/requestApiSlide';
 import { AdsRequest } from '@/types/officer-management';
 import { formatDateTime } from '@/utils/datetime';
@@ -26,6 +27,8 @@ export default function LicensingRequestDetail() {
     setRequest(null);
     navigate('/licensing-requests', { replace: true });
   }
+
+  console.log(request);
 
   useEffect(() => {
     if (
@@ -102,12 +105,23 @@ export default function LicensingRequestDetail() {
 
         <ReadOnlyTextField label="Email" value={request?.user?.email} />
 
-        <ReadOnlyTextField label="Ward" value={request?.user?.ward?.name} />
+        {request?.user?.role === UserRole.WARD_OFFICER && (
+          <>
+            <ReadOnlyTextField label="Ward" value={request?.user?.ward?.name} />
 
-        <ReadOnlyTextField
-          label="District"
-          value={request?.user?.district?.name}
-        />
+            <ReadOnlyTextField
+              label="District"
+              value={request?.user?.ward?.district?.name}
+            />
+          </>
+        )}
+
+        {request?.user?.role === UserRole.DISTRICT_OFFICER && (
+          <ReadOnlyTextField
+            label="District"
+            value={request?.user?.district?.name}
+          />
+        )}
       </Stack>
 
       <Typography

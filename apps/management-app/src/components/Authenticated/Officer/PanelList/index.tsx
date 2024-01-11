@@ -119,7 +119,9 @@ export default function PanelList() {
                         }}
                       >
                         <Info link={`/panels/${panel?.id}`} />
-                        <Edit link={`/panels/${panel?.id}/edit`} />
+                        {panel?.status === PanelStatus?.APPROVE && (
+                          <Edit link={`/panels/${panel?.id}/edit`} />
+                        )}
 
                         {panel?.status === PanelStatus?.DRAFT && (
                           <Response
