@@ -28,6 +28,7 @@ import { JwtGuard } from '../auth/guards';
 import { IRequestWithUser } from '../auth/interfaces';
 import { UserRole } from '@prisma/client';
 import { Roles } from '../auth/decorators';
+import { PageOptionsPanelDto } from '../panel/dto/find-all-panel.dto';
 
 @Controller('locations')
 export class LocationController {
@@ -106,12 +107,12 @@ export class LocationController {
 
   @Get(':id/panels')
   async findAllPanelByLocation(
-    @Query() pageOptionsLocationDto: PageOptionsLocationDto,
+    @Query() pageOptionsPanelDto: PageOptionsPanelDto,
     @Param('id') id: string,
   ) {
     try {
       return await this.panelService.findAllPanelsByLocation(
-        pageOptionsLocationDto,
+        pageOptionsPanelDto,
         +id,
       );
     } catch (error) {

@@ -47,8 +47,6 @@ export class CreateLocationDto {
   readonly name?: string;
 
   @Type(() => Number)
-  @IsInt()
-  @Min(1)
   @IsOptional()
   readonly belongLocationId?: number;
 }
