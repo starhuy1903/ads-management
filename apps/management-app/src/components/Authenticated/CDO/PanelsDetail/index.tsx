@@ -31,6 +31,7 @@ import {
 import { useGetPanelTypesQuery } from '@/store/api/generalManagementApiSlice';
 import { isApiErrorResponse } from '@/store/api/helper';
 import { showModal } from '@/store/slice/modal';
+import { PanelStatus } from '@/types/cdoManagement';
 import { showError } from '@/utils/toast';
 import FormInputSkeleton from '../FormInputSkeleton';
 import StaticActionBar from '../StaticActionBar';
@@ -79,9 +80,12 @@ const PanelsDetail = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  const [getPanel, { data }] = useLazyGetPanelByIdQuery();
-  const { data: locations } = useGetLocationsQuery({});
-  const { data: panelTypes, isLoading: panelTypeLoading } =
+  const [getPanel] = useLazyGetPanelByIdQuery();
+  const { data: locations } = useGetLocationsQuery({
+    districts: [],
+    wards: [],
+  });
+  const { data: panelTypes} =
     useGetPanelTypesQuery({});
 
   const {
@@ -211,6 +215,7 @@ const PanelsDetail = () => {
                 ...data,
                 createContractDate: data.createContractDate.format(),
                 expiredContractDate: data.expiredContractDate.format(),
+                status: PanelStatus.APPROVED,
               },
             }).unwrap();
             reset(data);
@@ -387,7 +392,7 @@ const PanelsDetail = () => {
             />
             <Box sx={{ gridColumn: '1 / span 2' }}>
               <FormControl>
-                <FormLabel sx={{ mb: 1 }}>Upload image</FormLabel>
+                <FormLabel sx={{ mb: 1 }}>Images</FormLabel>
                 <Stack direction="row" spacing={2}>
                   {formValue.images.map((image, index) => (
                     <ImagePreview

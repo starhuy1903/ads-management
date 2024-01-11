@@ -61,7 +61,7 @@ const LocationsListView = () => {
   const { data: locationTypes } = useGetLocationTypesQuery({});
   const { data: adsTypes } = useGetAdsTypesQuery({});
 
-  const [getLocations, { data, isLoading, isFetching }] =
+  const [getLocations, { data, isLoading, isFetching, isUninitialized }] =
     useLazyGetLocationsQuery();
 
   useEffect(() => {
@@ -85,302 +85,305 @@ const LocationsListView = () => {
   const rows: GridRowsProp =
     data?.data || Array.from({ length: 10 }, (_, i) => ({ id: i }));
 
-  const columns: GridColDef[] = isLoading
-    ? [
-        {
-          field: 'id',
-          headerName: 'ID',
-          width: 70,
-          align: 'center',
-          headerAlign: 'center',
-          sortable: false,
-          renderCell: () => (
-            <Skeleton
-              variant="text"
-              sx={{ width: '100%', fontSize: '0.875rem' }}
-            />
-          ),
-        },
-        {
-          field: 'name',
-          headerName: 'Name',
-          width: 300,
-          renderCell: () => (
-            <Skeleton
-              variant="text"
-              sx={{ width: '100%', fontSize: '0.875rem' }}
-            />
-          ),
-        },
-        {
-          field: 'fullAddress',
-          headerName: 'Full address',
-          width: 300,
-          renderCell: () => (
-            <Skeleton
-              variant="text"
-              sx={{ width: '100%', fontSize: '0.875rem' }}
-            />
-          ),
-        },
-        {
-          field: 'isPlanning',
-          headerName: 'Planning',
-          width: 100,
-          align: 'center',
-          headerAlign: 'center',
-          renderCell: () => (
-            <Skeleton
-              variant="text"
-              sx={{ width: '100%', fontSize: '0.875rem' }}
-            />
-          ),
-        },
-        {
-          field: 'district',
-          headerName: 'District',
-          width: 200,
-          renderCell: () => (
-            <Skeleton
-              variant="text"
-              sx={{ width: '100%', fontSize: '0.875rem' }}
-            />
-          ),
-        },
-        {
-          field: 'ward',
-          headerName: 'Ward',
-          width: 200,
-          renderCell: () => (
-            <Skeleton
-              variant="text"
-              sx={{ width: '100%', fontSize: '0.875rem' }}
-            />
-          ),
-        },
-        {
-          field: 'type',
-          headerName: 'Type',
-          width: 200,
-          renderCell: () => (
-            <Skeleton
-              variant="text"
-              sx={{ width: '100%', fontSize: '0.875rem' }}
-            />
-          ),
-        },
-        {
-          field: 'adType',
-          headerName: 'Advertisement type',
-          width: 200,
-          renderCell: () => (
-            <Skeleton
-              variant="text"
-              sx={{ width: '100%', fontSize: '0.875rem' }}
-            />
-          ),
-        },
-        {
-          field: 'status',
-          headerName: 'Status',
-          width: 150,
-          align: 'center',
-          headerAlign: 'center',
-          renderCell: () => (
-            <Skeleton
-              variant="text"
-              sx={{ width: '100%', fontSize: '0.875rem' }}
-            />
-          ),
-        },
-        {
-          field: 'createdAt',
-          headerName: 'Created at',
-          width: 300,
-          renderCell: () => (
-            <Skeleton
-              variant="text"
-              sx={{ width: '100%', fontSize: '0.875rem' }}
-            />
-          ),
-        },
-        {
-          field: 'updatedAt',
-          headerName: 'Last modified at',
-          width: 300,
-          renderCell: () => (
-            <Skeleton
-              variant="text"
-              sx={{ width: '100%', fontSize: '0.875rem' }}
-            />
-          ),
-        },
-        {
-          field: 'detail',
-          width: 150,
-          disableColumnMenu: true,
-          sortable: false,
-          align: 'center',
-          headerAlign: 'center',
-          renderHeader: () => null,
-          renderCell: () => (
-            <Skeleton
-              variant="text"
-              sx={{ width: '100%', fontSize: '0.875rem' }}
-            />
-          ),
-        },
-        {
-          field: 'delete',
-          width: 50,
-          disableColumnMenu: true,
-          align: 'center',
-          sortable: false,
-          renderHeader: () => null,
-          renderCell: () => (
-            <IconButton disabled>
-              <DeleteIcon />
-            </IconButton>
-          ),
-        },
-      ]
-    : [
-        {
-          field: 'id',
-          headerName: 'ID',
-          width: 70,
-          align: 'center',
-          headerAlign: 'center',
-          sortable: false,
-        },
-        { field: 'name', headerName: 'Name', width: 300 },
-        { field: 'fullAddress', headerName: 'Full address', width: 300 },
-        {
-          field: 'isPlanning',
-          headerName: 'Planning',
-          width: 100,
-          align: 'center',
-          headerAlign: 'center',
-          renderCell: (params: GridRenderCellParams) =>
-            params.value ? <CheckIcon /> : <CloseIcon />,
-        },
-        {
-          field: 'district',
-          headerName: 'District',
-          width: 200,
-          renderCell: (params: GridRenderCellParams) => (
-            <Typography fontSize="0.875rem" noWrap>
-              {params.value?.name}
-            </Typography>
-          ),
-        },
-        {
-          field: 'ward',
-          headerName: 'Ward',
-          width: 200,
-          renderCell: (params: GridRenderCellParams) => (
-            <Typography fontSize="0.875rem" noWrap>
-              {params.value?.name}
-            </Typography>
-          ),
-        },
-        {
-          field: 'type',
-          headerName: 'Type',
-          width: 200,
-          renderCell: (params: GridRenderCellParams) => (
-            <Typography fontSize="0.875rem" noWrap>
-              {params.value?.name}
-            </Typography>
-          ),
-        },
-        {
-          field: 'adType',
-          headerName: 'Advertisement type',
-          width: 200,
-          renderCell: (params: GridRenderCellParams) => (
-            <Typography fontSize="0.875rem" noWrap>
-              {params.value?.name}
-            </Typography>
-          ),
-        },
-        {
-          field: 'status',
-          headerName: 'Status',
-          width: 200,
-          align: 'center',
-          headerAlign: 'center',
-        },
-        {
-          field: 'createdAt',
-          headerName: 'Created',
-          width: 300,
-          sortable: false,
-          renderCell: (params: GridRenderCellParams) => (
-            <Typography fontSize="0.875rem">
-              {displayTimestamp(params.value)}
-            </Typography>
-          ),
-        },
-        {
-          field: 'updatedAt',
-          headerName: 'Last update',
-          width: 300,
-          sortable: false,
-          renderCell: (params: GridRenderCellParams) => (
-            <Typography fontSize="0.875rem">
-              {displayTimestamp(params.value)}
-            </Typography>
-          ),
-        },
-        {
-          field: 'detail',
-          width: 150,
-          disableColumnMenu: true,
-          sortable: false,
-          align: 'center',
-          headerAlign: 'center',
-          renderHeader: () => null,
-          renderCell: (params: GridRenderCellParams) => (
-            <CustomLink to={'/locations/' + params.row.id}>
-              View details
-            </CustomLink>
-          ),
-        },
-        {
-          field: 'delete',
-          width: 50,
-          disableColumnMenu: true,
-          align: 'center',
-          sortable: false,
-          renderHeader: () => null,
-          renderCell: (params: GridRenderCellParams) => (
-            <DeleteIconButton
-              onClick={() => {
-                dispatch(
-                  showModal(ModalKey.GENERAL, {
-                    headerText: `Delete ${params.row.name} ?`,
-                    primaryButtonText: 'Confirm',
-                    onClickPrimaryButton: async () => {
-                      try {
-                        dispatch(showModal(null));
-                        await deleteLocations(params.row.id).unwrap();
-                        await getLocations({
-                          page: parseInt(searchParams.get('page') || '1'),
-                          limit: parseInt(searchParams.get('pageSize') || '10'),
-                          ...viewOptions,
-                        });
-                      } catch (error) {
-                        /* empty */
-                      }
-                    },
-                  }),
-                );
-              }}
-            />
-          ),
-        },
-      ];
+  const columns: GridColDef[] =
+    isLoading || isUninitialized
+      ? [
+          {
+            field: 'id',
+            headerName: 'ID',
+            width: 70,
+            align: 'center',
+            headerAlign: 'center',
+            sortable: false,
+            renderCell: () => (
+              <Skeleton
+                variant="text"
+                sx={{ width: '100%', fontSize: '0.875rem' }}
+              />
+            ),
+          },
+          {
+            field: 'name',
+            headerName: 'Name',
+            width: 300,
+            renderCell: () => (
+              <Skeleton
+                variant="text"
+                sx={{ width: '100%', fontSize: '0.875rem' }}
+              />
+            ),
+          },
+          {
+            field: 'fullAddress',
+            headerName: 'Full address',
+            width: 300,
+            renderCell: () => (
+              <Skeleton
+                variant="text"
+                sx={{ width: '100%', fontSize: '0.875rem' }}
+              />
+            ),
+          },
+          {
+            field: 'isPlanning',
+            headerName: 'Planning',
+            width: 100,
+            align: 'center',
+            headerAlign: 'center',
+            renderCell: () => (
+              <Skeleton
+                variant="text"
+                sx={{ width: '100%', fontSize: '0.875rem' }}
+              />
+            ),
+          },
+          {
+            field: 'district',
+            headerName: 'District',
+            width: 200,
+            renderCell: () => (
+              <Skeleton
+                variant="text"
+                sx={{ width: '100%', fontSize: '0.875rem' }}
+              />
+            ),
+          },
+          {
+            field: 'ward',
+            headerName: 'Ward',
+            width: 200,
+            renderCell: () => (
+              <Skeleton
+                variant="text"
+                sx={{ width: '100%', fontSize: '0.875rem' }}
+              />
+            ),
+          },
+          {
+            field: 'type',
+            headerName: 'Type',
+            width: 200,
+            renderCell: () => (
+              <Skeleton
+                variant="text"
+                sx={{ width: '100%', fontSize: '0.875rem' }}
+              />
+            ),
+          },
+          {
+            field: 'adType',
+            headerName: 'Advertisement type',
+            width: 200,
+            renderCell: () => (
+              <Skeleton
+                variant="text"
+                sx={{ width: '100%', fontSize: '0.875rem' }}
+              />
+            ),
+          },
+          {
+            field: 'status',
+            headerName: 'Status',
+            width: 150,
+            align: 'center',
+            headerAlign: 'center',
+            renderCell: () => (
+              <Skeleton
+                variant="text"
+                sx={{ width: '100%', fontSize: '0.875rem' }}
+              />
+            ),
+          },
+          {
+            field: 'createdAt',
+            headerName: 'Created at',
+            width: 300,
+            renderCell: () => (
+              <Skeleton
+                variant="text"
+                sx={{ width: '100%', fontSize: '0.875rem' }}
+              />
+            ),
+          },
+          {
+            field: 'updatedAt',
+            headerName: 'Last modified at',
+            width: 300,
+            renderCell: () => (
+              <Skeleton
+                variant="text"
+                sx={{ width: '100%', fontSize: '0.875rem' }}
+              />
+            ),
+          },
+          {
+            field: 'detail',
+            width: 150,
+            disableColumnMenu: true,
+            sortable: false,
+            align: 'center',
+            headerAlign: 'center',
+            renderHeader: () => null,
+            renderCell: () => (
+              <Skeleton
+                variant="text"
+                sx={{ width: '100%', fontSize: '0.875rem' }}
+              />
+            ),
+          },
+          {
+            field: 'delete',
+            width: 50,
+            disableColumnMenu: true,
+            align: 'center',
+            sortable: false,
+            renderHeader: () => null,
+            renderCell: () => (
+              <IconButton disabled>
+                <DeleteIcon />
+              </IconButton>
+            ),
+          },
+        ]
+      : [
+          {
+            field: 'id',
+            headerName: 'ID',
+            width: 70,
+            align: 'center',
+            headerAlign: 'center',
+            sortable: false,
+          },
+          { field: 'name', headerName: 'Name', width: 300 },
+          { field: 'fullAddress', headerName: 'Full address', width: 300 },
+          {
+            field: 'isPlanning',
+            headerName: 'Planning',
+            width: 100,
+            align: 'center',
+            headerAlign: 'center',
+            renderCell: (params: GridRenderCellParams) =>
+              params.value ? <CheckIcon /> : <CloseIcon />,
+          },
+          {
+            field: 'district',
+            headerName: 'District',
+            width: 200,
+            renderCell: (params: GridRenderCellParams) => (
+              <Typography fontSize="0.875rem" noWrap>
+                {params.value?.name}
+              </Typography>
+            ),
+          },
+          {
+            field: 'ward',
+            headerName: 'Ward',
+            width: 200,
+            renderCell: (params: GridRenderCellParams) => (
+              <Typography fontSize="0.875rem" noWrap>
+                {params.value?.name}
+              </Typography>
+            ),
+          },
+          {
+            field: 'type',
+            headerName: 'Type',
+            width: 200,
+            renderCell: (params: GridRenderCellParams) => (
+              <Typography fontSize="0.875rem" noWrap>
+                {params.value?.name}
+              </Typography>
+            ),
+          },
+          {
+            field: 'adType',
+            headerName: 'Advertisement type',
+            width: 200,
+            renderCell: (params: GridRenderCellParams) => (
+              <Typography fontSize="0.875rem" noWrap>
+                {params.value?.name}
+              </Typography>
+            ),
+          },
+          {
+            field: 'status',
+            headerName: 'Status',
+            width: 200,
+            align: 'center',
+            headerAlign: 'center',
+          },
+          {
+            field: 'createdAt',
+            headerName: 'Created',
+            width: 300,
+            sortable: false,
+            renderCell: (params: GridRenderCellParams) => (
+              <Typography fontSize="0.875rem">
+                {displayTimestamp(params.value)}
+              </Typography>
+            ),
+          },
+          {
+            field: 'updatedAt',
+            headerName: 'Last update',
+            width: 300,
+            sortable: false,
+            renderCell: (params: GridRenderCellParams) => (
+              <Typography fontSize="0.875rem">
+                {displayTimestamp(params.value)}
+              </Typography>
+            ),
+          },
+          {
+            field: 'detail',
+            width: 150,
+            disableColumnMenu: true,
+            sortable: false,
+            align: 'center',
+            headerAlign: 'center',
+            renderHeader: () => null,
+            renderCell: (params: GridRenderCellParams) => (
+              <CustomLink to={'/locations/' + params.row.id}>
+                View details
+              </CustomLink>
+            ),
+          },
+          {
+            field: 'delete',
+            width: 50,
+            disableColumnMenu: true,
+            align: 'center',
+            sortable: false,
+            renderHeader: () => null,
+            renderCell: (params: GridRenderCellParams) => (
+              <DeleteIconButton
+                onClick={() => {
+                  dispatch(
+                    showModal(ModalKey.GENERAL, {
+                      headerText: `Delete ${params.row.name} ?`,
+                      primaryButtonText: 'Confirm',
+                      onClickPrimaryButton: async () => {
+                        try {
+                          dispatch(showModal(null));
+                          await deleteLocations(params.row.id).unwrap();
+                          await getLocations({
+                            page: parseInt(searchParams.get('page') || '1'),
+                            limit: parseInt(
+                              searchParams.get('pageSize') || '10',
+                            ),
+                            ...viewOptions,
+                          });
+                        } catch (error) {
+                          /* empty */
+                        }
+                      },
+                    }),
+                  );
+                }}
+              />
+            ),
+          },
+        ];
   return (
     <StaticActionBar
       actionBar={

@@ -1,14 +1,12 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { yupResolver } from '@hookform/resolvers/yup';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import CloseSharpIcon from '@mui/icons-material/CloseSharp';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
 import FormControl from '@mui/material/FormControl';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormLabel from '@mui/material/FormLabel';
-import IconButton from '@mui/material/IconButton';
 import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
 import { useCallback, useEffect } from 'react';
@@ -38,6 +36,7 @@ import {
 } from '@/store/api/generalManagementApiSlice';
 import { isApiErrorResponse } from '@/store/api/helper';
 import { showModal } from '@/store/slice/modal';
+import { LocationStatus } from '@/types/cdoManagement';
 import { showError } from '@/utils/toast';
 import FormInputSkeleton from '../FormInputSkeleton';
 import StaticActionBar from '../StaticActionBar';
@@ -225,7 +224,7 @@ const LocationsDetail = () => {
             dispatch(showModal(null));
             await updateLocation({
               id: parseInt(id!),
-              data: data,
+              data: { ...data, status: LocationStatus.APPROVED },
             }).unwrap();
             reset(data);
           } catch (error) {
@@ -433,51 +432,13 @@ const LocationsDetail = () => {
                 Pick coordinate
               </Button>
             </Box>
-            {/* <Box>
-              <FormLabel>Current image</FormLabel>
-              {formValue.imageUrls.map((e, i) => (
-                <Box
-                  borderRadius={4}
-                  overflow="hidden"
-                  border="1px solid #ccc"
-                  position="relative"
-                  key={e}
-                >
-                  <img
-                    src={e}
-                    alt="alt"
-                    style={{
-                      objectFit: 'cover',
-                      width: '100%',
-                      height: '100%',
-                    }}
-                  />
-                  <IconButton
-                    aria-label="close"
-                    sx={{
-                      position: 'absolute',
-                      top: 8,
-                      right: 8,
-                    }}
-                    onClick={() => {
-                      setValue(
-                        'imageUrls',
-                        formValue.imageUrls.filter((e, j) => j !== i),
-                      );
-                    }}
-                  >
-                    <CloseSharpIcon color="action" fontSize="small" />
-                  </IconButton>
-                </Box>
-              ))}
-            </Box> */}
             <Box sx={{ gridColumn: '1 / span 2' }}>
               {isLoading ? (
                 <Skeleton variant="rounded" />
               ) : (
                 <FormControl>
-                  <FormLabel sx={{ mb: 1 }}>Update image</FormLabel>
-                  <Stack direction="column" spacing={2}>
+                  <FormLabel sx={{ mb: 1 }}>Image</FormLabel>
+                  <Stack direction="row" spacing={2}>
                     {formValue.images.map((image, index) => (
                       <ImagePreview
                         key={index}

@@ -56,7 +56,7 @@ const PanelsListView = () => {
   const { data: wards } = useGetWardsQuery({});
   const { data: panelTypes } = useGetPanelTypesQuery({});
 
-  const [getPanels, { data, isLoading, isFetching }] = useLazyGetPanelsQuery();
+  const [getPanels, { data, isLoading, isFetching, isUninitialized }] = useLazyGetPanelsQuery();
 
   useEffect(() => {
     getPanels({
@@ -79,7 +79,7 @@ const PanelsListView = () => {
   const rows: GridRowsProp =
     data?.data || Array.from({ length: 10 }, (_, i) => ({ id: i }));
 
-  const columns: GridColDef[] = isLoading
+  const columns: GridColDef[] = isLoading || isUninitialized
     ? [
         {
           field: 'id',

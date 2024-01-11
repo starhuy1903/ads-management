@@ -27,6 +27,7 @@ import {
 } from '@/store/api/adsManagementApiSlice';
 import { useLazyGetPanelTypesQuery } from '@/store/api/generalManagementApiSlice';
 import { showModal } from '@/store/slice/modal';
+import { PanelStatus } from '@/types/cdoManagement';
 import FormInputSkeleton from '../FormInputSkeleton';
 import StaticActionBar from '../StaticActionBar';
 
@@ -90,7 +91,10 @@ const PanelsCreate = () => {
     mode: 'onChange',
     defaultValues: async () => {
       const panelTypesResult = await getPanelTypes({}, true).unwrap();
-      const locationResult = await getLocation({}, true).unwrap();
+      const locationResult = await getLocation(
+        { districts: [], wards: [] },
+        true,
+      ).unwrap();
 
       return {
         // name: '',
@@ -177,6 +181,7 @@ const PanelsCreate = () => {
               ...data,
               createContractDate: data.createContractDate.format(),
               expiredContractDate: data.expiredContractDate.format(),
+              status: PanelStatus.APPROVED,
             }).unwrap();
             reset();
           } catch (error) {

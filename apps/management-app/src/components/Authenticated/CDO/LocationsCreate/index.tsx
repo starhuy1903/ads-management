@@ -28,6 +28,7 @@ import {
   useLazyGetWardsQuery,
 } from '@/store/api/generalManagementApiSlice';
 import { showModal } from '@/store/slice/modal';
+import { LocationStatus } from '@/types/cdoManagement';
 import FormInputSkeleton from '../FormInputSkeleton';
 import StaticActionBar from '../StaticActionBar';
 
@@ -189,7 +190,10 @@ const LocationsCreate = () => {
         onClickPrimaryButton: async () => {
           try {
             dispatch(showModal(null));
-            await createLocation(data).unwrap();
+            await createLocation({
+              ...data,
+              status: LocationStatus.APPROVED,
+            }).unwrap();
             reset();
           } catch (error) {
             /* empty */

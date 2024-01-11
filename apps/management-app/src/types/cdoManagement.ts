@@ -224,6 +224,7 @@ export type LocationDto = {
   adsTypeId: number;
   image?: Array<File>;
   imageUrls?: Array<string>;
+  status: LocationStatus;
 };
 
 export type PanelDto = {
@@ -236,6 +237,7 @@ export type PanelDto = {
   expiredContractDate: string;
   companyEmail: string;
   companyNumber: string;
+  status: PanelStatus;
 };
 
 export type IPanelListViewOptions = {
