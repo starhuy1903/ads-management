@@ -1,11 +1,10 @@
 {
 	"info": {
-		"_postman_id": "d6871b08-5ffc-426d-bee6-507a369e1099",
+		"_postman_id": "586ffb49-c7ad-4ae2-b915-eefa714f55be",
 		"name": "Authentication",
 		"description": "Authentication API for the ads management app",
 		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
-		"_exporter_id": "16088057",
-		"_collection_link": "https://orange-zodiac-214004.postman.co/workspace/Ads-Management~f6b11e7b-c291-4ad4-8554-9e1ee60b98fb/collection/16088057-d6871b08-5ffc-426d-bee6-507a369e1099?action=share&source=collection_link&creator=16088057"
+		"_exporter_id": "24188163"
 	},
 	"item": [
 		{
@@ -15,7 +14,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"email\": \"chihien2002@gmail.com\",\n    \"password\": \"123456789\",\n    \"firstName\": \"Hien\",\n    \"lastName\": \"Truong\",\n    \"role\": \"district_officer\",\n    \"districtId\": 1\n}",
+					"raw": "{\n    \"email\": \"chihien20022@gmail.com\",\n    \"password\": \"123456789\",\n    \"firstName\": \"Hien\",\n    \"lastName\": \"Truong\",\n    \"role\": \"ward_officer\",\n    \"wardId\": 1\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -90,14 +89,14 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"email\": \"chihien2002@gmail.com\",\n    \"password\": \"111111111\"\n}",
+					"raw": "{\n    \"email\": \"chihien20022@gmail.com\",\n    \"password\": \"123222\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
 						}
 					}
 				},
-				"url": "{{LOCAL_URL}}/api/auth/signin"
+				"url": "{{URL}}/api/auth/signin"
 			},
 			"response": [
 				{
@@ -176,7 +175,7 @@
 						"disabled": true
 					}
 				],
-				"url": "{{LOCAL_URL}}/api/auth/logout"
+				"url": "{{URL}}/api/auth/logout"
 			},
 			"response": [
 				{
@@ -310,7 +309,7 @@
 						}
 					}
 				},
-				"url": "{{LOCAL_URL}}/api/auth/refresh"
+				"url": "{{URL}}/api/auth/refresh"
 			},
 			"response": [
 				{
@@ -763,6 +762,199 @@
 					],
 					"cookie": [],
 					"body": "{}"
+				}
+			]
+		},
+		{
+			"name": "Change password",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEwLCJlbWFpbCI6ImNoaWhpZW4yMDAyMkBnbWFpbC5jb20iLCJyb2xlIjoid2FyZF9vZmZpY2VyIiwiaWF0IjoxNzA0OTQyNDA2LCJleHAiOjE3MDQ5NDI3MDZ9.tXq-4DhS79EWNoc6_pGw1BoGvj9mYQbN86zjsFWmXCA"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"oldPassword\": \"123222\",\n    \"newPassword\": \"123456789\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{URL}}/api/auth/change-password"
+			},
+			"response": [
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"oldPassword\": \"123222\",\n    \"newPassword\": \"123456789\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URL}}/api/auth/change-password"
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "2"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"2-vyGp6PvFo4RvsFtPoIWeCReyIC8\""
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 11 Jan 2024 03:06:57 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{}"
+				},
+				{
+					"name": "passwords the same",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"oldPassword\": \"123\",\n    \"newPassword\": \"123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URL}}/api/auth/change-password"
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "62"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"3e-Kwgm0E0r8JcFoifY++vi2KgW25s\""
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 11 Jan 2024 03:05:22 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"New password must be different from old password\"\n}"
+				},
+				{
+					"name": "Incorrect old password",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"oldPassword\": \"123\",\n    \"newPassword\": \"123456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URL}}/api/auth/change-password"
+					},
+					"status": "Unauthorized",
+					"code": 401,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "39"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"27-cObcdYiRJLYE6f5a21gVA2IX5EE\""
+						},
+						{
+							"key": "Date",
+							"value": "Thu, 11 Jan 2024 03:05:42 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"Old password is incorrect\"\n}"
 				}
 			]
 		}
