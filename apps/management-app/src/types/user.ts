@@ -19,6 +19,12 @@ export type ResetPasswordPayload = {
   verifyToken: string;
 };
 
+export type ChangePasswordPayload = {
+  oldPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+};
+
 export type LogoutPayload = {
   tokenId: string;
 };

@@ -105,12 +105,12 @@ export default function EditingRequestDetail() {
           value={`${request?.user?.firstName} ${request?.user?.lastName}`}
         />
 
+        <ReadOnlyTextField label="Email" value={request?.user?.email} />
+
         <ReadOnlyTextField
           label="Role"
           value={formatRole(request?.user?.role)}
         />
-
-        <ReadOnlyTextField label="Email" value={request?.user?.email} />
 
         {request?.user?.role === UserRole.WARD_OFFICER && (
           <>
