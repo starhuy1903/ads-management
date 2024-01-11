@@ -37,7 +37,6 @@ export default function LocationReportList() {
     page: page,
     take: 10,
     targetType: 'Location',
-    typeId: 1,
   });
 
   useEffect(() => {

@@ -6,6 +6,7 @@ import CenterLoading from '@/components/Common/CenterLoading';
 import {
   ImageListField,
   ReadOnlyTextField,
+  ReadOnlyTinyEditor,
 } from '@/components/Common/FormComponents';
 import { DetailWrapper } from '@/components/Common/Layout/ScreenWrapper';
 import { ReportStatus } from '@/constants/report';
@@ -94,18 +95,10 @@ export default function PanelReportDetail() {
           value={formatDateTime(report?.updatedAt)}
         />
       </Stack>
-      <TextField
-        label="Content"
-        fullWidth
-        InputProps={{
-          readOnly: true,
-        }}
-        value={report?.content}
-        multiline
-        rows={5}
-      />
 
       <ImageListField images={report?.imageUrls} />
+
+      <ReadOnlyTinyEditor label="Content" value={report?.content} />
 
       <Typography variant="h6">Solution</Typography>
       {report?.status === ReportStatus?.NEW ? (
