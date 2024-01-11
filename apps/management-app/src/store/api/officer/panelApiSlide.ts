@@ -29,6 +29,7 @@ export const officerPanelApiSlice = apiSlice.injectEndpoints({
               wards: arg.wards.join(','),
               districts: arg.districts,
               typeId: arg.typeId,
+              status: 'APPROVED,DRAFT',
             },
           };
         }
@@ -40,6 +41,7 @@ export const officerPanelApiSlice = apiSlice.injectEndpoints({
             take: arg.take,
             districts: arg.districts,
             typeId: arg.typeId,
+            status: 'APPROVED,DRAFT',
           },
         };
       },
