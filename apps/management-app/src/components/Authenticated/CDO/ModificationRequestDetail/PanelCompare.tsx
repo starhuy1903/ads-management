@@ -49,12 +49,12 @@ const PanelCompare = ({ origin, modified }: PanelCompareProps) => {
       <>
         <Typography>Width</Typography>
         {origin ? (
-          <Typography>{origin.width}</Typography>
+          <Typography>{origin.width + 'm'}</Typography>
         ) : (
           <Skeleton variant="text" />
         )}
         {modified ? (
-          <Typography>{modified.width}</Typography>
+          <Typography>{modified.width + 'm'}</Typography>
         ) : (
           <Skeleton variant="text" />
         )}
@@ -62,12 +62,12 @@ const PanelCompare = ({ origin, modified }: PanelCompareProps) => {
       <>
         <Typography>Height</Typography>
         {origin ? (
-          <Typography>{origin.height}</Typography>
+          <Typography>{origin.height + 'm'}</Typography>
         ) : (
           <Skeleton variant="text" />
         )}
         {modified ? (
-          <Typography>{modified.height}</Typography>
+          <Typography>{modified.height + 'm'}</Typography>
         ) : (
           <Skeleton variant="text" />
         )}

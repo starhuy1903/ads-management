@@ -175,13 +175,13 @@ const PermissionRequestsDetail = () => {
           )}
           <Typography>Width</Typography>
           {data ? (
-            <Typography>{data.data.panel?.width}</Typography>
+            <Typography>{data.data.panel?.width + 'm'}</Typography>
           ) : (
             <Skeleton variant="text" />
           )}
           <Typography>Height</Typography>
           {data ? (
-            <Typography>{data.data.panel?.height}</Typography>
+            <Typography>{data.data.panel?.height + 'm'}</Typography>
           ) : (
             <Skeleton variant="text" />
           )}
