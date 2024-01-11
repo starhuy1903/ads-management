@@ -9,6 +9,7 @@ import {
 } from '../../services/files/upload';
 import { deleteFilesFromFirebase } from '../../services/files/delete';
 import { LocationStatus, UserRole } from '@prisma/client';
+import { cloneDeep, map } from 'lodash';
 
 @Injectable()
 export class LocationService {
@@ -164,7 +165,7 @@ export class LocationService {
         status: LocationStatus.APPROVED,
       },
     };
-    const [result, totalCount] = await Promise.all([
+    const [rawResult, totalCount] = await Promise.all([
       this.prismaService.location.findMany({
         include: {
           panel: {
@@ -183,6 +184,15 @@ export class LocationService {
         ...conditions,
       }),
     ]);
+
+    const result = map(rawResult, (item) => {
+      const newItem = cloneDeep(item);
+      if (newItem.isPlanning === true) {
+        newItem.panel = [];
+      }
+      return newItem;
+    });
+
     return {
       data: result,
       totalPages: Math.ceil(totalCount / pageOptionsLocationDto.take),
