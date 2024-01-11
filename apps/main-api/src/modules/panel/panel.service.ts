@@ -75,7 +75,7 @@ export class PanelService {
       where: {
         location: {},
         typeId: pageOptionsPanelDto?.typeId,
-        status: pageOptionsPanelDto?.status,
+        status: { in: pageOptionsPanelDto?.status },
       },
     };
 
@@ -167,7 +167,7 @@ export class PanelService {
           id: locationId,
         },
         typeId: pageOptionsPanelDto.typeId,
-        status: pageOptionsPanelDto.status,
+        status: { in: pageOptionsPanelDto?.status },
       },
     };
 

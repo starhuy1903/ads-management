@@ -8,9 +8,16 @@ export class PageOptionsPanelDto {
   @IsOptional()
   readonly order?: Order = Order.DESC;
 
-  @IsEnum(PanelStatus)
   @IsOptional()
-  readonly status?: PanelStatus;
+  @IsArray()
+  @IsEnum(PanelStatus, { each: true })
+  @Transform(({ value }) =>
+    value
+      .trim()
+      .split(',')
+      .map((status) => PanelStatus[status as keyof typeof PanelStatus]),
+  )
+  readonly status?: PanelStatus[];
 
   @Type(() => Number)
   @IsInt()
