@@ -237,6 +237,8 @@ export class LocationService {
           fullAddress: updateLocationDto.fullAddress,
           name: updateLocationDto.name,
           imageUrls: undefined,
+          belongLocationId: updateLocationDto.belongLocationId,
+          status: updateLocationDto.status,
         };
 
         if (imageUrls.length > 0) {
