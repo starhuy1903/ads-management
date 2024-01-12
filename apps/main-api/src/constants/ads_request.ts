@@ -1,6 +1,7 @@
 export enum TargetType {
   PANEL = 'Panel',
   LOCATION = 'Location',
+  POINT = 'Point',
 }
 
 export enum AdsRequestStatus {

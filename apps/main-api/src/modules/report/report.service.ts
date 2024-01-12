@@ -36,7 +36,7 @@ export class ReportService {
   ) {
     let imageUrls = [];
     try {
-      if (images.length) {
+      if (images?.length) {
         const uploadImagesData = await uploadFilesFromFirebase(
           images,
           EUploadFolder.report,
@@ -59,14 +59,20 @@ export class ReportService {
         status: ReportStatus.NEW,
         location: undefined,
         panel: undefined,
+        lat: undefined,
+        long: undefined,
       };
       if (createReportDto.targetType == TargetType.LOCATION) {
         data.location = { connect: { id: createReportDto.locationId } };
-      } else {
+      } else if (createReportDto.targetType == TargetType.PANEL) {
         data.panel = {
           connect: { id: createReportDto.panelId },
         };
+      } else if (createReportDto.targetType == TargetType.POINT) {
+        data.lat = createReportDto.lat;
+        data.long = createReportDto.long;
       }
+
       const result = await this.prismaService.report.create({
         data,
         include: {

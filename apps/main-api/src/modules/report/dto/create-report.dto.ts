@@ -5,6 +5,7 @@ import {
   IsEnum,
   IsInt,
   IsNotEmpty,
+  IsNumber,
   IsOptional,
   IsString,
   Min,
@@ -55,4 +56,12 @@ export class CreateReportDto {
   @IsNotEmpty()
   @IsString()
   readonly userUuid: string;
+
+  @IsOptional()
+  @IsNumber()
+  readonly lat?: number;
+
+  @IsOptional()
+  @IsNumber()
+  readonly long?: number;
 }

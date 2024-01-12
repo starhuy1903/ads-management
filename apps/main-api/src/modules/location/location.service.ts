@@ -20,7 +20,7 @@ export class LocationService {
   ) {
     let imageUrls = [];
     try {
-      if (images.length) {
+      if (images?.length) {
         const uploadImagesData = await uploadFilesFromFirebase(
           images,
           EUploadFolder.report,
@@ -226,7 +226,7 @@ export class LocationService {
   ) {
     let imageUrls = [];
     try {
-      if (images.length) {
+      if (images?.length) {
         const uploadImagesData = await uploadFilesFromFirebase(
           images,
           EUploadFolder.report,

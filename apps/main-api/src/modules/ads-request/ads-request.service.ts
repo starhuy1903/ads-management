@@ -45,7 +45,7 @@ export class AdsRequestService {
   ) {
     let imageUrls = [];
     try {
-      if (images.length) {
+      if (images?.length) {
         const uploadImagesData = await uploadFilesFromFirebase(
           images,
           EUploadFolder.report,
@@ -103,7 +103,7 @@ export class AdsRequestService {
   ) {
     let imageUrls = [];
     try {
-      if (images.length) {
+      if (images?.length) {
         const uploadImagesData = await uploadFilesFromFirebase(
           images,
           EUploadFolder.report,
