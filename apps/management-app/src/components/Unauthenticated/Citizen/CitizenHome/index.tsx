@@ -35,12 +35,23 @@ export default function CitizenHome() {
     : undefined;
 
   const { data: adLocationData, isLoading: fetchingAllAdsLocation } =
-    useGetLocationQuery();
+    useGetLocationQuery(undefined, {
+      skip: false,
+      refetchOnMountOrArgChange: true,
+    });
   const { data: vioReports, isLoading: fetchingViolatedReport } =
-    useGetSentReportsQuery(anonymousUser.getUserUuid());
+    useGetSentReportsQuery(anonymousUser.getUserUuid(), {
+      skip: false,
+      refetchOnMountOrArgChange: true,
+    });
 
   const vioLocationReports = useMemo(
     () => vioReports?.data.filter((report) => report.targetType === 'Location'),
+    [vioReports?.data],
+  );
+
+  const vioPanelReports = useMemo(
+    () => vioReports?.data.filter((report) => report.targetType === 'Panel'),
     [vioReports?.data],
   );
 
@@ -50,10 +61,12 @@ export default function CitizenHome() {
       dispatch(
         showSidebar(SidebarKey.AD_DETAIL, {
           location: loc,
+          vioLocationReports,
+          vioPanelReports,
         }),
       );
     },
-    [dispatch],
+    [dispatch, vioLocationReports, vioPanelReports],
   );
 
   const handleToggleAdPanels = useCallback(

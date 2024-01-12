@@ -20,7 +20,7 @@ import {
   useController,
   useForm,
 } from 'react-hook-form';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { configs } from '@/configurations';
 import { useAppDispatch } from '@/store';
 import CenterLoading from '@/components/Common/CenterLoading';
@@ -43,6 +43,8 @@ export default function CitizenReport() {
   const [searchParams] = useSearchParams();
   const locationId = searchParams.get('location');
   const panelId = searchParams.get('panel');
+
+  const navigate = useNavigate();
 
   const dispatch = useAppDispatch();
   const [createReport, { isLoading }] = useCreateReportMutation();
@@ -132,6 +134,7 @@ export default function CitizenReport() {
     try {
       await createReport(submitData).unwrap();
       showSuccess('Submitted report successfully!');
+      navigate('/');
     } catch (error) {
       // handled error
     }

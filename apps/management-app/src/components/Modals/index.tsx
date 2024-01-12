@@ -6,6 +6,7 @@ import CreateCategory from './CreateCategory';
 import CropImage from './CropImage';
 import GeneralModal from './GeneralModal';
 import PanelDetail from './PanelDetail';
+import ReportDetail from './ReportDetails';
 
 const modalsMap: { [modalKey: string]: any } = {
   [ModalKey.CREATE_CATEGORY]: CreateCategory,
@@ -13,6 +14,7 @@ const modalsMap: { [modalKey: string]: any } = {
   [ModalKey.GENERAL]: GeneralModal,
   [ModalKey.CANCEL_REQUEST]: CancelRequest,
   [ModalKey.PANEL_DETAIL]: PanelDetail,
+  [ModalKey.REPORT_DETAIL]: ReportDetail,
 };
 
 export function ModalContainer() {

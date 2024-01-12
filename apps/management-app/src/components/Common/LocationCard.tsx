@@ -8,18 +8,35 @@ import {
 } from '@mui/material';
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAppDispatch } from '@/store';
+import { ModalKey } from '@/constants/modal';
+import { showModal } from '@/store/slice/modal';
 import { AdLocation } from '@/types/location';
+import { CreatedReport } from '@/types/report';
 
 interface LocationCardProps {
   data: AdLocation;
+  hasReported?: boolean;
+  reports?: CreatedReport[];
 }
 
-export default function LocationCard({ data }: LocationCardProps) {
+export default function LocationCard({
+  data,
+  hasReported = false,
+  reports = [],
+}: LocationCardProps) {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const goToReport = useCallback(() => {
     navigate(`/report?location=${data.id}`);
   }, [navigate, data.id]);
+
+  const viewAllReports = useCallback(() => {
+    dispatch(
+      showModal(ModalKey.REPORT_DETAIL, { reports, createNew: goToReport }),
+    );
+  }, [dispatch, reports, goToReport]);
 
   return (
     <Card sx={{ background: 'rgb(240 253 244)' }}>
@@ -39,10 +56,10 @@ export default function LocationCard({ data }: LocationCardProps) {
         <Button
           variant="outlined"
           color="error"
-          onClick={goToReport}
+          onClick={hasReported ? viewAllReports : goToReport}
           sx={{ textTransform: 'uppercase' }}
         >
-          Báo cáo vi phạm
+          {hasReported ? 'Xem lại báo cáo' : 'Báo cáo vi phạm'}
         </Button>
       </CardActions>
     </Card>
