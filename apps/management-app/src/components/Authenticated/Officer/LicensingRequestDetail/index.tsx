@@ -28,8 +28,6 @@ export default function LicensingRequestDetail() {
     navigate('/licensing-requests', { replace: true });
   }
 
-  console.log(request);
-
   useEffect(() => {
     if (
       !requestId ||
