@@ -124,7 +124,7 @@ function Sidebar({ open, handleOnClose }: SidebarProps) {
             <NavItem
               title="Report Statictis"
               icon={<EqualizerIcon />}
-              href="/report-statictis"
+              href="/report-statistics"
             />
           </NavGroupWrapper>
           <NavGroupWrapper title="Account Management">

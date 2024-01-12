@@ -50,7 +50,7 @@ const LocationTypesDetail = () => {
           parseInt(id!),
           true,
         ).unwrap();
-        return locationType;
+        return locationType.data;
       } catch (error) {
         showError(
           isApiErrorResponse(error) && error.status === 404
@@ -89,7 +89,7 @@ const LocationTypesDetail = () => {
   const handleDeleteLocationType = useCallback(() => {
     dispatch(
       showModal(ModalKey.GENERAL, {
-        headerText: `Delete ${data?.name} ?`,
+        headerText: `Delete ${data?.data.name} ?`,
         
         primaryButtonText: 'Confirm',
         onClickPrimaryButton: async () => {
@@ -103,7 +103,7 @@ const LocationTypesDetail = () => {
         },
       }),
     );
-  }, [data?.name, deleteLocationTypes, dispatch, id, navigate]);
+  }, [data?.data.name, deleteLocationTypes, dispatch, id, navigate]);
 
   return (
     <StaticActionBar

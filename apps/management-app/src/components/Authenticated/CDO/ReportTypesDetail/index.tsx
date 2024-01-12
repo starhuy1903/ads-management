@@ -47,7 +47,7 @@ const ReportTypesDetail = () => {
     defaultValues: async () => {
       try {
         const reportType = await getReportType(parseInt(id!), true).unwrap();
-        return reportType;
+        return reportType.data;
       } catch (error) {
         showError(
           isApiErrorResponse(error) && error.status === 404
@@ -66,7 +66,6 @@ const ReportTypesDetail = () => {
     dispatch(
       showModal(ModalKey.GENERAL, {
         headerText: `Apply changes ?`,
-        
         primaryButtonText: 'Confirm',
         onClickPrimaryButton: async () => {
           try {
@@ -86,7 +85,7 @@ const ReportTypesDetail = () => {
   const handleDeleteReportType = useCallback(() => {
     dispatch(
       showModal(ModalKey.GENERAL, {
-        headerText: `Delete ${data?.name} ?`,
+        headerText: `Delete ${data?.data.name} ?`,
         
         primaryButtonText: 'Confirm',
         onClickPrimaryButton: async () => {
@@ -100,7 +99,7 @@ const ReportTypesDetail = () => {
         },
       }),
     );
-  }, [data?.name, deleteReportTypes, dispatch, id, navigate]);
+  }, [data?.data.name, deleteReportTypes, dispatch, id, navigate]);
 
   return (
     <StaticActionBar

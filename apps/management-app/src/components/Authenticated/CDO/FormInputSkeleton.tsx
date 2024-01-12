@@ -4,11 +4,17 @@ import Skeleton from '@mui/material/Skeleton';
 
 interface FormInputSkeletonProps {
   label: string;
+  reserveHelperTextSpace?: boolean;
 }
 
-const FormInputSkeleton = ({ label }: FormInputSkeletonProps) => {
+const FormInputSkeleton = ({
+  label,
+  reserveHelperTextSpace = false,
+}: FormInputSkeletonProps) => {
   return (
-    <FormControl sx={{ width: '100%' }}>
+    <FormControl
+      sx={{ width: '100%', paddingBottom: reserveHelperTextSpace ? '23px' : 0 }}
+    >
       <FormLabel>{label}</FormLabel>
       <Skeleton
         variant="rounded"
