@@ -53,8 +53,6 @@ export class CreatePanelDto {
   imgUrls: string[];
 
   @Type(() => Number)
-  @IsInt()
-  @Min(1)
   @IsOptional()
   readonly belongPanelId?: number;
 }

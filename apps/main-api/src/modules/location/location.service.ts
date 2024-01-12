@@ -9,6 +9,7 @@ import {
 } from '../../services/files/upload';
 import { deleteFilesFromFirebase } from '../../services/files/delete';
 import { LocationStatus, UserRole } from '@prisma/client';
+import { cloneDeep, map } from 'lodash';
 
 @Injectable()
 export class LocationService {
@@ -103,10 +104,13 @@ export class LocationService {
       // allowedWards = [1, 2, 3, ...]
       const allowedWards = allowedWardIds.map((ward) => ward.id);
 
+      let filteredWards = allowedWards;
       // Filter wards by district -> Only get ward which belong to district
-      const filteredWards = pageOptionsLocationDto.wards.filter((wardId) =>
-        allowedWards.includes(wardId),
-      );
+      if (pageOptionsLocationDto.wards) {
+        filteredWards = pageOptionsLocationDto.wards.filter((wardId) =>
+          allowedWards.includes(wardId),
+        );
+      }
 
       conditions.where.districtId = user.districtId;
       conditions.where.wardId = { in: filteredWards };
@@ -161,7 +165,7 @@ export class LocationService {
         status: LocationStatus.APPROVED,
       },
     };
-    const [result, totalCount] = await Promise.all([
+    const [rawResult, totalCount] = await Promise.all([
       this.prismaService.location.findMany({
         include: {
           panel: {
@@ -180,6 +184,15 @@ export class LocationService {
         ...conditions,
       }),
     ]);
+
+    const result = map(rawResult, (item) => {
+      const newItem = cloneDeep(item);
+      if (newItem.isPlanning === true) {
+        newItem.panel = [];
+      }
+      return newItem;
+    });
+
     return {
       data: result,
       totalPages: Math.ceil(totalCount / pageOptionsLocationDto.take),
@@ -222,33 +235,34 @@ export class LocationService {
           throw new Error('Failed to upload images!');
         }
         imageUrls = uploadImagesData.urls;
-
-        const updateData = {
-          typeId: updateLocationDto.typeId,
-          adTypeId: updateLocationDto.adsTypeId,
-          long: updateLocationDto.long,
-          lat: updateLocationDto.lat,
-          isPlanning: updateLocationDto.isPlanning,
-          districtId: updateLocationDto.districtId,
-          wardId: updateLocationDto.wardId,
-          fullAddress: updateLocationDto.fullAddress,
-          name: updateLocationDto.name,
-          imageUrls: undefined,
-        };
-
-        if (imageUrls.length > 0) {
-          updateData.imageUrls = imageUrls;
-        }
-
-        const result = await this.prismaService.location.update({
-          where: {
-            id: id,
-          },
-          data: updateData,
-        });
-
-        return result;
       }
+      const updateData = {
+        typeId: updateLocationDto.typeId,
+        adTypeId: updateLocationDto.adsTypeId,
+        long: updateLocationDto.long,
+        lat: updateLocationDto.lat,
+        isPlanning: updateLocationDto.isPlanning,
+        districtId: updateLocationDto.districtId,
+        wardId: updateLocationDto.wardId,
+        fullAddress: updateLocationDto.fullAddress,
+        name: updateLocationDto.name,
+        imageUrls: undefined,
+        belongLocationId: updateLocationDto.belongLocationId,
+        status: updateLocationDto.status,
+      };
+
+      if (imageUrls.length > 0) {
+        updateData.imageUrls = imageUrls;
+      }
+
+      const result = await this.prismaService.location.update({
+        where: {
+          id: id,
+        },
+        data: updateData,
+      });
+
+      return result;
     } catch (error) {
       if (!imageUrls.length) await deleteFilesFromFirebase(imageUrls);
       throw new Error(error);

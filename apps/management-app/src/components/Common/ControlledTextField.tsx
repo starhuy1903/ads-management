@@ -7,6 +7,7 @@ interface ControlledTextFieldProps {
   control: Control<any>;
   name: string;
   label?: string;
+  type?: 'text' | 'number';
   placeholder?: string;
 }
 
@@ -15,6 +16,7 @@ const ControlledTextField = ({
   name,
   label = name,
   placeholder = label,
+  type = 'text',
 }: ControlledTextFieldProps) => {
   return (
     <Controller
@@ -33,6 +35,7 @@ const ControlledTextField = ({
             onBlur={onBlur}
             error={!!error}
             helperText={error?.message || ' '}
+            type={type}
           />
         </FormControl>
       )}

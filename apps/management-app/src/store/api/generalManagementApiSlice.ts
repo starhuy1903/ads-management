@@ -1,37 +1,39 @@
 import { AdType } from '@/types/ads';
 import {
+  AdsType,
   AdsTypeDto,
   District,
   DistrictDto,
+  GetDataResult,
+  GetListResult,
+  LocationType,
   LocationTypeDto,
   MessageResponse,
+  PanelType,
   PanelTypeDto,
+  ReportType,
   ReportTypeDto,
   Ward,
   WardDto,
 } from '@/types/cdoManagement';
-import { GetList } from '@/types/common';
-import { LocationType } from '@/types/location';
-import { PanelType } from '@/types/panel';
-import { ReportType } from '@/types/report';
 import { apiSlice } from './baseApiSlice';
 import { getOnMutationFunction } from './helper';
 
 export const generalManagementApiSlice = apiSlice.injectEndpoints({
   endpoints: (build) => ({
     getDistricts: build.query<
-      GetList<District>,
+      GetListResult<District>,
       { page?: number; limit?: number }
     >({
       query: (arg) => ({
         url: `/districts`,
         params: {
           page: arg.page,
-          limit: arg.limit,
+          take: arg.limit,
         },
       }),
     }),
-    getDistrictById: build.query<District, number>({
+    getDistrictById: build.query<GetDataResult<District>, number>({
       query: (id) => `/districts/${id}`,
     }),
     createDistrict: build.mutation<MessageResponse, DistrictDto>({
@@ -44,7 +46,7 @@ export const generalManagementApiSlice = apiSlice.injectEndpoints({
     >({
       query: (arg) => ({
         url: `/districts/${arg.id}`,
-        method: 'PUT',
+        method: 'PATCH',
         body: arg.data,
       }),
       onQueryStarted: getOnMutationFunction('District updated'),
@@ -56,16 +58,19 @@ export const generalManagementApiSlice = apiSlice.injectEndpoints({
       }),
       onQueryStarted: getOnMutationFunction('District deleted'),
     }),
-    getWards: build.query<GetList<Ward>, { page?: number; limit?: number }>({
+    getWards: build.query<
+      GetListResult<Ward>,
+      { page?: number; limit?: number }
+    >({
       query: (arg) => ({
         url: `/wards`,
         params: {
           page: arg.page,
-          limit: arg.limit,
+          take: arg.limit,
         },
       }),
     }),
-    getWardById: build.query<Ward, number>({
+    getWardById: build.query<GetDataResult<Ward>, number>({
       query: (id) => `/wards/${id}`,
     }),
     createWard: build.mutation<MessageResponse, WardDto>({
@@ -75,7 +80,7 @@ export const generalManagementApiSlice = apiSlice.injectEndpoints({
     updateWard: build.mutation<MessageResponse, { id: number; data: WardDto }>({
       query: (arg) => ({
         url: `/wards/${arg.id}`,
-        method: 'PUT',
+        method: 'PATCH',
         body: arg.data,
       }),
       onQueryStarted: getOnMutationFunction('Ward updated'),
@@ -88,22 +93,22 @@ export const generalManagementApiSlice = apiSlice.injectEndpoints({
       onQueryStarted: getOnMutationFunction('Ward deleted'),
     }),
     getPanelTypes: build.query<
-      GetList<PanelType>,
+      GetListResult<PanelType>,
       { page?: number; limit?: number }
     >({
       query: (arg) => ({
-        url: `/panelTypes`,
+        url: `/panel-types`,
         params: {
           page: arg.page,
-          limit: arg.limit,
+          take: arg.limit,
         },
       }),
     }),
-    getPanelTypeById: build.query<PanelType, number>({
-      query: (id) => `/panelTypes/${id}`,
+    getPanelTypeById: build.query<GetDataResult<PanelType>, number>({
+      query: (id) => `/panel-types/${id}`,
     }),
     createPanelType: build.mutation<MessageResponse, PanelTypeDto>({
-      query: (arg) => ({ url: '/panelTypes', method: 'POST', body: arg }),
+      query: (arg) => ({ url: '/panel-types', method: 'POST', body: arg }),
       onQueryStarted: getOnMutationFunction('Panel type created'),
     }),
     updatePanelType: build.mutation<
@@ -111,8 +116,8 @@ export const generalManagementApiSlice = apiSlice.injectEndpoints({
       { id: number; data: PanelTypeDto }
     >({
       query: (arg) => ({
-        url: `/panelTypes/${arg.id}`,
-        method: 'PUT',
+        url: `/panel-types/${arg.id}`,
+        method: 'PATCH',
         body: arg.data,
       }),
       onQueryStarted: getOnMutationFunction('Panel type updated'),
@@ -125,22 +130,22 @@ export const generalManagementApiSlice = apiSlice.injectEndpoints({
       onQueryStarted: getOnMutationFunction('Panel type deleted'),
     }),
     getReportTypes: build.query<
-      GetList<ReportType>,
+      GetListResult<ReportType>,
       { page?: number; limit?: number }
     >({
       query: (arg) => ({
         url: `/report-types`,
         params: {
-          page: arg?.page,
-          limit: arg?.limit,
+          page: arg.page,
+          take: arg.limit,
         },
       }),
     }),
-    getReportTypeById: build.query<ReportType, number>({
-      query: (id) => `/reportTypes/${id}`,
+    getReportTypeById: build.query<GetDataResult<ReportType>, number>({
+      query: (id) => `/report-types/${id}`,
     }),
     createReportType: build.mutation<MessageResponse, ReportTypeDto>({
-      query: (arg) => ({ url: '/reportTypes', method: 'POST', body: arg }),
+      query: (arg) => ({ url: '/report-types', method: 'POST', body: arg }),
       onQueryStarted: getOnMutationFunction('Report type created'),
     }),
     updateReportType: build.mutation<
@@ -149,7 +154,7 @@ export const generalManagementApiSlice = apiSlice.injectEndpoints({
     >({
       query: (arg) => ({
         url: `/report-types/${arg.id}`,
-        method: 'PUT',
+        method: 'PATCH',
         body: arg.data,
       }),
       onQueryStarted: getOnMutationFunction('Report type updated'),
@@ -162,22 +167,22 @@ export const generalManagementApiSlice = apiSlice.injectEndpoints({
       onQueryStarted: getOnMutationFunction('Report type deleted'),
     }),
     getLocationTypes: build.query<
-      GetList<LocationType>,
+      GetListResult<LocationType>,
       { page?: number; limit?: number }
     >({
       query: (arg) => ({
         url: `/location-types`,
         params: {
           page: arg.page,
-          limit: arg.limit,
+          take: arg.limit,
         },
       }),
     }),
-    getLocationTypeById: build.query<LocationType, number>({
-      query: (id) => `/locationTypes/${id}`,
+    getLocationTypeById: build.query<GetDataResult<LocationType>, number>({
+      query: (id) => `/location-types/${id}`,
     }),
     createLocationType: build.mutation<MessageResponse, LocationTypeDto>({
-      query: (arg) => ({ url: '/locationTypes', method: 'POST', body: arg }),
+      query: (arg) => ({ url: '/location-types', method: 'POST', body: arg }),
       onQueryStarted: getOnMutationFunction('Location type created'),
     }),
     updateLocationType: build.mutation<
@@ -185,8 +190,8 @@ export const generalManagementApiSlice = apiSlice.injectEndpoints({
       { id: number; data: LocationTypeDto }
     >({
       query: (arg) => ({
-        url: `/locationTypes/${arg.id}`,
-        method: 'PUT',
+        url: `/location-types/${arg.id}`,
+        method: 'PATCH',
         body: arg.data,
       }),
       onQueryStarted: getOnMutationFunction('Location type updated'),
@@ -199,22 +204,26 @@ export const generalManagementApiSlice = apiSlice.injectEndpoints({
       onQueryStarted: getOnMutationFunction('Location type deleted'),
     }),
     getAdsTypes: build.query<
-      GetList<AdType>,
+      GetListResult<AdType>,
       { page?: number; limit?: number }
     >({
       query: (arg) => ({
-        url: `/adsTypes`,
+        url: `/advertisement-types`,
         params: {
           page: arg.page,
-          limit: arg.limit,
+          take: arg.limit,
         },
       }),
     }),
-    getAdsTypeById: build.query<AdType, number>({
-      query: (id) => `/ads-types/${id}`,
+    getAdsTypeById: build.query<GetDataResult<AdsType>, number>({
+      query: (id) => `/advertisement-types/${id}`,
     }),
     createAdsType: build.mutation<MessageResponse, AdsTypeDto>({
-      query: (arg) => ({ url: '/ads-types', method: 'POST', body: arg }),
+      query: (arg) => ({
+        url: '/advertisement-types',
+        method: 'POST',
+        body: arg,
+      }),
       onQueryStarted: getOnMutationFunction('Advertisement type created'),
     }),
     updateAdsType: build.mutation<
@@ -222,8 +231,8 @@ export const generalManagementApiSlice = apiSlice.injectEndpoints({
       { id: number; data: AdsTypeDto }
     >({
       query: (arg) => ({
-        url: `/ads-types/${arg.id}`,
-        method: 'PUT',
+        url: `/advertisement-types/${arg.id}`,
+        method: 'PATCH',
         body: arg.data,
       }),
       onQueryStarted: getOnMutationFunction('Advertisement type updated'),
@@ -247,30 +256,35 @@ export const {
   useUpdateDistrictMutation,
   useDeleteDistrictsMutation,
   useGetWardsQuery,
+  useLazyGetWardsQuery,
   useGetWardByIdQuery,
   useLazyGetWardByIdQuery,
   useCreateWardMutation,
   useUpdateWardMutation,
   useDeleteWardsMutation,
   useGetPanelTypesQuery,
+  useLazyGetPanelTypesQuery,
   useGetPanelTypeByIdQuery,
   useLazyGetPanelTypeByIdQuery,
   useCreatePanelTypeMutation,
   useUpdatePanelTypeMutation,
   useDeletePanelTypesMutation,
   useGetReportTypesQuery,
+  useLazyGetReportTypesQuery,
   useGetReportTypeByIdQuery,
   useLazyGetReportTypeByIdQuery,
   useCreateReportTypeMutation,
   useUpdateReportTypeMutation,
   useDeleteReportTypesMutation,
   useGetLocationTypesQuery,
+  useLazyGetLocationTypesQuery,
   useGetLocationTypeByIdQuery,
   useLazyGetLocationTypeByIdQuery,
   useCreateLocationTypeMutation,
   useUpdateLocationTypeMutation,
   useDeleteLocationTypesMutation,
   useGetAdsTypesQuery,
+  useLazyGetAdsTypesQuery,
   useGetAdsTypeByIdQuery,
   useLazyGetAdsTypeByIdQuery,
   useCreateAdsTypeMutation,

@@ -1,3 +1,4 @@
+import LockResetIcon from '@mui/icons-material/LockReset';
 import LogoutIcon from '@mui/icons-material/Logout';
 import PersonIcon from '@mui/icons-material/Person';
 import {
@@ -15,7 +16,7 @@ import {
   Typography,
   Zoom,
 } from '@mui/material';
-import { useTheme, styled } from '@mui/material/styles';
+import { styled, useTheme } from '@mui/material/styles';
 import { useCallback, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '@/store';
@@ -119,6 +120,20 @@ function ProfileSection({ src, alt }: ProfileSectionProps) {
               <ClickAwayListener onClickAway={handlePopperClose}>
                 <Box className="min-w-fit p-2">
                   <List>
+                    <PopperListItem disablePadding>
+                      <ListItemButton
+                        onClick={() => {
+                          navigate('/change-password');
+                        }}
+                      >
+                        <ListItemIcon>
+                          <LockResetIcon />
+                        </ListItemIcon>
+                        <ListItemText
+                          primary={<Typography>Change password</Typography>}
+                        />
+                      </ListItemButton>
+                    </PopperListItem>
                     <PopperListItem disablePadding>
                       <ListItemButton onClick={handleLogout}>
                         <ListItemIcon>

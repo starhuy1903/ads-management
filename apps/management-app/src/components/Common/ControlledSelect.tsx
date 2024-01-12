@@ -1,28 +1,26 @@
-import Box from '@mui/material/Box';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
-import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
 import { useId } from 'react';
 import { Control, Controller } from 'react-hook-form';
+import CustomSelect from './CustomSelect';
 
-interface ControlledSelectProps {
+interface ControlledSelectProps<T extends number | string> {
   control: Control<any>;
   name: string;
   label?: string;
   options: Array<{
-    value: string;
+    value: T;
     label: string;
   }>;
 }
 
-const ControlledSelect = ({
+const ControlledSelect = <T extends number | string>({
   control,
   name,
   label = name,
   options,
-}: ControlledSelectProps) => {
+}: ControlledSelectProps<T>) => {
   const id = useId();
 
   return (
@@ -35,7 +33,7 @@ const ControlledSelect = ({
       }) => (
         <FormControl sx={{ width: '100%' }}>
           <FormLabel>{label}</FormLabel>
-          <Select
+          <CustomSelect
             fullWidth
             labelId={id + '-label'}
             id={id}
@@ -48,7 +46,7 @@ const ControlledSelect = ({
                 {item.label}
               </MenuItem>
             ))}
-          </Select>
+          </CustomSelect>
         </FormControl>
       )}
     />

@@ -53,7 +53,7 @@ export class PanelController {
       return res.success({ data: panel });
     } catch (error) {
       return res.error({
-        statusCode: 500,
+        statusCode: error.status || 500,
         message: error.message,
       });
     }
@@ -101,7 +101,7 @@ export class PanelController {
       return res.success({ data: panel });
     } catch (error) {
       return res.error({
-        statusCode: 500,
+        statusCode: error.status || 500,
         message: error.message,
       });
     }
@@ -135,7 +135,7 @@ export class PanelController {
       return res.success({ data: updatedPanel });
     } catch (error) {
       return res.error({
-        statusCode: 500,
+        statusCode: error.status || 500,
         message: error.message,
       });
     }
@@ -150,7 +150,7 @@ export class PanelController {
       return res.success({ message: 'Panel deleted successfully' });
     } catch (error) {
       return res.error({
-        statusCode: 500,
+        statusCode: error.status || 500,
         message: error.message,
       });
     }

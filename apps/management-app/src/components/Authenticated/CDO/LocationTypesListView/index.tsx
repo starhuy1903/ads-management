@@ -30,16 +30,16 @@ const LocationTypesListView = () => {
 
   const { data, isLoading, isFetching, refetch } = useGetLocationTypesQuery({
     page: parseInt(searchParams.get('page') || '1'),
-    limit: 10,
+    limit: parseInt(searchParams.get('pageSize') || '10'),
   });
 
-  const [rowCountState, setRowCountState] = useState(data?.rowsCount || 0);
+  const [rowCountState, setRowCountState] = useState(data?.totalCount || 0);
 
   useEffect(() => {
     setRowCountState((prevRowCountState) =>
-      data?.rowsCount !== undefined ? data?.rowsCount : prevRowCountState,
+      data?.totalCount !== undefined ? data?.totalCount : prevRowCountState,
     );
-  }, [data?.rowsCount, setRowCountState]);
+  }, [data?.totalCount, setRowCountState]);
 
   const [deleteLocationTypes] = useDeleteLocationTypesMutation();
 
@@ -135,7 +135,7 @@ const LocationTypesListView = () => {
                 dispatch(
                   showModal(ModalKey.GENERAL, {
                     headerText: `Delete ${params.row.name} ?`,
-                    
+
                     primaryButtonText: 'Confirm',
                     onClickPrimaryButton: async () => {
                       try {
@@ -171,14 +171,17 @@ const LocationTypesListView = () => {
         disableRowSelectionOnClick
         rowCount={rowCountState}
         loading={isFetching}
-        pageSizeOptions={[10]}
+        pageSizeOptions={[10, 20, 50]}
         paginationMode="server"
         paginationModel={{
           page: parseInt(searchParams.get('page') || '1') - 1,
-          pageSize: 10,
+          pageSize: parseInt(searchParams.get('pageSize') || '10'),
         }}
         onPaginationModelChange={(model) => {
-          setSearchParams({ page: (model.page + 1).toString() });
+          setSearchParams({
+            page: (model.page + 1).toString(),
+            pageSize: model.pageSize.toString(),
+          });
         }}
       />
     </StaticActionBar>

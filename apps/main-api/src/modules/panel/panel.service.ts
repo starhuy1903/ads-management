@@ -75,7 +75,7 @@ export class PanelService {
       where: {
         location: {},
         typeId: pageOptionsPanelDto?.typeId,
-        status: pageOptionsPanelDto?.status,
+        status: { in: pageOptionsPanelDto?.status },
       },
     };
 
@@ -97,10 +97,13 @@ export class PanelService {
       // allowedWards = [1, 2, 3, ...]
       const allowedWards = allowedWardIds.map((ward) => ward.id);
 
+      let filteredWards = allowedWards;
       // Filter wards by district -> Only get ward which belong to district
-      const filteredWards = pageOptionsPanelDto.wards.filter((wardId) =>
-        allowedWards.includes(wardId),
-      );
+      if (pageOptionsPanelDto.wards) {
+        filteredWards = pageOptionsPanelDto.wards.filter((wardId) =>
+          allowedWards.includes(wardId),
+        );
+      }
 
       conditions.where.location = {
         districtId: user.districtId,
@@ -164,7 +167,7 @@ export class PanelService {
           id: locationId,
         },
         typeId: pageOptionsPanelDto.typeId,
-        status: pageOptionsPanelDto.status,
+        status: { in: pageOptionsPanelDto?.status },
       },
     };
 
@@ -275,32 +278,33 @@ export class PanelService {
           throw new Error('Failed to upload images!');
         }
         imageUrls = uploadImagesData.urls;
-
-        const updateData = {
-          typeId: updatePanelDto.typeId,
-          width: updatePanelDto.width,
-          height: updatePanelDto.height,
-          locationId: updatePanelDto.locationId,
-          createContractDate: updatePanelDto.createContractDate,
-          expiredContractDate: updatePanelDto.expiredContractDate,
-          companyEmail: updatePanelDto.companyEmail,
-          companyNumber: updatePanelDto.companyNumber,
-          imageUrls: undefined,
-        };
-
-        if (imageUrls.length > 0) {
-          updateData.imageUrls = imageUrls;
-        }
-
-        const result = await this.prismaService.panel.update({
-          where: {
-            id: id,
-          },
-          data: updateData,
-        });
-
-        return result;
       }
+      const updateData = {
+        typeId: updatePanelDto.typeId,
+        width: updatePanelDto.width,
+        height: updatePanelDto.height,
+        locationId: updatePanelDto.locationId,
+        createContractDate: updatePanelDto.createContractDate,
+        expiredContractDate: updatePanelDto.expiredContractDate,
+        companyEmail: updatePanelDto.companyEmail,
+        companyNumber: updatePanelDto.companyNumber,
+        imageUrls: undefined,
+        belongPanelId: updatePanelDto.belongPanelId,
+        status: updatePanelDto.status,
+      };
+
+      if (imageUrls.length > 0) {
+        updateData.imageUrls = imageUrls;
+      }
+
+      const result = await this.prismaService.panel.update({
+        where: {
+          id: id,
+        },
+        data: updateData,
+      });
+
+      return result;
     } catch (error) {
       if (!imageUrls.length) await deleteFilesFromFirebase(imageUrls);
       throw new Error(error);

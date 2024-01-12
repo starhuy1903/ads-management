@@ -12,6 +12,7 @@ import {
   ResetPasswordDto,
   SignInDto,
   CreateUserDto,
+  ChangePasswordDto,
 } from './dto';
 import { IRequestWithUser } from './interfaces';
 import { JwtGuard, JwtRefreshGuard, JwtVerifyGuard } from './guards';
@@ -45,6 +46,17 @@ export class AuthController {
     const refreshToken = req.user['refreshToken'];
     const payload = req.user['payload'];
     return await this.authService.refresh(refreshToken, payload);
+  }
+
+  @UseGuards(JwtGuard)
+  @HttpCode(200)
+  @Post('change-password')
+  async changePassword(
+    @Req() req: IRequestWithUser,
+    @Body() dto: ChangePasswordDto,
+  ) {
+    const userId = req.user['sub'];
+    return await this.authService.changePassword(userId, dto);
   }
 
   @HttpCode(200)

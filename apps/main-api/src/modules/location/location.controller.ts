@@ -28,6 +28,7 @@ import { JwtGuard } from '../auth/guards';
 import { IRequestWithUser } from '../auth/interfaces';
 import { UserRole } from '@prisma/client';
 import { Roles } from '../auth/decorators';
+import { PageOptionsPanelDto } from '../panel/dto/find-all-panel.dto';
 
 @Controller('locations')
 export class LocationController {
@@ -63,7 +64,7 @@ export class LocationController {
       });
     } catch (error) {
       return res.error({
-        statusCode: 500,
+        statusCode: error.status || 500,
         message: error.message || 'Internal Server Error',
       });
     }
@@ -106,12 +107,12 @@ export class LocationController {
 
   @Get(':id/panels')
   async findAllPanelByLocation(
-    @Query() pageOptionsLocationDto: PageOptionsLocationDto,
+    @Query() pageOptionsPanelDto: PageOptionsPanelDto,
     @Param('id') id: string,
   ) {
     try {
       return await this.panelService.findAllPanelsByLocation(
-        pageOptionsLocationDto,
+        pageOptionsPanelDto,
         +id,
       );
     } catch (error) {
@@ -132,7 +133,7 @@ export class LocationController {
       return res.success({ data: location });
     } catch (error) {
       return res.error({
-        statusCode: 500,
+        statusCode: error.status || 500,
         message: error.message || 'Internal Server Error',
       });
     }
@@ -169,7 +170,7 @@ export class LocationController {
       });
     } catch (error) {
       return res.error({
-        statusCode: 500,
+        statusCode: error.status || 500,
         message: error.message || 'Internal Server Error',
       });
     }
@@ -184,7 +185,7 @@ export class LocationController {
       return res.success({ message: 'Location deleted successfully' });
     } catch (error) {
       return res.error({
-        statusCode: 500,
+        statusCode: error.status || 500,
         message: error.message || 'Internal Server Error',
       });
     }

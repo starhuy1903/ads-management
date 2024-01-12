@@ -1,4 +1,8 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { CreateReportDto } from './dto/create-report.dto';
 import { UpdateReportDto } from './dto/update-report.dto';
 import { PrismaService } from '../../services/prisma/prisma.service';
@@ -16,12 +20,15 @@ import { NotificationType } from '../../constants/notification';
 import { EDateType, GetStatisticDto } from './dto/get-statistic.dto';
 import moment from 'moment-timezone';
 import { UserRole } from '@prisma/client';
+import { MailService } from '../../services/mail/mail.service';
+import { SendMailTemplateDto } from '../../services/mail/mail.dto';
 
 @Injectable()
 export class ReportService {
   constructor(
     private prismaService: PrismaService,
     private readonly eventEmitter: EventEmitter2,
+    private readonly mailService: MailService,
   ) {}
   async create(
     createReportDto: CreateReportDto,
@@ -138,10 +145,13 @@ export class ReportService {
       // allowedWards = [1, 2, 3, ...]
       const allowedWards = allowedWardIds.map((ward) => ward.id);
 
+      let filteredWards = allowedWards;
       // Filter wards by district -> Only get ward which belong to district
-      const filteredWards = pageOptionsReportDto.wards.filter((wardId) =>
-        allowedWards.includes(wardId),
-      );
+      if (pageOptionsReportDto.wards) {
+        filteredWards = pageOptionsReportDto.wards.filter((wardId) =>
+          allowedWards.includes(wardId),
+        );
+      }
 
       conditions.where.OR = [
         {
@@ -264,6 +274,23 @@ export class ReportService {
 
     try {
       this.eventEmitter.emit(NotificationType.update_status_report, { result });
+
+      const templateData = {
+        fullname: result.fullName,
+        reportStatus: result.status,
+        reportID: result.id,
+        resolveContent: result.resolvedContent,
+      };
+
+      const userEmail = result.email;
+      const data: SendMailTemplateDto = {
+        toAddresses: [userEmail],
+        ccAddresses: [userEmail],
+        bccAddresses: [userEmail],
+        template: 'report_status_update',
+        templateData: JSON.stringify(templateData),
+      };
+      await this.mailService.sendEmailTemplate(data);
     } catch (notificationError) {
       // silent
       console.error('Fail to push notification!!!: ', notificationError);

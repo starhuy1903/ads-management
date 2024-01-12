@@ -47,7 +47,7 @@ const DistrictsDetail = () => {
     defaultValues: async () => {
       try {
         const district = await getDistrict(parseInt(id!), true).unwrap();
-        return district;
+        return district.data;
       } catch (error) {
         showError(
           isApiErrorResponse(error) && error.status === 404
@@ -66,7 +66,7 @@ const DistrictsDetail = () => {
     dispatch(
       showModal(ModalKey.GENERAL, {
         headerText: `Apply changes ?`,
-        
+
         primaryButtonText: 'Confirm',
         onClickPrimaryButton: async () => {
           try {
@@ -86,8 +86,8 @@ const DistrictsDetail = () => {
   const handleDeleteDistrict = useCallback(async () => {
     dispatch(
       showModal(ModalKey.GENERAL, {
-        headerText: `Delete ${data?.name} ?`,
-        
+        headerText: `Delete ${data?.data.name} ?`,
+
         primaryButtonText: 'Confirm',
         onClickPrimaryButton: async () => {
           try {
@@ -100,7 +100,7 @@ const DistrictsDetail = () => {
         },
       }),
     );
-  }, [data?.name, deleteDistricts, dispatch, id, navigate]);
+  }, [data?.data.name, deleteDistricts, dispatch, id, navigate]);
 
   return (
     <StaticActionBar

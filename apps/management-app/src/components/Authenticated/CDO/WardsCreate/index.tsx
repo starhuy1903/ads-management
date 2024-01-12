@@ -64,10 +64,7 @@ const WardsCreate = () => {
         onClickPrimaryButton: async () => {
           try {
             dispatch(showModal(null));
-            await createWard({
-              ...data,
-              district_id: data.districtId,
-            }).unwrap();
+            await createWard(data).unwrap();
             reset();
           } catch (error) {
             /* empty */

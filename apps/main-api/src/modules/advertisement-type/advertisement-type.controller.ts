@@ -46,7 +46,7 @@ export class AdvertisementTypeController {
       });
     } catch (error) {
       return res.error({
-        statusCode: 500,
+        statusCode: error.status || 500,
         message: error.message || 'Internal Server Error',
       });
     }
@@ -68,7 +68,7 @@ export class AdvertisementTypeController {
       return res.success({ data: advertisementType });
     } catch (error) {
       return res.error({
-        statusCode: 500,
+        statusCode: error.status || 500,
         message: error.message,
       });
     }
@@ -103,7 +103,7 @@ export class AdvertisementTypeController {
       return res.success({ data: advertisementType });
     } catch (error) {
       return res.error({
-        statusCode: 500,
+        statusCode: error.status || 500,
         message: error.message || 'Internal Server Error',
       });
     }
@@ -118,7 +118,7 @@ export class AdvertisementTypeController {
       return res.success({ message: 'Ads request deleted successfully' });
     } catch (error) {
       return res.error({
-        statusCode: 500,
+        statusCode: error.status || 500,
         message: error.message || 'Internal Server Error',
       });
     }

@@ -47,7 +47,7 @@ const PanelTypesDetail = () => {
     defaultValues: async () => {
       try {
         const panelType = await getPanelType(parseInt(id!), true).unwrap();
-        return panelType;
+        return panelType.data;
       } catch (error) {
         showError(
           isApiErrorResponse(error) && error.status === 404
@@ -86,7 +86,7 @@ const PanelTypesDetail = () => {
   const handleDeletePanelType = useCallback(() => {
     dispatch(
       showModal(ModalKey.GENERAL, {
-        headerText: `Delete ${data?.name} ?`,
+        headerText: `Delete ${data?.data.name} ?`,
         
         primaryButtonText: 'Confirm',
         onClickPrimaryButton: async () => {
@@ -100,7 +100,7 @@ const PanelTypesDetail = () => {
         },
       }),
     );
-  }, [data?.name, deletePanelTypes, dispatch, id, navigate]);
+  }, [data?.data.name, deletePanelTypes, dispatch, id, navigate]);
 
   return (
     <StaticActionBar
