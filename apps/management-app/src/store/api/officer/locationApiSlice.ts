@@ -13,21 +13,35 @@ export const officerLocationApiSlice = apiSlice.injectEndpoints({
       {
         page?: number;
         take?: number;
-        wards?: string;
+        wards?: number[];
         districts?: string;
         status?: string;
       }
     >({
-      query: (arg) => ({
-        url: `/locations`,
-        params: {
-          page: arg.page,
-          take: arg.take,
-          wards: arg.wards,
-          districts: arg.districts,
-          status: arg.status,
-        },
-      }),
+      query: (arg) => {
+        if (arg.wards && arg?.wards?.length > 0) {
+          return {
+            url: `/locations`,
+            params: {
+              page: arg.page,
+              take: arg.take,
+              wards: arg.wards.join(','),
+              districts: arg.districts,
+              status: arg.status,
+            },
+          };
+        }
+
+        return {
+          url: `/locations`,
+          params: {
+            page: arg.page,
+            take: arg.take,
+            districts: arg.districts,
+            status: arg.status,
+          },
+        };
+      },
     }),
     getLocationById: build.query<Location, string>({
       query: (id) => `/locations/${id}`,

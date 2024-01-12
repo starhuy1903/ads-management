@@ -61,7 +61,7 @@ export function DetailWrapper({
   label = '',
   children,
 }: {
-  label: string;
+  label?: string;
   children: React.ReactNode;
 }) {
   return (

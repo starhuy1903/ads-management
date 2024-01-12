@@ -1,5 +1,6 @@
 import auth from '@/utils/auth';
 import {
+  ChangePasswordPayload,
   CredentialPayload,
   ForgotPasswordPayload,
   ForgotPasswordResponse,
@@ -52,6 +53,13 @@ const userApiToastSlice = apiWithToastSlice.injectEndpoints({
         body,
       }),
     }),
+    changePassword: build.mutation<MessageResponse, ChangePasswordPayload>({
+      query: (body) => ({
+        url: 'auth/change-password',
+        method: 'POST',
+        body,
+      }),
+    }),
     getProfile: build.query<UserProfile, void>({
       query: () => 'users/me',
       onQueryStarted: async (_, { dispatch, queryFulfilled }) => {
@@ -80,6 +88,7 @@ export const {
   useVerifyMutation,
   useForgotPasswordMutation,
   useResetPasswordMutation,
+  useChangePasswordMutation,
 } = userApiToastSlice;
 
 export const { useLogoutMutation } = userApiSlice;

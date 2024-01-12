@@ -20,6 +20,18 @@ type RefType = {
   name: string;
 };
 
+export type PanelType = RefType;
+
+export type LocationType = RefType;
+
+export type AdsType = RefType;
+
+export type Ward = RefType;
+
+export type District = RefType;
+
+export type ReportType = RefType;
+
 export type Location = BaseType & {
   lat: string;
   long: string;
@@ -28,10 +40,10 @@ export type Location = BaseType & {
   imageUrls: string[];
   name: string;
   status?: string;
-  type: RefType;
-  adType: RefType;
-  ward: RefType;
-  district: RefType;
+  type: LocationType;
+  adType: AdsType;
+  ward: Ward;
+  district: District;
 };
 
 export type Panel = BaseType & {
@@ -44,14 +56,8 @@ export type Panel = BaseType & {
   expiredContractDate: string;
   status?: string;
   location: Location;
-  type: RefType;
+  type: PanelType;
 };
-
-export type PanelType = RefType;
-
-export type LocationType = RefType;
-
-export type AdsType = RefType;
 
 export type Report = BaseType & {
   fullName: string;
@@ -63,7 +69,7 @@ export type Report = BaseType & {
   resolvedContent: string;
   location?: Location;
   panel?: Panel;
-  reportType: RefType;
+  reportType: ReportType;
 };
 
 export type User = BaseType & {
@@ -72,10 +78,10 @@ export type User = BaseType & {
   lastName: string;
   phoneNumber: string;
   role: string;
-  ward?: RefType & {
-    district?: RefType;
+  ward?: Ward & {
+    district?: District;
   };
-  district?: RefType;
+  district?: District;
 };
 
 export type AdsRequest = BaseType & {

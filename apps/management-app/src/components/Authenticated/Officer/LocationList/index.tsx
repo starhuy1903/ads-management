@@ -10,10 +10,13 @@ import {
   TableRow,
 } from '@mui/material';
 import { useEffect, useState } from 'react';
+import { useAppSelector } from '@/store';
 import CenterLoading from '@/components/Common/CenterLoading';
 import { Edit, Info } from '@/components/Common/Icons';
 import { ListWrapper } from '@/components/Common/Layout/ScreenWrapper';
+import WardSelect from '@/components/Common/WardSelect';
 import { LocationStatus } from '@/constants/location';
+import { UserRole } from '@/constants/user';
 import { useGetLocationsQuery } from '@/store/api/officer/locationApiSlice';
 import { Location } from '@/types/officer-management';
 import { formatDateTime } from '@/utils/datetime';
@@ -33,18 +36,22 @@ const titles = [
 ];
 
 export default function LocationList() {
+  const role = useAppSelector((state) => state.user?.profile?.role);
+
   const [page, setPage] = useState<number>(1);
   const [locations, setLocations] = useState<Location[]>([]);
+  const [wards, setWards] = useState<number[]>([]);
 
   const { data, isLoading, refetch } = useGetLocationsQuery({
     page: page,
     take: 10,
     status: LocationStatus?.APPROVED,
+    wards: wards,
   });
 
   useEffect(() => {
     refetch();
-  }, [locations, page, refetch]);
+  }, [locations, page, refetch, wards]);
 
   useEffect(() => {
     if (data) {
@@ -58,63 +65,75 @@ export default function LocationList() {
 
   return (
     <ListWrapper label="Locations">
-      <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="locations">
-          <TableHead>
-            <TableRow>
-              {titles.map((title) => (
-                <TableCell align="center" key={title}>
-                  {title}
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {locations?.length !== 0 ? (
-              locations.map((location: Location) => (
-                <TableRow key={location?.id}>
-                  <TableCell align="center">{location?.id}</TableCell>
-                  <TableCell align="center">{location?.name}</TableCell>
-                  <TableCell align="center">{location?.fullAddress}</TableCell>
-                  <TableCell align="center">{location?.ward?.name}</TableCell>
-                  <TableCell align="center">
-                    {location?.district?.name}
+      <Box
+        sx={{
+          width: '100%',
+        }}
+      >
+        {role === UserRole?.DISTRICT_OFFICER && (
+          <WardSelect wards={wards} setWards={setWards} />
+        )}
+
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 650 }} aria-label="locations">
+            <TableHead>
+              <TableRow>
+                {titles.map((title) => (
+                  <TableCell align="center" key={title}>
+                    {title}
                   </TableCell>
-                  <TableCell align="center">{`${
-                    location?.isPlanning ? 'Yes' : 'No'
-                  }`}</TableCell>
-                  <TableCell align="center">
-                    {formatDateTime(location?.createdAt)}
-                  </TableCell>
-                  <TableCell align="center">
-                    {formatDateTime(location?.updatedAt)}
-                  </TableCell>
-                  <TableCell align="center">
-                    {capitalize(location?.status)}
-                  </TableCell>
-                  <TableCell>
-                    <Box
-                      sx={{
-                        display: 'flex',
-                        gap: 2,
-                      }}
-                    >
-                      <Info link={`/locations/${location?.id}`} />
-                      <Edit link={`/locations/${location?.id}/edit`} />
-                    </Box>
+                ))}
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {locations?.length !== 0 ? (
+                locations.map((location: Location) => (
+                  <TableRow key={location?.id}>
+                    <TableCell align="center">{location?.id}</TableCell>
+                    <TableCell align="center">{location?.name}</TableCell>
+                    <TableCell align="center">
+                      {location?.fullAddress}
+                    </TableCell>
+                    <TableCell align="center">{location?.ward?.name}</TableCell>
+                    <TableCell align="center">
+                      {location?.district?.name}
+                    </TableCell>
+                    <TableCell align="center">{`${
+                      location?.isPlanning ? 'Yes' : 'No'
+                    }`}</TableCell>
+                    <TableCell align="center">
+                      {formatDateTime(location?.createdAt)}
+                    </TableCell>
+                    <TableCell align="center">
+                      {formatDateTime(location?.updatedAt)}
+                    </TableCell>
+                    <TableCell align="center">
+                      {capitalize(location?.status)}
+                    </TableCell>
+                    <TableCell>
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          gap: 2,
+                        }}
+                      >
+                        <Info link={`/locations/${location?.id}`} />
+                        <Edit link={`/locations/${location?.id}/edit`} />
+                      </Box>
+                    </TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell align="center" colSpan={9}>
+                    No results
                   </TableCell>
                 </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell align="center" colSpan={9}>
-                  No rows
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </TableContainer>
+              )}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Box>
 
       <Pagination
         count={data?.totalPages}

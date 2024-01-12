@@ -14,21 +14,37 @@ export const officerPanelApiSlice = apiSlice.injectEndpoints({
       {
         page?: number;
         take?: number;
-        wards?: string;
+        wards?: number[];
         districts?: string;
         typeId?: number;
       }
     >({
-      query: (arg) => ({
-        url: `/panels`,
-        params: {
-          page: arg.page,
-          take: arg.take,
-          wards: arg.wards,
-          districts: arg.districts,
-          typeId: arg.typeId,
-        },
-      }),
+      query: (arg) => {
+        if (arg.wards && arg?.wards?.length > 0) {
+          return {
+            url: `/panels`,
+            params: {
+              page: arg.page,
+              take: arg.take,
+              wards: arg.wards.join(','),
+              districts: arg.districts,
+              typeId: arg.typeId,
+              status: 'APPROVED,DRAFT',
+            },
+          };
+        }
+
+        return {
+          url: `/panels`,
+          params: {
+            page: arg.page,
+            take: arg.take,
+            districts: arg.districts,
+            typeId: arg.typeId,
+            status: 'APPROVED,DRAFT',
+          },
+        };
+      },
     }),
     getPanelById: build.query<Panel, string>({
       query: (id) => `/panels/${id}`,

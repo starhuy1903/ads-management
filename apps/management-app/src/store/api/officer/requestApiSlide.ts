@@ -9,32 +9,48 @@ import {
 } from '@/types/officer-management';
 import { apiSlice } from '../baseApiSlice';
 
-export const officerManagementApiSlice = apiSlice.injectEndpoints({
+export const officerRequestApiSlice = apiSlice.injectEndpoints({
   endpoints: (build) => ({
     getRequests: build.query<
       GetListResult<AdsRequest>,
       {
         page?: number;
         take?: number;
-        wards?: string;
+        wards?: number[];
         districts?: string;
         type?: string;
         targetType?: string;
         status?: string;
       }
     >({
-      query: (arg) => ({
-        url: `/ads-requests`,
-        params: {
-          page: arg.page,
-          take: arg.take,
-          wards: arg.wards,
-          districts: arg.districts,
-          type: arg.type,
-          targetType: arg.targetType,
-          status: arg.status,
-        },
-      }),
+      query: (arg) => {
+        if (arg.wards && arg?.wards?.length > 0) {
+          return {
+            url: `/ads-requests`,
+            params: {
+              page: arg.page,
+              take: arg.take,
+              wards: arg.wards.join(','),
+              districts: arg.districts,
+              type: arg.type,
+              targetType: arg.targetType,
+              status: arg.status,
+            },
+          };
+        }
+
+        return {
+          url: `/ads-requests`,
+          params: {
+            page: arg.page,
+            take: arg.take,
+            districts: arg.districts,
+            type: arg.type,
+            targetType: arg.targetType,
+            status: arg.status,
+          },
+        };
+      },
     }),
     getRequestById: build.query<AdsRequest, string>({
       query: (id) => `/ads-requests/${id}`,
@@ -129,4 +145,4 @@ export const {
   useCreateUpdateLocationRequestMutation,
   useCreateUpdatePanelRequestMutation,
   useDeleteRequestMutation,
-} = officerManagementApiSlice;
+} = officerRequestApiSlice;

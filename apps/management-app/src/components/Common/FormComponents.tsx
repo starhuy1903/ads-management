@@ -6,6 +6,8 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
+import { Editor } from '@tinymce/tinymce-react';
+import { configs } from '@/configurations';
 
 export function ReadOnlyTextField({
   label = '',
@@ -43,6 +45,38 @@ export function ReadOnlyTextForm({
       <FormLabel htmlFor={field}>{label}</FormLabel>
       <ReadOnlyTextField value={value} disabled />
     </FormControl>
+  );
+}
+
+export function ReadOnlyTinyEditor({
+  label = '',
+  value = '',
+}: {
+  label?: string;
+  value?: string;
+}) {
+  return (
+    <>
+      <Typography variant="h6">{label}</Typography>
+      <Editor
+        id="content"
+        apiKey={configs.tinyMceEditor}
+        value={value}
+        init={{
+          height: 200,
+          menubar: false,
+          toolbar: false,
+          plugins: [
+            'advlist autolink lists link image charmap print preview anchor',
+            'searchreplace visualblocks code fullscreen',
+            'insertdatetime media table paste code help wordcount',
+          ],
+          content_style:
+            'body { font-family:"Roboto","Helvetica","Arial",sans-serif; font-size:14px }',
+        }}
+        disabled
+      />
+    </>
   );
 }
 

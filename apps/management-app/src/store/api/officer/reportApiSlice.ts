@@ -13,23 +13,38 @@ export const officerReportApiSlice = apiSlice.injectEndpoints({
       {
         page?: number;
         take?: number;
-        wards?: string;
+        wards?: number[];
         districts?: string;
         targetType: string;
         typeId?: number;
       }
     >({
-      query: (arg) => ({
-        url: `/reports`,
-        params: {
-          page: arg.page,
-          take: arg.take,
-          wards: arg.wards,
-          districts: arg.districts,
-          targetType: arg.targetType,
-          typeId: arg.typeId,
-        },
-      }),
+      query: (arg) => {
+        if (arg.wards && arg?.wards?.length > 0) {
+          return {
+            url: `/reports`,
+            params: {
+              page: arg.page,
+              take: arg.take,
+              wards: arg.wards.join(','),
+              districts: arg.districts,
+              targetType: arg.targetType,
+              typeId: arg.typeId,
+            },
+          };
+        }
+
+        return {
+          url: `/reports`,
+          params: {
+            page: arg.page,
+            take: arg.take,
+            districts: arg.districts,
+            targetType: arg.targetType,
+            typeId: arg.typeId,
+          },
+        };
+      },
     }),
     getReportById: build.query<Report, string>({
       query: (id) => `/reports/${id}`,
