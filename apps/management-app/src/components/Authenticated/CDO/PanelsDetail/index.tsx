@@ -85,8 +85,7 @@ const PanelsDetail = () => {
     districts: [],
     wards: [],
   });
-  const { data: panelTypes} =
-    useGetPanelTypesQuery({});
+  const { data: panelTypes } = useGetPanelTypesQuery({});
 
   const {
     control,
@@ -146,7 +145,11 @@ const PanelsDetail = () => {
   const formValue = watch();
 
   const handleAddImage = useCallback(
-    (file: File) => setValue('images', [...formValue.images, file]),
+    (file: File) =>
+      setValue('images', [...formValue.images, file], {
+        shouldDirty: true,
+        shouldValidate: true,
+      }),
     [formValue.images, setValue],
   );
 
@@ -172,6 +175,10 @@ const PanelsDetail = () => {
       setValue(
         'images',
         formValue.images.filter((image) => image !== file),
+        {
+          shouldDirty: true,
+          shouldValidate: true,
+        },
       );
     },
     [formValue.images, setValue],

@@ -156,7 +156,11 @@ const LocationsDetail = () => {
   }, [formValue.districtId, isDirty, setValue, wards]);
 
   const handleAddImage = useCallback(
-    (file: File) => setValue('images', [...formValue.images, file]),
+    (file: File) =>
+      setValue('images', [...formValue.images, file], {
+        shouldDirty: true,
+        shouldValidate: true,
+      }),
     [formValue.images, setValue],
   );
 
@@ -182,6 +186,10 @@ const LocationsDetail = () => {
       setValue(
         'images',
         formValue.images.filter((image) => image !== file),
+        {
+          shouldDirty: true,
+          shouldValidate: true,
+        },
       );
     },
     [formValue.images, setValue],

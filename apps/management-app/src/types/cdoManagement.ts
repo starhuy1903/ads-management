@@ -222,7 +222,7 @@ export type LocationDto = {
   fullAddress: string;
   typeId: number;
   adsTypeId: number;
-  image?: Array<File>;
+  images?: Array<File>;
   imageUrls?: Array<string>;
   status: LocationStatus;
 };
@@ -232,7 +232,7 @@ export type PanelDto = {
   width: number;
   height: number;
   locationId: number;
-  image?: Array<File>;
+  images?: Array<File>;
   createContractDate: string;
   expiredContractDate: string;
   companyEmail: string;

@@ -43,14 +43,12 @@ export const adsManagementApiSlice = apiSlice.injectEndpoints({
         Object.entries(arg).forEach(([key, value]) => {
           bodyFormData.append(key, value as string | Blob);
         });
+        arg.images?.forEach((image) => bodyFormData.append('images', image));
 
         return {
           url: '/locations',
           method: 'POST',
           body: bodyFormData,
-          // headers: {
-          //   'Content-Type': 'multipart/form-data;',
-          // },
         };
       },
       onQueryStarted: getOnMutationFunction('Location created'),
@@ -64,14 +62,14 @@ export const adsManagementApiSlice = apiSlice.injectEndpoints({
         Object.entries(arg.data).forEach(([key, value]) => {
           bodyFormData.append(key, value as string | Blob);
         });
+        arg.data.images?.forEach((image) =>
+          bodyFormData.append('images', image),
+        );
 
         return {
           url: `/locations/${arg.id}`,
           method: 'PATCH',
           body: bodyFormData,
-          // headers: {
-          //   'Content-Type': 'multipart/form-data;',
-          // },
         };
       },
       onQueryStarted: getOnMutationFunction('Location updated'),
@@ -108,14 +106,12 @@ export const adsManagementApiSlice = apiSlice.injectEndpoints({
         Object.entries(arg).forEach(([key, value]) => {
           bodyFormData.append(key, value as string | Blob);
         });
+        arg.images?.forEach((image) => bodyFormData.append('images', image));
 
         return {
           url: '/panels',
           method: 'POST',
           body: bodyFormData,
-          // headers: {
-          //   'Content-Type': 'multipart/form-data;',
-          // },
         };
       },
       onQueryStarted: getOnMutationFunction('Panel created'),
@@ -129,14 +125,14 @@ export const adsManagementApiSlice = apiSlice.injectEndpoints({
         Object.entries(arg.data).forEach(([key, value]) => {
           bodyFormData.append(key, value as string | Blob);
         });
+        arg.data.images?.forEach((image) =>
+          bodyFormData.append('images', image),
+        );
 
         return {
           url: `/panels/${arg.id}`,
           method: 'PATCH',
           body: bodyFormData,
-          // headers: {
-          //   'Content-Type': 'multipart/form-data;',
-          // },
         };
       },
       onQueryStarted: getOnMutationFunction('Panel updated'),
