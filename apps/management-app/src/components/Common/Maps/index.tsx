@@ -1,7 +1,13 @@
 // import mapboxgl from 'mapbox-gl';
 import mbxGeocoding from '@mapbox/mapbox-sdk/services/geocoding';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import { useCallback, useEffect, useState } from 'react';
+import {
+  forwardRef,
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useState,
+} from 'react';
 import Map, {
   FullscreenControl,
   GeolocateControl,
@@ -28,11 +34,10 @@ interface MapsProps {
   onClearSelectedLocation?: () => void;
 }
 
-export default function Maps({
-  selectedViewPort,
-  children,
-  onClearSelectedLocation,
-}: MapsProps) {
+function Maps(
+  { selectedViewPort, children, onClearSelectedLocation }: MapsProps,
+  ref: any,
+) {
   const [viewPort, setViewPort] = useState<ViewPort>();
 
   const [marker, setMarker] = useState({ latitude: 0, longitude: 0 });
@@ -62,6 +67,12 @@ export default function Maps({
     },
     [onClearSelectedLocation, dispatch],
   );
+
+  useImperativeHandle(ref, () => ({
+    clearMarker: () => {
+      setMarker({ latitude: 0, longitude: 0 });
+    },
+  }));
 
   useEffect(() => {
     if (selectedViewPort) {
@@ -108,3 +119,5 @@ export default function Maps({
     </Map>
   );
 }
+
+export default forwardRef(Maps);

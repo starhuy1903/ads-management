@@ -7,7 +7,7 @@ import {
   Typography,
 } from '@mui/material';
 import { Avatar } from '@mui/material';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Marker } from 'react-map-gl';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '@/store';
@@ -34,6 +34,8 @@ export default function CitizenHome() {
     isShowingViolatedReport,
     selectedLocation,
   } = useAppSelector((state) => state.maps);
+
+  const ref = useRef<any>(null);
 
   const [anchorElUser, setAnchorElUser] = useState<HTMLElement | null>(null);
 
@@ -68,6 +70,7 @@ export default function CitizenHome() {
 
   const handleViewLocationDetail = useCallback(
     (loc: AdLocation) => {
+      ref.current?.clearMarker();
       dispatch(setSelectedLocation(loc));
       dispatch(
         showSidebar(SidebarKey.AD_DETAIL, {
@@ -184,9 +187,10 @@ export default function CitizenHome() {
         display="flex"
       >
         <Maps
+          ref={ref}
           selectedViewPort={selectedViewPort}
           onClearSelectedLocation={() => {
-            // dispatch(setSelectedLocation(null));
+            dispatch(setSelectedLocation(null));
           }}
         >
           {renderLocationMarkers()}
