@@ -1,5 +1,6 @@
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
+import RefreshIcon from '@mui/icons-material/Refresh';
 import Fab from '@mui/material/Fab';
 import IconButton from '@mui/material/IconButton';
 import Skeleton from '@mui/material/Skeleton';
@@ -180,13 +181,20 @@ const WardsListView = () => {
   return (
     <StaticActionBar
       actionBar={
-        <Fab
-          color="primary"
-          size="medium"
-          onClick={() => navigate('/wards/create')}
-        >
-          <AddIcon sx={{ color: (theme) => theme.palette.common.white }} />
-        </Fab>
+        <>
+          <Fab color="primary" size="medium" onClick={() => refetch()}>
+            <RefreshIcon
+              sx={{ color: (theme) => theme.palette.common.white }}
+            />
+          </Fab>
+          <Fab
+            color="primary"
+            size="medium"
+            onClick={() => navigate('/wards/create')}
+          >
+            <AddIcon sx={{ color: (theme) => theme.palette.common.white }} />
+          </Fab>
+        </>
       }
     >
       <CustomDataGrid

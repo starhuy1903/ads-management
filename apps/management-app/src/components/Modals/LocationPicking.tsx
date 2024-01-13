@@ -4,7 +4,7 @@ import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { memo, useEffect, useState } from 'react';
-import Map, { Marker } from 'react-map-gl';
+import Map, { FullscreenControl, Marker } from 'react-map-gl';
 import { configs } from '@/configurations';
 import { INITIAL_MAP_CENTER } from '@/constants/app';
 import { useLazyGetLocationsQuery } from '@/store/api/adsManagementApiSlice';
@@ -30,7 +30,10 @@ const LocationPicking = ({
 
   useEffect(() => {
     const fetch = async () => {
-      const getLocationsResult = await getLocations({}, true).unwrap();
+      const getLocationsResult = await getLocations(
+        { districts: [], wards: [] },
+        true,
+      ).unwrap();
       setLocation(
         initialLocation
           ? getLocationsResult.data.find((e) => e.id === initialLocation)
@@ -47,7 +50,7 @@ const LocationPicking = ({
   const body = (
     <Box
       sx={{
-        height: 500,
+        height: 300,
         display: 'grid',
         gridTemplateColumns: '4fr 1fr',
         gap: '10px',
@@ -71,6 +74,7 @@ const LocationPicking = ({
           logoPosition="bottom-right"
           doubleClickZoom={false}
         >
+          <FullscreenControl position="bottom-right" />
           {locations &&
             locations.data.map((e) => (
               <Marker
@@ -105,7 +109,35 @@ const LocationPicking = ({
         </Map>
       </Box>
       {location && (
-        <Stack direction="column" gap={1}>
+        <Stack
+          direction="column"
+          gap={1}
+          sx={{
+            maxHeight: '100%',
+            overflow: 'auto',
+            '&::-webkit-scrollbar': {
+              width: '8px',
+              height: '8px',
+              padding: '0px 2px',
+            },
+
+            '&::-webkit-scrollbar-track': {
+              backgroundColor: (theme) => theme.palette.grey[200],
+            },
+
+            '&::-webkit-scrollbar-thumb': {
+              border: '2px solid transparent',
+              borderRadius: '4px',
+              backgroundClip: 'padding-box',
+              backgroundColor: (theme) => theme.palette.primary.main,
+            },
+
+            '&::-webkit-scrollbar-track-piece': {
+              borderColor: 'transparent',
+              backgroundColor: 'transparent',
+            },
+          }}
+        >
           <Typography fontWeight="bold">Name:</Typography>
           <Typography>{location.name}</Typography>
           <Typography fontWeight="bold">Full address:</Typography>

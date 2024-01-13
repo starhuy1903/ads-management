@@ -54,7 +54,7 @@ const AdsRequestListViewOptions = ({
 
   return (
     <GeneralModal
-      headerText="Apply view options"
+      headerText="Apply filter options"
       onModalClose={onModalClose}
       onClickPrimaryButton={() => {
         onSubmit({
