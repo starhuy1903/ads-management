@@ -11,7 +11,6 @@ import {
   ForgotPasswordDto,
   ResetPasswordDto,
   SignInDto,
-  CreateUserDto,
   ChangePasswordDto,
 } from './dto';
 import { IRequestWithUser } from './interfaces';
@@ -20,11 +19,6 @@ import { JwtGuard, JwtRefreshGuard, JwtVerifyGuard } from './guards';
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
-
-  @Post('create-user')
-  async signUp(@Body() dto: CreateUserDto) {
-    return await this.authService.createUser(dto);
-  }
 
   @Post('signin')
   async signIn(@Body() dto: SignInDto) {

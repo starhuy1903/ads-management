@@ -1,45 +1,151 @@
 import { Box } from '@mui/material';
 import { Avatar } from '@mui/material';
-import { useCallback } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { Marker } from 'react-map-gl';
-import { useAppDispatch } from '@/store';
+import { useAppDispatch, useAppSelector } from '@/store';
 import Maps from '@/components/Common/Maps';
+import ActionBar from '@/components/Common/Maps/ActionBar';
 import SidebarContainer from '@/components/Common/Sidebar';
 import { SidebarKey } from '@/constants/sidebar';
 import { useGetLocationQuery } from '@/store/api/citizen/locationApiSlice';
-import { showSidebar } from '@/store/slice/sidebar';
+import { useGetSentReportsQuery } from '@/store/api/citizen/reportApiSlice';
+import {
+  setIsShowingPlannedLocation,
+  setIsShowingViolatedReport,
+  setSelectedLocation,
+} from '@/store/slice/mapsSlice';
+import { hideSidebar, showSidebar } from '@/store/slice/sidebar';
 import { AdLocation } from '@/types/location';
+import anonymousUser from '@/utils/anonymous-user';
 
 export default function CitizenHome() {
   const dispatch = useAppDispatch();
-  const { data: adLocationData } = useGetLocationQuery();
+  const {
+    isShowingPlannedLocation,
+    isShowingViolatedReport,
+    selectedLocation,
+  } = useAppSelector((state) => state.maps);
 
-  const handleViewDetailAd = useCallback(
+  const selectedViewPort = selectedLocation
+    ? {
+        zoom: 15,
+        latitude: selectedLocation.lat,
+        longitude: selectedLocation.long,
+      }
+    : undefined;
+
+  const { data: adLocationData, isLoading: fetchingAllAdsLocation } =
+    useGetLocationQuery(undefined, {
+      skip: false,
+      refetchOnMountOrArgChange: true,
+    });
+  const { data: vioReports, isLoading: fetchingViolatedReport } =
+    useGetSentReportsQuery(anonymousUser.getUserUuid(), {
+      skip: false,
+      refetchOnMountOrArgChange: true,
+    });
+
+  const vioLocationReports = useMemo(
+    () => vioReports?.data.filter((report) => report.targetType === 'Location'),
+    [vioReports?.data],
+  );
+
+  const vioPanelReports = useMemo(
+    () => vioReports?.data.filter((report) => report.targetType === 'Panel'),
+    [vioReports?.data],
+  );
+
+  const handleViewLocationDetail = useCallback(
     (loc: AdLocation) => {
+      dispatch(setSelectedLocation(loc));
       dispatch(
         showSidebar(SidebarKey.AD_DETAIL, {
           location: loc,
+          vioLocationReports: vioLocationReports?.filter(
+            (report) => report.locationId === loc.id,
+          ),
+          vioPanelReports,
         }),
       );
+    },
+    [dispatch, vioLocationReports, vioPanelReports],
+  );
+
+  const handleToggleAdPanels = useCallback(
+    (value: boolean) => {
+      dispatch(setIsShowingPlannedLocation(value));
     },
     [dispatch],
   );
 
-  const renderChildren = () =>
-    adLocationData?.data.map((loc) => (
-      <Marker
-        key={loc.id}
-        longitude={loc.long}
-        latitude={loc.lat}
-        anchor="center"
-      >
-        <Avatar
-          sx={{ bgcolor: 'blue', width: 20, height: 20, fontSize: '12px' }}
-          children="BC"
-          onClick={() => handleViewDetailAd(loc)}
-        />
-      </Marker>
-    ));
+  const handleToggleViolationReport = useCallback(
+    (value: boolean) => {
+      dispatch(setIsShowingViolatedReport(value));
+    },
+    [dispatch],
+  );
+
+  useEffect(() => {
+    if (selectedLocation) {
+      dispatch(
+        showSidebar(SidebarKey.AD_DETAIL, {
+          location: selectedLocation,
+          vioLocationReports: vioLocationReports?.filter(
+            (report) => report.locationId === selectedLocation.id,
+          ),
+          vioPanelReports,
+        }),
+      );
+    }
+
+    return () => {
+      dispatch(hideSidebar());
+    };
+  }, [dispatch, selectedLocation, vioLocationReports, vioPanelReports]);
+
+  const renderLocationMarkers = () =>
+    adLocationData?.data.map((loc) => {
+      let bgColor;
+      const isViolatedLocation = vioLocationReports?.find(
+        (report) => report.locationId === loc.id,
+      );
+      const isSelected = selectedLocation?.id === loc.id;
+
+      if (loc.isPlanning && isShowingPlannedLocation) {
+        return null;
+      }
+
+      if (loc.isPlanning && !isShowingPlannedLocation) {
+        bgColor = 'rgb(245 158 11)';
+      } else if (isShowingViolatedReport && isViolatedLocation) {
+        bgColor = 'red';
+      } else {
+        bgColor = 'blue';
+      }
+
+      const hasAdPanel = loc.panel.length > 0 && !loc.isPlanning;
+
+      return (
+        <Marker
+          key={loc.id}
+          longitude={loc.long}
+          latitude={loc.lat}
+          anchor="center"
+        >
+          <Avatar
+            sx={{
+              bgcolor: bgColor,
+              width: 20,
+              height: 20,
+              fontSize: '10px',
+              border: isSelected ? '2px solid rgb(103 232 249);' : 'none',
+            }}
+            children={hasAdPanel ? 'QC' : ''}
+            onClick={() => handleViewLocationDetail(loc)}
+          />
+        </Marker>
+      );
+    });
 
   return (
     <>
@@ -52,28 +158,27 @@ export default function CitizenHome() {
         zIndex={-1}
         display="flex"
       >
-        <Maps>
-          {renderChildren()}
-          {/* {selectedLocation && (
-            <Popup
-              closeOnClick={false}
-              longitude={selectedLocation.long}
-              latitude={selectedLocation.lat}
-              anchor="bottom"
-              onClose={() => setSelectedLocation(null)}
-            >
-              <Box>
-                <Typography>{selectedLocation.adType.name}</Typography>
-                <Typography>{selectedLocation.type.name}</Typography>
-                <Typography>{selectedLocation.fullAddress}</Typography>
-                <Typography>
-                  {selectedLocation.isPlaning
-                    ? 'CHƯA QUY HOẠCH'
-                    : 'ĐÃ QUY HOẠCH'}
-                </Typography>
-              </Box>
-            </Popup>
-          )} */}
+        <Maps selectedViewPort={selectedViewPort}>
+          {renderLocationMarkers()}
+          <Box
+            sx={{
+              position: 'absolute',
+              bottom: 10,
+              left: 10,
+              right: 10,
+              background: 'rgb(248 250 252);',
+            }}
+            padding={1}
+          >
+            <ActionBar
+              isShowingPlannedLocation={isShowingPlannedLocation}
+              isShowingViolatedReport={isShowingViolatedReport}
+              isGettingAllLocations={fetchingAllAdsLocation}
+              isGettingViolatedReport={fetchingViolatedReport}
+              onToggleAdPanel={handleToggleAdPanels}
+              onToggleViolationReport={handleToggleViolationReport}
+            />
+          </Box>
         </Maps>
       </Box>
       <SidebarContainer style={{ minWidth: 250, maxWidth: 300 }} />

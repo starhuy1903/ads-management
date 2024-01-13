@@ -30,9 +30,9 @@ export const reportApiToastSlice = apiWithToastSlice.injectEndpoints({
       },
       transformResponse: (response: { data: CreatedReport }) => response.data,
     }),
-    getReports: build.query<any, any>({
-      query: () => ({
-        url: 'reports',
+    getSentReports: build.query<GetList<CreatedReport>, string>({
+      query: (userUuid) => ({
+        url: `reports/get-me?userUuid=${userUuid}`,
       }),
     }),
     getReportTypes: build.query<GetList<ReportType>, void>({
@@ -45,6 +45,7 @@ export const reportApiToastSlice = apiWithToastSlice.injectEndpoints({
 
 export const {
   useCreateReportMutation,
-  useGetReportsQuery,
+  useGetSentReportsQuery,
+  useLazyGetSentReportsQuery,
   useGetReportTypesQuery,
 } = reportApiToastSlice;

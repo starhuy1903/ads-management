@@ -20,7 +20,7 @@ import { PageOptionsAdvertisementTypeDto } from './dto/find-all-advertisement-ty
 import { CustomResponse } from '../../middlewares'; // Import your CustomResponse type
 import { UserRole } from '@prisma/client';
 import { Roles } from '../auth/decorators';
-import { JwtGuard } from '../auth/guards';
+import { JwtGuard, RolesGuard } from '../auth/guards';
 import { IRequestWithUser } from '../auth/interfaces';
 
 @Controller('advertisement-types')
@@ -30,7 +30,7 @@ export class AdvertisementTypeController {
   ) {}
 
   @Post()
-  @UseGuards(JwtGuard)
+  @UseGuards(JwtGuard, RolesGuard)
   @Roles(UserRole.cdo)
   async create(
     @Body() createAdvertisementTypeDto: CreateAdvertisementTypeDto,
@@ -53,7 +53,7 @@ export class AdvertisementTypeController {
   }
 
   @Patch(':id')
-  @UseGuards(JwtGuard)
+  @UseGuards(JwtGuard, RolesGuard)
   @Roles(UserRole.cdo)
   async update(
     @Param('id') id: string,
@@ -110,7 +110,7 @@ export class AdvertisementTypeController {
   }
 
   @Delete(':id')
-  @UseGuards(JwtGuard)
+  @UseGuards(JwtGuard, RolesGuard)
   @Roles(UserRole.cdo)
   async remove(@Param('id') id: string, @Res() res: CustomResponse) {
     try {
