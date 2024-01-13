@@ -1,6 +1,6 @@
 import { Box } from '@mui/material';
 import { Avatar } from '@mui/material';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { Marker } from 'react-map-gl';
 import { useAppDispatch, useAppSelector } from '@/store';
 import Maps from '@/components/Common/Maps';
@@ -14,7 +14,7 @@ import {
   setIsShowingViolatedReport,
   setSelectedLocation,
 } from '@/store/slice/mapsSlice';
-import { showSidebar } from '@/store/slice/sidebar';
+import { hideSidebar, showSidebar } from '@/store/slice/sidebar';
 import { AdLocation } from '@/types/location';
 import anonymousUser from '@/utils/anonymous-user';
 
@@ -61,7 +61,9 @@ export default function CitizenHome() {
       dispatch(
         showSidebar(SidebarKey.AD_DETAIL, {
           location: loc,
-          vioLocationReports,
+          vioLocationReports: vioLocationReports?.filter(
+            (report) => report.locationId === loc.id,
+          ),
           vioPanelReports,
         }),
       );
@@ -82,6 +84,24 @@ export default function CitizenHome() {
     },
     [dispatch],
   );
+
+  useEffect(() => {
+    if (selectedLocation) {
+      dispatch(
+        showSidebar(SidebarKey.AD_DETAIL, {
+          location: selectedLocation,
+          vioLocationReports: vioLocationReports?.filter(
+            (report) => report.locationId === selectedLocation.id,
+          ),
+          vioPanelReports,
+        }),
+      );
+    }
+
+    return () => {
+      dispatch(hideSidebar());
+    };
+  }, [dispatch, selectedLocation, vioLocationReports, vioPanelReports]);
 
   const renderLocationMarkers = () =>
     adLocationData?.data.map((loc) => {
