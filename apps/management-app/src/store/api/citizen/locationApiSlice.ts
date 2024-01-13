@@ -19,5 +19,8 @@ const locationApiToastSlice = apiWithToastSlice.injectEndpoints({
   }),
 });
 
-export const { useGetLocationQuery, useGetPanelByLocationQuery } =
-  locationApiToastSlice;
+export const {
+  useGetLocationQuery,
+  useLazyGetLocationQuery,
+  useGetPanelByLocationQuery,
+} = locationApiToastSlice;

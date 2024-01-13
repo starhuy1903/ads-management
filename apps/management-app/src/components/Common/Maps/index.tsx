@@ -5,7 +5,6 @@ import Map, {
   FullscreenControl,
   GeolocateControl,
   NavigationControl,
-  Popup,
 } from 'react-map-gl';
 import { configs } from '@/configurations';
 import CenterLoading from '../CenterLoading';
@@ -16,7 +15,12 @@ interface ViewPort {
   longitude: number;
 }
 
-export default function Maps({ children }: { children?: React.ReactNode }) {
+interface MapsProps {
+  selectedViewPort?: ViewPort;
+  children?: React.ReactNode;
+}
+
+export default function Maps({ selectedViewPort, children }: MapsProps) {
   const [viewPort, setViewPort] = useState<ViewPort>();
   const markerRef = useRef<mapboxgl.Marker>();
 
@@ -29,14 +33,18 @@ export default function Maps({ children }: { children?: React.ReactNode }) {
   // }, []);
 
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition((pos) => {
-      setViewPort({
-        zoom: 15,
-        latitude: pos.coords.latitude,
-        longitude: pos.coords.longitude,
+    if (selectedViewPort) {
+      setViewPort(selectedViewPort);
+    } else {
+      navigator.geolocation.getCurrentPosition((pos) => {
+        setViewPort({
+          zoom: 15,
+          latitude: pos.coords.latitude,
+          longitude: pos.coords.longitude,
+        });
       });
-    });
-  }, []);
+    }
+  }, [selectedViewPort]);
 
   if (!viewPort) {
     return <CenterLoading />;

@@ -5,10 +5,10 @@ import auth from '@/utils/auth';
 import { RootState } from '..';
 import { UserProfile } from '../../types/user';
 
-const initialState = {
+const initialState: UserSliceType = {
   profile: null,
   isLoggedIn: Boolean(auth.getAccessToken()),
-} as UserSliceType;
+};
 
 export const userSlice = createSlice({
   name: 'user',
