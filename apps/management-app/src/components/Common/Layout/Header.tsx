@@ -11,15 +11,15 @@ import {
   Typography,
 } from '@mui/material';
 import { useCallback, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAppSelector } from '@/store';
 import Logo from '@/assets/images/app-logo.png';
-import SearchBar from './SearchBar';
 
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 export default function Header() {
   const navigate = useNavigate();
+  const location = useLocation();
   const isLoggedIn = useAppSelector((state) => state.user.isLoggedIn);
 
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
@@ -35,6 +35,10 @@ export default function Header() {
     setAnchorElUser(null);
   }, []);
 
+  if (location.pathname === '/') {
+    return null;
+  }
+
   return (
     <AppBar
       position="static"
@@ -46,7 +50,6 @@ export default function Header() {
             <Link to="/">
               <img src={Logo} alt="app-logo" width={36} height={36} />
             </Link>
-            <SearchBar />
           </Box>
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">

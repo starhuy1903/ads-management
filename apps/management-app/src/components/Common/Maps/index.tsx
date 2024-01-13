@@ -6,8 +6,10 @@ import Map, {
   GeolocateControl,
   NavigationControl,
 } from 'react-map-gl';
+import 'react-map-gl-geocoder/dist/mapbox-gl-geocoder.css';
 import { configs } from '@/configurations';
 import CenterLoading from '../CenterLoading';
+import GeocoderControl from './GeocoderControl';
 
 interface ViewPort {
   zoom: number;
@@ -59,6 +61,7 @@ export default function Maps({ selectedViewPort, children }: MapsProps) {
       mapboxAccessToken={configs.mapBox}
       logoPosition="bottom-right"
     >
+      <GeocoderControl mapboxAccessToken={configs.mapBox} position="top-left" />
       <FullscreenControl position="bottom-right" />
       <GeolocateControl
         positionOptions={{ enableHighAccuracy: true }}
