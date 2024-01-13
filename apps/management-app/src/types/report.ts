@@ -32,7 +32,7 @@ export type ReportType = {
   name: string;
 };
 
-export interface CreatedReport {
+export interface CreatedReportBase {
   id: number;
   typeId: number;
   fullName: string;
@@ -40,15 +40,26 @@ export interface CreatedReport {
   content: string;
   phoneNumber: string;
   imageUrl: string[];
-  targetType: ReportTargetType;
-  locationId?: number;
-  panelId?: number;
-  status: 'Mới';
+  status: string;
   resolvedContent: string;
   createdAt: string;
   updatedAt: string;
   userUuid: string;
   reportType: ReportType;
+}
+
+export interface CreatedLocationReport extends CreatedReportBase {
+  targetType: 'Location';
+  locationId: number;
+  panelId: null;
   location: AdLocation;
+}
+
+export interface CreatedPanelReport extends CreatedReportBase {
+  targetType: 'Panel';
+  panelId: number;
+  locationId: null;
   panel: Panel;
 }
+
+export type CreatedReport = CreatedLocationReport | CreatedPanelReport;
