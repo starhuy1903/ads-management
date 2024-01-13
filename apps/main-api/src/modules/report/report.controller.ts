@@ -129,8 +129,6 @@ export class ReportController {
   }
 
   @Sse('/officer/sse/:userId')
-  @UseGuards(JwtGuard, RolesGuard)
-  @Roles(UserRole.ward_officer, UserRole.district_officer, UserRole.cdo)
   async sseCreateNewReport(@Param() params: { userId: string }) {
     const { userId } = params;
     try {

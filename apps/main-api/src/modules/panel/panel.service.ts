@@ -16,7 +16,7 @@ export class PanelService {
   async create(createPanelDto: CreatePanelDto, images?: Express.Multer.File[]) {
     let imageUrls = [];
     try {
-      if (images.length) {
+      if (images?.length) {
         const uploadImagesData = await uploadFilesFromFirebase(
           images,
           EUploadFolder.report,
@@ -269,7 +269,7 @@ export class PanelService {
   ) {
     let imageUrls = [];
     try {
-      if (images.length) {
+      if (images?.length) {
         const uploadImagesData = await uploadFilesFromFirebase(
           images,
           EUploadFolder.report,
