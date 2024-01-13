@@ -6,9 +6,11 @@ import { useAppDispatch, useAppSelector } from '@/store';
 import { SidebarKey } from '@/constants/sidebar';
 import { hideSidebar } from '@/store/slice/sidebar';
 import AdDetail from './AdDetail';
+import AnyPoint from './AnyPoint';
 
 const sidebarsMap: { [sidebarKey: string]: any } = {
   [SidebarKey.AD_DETAIL]: AdDetail,
+  [SidebarKey.ANY_POINT]: AnyPoint,
 };
 
 export default function SidebarContainer({

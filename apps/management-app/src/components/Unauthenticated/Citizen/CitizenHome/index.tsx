@@ -163,7 +163,10 @@ export default function CitizenHome() {
               border: isSelected ? '2px solid rgb(103 232 249);' : 'none',
             }}
             children={hasAdPanel ? 'QC' : ''}
-            onClick={() => handleViewLocationDetail(loc)}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleViewLocationDetail(loc);
+            }}
           />
         </Marker>
       );
@@ -180,7 +183,12 @@ export default function CitizenHome() {
         zIndex={-1}
         display="flex"
       >
-        <Maps selectedViewPort={selectedViewPort}>
+        <Maps
+          selectedViewPort={selectedViewPort}
+          onClearSelectedLocation={() => {
+            // dispatch(setSelectedLocation(null));
+          }}
+        >
           {renderLocationMarkers()}
 
           <Box

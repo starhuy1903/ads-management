@@ -35,6 +35,9 @@ dependencies:
   '@mapbox/mapbox-gl-geocoder':
     specifier: 5.1.0-beta.0
     version: 5.1.0-beta.0(mapbox-gl@3.0.0)
+  '@mapbox/mapbox-sdk':
+    specifier: 0.15.3
+    version: 0.15.3
   '@mui/icons-material':
     specifier: ^5.14.15
     version: 5.14.15(@mui/material@5.14.10)(@types/react@18.2.14)(react@18.2.0)
@@ -292,6 +295,9 @@ devDependencies:
   '@types/lodash':
     specifier: ^4.14.202
     version: 4.14.202
+  '@types/mapbox__mapbox-sdk':
+    specifier: 0.14.0
+    version: 0.14.0
   '@types/multer':
     specifier: ^1.4.11
     version: 1.4.11
@@ -5980,7 +5986,6 @@ packages:
 
   /@types/geojson@7946.0.13:
     resolution: {integrity: sha512-bmrNrgKMOhM3WsafmbGmC+6dsF2Z308vLFsQ3a/bT8X8Sv5clVYpPars/UPq+sAaJP+5OoLAYgwbkS5QEJdLUQ==}
-    dev: false
 
   /@types/graceful-fs@4.1.6:
     resolution: {integrity: sha512-Sig0SNORX9fdW+bQuTEovKj3uHcUL6LQKbCrrqb1X7J6/ReAbhCXRAhc+SMejhLELFj2QcyuxmUooZ4bt5ReSw==}
@@ -6068,7 +6073,6 @@ packages:
     resolution: {integrity: sha512-pkRdlhQJNbtwcKJSVC4uuOA6M3OlOObIMhNecqHB991oeaDF5XkjSIRaTE0lh5p4KClptSCxW6MBiREVRHrl2A==}
     dependencies:
       '@types/geojson': 7946.0.13
-    dev: false
 
   /@types/mapbox__mapbox-gl-geocoder@4.7.7:
     resolution: {integrity: sha512-RFUDSDnFoCBapQWfGdgNGkB76drJ2kVG9tH0ottQtDpTW3KPtdQobw0lvvJK4VIMDEKIt/ssEyyLvY1Tja7MSw==}
@@ -6076,6 +6080,14 @@ packages:
       '@types/geojson': 7946.0.13
       '@types/mapbox-gl': 2.7.19
     dev: false
+
+  /@types/mapbox__mapbox-sdk@0.14.0:
+    resolution: {integrity: sha512-c8MP61xN2Xp/1VDR78AA6crdqbmryZxekc2tlnmgcdc31SFnSZpeOWVFiM3Ngmgkkr+3IL+I8lAhsRKEijeC5A==}
+    dependencies:
+      '@types/geojson': 7946.0.13
+      '@types/mapbox-gl': 2.7.19
+      '@types/node': 18.14.2
+    dev: true
 
   /@types/mime@1.3.2:
     resolution: {integrity: sha512-YATxVxgRqNH6nHEIsvg6k2Boc1JHI9ZbH5iWFFv/MTkchz3b1ieGDa5T0a9RznNdI0KhVbdbWSN+KWWrQZRxTw==}

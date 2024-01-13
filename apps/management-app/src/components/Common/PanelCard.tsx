@@ -49,8 +49,6 @@ export default function PanelCard({
   const dispatch = useAppDispatch();
   const [expanded, setExpanded] = useState(false);
 
-  console.log({ violatedReports });
-
   const isViolated = violatedReports.length !== 0;
 
   const goToReportPage = useCallback(() => {
