@@ -29,7 +29,7 @@ import { fromEvent, map } from 'rxjs';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { UserRole } from '@prisma/client';
 import { Roles } from '../auth/decorators';
-import { JwtGuard } from '../auth/guards';
+import { JwtGuard, RolesGuard } from '../auth/guards';
 import { NotificationType } from '../../constants/notification';
 import { GetStatisticDto } from './dto/get-statistic.dto';
 import { IRequestWithUser } from '../auth/interfaces';
@@ -44,7 +44,7 @@ export class ReportController {
     private readonly userService: UserService,
   ) {}
 
-  @UseGuards(JwtGuard)
+  @UseGuards(JwtGuard, RolesGuard)
   @Roles(UserRole.cdo)
   @Get('/statistic')
   async getStatistic(
@@ -129,10 +129,8 @@ export class ReportController {
   }
 
   @Sse('/officer/sse/:userId')
-  @UseGuards(JwtGuard)
-  @Roles(UserRole.ward_officer)
-  @Roles(UserRole.district_officer)
-  @Roles(UserRole.cdo)
+  @UseGuards(JwtGuard, RolesGuard)
+  @Roles(UserRole.ward_officer, UserRole.district_officer, UserRole.cdo)
   async sseCreateNewReport(@Param() params: { userId: string }) {
     const { userId } = params;
     try {

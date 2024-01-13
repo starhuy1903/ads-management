@@ -19,14 +19,14 @@ import { PageOptionsPanelTypeDto } from './dto/find-all-panel-type.dto';
 import { CustomResponse } from '../../middlewares'; // Import your CustomResponse type
 import { UserRole } from '@prisma/client';
 import { Roles } from '../auth/decorators';
-import { JwtGuard } from '../auth/guards';
+import { JwtGuard, RolesGuard } from '../auth/guards';
 
 @Controller('panel-types')
 export class PanelTypeController {
   constructor(private readonly panelTypeService: PanelTypeService) {}
 
   @Post()
-  @UseGuards(JwtGuard)
+  @UseGuards(JwtGuard, RolesGuard)
   @Roles(UserRole.cdo)
   async create(
     @Body() createPanelTypeDto: CreatePanelTypeDto,
@@ -65,7 +65,7 @@ export class PanelTypeController {
   }
 
   @Patch(':id')
-  @UseGuards(JwtGuard)
+  @UseGuards(JwtGuard, RolesGuard)
   @Roles(UserRole.cdo)
   async update(
     @Param('id') id: string,
@@ -90,7 +90,7 @@ export class PanelTypeController {
   }
 
   @Delete(':id')
-  @UseGuards(JwtGuard)
+  @UseGuards(JwtGuard, RolesGuard)
   @Roles(UserRole.cdo)
   async remove(@Param('id') id: string, @Res() res: CustomResponse) {
     try {

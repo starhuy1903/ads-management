@@ -1,12 +1,359 @@
 {
 	"info": {
-		"_postman_id": "b853d505-d97f-4769-8e66-76d62f170fe9",
+		"_postman_id": "c811c740-98a2-4a63-bd36-c70b5e651b5a",
 		"name": "User",
 		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
-		"_exporter_id": "16088057",
-		"_collection_link": "https://orange-zodiac-214004.postman.co/workspace/Ads-Management~f6b11e7b-c291-4ad4-8554-9e1ee60b98fb/collection/16088057-b853d505-d97f-4769-8e66-76d62f170fe9?action=share&source=collection_link&creator=16088057"
+		"_exporter_id": "24188163"
 	},
 	"item": [
+		{
+			"name": "cdo apis",
+			"item": [
+				{
+					"name": "Get user's info",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE5LCJlbWFpbCI6ImNoaWhpZW4yMDAyM0BnbWFpbC5jb20iLCJyb2xlIjoiY2RvIiwiaWF0IjoxNzA1MTI1NzgyLCJleHAiOjE3MDUxMjYwODJ9.6tI5OkkavEZRFEOa_LmJi_ixkiCgQNO_C-o9asdC_9k"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{URL}}/api/users/15"
+					},
+					"response": [
+						{
+							"name": "Get user's info",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": "{{URL}}/api/users/15"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "214"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"d6-LrU2w/g+jfQ5PuONUkQWRn6g030\""
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 13 Jan 2024 06:07:16 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": 15,\n    \"email\": \"p6q6@gmail.com\",\n    \"firstName\": \"Tri\",\n    \"lastName\": \"Do\",\n    \"phoneNumber\": null,\n    \"dob\": null,\n    \"role\": \"ward_officer\",\n    \"ward\": {\n        \"id\": 262,\n        \"name\": \"Phường 6\",\n        \"district\": {\n            \"id\": 18,\n            \"name\": \"Quận 6\"\n        }\n    },\n    \"district\": null\n}"
+						}
+					]
+				},
+				{
+					"name": "Get user list",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE5LCJlbWFpbCI6ImNoaWhpZW4yMDAyM0BnbWFpbC5jb20iLCJyb2xlIjoiY2RvIiwiaWF0IjoxNzA1MTI1NzIxLCJleHAiOjE3MDUxMjYwMjF9.8HQRrHS0Jsr211nmIwz2meMVImVA-gHZMPqme_vFyGY"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/api/users?take=3&page=1&role=district_officer",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"users"
+							],
+							"query": [
+								{
+									"key": "take",
+									"value": "3"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "role",
+									"value": "district_officer"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Filter by role",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{URL}}/api/users?take=3&page=1&role=district_officer",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"api",
+										"users"
+									],
+									"query": [
+										{
+											"key": "take",
+											"value": "3"
+										},
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "role",
+											"value": "district_officer"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "612"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"264-XHr87D7Px32cKNThQPQEk1XaGIY\""
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 13 Jan 2024 06:04:30 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": [\n        {\n            \"id\": 17,\n            \"email\": \"q6@gmail.com\",\n            \"firstName\": \"Tri\",\n            \"lastName\": \"Do\",\n            \"phoneNumber\": null,\n            \"dob\": null,\n            \"role\": \"district_officer\",\n            \"ward\": null,\n            \"district\": {\n                \"id\": 18,\n                \"name\": \"Quận 6\"\n            }\n        },\n        {\n            \"id\": 13,\n            \"email\": \"officerd1@gmail.com\",\n            \"firstName\": \"Tri\",\n            \"lastName\": \"Do\",\n            \"phoneNumber\": null,\n            \"dob\": null,\n            \"role\": \"district_officer\",\n            \"ward\": null,\n            \"district\": {\n                \"id\": 1,\n                \"name\": \"Thành Phố Thủ Đức\"\n            }\n        },\n        {\n            \"id\": 12,\n            \"email\": \"chihien20027111@gmail.com\",\n            \"firstName\": \"Hien\",\n            \"lastName\": \"Truong\",\n            \"phoneNumber\": null,\n            \"dob\": null,\n            \"role\": \"district_officer\",\n            \"ward\": null,\n            \"district\": {\n                \"id\": 12,\n                \"name\": \"Quận Tân Bình\"\n            }\n        }\n    ],\n    \"totalPages\": 2,\n    \"totalCount\": 6\n}"
+						},
+						{
+							"name": "Pagination",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{URL}}/api/users?take=3&page=1",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"api",
+										"users"
+									],
+									"query": [
+										{
+											"key": "take",
+											"value": "3"
+										},
+										{
+											"key": "page",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "671"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"29f-g8r+lelpUVCt1Z9gyz9+pOqkTg0\""
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 13 Jan 2024 06:05:03 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": [\n        {\n            \"id\": 20,\n            \"email\": \"chihien20024@gmail.com\",\n            \"firstName\": \"Hien\",\n            \"lastName\": \"Truong\",\n            \"phoneNumber\": null,\n            \"dob\": null,\n            \"role\": \"ward_officer\",\n            \"ward\": {\n                \"id\": 5,\n                \"name\": \"Phường Thảo Điền\",\n                \"district\": {\n                    \"id\": 1,\n                    \"name\": \"Thành Phố Thủ Đức\"\n                }\n            },\n            \"district\": null\n        },\n        {\n            \"id\": 19,\n            \"email\": \"chihien20023@gmail.com\",\n            \"firstName\": \"Hien\",\n            \"lastName\": \"Truong\",\n            \"phoneNumber\": null,\n            \"dob\": null,\n            \"role\": \"cdo\",\n            \"ward\": null,\n            \"district\": null\n        },\n        {\n            \"id\": 18,\n            \"email\": \"p5q6-1@gmail.com\",\n            \"firstName\": \"Hien\",\n            \"lastName\": \"Truong\",\n            \"phoneNumber\": null,\n            \"dob\": null,\n            \"role\": \"ward_officer\",\n            \"ward\": {\n                \"id\": 263,\n                \"name\": \"Phường 5\",\n                \"district\": {\n                    \"id\": 18,\n                    \"name\": \"Quận 6\"\n                }\n            },\n            \"district\": null\n        }\n    ],\n    \"totalPages\": 7,\n    \"totalCount\": 20\n}"
+						}
+					]
+				},
+				{
+					"name": "Create user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE5LCJlbWFpbCI6ImNoaWhpZW4yMDAyM0BnbWFpbC5jb20iLCJyb2xlIjoiY2RvIiwiaWF0IjoxNzA1MTI1MDM1LCJleHAiOjE3MDUxMjUzMzV9.zyRSyvfL5IW7h7P7I8To636uk9eQOeaYujmTkJ-pAkk"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"chihien20024@gmail.com\",\n    \"password\": \"123456789\",\n    \"firstName\": \"Hien\",\n    \"lastName\": \"Truong\",\n    \"role\": \"ward_officer\",\n    \"wardId\": 5\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URL}}/api/users"
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"chihien20025@gmail.com\",\n    \"password\": \"123456789\",\n    \"firstName\": \"Hien\",\n    \"lastName\": \"Truong\",\n    \"role\": \"district_officer\",\n    \"districtId\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{URL}}/api/auth/create-user"
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "38"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"26-bPwNG458oL+42k8l9BND77BInJo\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 02 Jan 2024 01:05:54 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Create user successfully\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Update user info",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE5LCJlbWFpbCI6ImNoaWhpZW4yMDAyM0BnbWFpbC5jb20iLCJyb2xlIjoiY2RvIiwiaWF0IjoxNzA1MTI2MjIwLCJleHAiOjE3MDUxMjY1MjB9.y-wBrNaXjzHZplpz10yX7EWv0VMkpIMYwjz21SSaa1U"
+							}
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"dob\": \"2002-04-15\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URL}}/api/users/1"
+					},
+					"response": []
+				}
+			]
+		},
 		{
 			"name": "Get user info",
 			"request": {
@@ -18,7 +365,7 @@
 				},
 				"method": "GET",
 				"header": [],
-				"url": "{{LOCAL_URL}}/api/users/me"
+				"url": "{{URL}}/api/users/me"
 			},
 			"response": [
 				{
@@ -170,14 +517,14 @@
 				"auth": {
 					"type": "bearer",
 					"bearer": {
-						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjksImVtYWlsIjoiY2hpaGllbjIwMDJAZ21haWwuY29tIiwicm9sZSI6ImRpc3RyaWN0X29mZmljZXIiLCJpYXQiOjE3MDQxNTgyNzYsImV4cCI6MTcwNDE1ODU3Nn0.gI8p1yu9JhNyKk56fBfH5St-lasxw9224-Wcm-q9ao4"
+						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEwLCJlbWFpbCI6ImNoaWhpZW4yMDAyMkBnbWFpbC5jb20iLCJyb2xlIjoid2FyZF9vZmZpY2VyIiwiaWF0IjoxNzA1MTI2MTc2LCJleHAiOjE3MDUxMjY0NzZ9.3GdfKghxUQaGYYzF4BB7NGAHzLHf62Ikep5dWAyZ2U4"
 					}
 				},
 				"method": "PATCH",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"phone_number\": \"0795907075\"\n}",
+					"raw": "{\n    \"phoneNumber\": \"0795907075\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
