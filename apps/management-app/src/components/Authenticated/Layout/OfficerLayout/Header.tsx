@@ -1,9 +1,9 @@
 import MenuIcon from '@mui/icons-material/Menu';
-import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined';
 import { AppBar, Box, Toolbar } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import CustomIconButton from '@/components/Common/CustomIconButton';
 import Logo from './Logo';
+import Notification from './Notification';
 import ProfileSection from './ProfileSection';
 
 type HeaderProps = {
@@ -42,9 +42,7 @@ function Header({ onSidebarToggle }: HeaderProps) {
         </Box>
         <Box className="flex-1" />
         <Box className="flex gap-x-4">
-          <CustomIconButton className="h-fit">
-            <NotificationsNoneOutlinedIcon />
-          </CustomIconButton>
+          <Notification />
           <ProfileSection />
         </Box>
       </Toolbar>
