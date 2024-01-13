@@ -1,6 +1,6 @@
+import EmailIcon from '@mui/icons-material/Email';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined';
-import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
 import {
   Box,
   ButtonBase,
@@ -17,9 +17,9 @@ import {
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAppSelector } from '@/store';
 import CustomIconButton from '@/components/Common/CustomIconButton';
+import { ReportStatus } from '@/constants/report';
+import anonymousUser from '@/utils/anonymous-user';
 
 const PopperListItem = styled(ListItem)(({ theme }) => ({
   padding: 0,
@@ -50,14 +50,11 @@ const PopperListItem = styled(ListItem)(({ theme }) => ({
   },
 }));
 
-function Notification() {
-  const navigate = useNavigate();
-
-  const userId = useAppSelector((state) => state.user?.profile?.id);
+function CitizenNotification() {
+  const userUuid = anonymousUser.getUserUuid();
   const [notification, setNotification] = useState<{
-    targetType: string;
-    targetId: string;
     email: string;
+    status: string;
   }>();
   const [isSeen, setIsSeen] = useState(true);
 
@@ -88,8 +85,8 @@ function Notification() {
   };
 
   useEffect(() => {
-    if (!userId) return;
-    const SERVER_URL = `https://ads-management-api.onrender.com/api/reports/officer/sse/${userId}`;
+    if (!userUuid) return;
+    const SERVER_URL = `https://ads-management-api.onrender.com/api/reports/user/sse/${userUuid}`;
     const open = async () => {
       const eventSource = new EventSource(SERVER_URL);
 
@@ -98,9 +95,8 @@ function Notification() {
         if (dataString.length === 0) return;
         const data = JSON.parse(dataString);
         setNotification({
-          targetType: data?.data?.targetType,
           email: data?.data?.email,
-          targetId: data?.data?.id,
+          status: data?.data?.status,
         });
         setIsSeen(false);
       };
@@ -111,7 +107,7 @@ function Notification() {
     };
 
     open();
-  }, [userId]);
+  }, [userUuid]);
 
   return (
     <>
@@ -149,46 +145,46 @@ function Notification() {
                   {notification ? (
                     <List>
                       <PopperListItem>
-                        <Box
-                          onClick={() => {
-                            if (!notification.targetId) return;
-                            setPopperOpen(false);
-                            if (!isSeen) {
-                              setIsSeen(true);
+                        <ListItemButton disabled={isSeen}>
+                          <ListItemIcon>
+                            <EmailIcon color="primary" />
+                          </ListItemIcon>
+                          <ListItemText
+                            primary={
+                              <Typography
+                                sx={{
+                                  fontWeight: 'bold',
+                                }}
+                                color={
+                                  notification.status === ReportStatus?.PENDING
+                                    ? 'mediumblue'
+                                    : 'green'
+                                }
+                              >
+                                {`Your Report Has Been ${
+                                  notification.status === ReportStatus?.PENDING
+                                    ? 'Processing'
+                                    : 'Resolved'
+                                }`}
+                              </Typography>
                             }
-                            const route =
-                              notification.targetType === 'Location'
-                                ? `/location-reports/${notification.targetId}`
-                                : `/panel-reports/${notification.targetId}`;
-                            navigate(route);
-                          }}
-                        >
-                          <ListItemButton disabled={isSeen}>
-                            <ListItemIcon>
-                              <PriorityHighIcon color="warning" />
-                            </ListItemIcon>
-                            <ListItemText
-                              primary={
-                                <Typography
-                                  sx={{
-                                    fontWeight: 'bold',
-                                  }}
-                                >
-                                  New Report
-                                </Typography>
-                              }
-                              secondary={
-                                <Typography
-                                  sx={{
-                                    fontSize: '0.875rem',
-                                  }}
-                                >
-                                  {`${notification.targetType} report from email ${notification.email}.`}
-                                </Typography>
-                              }
-                            />
-                          </ListItemButton>
-                        </Box>
+                            secondary={
+                              <Typography
+                                sx={{
+                                  fontSize: '0.875rem',
+                                }}
+                              >
+                                A new response has been sent to {''}
+                                <span className="font-bold">
+                                  {notification.email}
+                                </span>
+                                .
+                                <br />
+                                Please check your email.
+                              </Typography>
+                            }
+                          />
+                        </ListItemButton>
                       </PopperListItem>
                     </List>
                   ) : (
@@ -222,4 +218,4 @@ function Notification() {
   );
 }
 
-export default Notification;
+export default CitizenNotification;
