@@ -248,6 +248,8 @@ export class ReportService {
     const [result, totalCount] = await Promise.all([
       this.prismaService.report.findMany({
         include: {
+          district: true,
+          ward: true,
           reportType: true,
           location: {
             include: {
