@@ -1,5 +1,14 @@
-import { Type } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 import { IsInt, IsNotEmpty, IsOptional, Min } from 'class-validator';
+
+const optionalBooleanMapper = new Map([
+  ['undefined', undefined],
+  ['true', true],
+  ['false', false],
+]);
+
+export const ParseOptionalBoolean = () =>
+  Transform(({ value }) => optionalBooleanMapper.get(value));
 
 export class CreateLocationDto {
   @Type(() => Number)
@@ -24,7 +33,7 @@ export class CreateLocationDto {
   @IsNotEmpty()
   readonly lat?: number;
 
-  @Type(() => Boolean)
+  @Transform(({ value }) => optionalBooleanMapper.get(value))
   @IsNotEmpty()
   readonly isPlanning?: boolean;
 
