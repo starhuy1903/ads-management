@@ -3,7 +3,7 @@ import EditLocationIcon from '@mui/icons-material/EditLocation';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { memo, useEffect, useState } from 'react';
-import Map, { Marker } from 'react-map-gl';
+import Map, { FullscreenControl, Marker } from 'react-map-gl';
 import { configs } from '@/configurations';
 import { INITIAL_MAP_CENTER } from '@/constants/app';
 import GeneralModal from './GeneralModal';
@@ -34,12 +34,11 @@ const CoordinatePicking = ({
   const MarkerIcon = markerIcon === 'new' ? AddLocationIcon : EditLocationIcon;
 
   const body = (
-    <Box sx={{ height: 500, display: 'flex', flexDirection: 'column' }}>
+    <Box sx={{ height: '60dvh', display: 'flex', flexDirection: 'column' }}>
       <Box
         sx={{
-          width: '60%',
           display: 'grid',
-          gridTemplateColumns: 'repeat(4, 1fr)',
+          gridTemplateColumns: 'repeat(6, 1fr)',
           marginBottom: '16px',
         }}
       >
@@ -69,11 +68,16 @@ const CoordinatePicking = ({
             setCoordinate({ lat: event.lngLat.lat, lng: event.lngLat.lng });
           }}
         >
+          <FullscreenControl position="bottom-right" />
           {coordinate && (
             <Marker
+              draggable
+              onDragEnd={(event) =>
+                setCoordinate({ lat: event.lngLat.lat, lng: event.lngLat.lng })
+              }
               longitude={coordinate.lng}
               latitude={coordinate.lat}
-              style={{ cursor: 'crosshair' }}
+              style={{ cursor: 'pointer' }}
             >
               <MarkerIcon
                 sx={{

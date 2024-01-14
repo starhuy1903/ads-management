@@ -1,6 +1,7 @@
 import { useAppDispatch, useAppSelector } from '@/store';
 import { ModalKey } from '@/constants/modal';
 import { showModal } from '@/store/slice/modal';
+import AccountListViewOptions from './AccountListViewOptions';
 import AdsRequestListViewOptions from './AdsRequestListViewOptions';
 import CancelRequest from './CancelRequest';
 import CoordinatePicking from './CoordinatePicking';
@@ -27,6 +28,7 @@ const modalsMap: { [modalKey: string]: any } = {
   [ModalKey.LOCATION_VIEW_OPTIONS]: LocationListViewOptions,
   [ModalKey.PANEL_VIEW_OPTIONS]: PanelListViewOptions,
   [ModalKey.REPORT_DETAIL]: ReportDetail,
+  [ModalKey.ACCOUNT_LIST_VIEW_OPTIONS]: AccountListViewOptions,
 };
 
 export function ModalContainer() {

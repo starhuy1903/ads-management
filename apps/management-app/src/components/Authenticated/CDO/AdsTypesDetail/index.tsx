@@ -14,7 +14,7 @@ import {
   useDeleteAdsTypesMutation,
   useLazyGetAdsTypeByIdQuery,
   useUpdateAdsTypeMutation,
-} from '@/store/api/generalManagementApiSlice';
+} from '@/store/api/cdo/generalManagementApiSlice';
 import { isApiErrorResponse } from '@/store/api/helper';
 import { showModal } from '@/store/slice/modal';
 import { showError } from '@/utils/toast';
@@ -47,7 +47,7 @@ const AdsTypesDetail = () => {
     defaultValues: async () => {
       try {
         const adsType = await getAdsType(parseInt(id!), true).unwrap();
-        return adsType;
+        return adsType.data;
       } catch (error) {
         showError(
           isApiErrorResponse(error) && error.status === 404
@@ -66,7 +66,7 @@ const AdsTypesDetail = () => {
     dispatch(
       showModal(ModalKey.GENERAL, {
         headerText: `Apply changes ?`,
-        
+
         primaryButtonText: 'Confirm',
         onClickPrimaryButton: async () => {
           try {
@@ -86,8 +86,8 @@ const AdsTypesDetail = () => {
   const handleDeleteAdsType = useCallback(() => {
     dispatch(
       showModal(ModalKey.GENERAL, {
-        headerText: `Delete ${data?.name} ?`,
-        
+        headerText: `Delete ${data?.data.name} ?`,
+
         primaryButtonText: 'Confirm',
         onClickPrimaryButton: async () => {
           try {
@@ -101,7 +101,7 @@ const AdsTypesDetail = () => {
         },
       }),
     );
-  }, [data?.name, deleteAdsTypes, dispatch, id, navigate]);
+  }, [data?.data.name, deleteAdsTypes, dispatch, id, navigate]);
 
   return (
     <StaticActionBar

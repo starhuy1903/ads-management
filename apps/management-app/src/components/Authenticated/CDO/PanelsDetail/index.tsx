@@ -27,8 +27,8 @@ import {
   useGetLocationsQuery,
   useLazyGetPanelByIdQuery,
   useUpdatePanelMutation,
-} from '@/store/api/adsManagementApiSlice';
-import { useGetPanelTypesQuery } from '@/store/api/generalManagementApiSlice';
+} from '@/store/api/cdo/adsManagementApiSlice';
+import { useGetPanelTypesQuery } from '@/store/api/cdo/generalManagementApiSlice';
 import { isApiErrorResponse } from '@/store/api/helper';
 import { showModal } from '@/store/slice/modal';
 import { PanelStatus } from '@/types/cdoManagement';
@@ -85,8 +85,7 @@ const PanelsDetail = () => {
     districts: [],
     wards: [],
   });
-  const { data: panelTypes} =
-    useGetPanelTypesQuery({});
+  const { data: panelTypes } = useGetPanelTypesQuery({});
 
   const {
     control,
@@ -146,7 +145,11 @@ const PanelsDetail = () => {
   const formValue = watch();
 
   const handleAddImage = useCallback(
-    (file: File) => setValue('images', [...formValue.images, file]),
+    (file: File) =>
+      setValue('images', [...formValue.images, file], {
+        shouldDirty: true,
+        shouldValidate: true,
+      }),
     [formValue.images, setValue],
   );
 
@@ -172,6 +175,10 @@ const PanelsDetail = () => {
       setValue(
         'images',
         formValue.images.filter((image) => image !== file),
+        {
+          shouldDirty: true,
+          shouldValidate: true,
+        },
       );
     },
     [formValue.images, setValue],

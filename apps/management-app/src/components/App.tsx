@@ -1,6 +1,3 @@
-import { useAppSelector } from '@/store';
-import { useLazyGetProfileQuery } from '@/store/api/userApiSlice';
-import { checkRole } from '@/store/slice/userSlice';
 import { useEffect } from 'react';
 import 'react-perfect-scrollbar/dist/css/styles.css';
 import {
@@ -8,6 +5,12 @@ import {
   RouterProvider,
   createBrowserRouter,
 } from 'react-router-dom';
+import { useAppSelector } from '@/store';
+import { useLazyGetProfileQuery } from '@/store/api/userApiSlice';
+import { checkRole } from '@/store/slice/userSlice';
+import AccountsCreate from './Authenticated/CDO/AccountsCreate';
+import AccountsDetail from './Authenticated/CDO/AccountsDetail';
+import AccountsListView from './Authenticated/CDO/AccountsListView';
 import AdsTypesCreate from './Authenticated/CDO/AdsTypesCreate';
 import AdsTypesDetail from './Authenticated/CDO/AdsTypesDetail';
 import AdsTypesListView from './Authenticated/CDO/AdsTypesListView';
@@ -198,7 +201,15 @@ const CDORoutes = createBrowserRouter([
       },
       {
         path: 'accounts',
-        element: <div>Officer accounts</div>,
+        element: <AccountsListView />,
+      },
+      {
+        path: 'accounts/create',
+        element: <AccountsCreate />,
+      },
+      {
+        path: 'accounts/:id',
+        element: <AccountsDetail />,
       },
       {
         path: 'change-password',

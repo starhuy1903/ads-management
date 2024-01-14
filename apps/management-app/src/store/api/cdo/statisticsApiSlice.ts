@@ -2,7 +2,7 @@ import {
   GetStatictisQueryOptions,
   GetStatictisResult,
 } from '@/types/cdoManagement';
-import { apiSlice } from './baseApiSlice';
+import { apiSlice } from '../baseApiSlice';
 
 export const statisticsApiSlice = apiSlice.injectEndpoints({
   endpoints: (build) => ({
