@@ -7,7 +7,7 @@
 	},
 	"item": [
 		{
-			"name": "cdo apis",
+			"name": "Cdo's user apis",
 			"item": [
 				{
 					"name": "Get user's info",
@@ -329,219 +329,374 @@
 					]
 				},
 				{
+					"name": "Update user account",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE5LCJlbWFpbCI6ImNoaWhpZW4yMDAyM0BnbWFpbC5jb20iLCJyb2xlIjoiY2RvIiwiaWF0IjoxNzA1MjIxMjcwLCJleHAiOjE3MDUyMjMwNzB9.dn6PzZwFHbj73dtgsvM9UmTcJSZc98Jdy8cvPOigT4s"
+							}
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"role\": \"ward_officer\",\n    \"wardId\": 2\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{URL}}/api/users/18"
+					},
+					"response": [
+						{
+							"name": "Update account to cdo",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"role\": \"cdo\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{URL}}/api/users/20"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "161"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"a1-BsYP+C7v1Y6H1VaquDftLVXHSvo\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 14 Jan 2024 08:43:07 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"user\": {\n        \"id\": 20,\n        \"email\": \"chihien20024@gmail.com\",\n        \"firstName\": \"Hien\",\n        \"lastName\": \"Truong\",\n        \"phoneNumber\": null,\n        \"dob\": null,\n        \"role\": \"cdo\",\n        \"ward\": null,\n        \"district\": null\n    }\n}"
+						},
+						{
+							"name": "Update account to ward officer",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"role\": \"ward_officer\",\n    \"wardId\": 2\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{URL}}/api/users/20"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "266"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"10a-BpsNKMAoWeyyqfSRgsKHQwOFbZU\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 14 Jan 2024 08:43:47 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"user\": {\n        \"id\": 20,\n        \"email\": \"chihien20024@gmail.com\",\n        \"firstName\": \"Hien\",\n        \"lastName\": \"Truong\",\n        \"phoneNumber\": null,\n        \"dob\": null,\n        \"role\": \"ward_officer\",\n        \"ward\": {\n            \"id\": 2,\n            \"name\": \"Phường Bình Trưng Tây\",\n            \"district\": {\n                \"id\": 1,\n                \"name\": \"Thành Phố Thủ Đức\"\n            }\n        },\n        \"district\": null\n    }\n}"
+						},
+						{
+							"name": "Update account to district officer",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"role\": \"district_officer\",\n    \"districtId\": 2\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{URL}}/api/users/20"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "207"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"cf-D9T4bWjEknR7T/7k+6JnpwBtPVA\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 14 Jan 2024 08:44:22 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"user\": {\n        \"id\": 20,\n        \"email\": \"chihien20024@gmail.com\",\n        \"firstName\": \"Hien\",\n        \"lastName\": \"Truong\",\n        \"phoneNumber\": null,\n        \"dob\": null,\n        \"role\": \"district_officer\",\n        \"ward\": null,\n        \"district\": {\n            \"id\": 2,\n            \"name\": \"Huyện Cần Giờ\"\n        }\n    }\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Officer's user apis",
+			"item": [
+				{
+					"name": "Get user info",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjksImVtYWlsIjoiY2hpaGllbjIwMDJAZ21haWwuY29tIiwicm9sZSI6ImRpc3RyaWN0X29mZmljZXIiLCJpYXQiOjE3MDQxNTgyNzYsImV4cCI6MTcwNDE1ODU3Nn0.gI8p1yu9JhNyKk56fBfH5St-lasxw9224-Wcm-q9ao4"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{URL}}/api/users/me"
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": "{{URL}}/api/users/me"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "211"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"d3-SFeSkHatEVtDBG267/pGrVrm3C8\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 02 Jan 2024 01:18:00 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"user\": {\n        \"id\": 9,\n        \"email\": \"chihien2002@gmail.com\",\n        \"firstName\": \"Hien\",\n        \"lastName\": \"Truong\",\n        \"phoneNumber\": null,\n        \"dob\": null,\n        \"role\": \"district_officer\",\n        \"ward\": null,\n        \"district\": {\n            \"id\": 1,\n            \"name\": \"Thành Phố Thủ Đức\"\n        }\n    }\n}"
+						},
+						{
+							"name": "Invalid token",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": "{{URL}}/api/users/me"
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "43"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"2b-dGnJzt6gv1nJjX6DJ9RztDWptng\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 02 Jan 2024 01:18:14 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Unauthorized\",\n    \"statusCode\": 401\n}"
+						},
+						{
+							"name": "Token expires",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": "{{URL}}/api/users/me"
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "68"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"44-VD61CEkLKOda4UPl7MMHZ+ELbr4\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 02 Jan 2024 01:18:43 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Token has expired\",\n    \"error\": \"Forbidden\",\n    \"statusCode\": 403\n}"
+						}
+					]
+				},
+				{
 					"name": "Update user info",
 					"request": {
 						"auth": {
 							"type": "bearer",
 							"bearer": {
-								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE5LCJlbWFpbCI6ImNoaWhpZW4yMDAyM0BnbWFpbC5jb20iLCJyb2xlIjoiY2RvIiwiaWF0IjoxNzA1MTI2MjIwLCJleHAiOjE3MDUxMjY1MjB9.y-wBrNaXjzHZplpz10yX7EWv0VMkpIMYwjz21SSaa1U"
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEwLCJlbWFpbCI6ImNoaWhpZW4yMDAyMkBnbWFpbC5jb20iLCJyb2xlIjoid2FyZF9vZmZpY2VyIiwiaWF0IjoxNzA1MTI2MTc2LCJleHAiOjE3MDUxMjY0NzZ9.3GdfKghxUQaGYYzF4BB7NGAHzLHf62Ikep5dWAyZ2U4"
 							}
 						},
 						"method": "PATCH",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"dob\": \"2002-04-15\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": "{{URL}}/api/users/1"
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Get user info",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": {
-						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjksImVtYWlsIjoiY2hpaGllbjIwMDJAZ21haWwuY29tIiwicm9sZSI6ImRpc3RyaWN0X29mZmljZXIiLCJpYXQiOjE3MDQxNTgyNzYsImV4cCI6MTcwNDE1ODU3Nn0.gI8p1yu9JhNyKk56fBfH5St-lasxw9224-Wcm-q9ao4"
-					}
-				},
-				"method": "GET",
-				"header": [],
-				"url": "{{URL}}/api/users/me"
-			},
-			"response": [
-				{
-					"name": "Success",
-					"originalRequest": {
-						"method": "GET",
-						"header": [],
-						"url": "{{URL}}/api/users/me"
-					},
-					"status": "OK",
-					"code": 200,
-					"_postman_previewlanguage": "json",
-					"header": [
-						{
-							"key": "X-Powered-By",
-							"value": "Express"
-						},
-						{
-							"key": "Access-Control-Allow-Origin",
-							"value": "*"
-						},
-						{
-							"key": "Content-Type",
-							"value": "application/json; charset=utf-8"
-						},
-						{
-							"key": "Content-Length",
-							"value": "211"
-						},
-						{
-							"key": "ETag",
-							"value": "W/\"d3-SFeSkHatEVtDBG267/pGrVrm3C8\""
-						},
-						{
-							"key": "Date",
-							"value": "Tue, 02 Jan 2024 01:18:00 GMT"
-						},
-						{
-							"key": "Connection",
-							"value": "keep-alive"
-						},
-						{
-							"key": "Keep-Alive",
-							"value": "timeout=5"
-						}
-					],
-					"cookie": [],
-					"body": "{\n    \"user\": {\n        \"id\": 9,\n        \"email\": \"chihien2002@gmail.com\",\n        \"firstName\": \"Hien\",\n        \"lastName\": \"Truong\",\n        \"phoneNumber\": null,\n        \"dob\": null,\n        \"role\": \"district_officer\",\n        \"ward\": null,\n        \"district\": {\n            \"id\": 1,\n            \"name\": \"Thành Phố Thủ Đức\"\n        }\n    }\n}"
-				},
-				{
-					"name": "Invalid token",
-					"originalRequest": {
-						"method": "GET",
-						"header": [],
-						"url": "{{URL}}/api/users/me"
-					},
-					"status": "Unauthorized",
-					"code": 401,
-					"_postman_previewlanguage": "json",
-					"header": [
-						{
-							"key": "X-Powered-By",
-							"value": "Express"
-						},
-						{
-							"key": "Access-Control-Allow-Origin",
-							"value": "*"
-						},
-						{
-							"key": "Content-Type",
-							"value": "application/json; charset=utf-8"
-						},
-						{
-							"key": "Content-Length",
-							"value": "43"
-						},
-						{
-							"key": "ETag",
-							"value": "W/\"2b-dGnJzt6gv1nJjX6DJ9RztDWptng\""
-						},
-						{
-							"key": "Date",
-							"value": "Tue, 02 Jan 2024 01:18:14 GMT"
-						},
-						{
-							"key": "Connection",
-							"value": "keep-alive"
-						},
-						{
-							"key": "Keep-Alive",
-							"value": "timeout=5"
-						}
-					],
-					"cookie": [],
-					"body": "{\n    \"message\": \"Unauthorized\",\n    \"statusCode\": 401\n}"
-				},
-				{
-					"name": "Token expires",
-					"originalRequest": {
-						"method": "GET",
-						"header": [],
-						"url": "{{URL}}/api/users/me"
-					},
-					"status": "Forbidden",
-					"code": 403,
-					"_postman_previewlanguage": "json",
-					"header": [
-						{
-							"key": "X-Powered-By",
-							"value": "Express"
-						},
-						{
-							"key": "Access-Control-Allow-Origin",
-							"value": "*"
-						},
-						{
-							"key": "Content-Type",
-							"value": "application/json; charset=utf-8"
-						},
-						{
-							"key": "Content-Length",
-							"value": "68"
-						},
-						{
-							"key": "ETag",
-							"value": "W/\"44-VD61CEkLKOda4UPl7MMHZ+ELbr4\""
-						},
-						{
-							"key": "Date",
-							"value": "Tue, 02 Jan 2024 01:18:43 GMT"
-						},
-						{
-							"key": "Connection",
-							"value": "keep-alive"
-						},
-						{
-							"key": "Keep-Alive",
-							"value": "timeout=5"
-						}
-					],
-					"cookie": [],
-					"body": "{\n    \"message\": \"Token has expired\",\n    \"error\": \"Forbidden\",\n    \"statusCode\": 403\n}"
-				}
-			]
-		},
-		{
-			"name": "Update user info",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": {
-						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEwLCJlbWFpbCI6ImNoaWhpZW4yMDAyMkBnbWFpbC5jb20iLCJyb2xlIjoid2FyZF9vZmZpY2VyIiwiaWF0IjoxNzA1MTI2MTc2LCJleHAiOjE3MDUxMjY0NzZ9.3GdfKghxUQaGYYzF4BB7NGAHzLHf62Ikep5dWAyZ2U4"
-					}
-				},
-				"method": "PATCH",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"phoneNumber\": \"0795907075\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": "{{URL}}/api/users/me"
-			},
-			"response": [
-				{
-					"name": "Token expires",
-					"originalRequest": {
-						"method": "PATCH",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"phone_number\": \"0795907075\"\n}",
+							"raw": "{\n    \"phoneNumber\": \"0795907075\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -550,101 +705,120 @@
 						},
 						"url": "{{URL}}/api/users/me"
 					},
-					"status": "Forbidden",
-					"code": 403,
-					"_postman_previewlanguage": "json",
-					"header": [
+					"response": [
 						{
-							"key": "X-Powered-By",
-							"value": "Express"
-						},
-						{
-							"key": "Access-Control-Allow-Origin",
-							"value": "*"
-						},
-						{
-							"key": "Content-Type",
-							"value": "application/json; charset=utf-8"
-						},
-						{
-							"key": "Content-Length",
-							"value": "68"
-						},
-						{
-							"key": "ETag",
-							"value": "W/\"44-VD61CEkLKOda4UPl7MMHZ+ELbr4\""
-						},
-						{
-							"key": "Date",
-							"value": "Tue, 02 Jan 2024 01:18:28 GMT"
-						},
-						{
-							"key": "Connection",
-							"value": "keep-alive"
-						},
-						{
-							"key": "Keep-Alive",
-							"value": "timeout=5"
-						}
-					],
-					"cookie": [],
-					"body": "{\n    \"message\": \"Token has expired\",\n    \"error\": \"Forbidden\",\n    \"statusCode\": 403\n}"
-				},
-				{
-					"name": "Success",
-					"originalRequest": {
-						"method": "PATCH",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"phone_number\": \"0795907075\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
+							"name": "Token expires",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"phone_number\": \"0795907075\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{URL}}/api/users/me"
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "68"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"44-VD61CEkLKOda4UPl7MMHZ+ELbr4\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 02 Jan 2024 01:18:28 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
 								}
-							}
-						},
-						"url": "{{URL}}/api/users/me"
-					},
-					"status": "OK",
-					"code": 200,
-					"_postman_previewlanguage": "json",
-					"header": [
-						{
-							"key": "X-Powered-By",
-							"value": "Express"
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Token has expired\",\n    \"error\": \"Forbidden\",\n    \"statusCode\": 403\n}"
 						},
 						{
-							"key": "Access-Control-Allow-Origin",
-							"value": "*"
-						},
-						{
-							"key": "Content-Type",
-							"value": "application/json; charset=utf-8"
-						},
-						{
-							"key": "Content-Length",
-							"value": "211"
-						},
-						{
-							"key": "ETag",
-							"value": "W/\"d3-SFeSkHatEVtDBG267/pGrVrm3C8\""
-						},
-						{
-							"key": "Date",
-							"value": "Tue, 02 Jan 2024 01:19:09 GMT"
-						},
-						{
-							"key": "Connection",
-							"value": "keep-alive"
-						},
-						{
-							"key": "Keep-Alive",
-							"value": "timeout=5"
+							"name": "Success",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"phone_number\": \"0795907075\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{URL}}/api/users/me"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "211"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"d3-SFeSkHatEVtDBG267/pGrVrm3C8\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 02 Jan 2024 01:19:09 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"user\": {\n        \"id\": 9,\n        \"email\": \"chihien2002@gmail.com\",\n        \"firstName\": \"Hien\",\n        \"lastName\": \"Truong\",\n        \"phoneNumber\": null,\n        \"dob\": null,\n        \"role\": \"district_officer\",\n        \"ward\": null,\n        \"district\": {\n            \"id\": 1,\n            \"name\": \"Thành Phố Thủ Đức\"\n        }\n    }\n}"
 						}
-					],
-					"cookie": [],
-					"body": "{\n    \"user\": {\n        \"id\": 9,\n        \"email\": \"chihien2002@gmail.com\",\n        \"firstName\": \"Hien\",\n        \"lastName\": \"Truong\",\n        \"phoneNumber\": null,\n        \"dob\": null,\n        \"role\": \"district_officer\",\n        \"ward\": null,\n        \"district\": {\n            \"id\": 1,\n            \"name\": \"Thành Phố Thủ Đức\"\n        }\n    }\n}"
+					]
 				}
 			]
 		}
