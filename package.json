@@ -17,7 +17,7 @@
     "@logtail/node": "^0.4.19",
     "@logtail/winston": "^0.4.19",
     "@mapbox/mapbox-gl-geocoder": "5.1.0-beta.0",
-    "@mapbox/mapbox-sdk": "0.15.3",
+    "@mapbox/mapbox-sdk": "0.14.0",
     "@mui/icons-material": "^5.14.15",
     "@mui/material": "5.14.10",
     "@mui/x-data-grid": "^6.18.4",
