@@ -25,7 +25,7 @@ import { MAX_ID_LENGTH } from '@/constants/url-params';
 import { ImageFileConfig } from '@/constants/validation';
 import {
   useLazyGetAdsTypesOfficerQuery,
-  useLazyGetLocationByIdQuery,
+  useLazyGetLocationByIdOfficerQuery,
   useLazyGetLocationTypesOfficerQuery,
 } from '@/store/api/officer/locationApiSlice';
 import { useCreateUpdateLocationRequestMutation } from '@/store/api/officer/requestApiSlide';
@@ -53,7 +53,7 @@ export default function LocationEditing() {
   const [adsTypes, setAdsTypes] = useState<AdsType[]>([]);
 
   const [getLocation, { isLoading: locationLoading }] =
-    useLazyGetLocationByIdQuery();
+    useLazyGetLocationByIdOfficerQuery();
   const [getLocationTypes, { isLoading: locationTypesLoading }] =
     useLazyGetLocationTypesOfficerQuery();
   const [getAdsTypes, { isLoading: adsTypesLoading }] =

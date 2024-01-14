@@ -1,10 +1,6 @@
-import AddLocationIcon from '@mui/icons-material/AddLocation';
 import { Button, Stack, TextField, Typography } from '@mui/material';
-import 'moment-timezone';
 import { useEffect, useState } from 'react';
-import { Map, Marker } from 'react-map-gl';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { configs } from '@/configurations';
 import CenterLoading from '@/components/Common/CenterLoading';
 import {
   ImageListField,
@@ -12,10 +8,9 @@ import {
   ReadOnlyTinyEditor,
 } from '@/components/Common/FormComponents';
 import { DetailWrapper } from '@/components/Common/Layout/ScreenWrapper';
-import { INITIAL_MAP_CENTER } from '@/constants/app';
 import { ReportStatus } from '@/constants/report';
 import { MAX_ID_LENGTH } from '@/constants/url-params';
-import { useLazyGetReportByIdQuery } from '@/store/api/officer/reportApiSlice';
+import { useLazyGetReportByIdOfficerQuery } from '@/store/api/officer/reportApiSlice';
 import { Report } from '@/types/officer-management';
 import { formatDateTime } from '@/utils/datetime';
 import { capitalize } from '@/utils/format-string';
@@ -27,7 +22,7 @@ export default function PointReportDetail() {
   const [report, setReport] = useState<Report | null>(null);
   const { reportId } = useParams<{ reportId: string }>();
 
-  const [getReport, { isLoading }] = useLazyGetReportByIdQuery();
+  const [getReport, { isLoading }] = useLazyGetReportByIdOfficerQuery();
 
   function handleInvalidRequest() {
     setReport(null);

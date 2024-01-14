@@ -24,7 +24,7 @@ import { ModalKey } from '@/constants/modal';
 import { MAX_ID_LENGTH } from '@/constants/url-params';
 import { ImageFileConfig } from '@/constants/validation';
 import {
-  useLazyGetPanelByIdQuery,
+  useLazyGetPanelByIdOfficerQuery,
   useLazyGetPanelTypesOfficerQuery,
 } from '@/store/api/officer/panelApiSlide';
 import { useCreateUpdatePanelRequestMutation } from '@/store/api/officer/requestApiSlide';
@@ -46,7 +46,8 @@ export default function PanelEditing() {
   const [panel, setPanel] = useState<Panel | null>(null);
   const [panelTypes, setPanelTypes] = useState<PanelType[]>([]);
 
-  const [getPanel, { isLoading: panelLoading }] = useLazyGetPanelByIdQuery();
+  const [getPanel, { isLoading: panelLoading }] =
+    useLazyGetPanelByIdOfficerQuery();
   const [getPanelTypes, { isLoading: panelTypesLoading }] =
     useLazyGetPanelTypesOfficerQuery();
 
