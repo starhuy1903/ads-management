@@ -27,13 +27,13 @@ import {
   useDeleteLocationsMutation,
   useLazyGetLocationByIdQuery,
   useUpdateLocationMutation,
-} from '@/store/api/adsManagementApiSlice';
+} from '@/store/api/cdo/adsManagementApiSlice';
 import {
   useGetAdsTypesQuery,
   useGetDistrictsQuery,
   useGetLocationTypesQuery,
   useGetWardsQuery,
-} from '@/store/api/generalManagementApiSlice';
+} from '@/store/api/cdo/generalManagementApiSlice';
 import { isApiErrorResponse } from '@/store/api/helper';
 import { showModal } from '@/store/slice/modal';
 import { LocationStatus } from '@/types/cdoManagement';

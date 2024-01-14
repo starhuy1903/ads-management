@@ -16,7 +16,7 @@ import { ModalKey } from '@/constants/modal';
 import {
   useDeletePanelTypesMutation,
   useGetPanelTypesQuery,
-} from '@/store/api/generalManagementApiSlice';
+} from '@/store/api/cdo/generalManagementApiSlice';
 import { showModal } from '@/store/slice/modal';
 import CustomDataGrid from '../CustomDatagrid';
 import CustomLink from '../CustomLink';

@@ -8,7 +8,7 @@ import * as yup from 'yup';
 import { useAppDispatch } from '@/store';
 import ControlledTextField from '@/components/Common/ControlledTextField';
 import { ModalKey } from '@/constants/modal';
-import { useCreateReportTypeMutation } from '@/store/api/generalManagementApiSlice';
+import { useCreateReportTypeMutation } from '@/store/api/cdo/generalManagementApiSlice';
 import { showModal } from '@/store/slice/modal';
 import StaticActionBar from '../StaticActionBar';
 

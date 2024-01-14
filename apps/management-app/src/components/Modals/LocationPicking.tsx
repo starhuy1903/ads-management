@@ -7,7 +7,7 @@ import { memo, useEffect, useState } from 'react';
 import Map, { FullscreenControl, Marker } from 'react-map-gl';
 import { configs } from '@/configurations';
 import { INITIAL_MAP_CENTER } from '@/constants/app';
-import { useLazyGetLocationsQuery } from '@/store/api/adsManagementApiSlice';
+import { useLazyGetLocationsQuery } from '@/store/api/cdo/adsManagementApiSlice';
 import { LocationFull } from '@/types/cdoManagement';
 import GeneralModal from './GeneralModal';
 

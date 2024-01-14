@@ -14,7 +14,7 @@ import {
   useApproveRequestMutation,
   useGetPermissionRequestByIdQuery,
   useRejectRequestMutation,
-} from '@/store/api/requestManagementApiSlice';
+} from '@/store/api/cdo/requestManagementApiSlice';
 import { showModal } from '@/store/slice/modal';
 import { displayTimestamp } from '@/utils/format';
 import { showError } from '@/utils/toast';

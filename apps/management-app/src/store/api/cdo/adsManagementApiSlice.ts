@@ -9,8 +9,8 @@ import {
   PanelDto,
   PanelFull,
 } from '@/types/cdoManagement';
-import { apiSlice } from './baseApiSlice';
-import { getOnMutationFunction } from './helper';
+import { apiSlice } from '../baseApiSlice';
+import { getOnMutationFunction } from '../helper';
 
 export const adsManagementApiSlice = apiSlice.injectEndpoints({
   endpoints: (build) => ({

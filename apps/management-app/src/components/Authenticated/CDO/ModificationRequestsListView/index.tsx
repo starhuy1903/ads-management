@@ -16,8 +16,8 @@ import { ModalKey } from '@/constants/modal';
 import {
   useGetDistrictsQuery,
   useGetWardsQuery,
-} from '@/store/api/generalManagementApiSlice';
-import { useLazyGetModificationRequestsQuery } from '@/store/api/requestManagementApiSlice';
+} from '@/store/api/cdo/generalManagementApiSlice';
+import { useLazyGetModificationRequestsQuery } from '@/store/api/cdo/requestManagementApiSlice';
 import { showModal } from '@/store/slice/modal';
 import {
   AdsRequestStatus,

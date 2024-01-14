@@ -19,12 +19,12 @@ import { ModalKey } from '@/constants/modal';
 import {
   useDeletePanelsMutation,
   useLazyGetPanelsQuery,
-} from '@/store/api/adsManagementApiSlice';
+} from '@/store/api/cdo/adsManagementApiSlice';
 import {
   useGetDistrictsQuery,
   useGetPanelTypesQuery,
   useGetWardsQuery,
-} from '@/store/api/generalManagementApiSlice';
+} from '@/store/api/cdo/generalManagementApiSlice';
 import { showModal } from '@/store/slice/modal';
 import { IPanelListViewOptions, Ward } from '@/types/cdoManagement';
 import { displayTimestamp } from '@/utils/format';

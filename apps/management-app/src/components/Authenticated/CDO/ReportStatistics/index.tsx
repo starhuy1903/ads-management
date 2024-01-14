@@ -14,8 +14,8 @@ import { ModalKey } from '@/constants/modal';
 import {
   useGetDistrictsQuery,
   useGetWardsQuery,
-} from '@/store/api/generalManagementApiSlice';
-import { useLazyGetStatictisQuery } from '@/store/api/statisticsApiSlice';
+} from '@/store/api/cdo/generalManagementApiSlice';
+import { useLazyGetStatictisQuery } from '@/store/api/cdo/statisticsApiSlice';
 import { showModal } from '@/store/slice/modal';
 import { IStatisticsViewOptions, Ward } from '@/types/cdoManagement';
 import StaticActionBar from '../StaticActionBar';

@@ -268,3 +268,53 @@ export type PanelListQueryOptions = IPanelListViewOptions & {
   districts?: Array<number>;
   wards?: Array<number>;
 };
+
+export enum AccountRole {
+  DISTRICT_OFFICER = 'district_officer',
+  WARD_OFFICER = 'ward_officer',
+  CDO = 'cdo',
+}
+
+export type Account = {
+  id: number;
+  email: string;
+  firstName: string;
+  lastName: string;
+  phoneNumber?: string;
+  dob?: string;
+  role: AccountRole;
+  ward?: Ward;
+  district?: District;
+};
+
+export type AccountDto = {
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+  dob?: string;
+  phoneNumber?: string;
+  role: AccountRole;
+  wardId?: number;
+  districtId?: number;
+};
+
+export type UpdateAccountDto = {
+  email: string;
+  firstName: string;
+  lastName: string;
+  dob?: string;
+  phoneNumber?: string;
+  role: AccountRole;
+  wardId?: number;
+  districtId?: number;
+}
+
+export type IAccountListViewOptions = {
+  role?: AccountRole;
+};
+
+export type AccountListQueryOptions = IAccountListViewOptions & {
+  page?: number;
+  limit?: number;
+};

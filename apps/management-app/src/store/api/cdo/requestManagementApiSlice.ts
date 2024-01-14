@@ -5,8 +5,8 @@ import {
   GetListResult,
   MessageResponse,
 } from '@/types/cdoManagement';
-import { apiSlice } from './baseApiSlice';
-import { getOnMutationFunction } from './helper';
+import { apiSlice } from '../baseApiSlice';
+import { getOnMutationFunction } from '../helper';
 
 export const requestManagementApiSlice = apiSlice.injectEndpoints({
   endpoints: (build) => ({

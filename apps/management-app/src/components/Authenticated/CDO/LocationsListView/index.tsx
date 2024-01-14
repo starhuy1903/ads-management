@@ -21,13 +21,13 @@ import { ModalKey } from '@/constants/modal';
 import {
   useDeleteLocationsMutation,
   useLazyGetLocationsQuery,
-} from '@/store/api/adsManagementApiSlice';
+} from '@/store/api/cdo/adsManagementApiSlice';
 import {
   useGetAdsTypesQuery,
   useGetDistrictsQuery,
   useGetLocationTypesQuery,
   useGetWardsQuery,
-} from '@/store/api/generalManagementApiSlice';
+} from '@/store/api/cdo/generalManagementApiSlice';
 import { showModal } from '@/store/slice/modal';
 import { ILocationListViewOptions, Ward } from '@/types/cdoManagement';
 import { displayTimestamp } from '@/utils/format';

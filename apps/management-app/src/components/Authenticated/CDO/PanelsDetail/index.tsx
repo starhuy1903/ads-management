@@ -27,8 +27,8 @@ import {
   useGetLocationsQuery,
   useLazyGetPanelByIdQuery,
   useUpdatePanelMutation,
-} from '@/store/api/adsManagementApiSlice';
-import { useGetPanelTypesQuery } from '@/store/api/generalManagementApiSlice';
+} from '@/store/api/cdo/adsManagementApiSlice';
+import { useGetPanelTypesQuery } from '@/store/api/cdo/generalManagementApiSlice';
 import { isApiErrorResponse } from '@/store/api/helper';
 import { showModal } from '@/store/slice/modal';
 import { PanelStatus } from '@/types/cdoManagement';
