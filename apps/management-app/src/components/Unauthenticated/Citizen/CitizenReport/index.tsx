@@ -20,8 +20,7 @@ import {
   useController,
   useForm,
 } from 'react-hook-form';
-import { useSearchParams } from 'react-router-dom';
-import { v4 as uuidv4 } from 'uuid';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { configs } from '@/configurations';
 import { useAppDispatch } from '@/store';
 import CenterLoading from '@/components/Common/CenterLoading';
@@ -35,7 +34,7 @@ import {
 } from '@/store/api/citizen/reportApiSlice';
 import { showModal } from '@/store/slice/modal';
 import { CreateReportForm, ReportPayload } from '@/types/report';
-import reportStorage from '@/utils/sent-report';
+import anonymousUser from '@/utils/anonymous-user';
 import { showSuccess } from '@/utils/toast';
 import ImagePreview from './ImagePreview';
 import UploadImageCard from './UploadImageCard';
@@ -44,6 +43,10 @@ export default function CitizenReport() {
   const [searchParams] = useSearchParams();
   const locationId = searchParams.get('location');
   const panelId = searchParams.get('panel');
+  const pointLat = searchParams.get('lat');
+  const pointLng = searchParams.get('lng');
+
+  const navigate = useNavigate();
 
   const dispatch = useAppDispatch();
   const [createReport, { isLoading }] = useCreateReportMutation();
@@ -120,19 +123,29 @@ export default function CitizenReport() {
   }) => <UploadImageCard open={open} disabled={disabled} />;
 
   const onSubmit: SubmitHandler<CreateReportForm> = async (data) => {
-    const targetObject = locationId
-      ? { targetType: 'Location', locationId: Number(locationId) }
-      : { targetType: 'Panel', panelId: Number(panelId) };
+    let targetObject;
+    if (locationId) {
+      targetObject = { targetType: 'Location', locationId: Number(locationId) };
+    } else if (panelId) {
+      targetObject = { targetType: 'Panel', panelId: Number(panelId) };
+    } else {
+      targetObject = {
+        targetType: 'Point',
+        lat: Number(pointLat),
+        long: Number(pointLng),
+      };
+    }
 
     const submitData = {
       ...data,
-      userUuid: uuidv4(),
+      userUuid: anonymousUser.getUserUuid(),
       ...targetObject,
     } as ReportPayload;
 
     try {
       await createReport(submitData).unwrap();
       showSuccess('Submitted report successfully!');
+      navigate('/');
     } catch (error) {
       // handled error
     }

@@ -1,3 +1,6 @@
+import { AdLocation } from './location';
+import { Panel } from './panel';
+
 export interface CreateReportForm {
   fullName: string;
   email: string;
@@ -22,9 +25,21 @@ type PanelReport = {
   panelId: number;
 } & CreateReportForm;
 
-export type ReportPayload = LocationReport | PanelReport;
+type AnyPointReport = {
+  userUuid: string;
+  targetType: 'Point';
+  lat: number;
+  long: number;
+} & CreateReportForm;
 
-export interface CreatedReport {
+export type ReportPayload = LocationReport | PanelReport | AnyPointReport;
+
+export type ReportType = {
+  id: number;
+  name: string;
+};
+
+export interface CreatedReportBase {
   id: number;
   typeId: number;
   fullName: string;
@@ -32,17 +47,26 @@ export interface CreatedReport {
   content: string;
   phoneNumber: string;
   imageUrl: string[];
-  targetType: ReportTargetType;
-  locationId?: number;
-  panelId?: number;
-  status: 'Mới';
+  status: string;
   resolvedContent: string;
   createdAt: string;
   updatedAt: string;
   userUuid: string;
+  reportType: ReportType;
 }
 
-export type ReportType = {
-  id: number;
-  name: string;
-};
+export interface CreatedLocationReport extends CreatedReportBase {
+  targetType: 'Location';
+  locationId: number;
+  panelId: null;
+  location: AdLocation;
+}
+
+export interface CreatedPanelReport extends CreatedReportBase {
+  targetType: 'Panel';
+  panelId: number;
+  locationId: null;
+  panel: Panel;
+}
+
+export type CreatedReport = CreatedLocationReport | CreatedPanelReport;

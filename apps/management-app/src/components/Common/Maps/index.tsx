@@ -1,14 +1,26 @@
 // import mapboxgl from 'mapbox-gl';
+import mbxGeocoding from '@mapbox/mapbox-sdk/services/geocoding';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import { useEffect, useRef, useState } from 'react';
+import {
+  forwardRef,
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useState,
+} from 'react';
 import Map, {
   FullscreenControl,
   GeolocateControl,
+  Marker,
   NavigationControl,
-  Popup,
 } from 'react-map-gl';
+import 'react-map-gl-geocoder/dist/mapbox-gl-geocoder.css';
 import { configs } from '@/configurations';
+import { useAppDispatch } from '@/store';
+import { SidebarKey } from '@/constants/sidebar';
+import { showSidebar } from '@/store/slice/sidebar';
 import CenterLoading from '../CenterLoading';
+import GeocoderControl from './GeocoderControl';
 
 interface ViewPort {
   zoom: number;
@@ -16,27 +28,67 @@ interface ViewPort {
   longitude: number;
 }
 
-export default function Maps({ children }: { children?: React.ReactNode }) {
+interface MapsProps {
+  selectedViewPort?: ViewPort;
+  children?: React.ReactNode;
+  onClearSelectedLocation?: () => void;
+}
+
+function Maps(
+  { selectedViewPort, children, onClearSelectedLocation }: MapsProps,
+  ref: any,
+) {
   const [viewPort, setViewPort] = useState<ViewPort>();
-  const markerRef = useRef<mapboxgl.Marker>();
 
-  // const popup = useMemo(() => {
-  //   return mapboxgl.Popup().setText('Hello world!');
-  // }, []);
+  const [marker, setMarker] = useState({ latitude: 0, longitude: 0 });
+  const dispatch = useAppDispatch();
 
-  // const togglePopup = useCallback(() => {
-  //   markerRef.current?.togglePopup();
-  // }, []);
+  const onClickAnyPoint = useCallback(
+    async (event: mapboxgl.MapLayerMouseEvent) => {
+      onClearSelectedLocation?.();
+
+      setMarker({
+        latitude: event.lngLat.lat,
+        longitude: event.lngLat.lng,
+      });
+
+      const response = await mbxGeocoding({ accessToken: configs.mapBox })
+        .reverseGeocode({
+          query: [event.lngLat.lng, event.lngLat.lat],
+        })
+        .send();
+
+      const address = response.body.features[0].place_name;
+      dispatch(
+        showSidebar(SidebarKey.ANY_POINT, {
+          address,
+          lat: event.lngLat.lat,
+          lng: event.lngLat.lng,
+        }),
+      );
+    },
+    [onClearSelectedLocation, dispatch],
+  );
+
+  useImperativeHandle(ref, () => ({
+    clearMarker: () => {
+      setMarker({ latitude: 0, longitude: 0 });
+    },
+  }));
 
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition((pos) => {
-      setViewPort({
-        zoom: 15,
-        latitude: pos.coords.latitude,
-        longitude: pos.coords.longitude,
+    if (selectedViewPort) {
+      setViewPort(selectedViewPort);
+    } else {
+      navigator.geolocation.getCurrentPosition((pos) => {
+        setViewPort({
+          zoom: 15,
+          latitude: pos.coords.latitude,
+          longitude: pos.coords.longitude,
+        });
       });
-    });
-  }, []);
+    }
+  }, [selectedViewPort]);
 
   if (!viewPort) {
     return <CenterLoading />;
@@ -50,7 +102,13 @@ export default function Maps({ children }: { children?: React.ReactNode }) {
       mapStyle="mapbox://styles/mapbox/streets-v9"
       mapboxAccessToken={configs.mapBox}
       logoPosition="bottom-right"
+      onClick={onClickAnyPoint}
     >
+      <Marker latitude={marker.latitude} longitude={marker.longitude}>
+        <div>📍</div>
+      </Marker>
+
+      <GeocoderControl mapboxAccessToken={configs.mapBox} position="top-left" />
       <FullscreenControl position="bottom-right" />
       <GeolocateControl
         positionOptions={{ enableHighAccuracy: true }}
@@ -63,3 +121,5 @@ export default function Maps({ children }: { children?: React.ReactNode }) {
     </Map>
   );
 }
+
+export default forwardRef(Maps);

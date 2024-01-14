@@ -24,7 +24,7 @@ import { CustomResponse } from '../../middlewares'; // Import your CustomRespons
 import { PanelService } from '../panel/panel.service';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { FILE_TYPES_REGEX } from '../../constants/images';
-import { JwtGuard } from '../auth/guards';
+import { JwtGuard, RolesGuard } from '../auth/guards';
 import { IRequestWithUser } from '../auth/interfaces';
 import { UserRole } from '@prisma/client';
 import { Roles } from '../auth/decorators';
@@ -140,7 +140,7 @@ export class LocationController {
   }
 
   @Patch(':id')
-  @UseGuards(JwtGuard)
+  @UseGuards(JwtGuard, RolesGuard)
   @Roles(UserRole.cdo)
   @UseInterceptors(FilesInterceptor('images', 2))
   async update(
@@ -177,7 +177,7 @@ export class LocationController {
   }
 
   @Delete(':id')
-  @UseGuards(JwtGuard)
+  @UseGuards(JwtGuard, RolesGuard)
   @Roles(UserRole.cdo)
   async remove(@Param('id') id: string, @Res() res: CustomResponse) {
     try {
