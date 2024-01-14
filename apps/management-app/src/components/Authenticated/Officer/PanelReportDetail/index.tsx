@@ -1,5 +1,5 @@
 import { Button, Stack, TextField, Typography } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import CenterLoading from '@/components/Common/CenterLoading';
 import {
@@ -24,10 +24,10 @@ export default function PanelReportDetail() {
 
   const [getReport, { isLoading }] = useLazyGetReportByIdOfficerQuery();
 
-  function handleInvalidRequest() {
+  const handleInvalidRequest = useCallback(() => {
     setReport(null);
     navigate('/panel-reports', { replace: true });
-  }
+  }, [navigate]);
 
   useEffect(() => {
     if (
@@ -40,7 +40,7 @@ export default function PanelReportDetail() {
     }
     async function fetchData() {
       try {
-        const res = await getReport(reportId!, true).unwrap();
+        const res = await getReport(reportId!).unwrap();
         setReport(res);
       } catch (error) {
         console.log(error);
@@ -49,7 +49,7 @@ export default function PanelReportDetail() {
     }
 
     fetchData();
-  }, [getReport, reportId]);
+  }, [getReport, handleInvalidRequest, reportId]);
 
   if (isLoading || !report) {
     return <CenterLoading />;

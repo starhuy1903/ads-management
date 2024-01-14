@@ -1,6 +1,6 @@
 import FmdBadIcon from '@mui/icons-material/FmdBad';
 import { Box, Button, Stack, TextField, Typography } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Map, Marker } from 'react-map-gl';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { configs } from '@/configurations';
@@ -27,10 +27,10 @@ export default function PointReportDetail() {
 
   const [getReport, { isLoading }] = useLazyGetReportByIdOfficerQuery();
 
-  function handleInvalidRequest() {
+  const handleInvalidRequest = useCallback(() => {
     setReport(null);
     navigate('/point-reports', { replace: true });
-  }
+  }, [navigate]);
 
   useEffect(() => {
     if (
@@ -44,7 +44,7 @@ export default function PointReportDetail() {
 
     async function fetchData() {
       try {
-        const res = await getReport(reportId!, true).unwrap();
+        const res = await getReport(reportId!).unwrap();
         setReport(res);
       } catch (error) {
         console.log(error);
@@ -53,7 +53,7 @@ export default function PointReportDetail() {
     }
 
     fetchData();
-  }, [getReport, reportId]);
+  }, [getReport, handleInvalidRequest, reportId]);
 
   if (isLoading || !report) {
     return <CenterLoading />;

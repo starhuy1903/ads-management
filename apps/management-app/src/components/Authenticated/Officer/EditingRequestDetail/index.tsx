@@ -1,5 +1,5 @@
 import { Stack, TextField, Typography } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import CenterLoading from '@/components/Common/CenterLoading';
 import {
@@ -24,10 +24,10 @@ export default function EditingRequestDetail() {
 
   const [getRequest, { isLoading }] = useLazyGetRequestByIdOfficerQuery();
 
-  function handleInvalidRequest() {
+  const handleInvalidRequest = useCallback(() => {
     setRequest(null);
     navigate('/editing-requests', { replace: true });
-  }
+  }, [navigate]);
 
   useEffect(() => {
     if (
@@ -41,7 +41,7 @@ export default function EditingRequestDetail() {
 
     async function fetchData() {
       try {
-        const res = await getRequest(requestId!, true).unwrap();
+        const res = await getRequest(requestId!).unwrap();
         setRequest(res);
       } catch (error) {
         console.log(error);
@@ -50,7 +50,7 @@ export default function EditingRequestDetail() {
     }
 
     fetchData();
-  }, [getRequest, requestId]);
+  }, [getRequest, handleInvalidRequest, requestId]);
 
   if (isLoading || !request) {
     return <CenterLoading />;

@@ -17,7 +17,7 @@ import { ListWrapper } from '@/components/Common/Layout/ScreenWrapper';
 import WardSelect from '@/components/Common/WardSelect';
 import { UserRole } from '@/constants/user';
 import { useGetReportsOfficerQuery } from '@/store/api/officer/reportApiSlice';
-import { Report } from '@/types/officer-management';
+import { CreatedPointReport, CreatedReport } from '@/types/report';
 import { formatDateTime } from '@/utils/datetime';
 import { capitalize } from '@/utils/format-string';
 
@@ -34,11 +34,14 @@ const titles = [
   '',
 ];
 
+const isPointReport = (report: CreatedReport): report is CreatedPointReport =>
+  report.targetType === 'Point';
+
 export default function PointReportList() {
   const role = useAppSelector((state) => state.user?.profile?.role);
 
   const [page, setPage] = useState<number>(1);
-  const [reports, setReports] = useState<Report[]>([]);
+  const [reports, setReports] = useState<CreatedReport[]>([]);
   const [wards, setWards] = useState<number[]>([]);
 
   const { data, isLoading, refetch } = useGetReportsOfficerQuery(
@@ -91,40 +94,48 @@ export default function PointReportList() {
             </TableHead>
             <TableBody>
               {reports.length !== 0 ? (
-                reports.map((report: Report) => (
-                  <TableRow key={report?.id}>
-                    <TableCell align="center">{report?.id}</TableCell>
-                    <TableCell align="center">{report?.ward?.name}</TableCell>
-                    <TableCell align="center">
-                      {report?.district?.name}
-                    </TableCell>
-                    <TableCell align="center">
-                      {report?.reportType?.name}
-                    </TableCell>
-                    <TableCell align="center">{report?.fullName}</TableCell>
-                    <TableCell align="center">{report?.email}</TableCell>
-                    <TableCell align="center">
-                      {formatDateTime(report?.createdAt)}
-                    </TableCell>
-                    <TableCell align="center">
-                      {formatDateTime(report?.updatedAt)}
-                    </TableCell>
-                    <TableCell align="center">
-                      {capitalize(report?.status)}
-                    </TableCell>
-                    <TableCell>
-                      <Box
-                        sx={{
-                          display: 'flex',
-                          gap: 2,
-                        }}
-                      >
-                        <Info link={`/point-reports/${report?.id}`} />
-                        <Response link={`/reports/${report?.id}/response`} />
-                      </Box>
-                    </TableCell>
-                  </TableRow>
-                ))
+                reports.map((report: CreatedReport) => {
+                  if (isPointReport(report)) {
+                    return (
+                      <TableRow key={report?.id}>
+                        <TableCell align="center">{report?.id}</TableCell>
+                        <TableCell align="center">
+                          {report?.ward?.name}
+                        </TableCell>
+                        <TableCell align="center">
+                          {report?.district?.name}
+                        </TableCell>
+                        <TableCell align="center">
+                          {report?.reportType?.name}
+                        </TableCell>
+                        <TableCell align="center">{report?.fullName}</TableCell>
+                        <TableCell align="center">{report?.email}</TableCell>
+                        <TableCell align="center">
+                          {formatDateTime(report?.createdAt)}
+                        </TableCell>
+                        <TableCell align="center">
+                          {formatDateTime(report?.updatedAt)}
+                        </TableCell>
+                        <TableCell align="center">
+                          {capitalize(report?.status)}
+                        </TableCell>
+                        <TableCell>
+                          <Box
+                            sx={{
+                              display: 'flex',
+                              gap: 2,
+                            }}
+                          >
+                            <Info link={`/point-reports/${report?.id}`} />
+                            <Response
+                              link={`/reports/${report?.id}/response`}
+                            />
+                          </Box>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  }
+                })
               ) : (
                 <TableRow>
                   <TableCell align="center" colSpan={9}>

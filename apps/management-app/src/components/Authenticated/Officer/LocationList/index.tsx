@@ -18,7 +18,7 @@ import WardSelect from '@/components/Common/WardSelect';
 import { LocationStatus } from '@/constants/location';
 import { UserRole } from '@/constants/user';
 import { useGetLocationsOfficerQuery } from '@/store/api/officer/locationApiSlice';
-import { Location } from '@/types/officer-management';
+import { AdLocation } from '@/types/location';
 import { formatDateTime } from '@/utils/datetime';
 import { capitalize } from '@/utils/format-string';
 
@@ -39,7 +39,7 @@ export default function LocationList() {
   const role = useAppSelector((state) => state.user?.profile?.role);
 
   const [page, setPage] = useState<number>(1);
-  const [locations, setLocations] = useState<Location[]>([]);
+  const [locations, setLocations] = useState<AdLocation[]>([]);
   const [wards, setWards] = useState<number[]>([]);
 
   const { data, isLoading, refetch } = useGetLocationsOfficerQuery({
@@ -87,7 +87,7 @@ export default function LocationList() {
             </TableHead>
             <TableBody>
               {locations?.length !== 0 ? (
-                locations.map((location: Location) => (
+                locations.map((location: AdLocation) => (
                   <TableRow key={location?.id}>
                     <TableCell align="center">{location?.id}</TableCell>
                     <TableCell align="center">{location?.name}</TableCell>

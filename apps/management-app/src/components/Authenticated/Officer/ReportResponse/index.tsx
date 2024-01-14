@@ -1,17 +1,3 @@
-import { DevTool } from '@hookform/devtools';
-import {
-  Button,
-  FormControl,
-  FormHelperText,
-  FormLabel,
-  MenuItem,
-  Select,
-  Stack,
-  TextField,
-} from '@mui/material';
-import { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { useNavigate, useParams } from 'react-router-dom';
 import CenterLoading from '@/components/Common/CenterLoading';
 import { ReadOnlyTextForm } from '@/components/Common/FormComponents';
 import { DetailWrapper } from '@/components/Common/Layout/ScreenWrapper';
@@ -26,6 +12,20 @@ import { Report, UpdateReportDto } from '@/types/officer-management';
 import { capitalize } from '@/utils/format-string';
 import { showError, showSuccess } from '@/utils/toast';
 import { isString, isValidLength } from '@/utils/validate';
+import { DevTool } from '@hookform/devtools';
+import {
+  Button,
+  FormControl,
+  FormHelperText,
+  FormLabel,
+  MenuItem,
+  Select,
+  Stack,
+  TextField,
+} from '@mui/material';
+import { useCallback, useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useNavigate, useParams } from 'react-router-dom';
 
 export default function ReportResponse() {
   const navigate = useNavigate();
@@ -39,10 +39,10 @@ export default function ReportResponse() {
       mode: 'onChange',
     });
 
-  function handleInvalidRequest() {
+  const handleInvalidRequest = useCallback(() => {
     setReport(null);
     navigate('/location-reports', { replace: true });
-  }
+  }, [navigate]);
 
   useEffect(() => {
     if (
@@ -56,7 +56,7 @@ export default function ReportResponse() {
 
     async function fetchData() {
       try {
-        const res = await getReport(reportId!, true).unwrap();
+        const res = await getReport(reportId!).unwrap();
 
         setReport(res);
 
@@ -72,7 +72,7 @@ export default function ReportResponse() {
     }
 
     fetchData();
-  }, [getReport, reportId, reset]);
+  }, [getReport, handleInvalidRequest, reportId, reset]);
 
   const { errors: formError } = formState;
 
