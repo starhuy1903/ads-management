@@ -163,9 +163,10 @@ const PanelsCreate = () => {
           });
           dispatch(showModal(null));
         },
+        initialLocation: formValue.locationId,
       }),
     );
-  }, [dispatch, setValue]);
+  }, [dispatch, formValue.locationId, setValue]);
 
   const [createPanel] = useCreatePanelMutation();
 

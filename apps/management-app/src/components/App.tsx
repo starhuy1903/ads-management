@@ -40,7 +40,7 @@ import WardsCreate from './Authenticated/CDO/WardsCreate';
 import WardsDetail from './Authenticated/CDO/WardsDetail';
 import WardsListView from './Authenticated/CDO/WardsListView';
 import ChangePassword from './Authenticated/ChangePassword';
-import Dashboard from './Authenticated/Dashboard';
+import Dashboard from './Authenticated/CDO/Dashboard';
 import Home from './Authenticated/Home';
 import CDOLayout from './Authenticated/Layout/CDOLayout';
 import OfficerLayout from './Authenticated/Layout/OfficerLayout';
