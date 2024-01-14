@@ -13,7 +13,8 @@ import {
   setIsShowingViolatedReport,
 } from '@/store/slice/mapsSlice';
 import { showSidebar } from '@/store/slice/sidebar';
-import { Location } from '@/types/officer-management';
+import { checkRole } from '@/store/slice/userSlice';
+import { AdLocation } from '@/types/location';
 
 export default function Home() {
   const dispatch = useAppDispatch();
@@ -25,9 +26,17 @@ export default function Home() {
 
   const ref = useRef<any>(null);
 
+  const { profile } = useAppSelector((state) => state.user);
+  const { isWardOfficer, isDistrictOfficer } = useAppSelector(checkRole);
+
   const { data: adLocationData, isLoading: fetchingAllAdsLocation } =
     useGetLocationsQuery(
-      {},
+      {
+        districts: isDistrictOfficer
+          ? profile?.district?.id.toString()
+          : undefined,
+        wards: isWardOfficer ? [profile?.ward?.id as number] : undefined,
+      },
       {
         skip: false,
         refetchOnMountOrArgChange: true,
@@ -53,7 +62,7 @@ export default function Home() {
   );
 
   const handleViewLocationDetail = useCallback(
-    (loc: Location) => {
+    (loc: AdLocation) => {
       ref.current?.clearMarker();
       dispatch(
         showSidebar(SidebarKey.AD_DETAIL, {

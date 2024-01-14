@@ -14,9 +14,10 @@ import IconButton, { IconButtonProps } from '@mui/material/IconButton';
 import { styled } from '@mui/material/styles';
 import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAppDispatch } from '@/store';
+import { useAppDispatch, useAppSelector } from '@/store';
 import { ModalKey } from '@/constants/modal';
 import { showModal } from '@/store/slice/modal';
+import { checkRole } from '@/store/slice/userSlice';
 import { Panel } from '@/types/panel';
 import { CreatedReport } from '@/types/report';
 import { formatDate } from '@/utils/datetime';
@@ -49,6 +50,8 @@ export default function PanelCard({
   const dispatch = useAppDispatch();
   const [expanded, setExpanded] = useState(false);
 
+  const { isCitizen } = useAppSelector(checkRole);
+
   const isViolated = violatedReports.length !== 0;
 
   const goToReportPage = useCallback(() => {
@@ -59,10 +62,10 @@ export default function PanelCard({
     dispatch(
       showModal(ModalKey.REPORT_DETAIL, {
         reports: violatedReports,
-        createNew: goToReportPage,
+        createNew: isCitizen ? goToReportPage : undefined,
       }),
     );
-  }, [dispatch, violatedReports, goToReportPage]);
+  }, [dispatch, violatedReports, goToReportPage, isCitizen]);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -98,14 +101,26 @@ export default function PanelCard({
         </Typography>
       </CardContent>
       <CardActions sx={{ justifyContent: 'space-between' }}>
-        <Button
-          variant="outlined"
-          color="error"
-          onClick={isViolated ? viewAllReports : goToReportPage}
-          sx={{ textTransform: 'uppercase' }}
-        >
-          {isViolated ? 'Xem lại báo cáo' : 'Báo cáo vi phạm'}
-        </Button>
+        {isCitizen && (
+          <Button
+            variant="outlined"
+            color="error"
+            onClick={isViolated ? viewAllReports : goToReportPage}
+            sx={{ textTransform: 'uppercase' }}
+          >
+            {isViolated ? 'Xem lại báo cáo' : 'Báo cáo vi phạm'}
+          </Button>
+        )}
+        {!isCitizen && isViolated && (
+          <Button
+            variant="outlined"
+            color="error"
+            onClick={viewAllReports}
+            sx={{ textTransform: 'uppercase' }}
+          >
+            Xem báo cáo
+          </Button>
+        )}
         <ExpandMore
           expand={expanded}
           onClick={handleExpandClick}

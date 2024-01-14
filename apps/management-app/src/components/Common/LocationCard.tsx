@@ -8,9 +8,10 @@ import {
 } from '@mui/material';
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAppDispatch } from '@/store';
+import { useAppDispatch, useAppSelector } from '@/store';
 import { ModalKey } from '@/constants/modal';
 import { showModal } from '@/store/slice/modal';
+import { checkRole } from '@/store/slice/userSlice';
 import { AdLocation } from '@/types/location';
 import { CreatedReport } from '@/types/report';
 
@@ -27,6 +28,7 @@ export default function LocationCard({
 }: LocationCardProps) {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const { isCitizen } = useAppSelector(checkRole);
 
   const goToReport = useCallback(() => {
     navigate(`/report?location=${data.id}`);
@@ -34,9 +36,12 @@ export default function LocationCard({
 
   const viewAllReports = useCallback(() => {
     dispatch(
-      showModal(ModalKey.REPORT_DETAIL, { reports, createNew: goToReport }),
+      showModal(ModalKey.REPORT_DETAIL, {
+        reports,
+        createNew: isCitizen ? goToReport : undefined,
+      }),
     );
-  }, [dispatch, reports, goToReport]);
+  }, [dispatch, reports, goToReport, isCitizen]);
 
   return (
     <Card sx={{ background: 'rgb(240 253 244)' }}>
@@ -53,14 +58,26 @@ export default function LocationCard({
         </Typography>
       </CardContent>
       <CardActions>
-        <Button
-          variant="outlined"
-          color="error"
-          onClick={hasReported ? viewAllReports : goToReport}
-          sx={{ textTransform: 'uppercase' }}
-        >
-          {hasReported ? 'Xem lại báo cáo' : 'Báo cáo vi phạm'}
-        </Button>
+        {isCitizen && (
+          <Button
+            variant="outlined"
+            color="error"
+            onClick={hasReported ? viewAllReports : goToReport}
+            sx={{ textTransform: 'uppercase' }}
+          >
+            {hasReported ? 'Xem lại báo cáo' : 'Báo cáo vi phạm'}
+          </Button>
+        )}
+        {!isCitizen && hasReported && (
+          <Button
+            variant="outlined"
+            color="error"
+            onClick={viewAllReports}
+            sx={{ textTransform: 'uppercase' }}
+          >
+            Xem báo cáo
+          </Button>
+        )}
       </CardActions>
     </Card>
   );

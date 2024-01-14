@@ -19,7 +19,7 @@ import GeneralModal from './GeneralModal';
 
 interface ReportDetailProps {
   reports: CreatedReport[];
-  createNew: () => void;
+  createNew?: () => void;
   onModalClose: () => void;
 }
 
@@ -46,7 +46,7 @@ const getTitle = (report: CreatedReport) => {
 function ReportDetail({ reports, createNew, onModalClose }: ReportDetailProps) {
   const handleCreateNew = useCallback(() => {
     onModalClose();
-    createNew();
+    createNew?.();
   }, [onModalClose, createNew]);
 
   const renderStatus = (status: string) => {
@@ -86,11 +86,13 @@ function ReportDetail({ reports, createNew, onModalClose }: ReportDetailProps) {
 
   const body = (
     <Box>
-      <Stack alignItems="end">
-        <Button sx={{ display: 'flex' }} onClick={handleCreateNew}>
-          Create new
-        </Button>
-      </Stack>
+      {createNew && (
+        <Stack alignItems="end">
+          <Button sx={{ display: 'flex' }} onClick={handleCreateNew}>
+            Create new
+          </Button>
+        </Stack>
+      )}
       <Stack spacing={2}>
         {reports.map((report) => (
           <Card key={report.id}>
