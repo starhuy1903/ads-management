@@ -41,12 +41,17 @@ export default function PointReportList() {
   const [reports, setReports] = useState<Report[]>([]);
   const [wards, setWards] = useState<number[]>([]);
 
-  const { data, isLoading, refetch } = useGetReportsOfficerQuery({
-    page: page,
-    take: 10,
-    targetType: 'Point',
-    wards: wards,
-  });
+  const { data, isLoading, refetch } = useGetReportsOfficerQuery(
+    {
+      page: page,
+      take: 10,
+      targetType: 'Point',
+      wards: wards,
+    },
+    {
+      pollingInterval: 2000,
+    },
+  );
 
   useEffect(() => {
     refetch();
