@@ -17,7 +17,7 @@ import { ListWrapper } from '@/components/Common/Layout/ScreenWrapper';
 import WardSelect from '@/components/Common/WardSelect';
 import { PanelStatus } from '@/constants/panel';
 import { UserRole } from '@/constants/user';
-import { useGetPanelsQuery } from '@/store/api/officer/panelApiSlide';
+import { useGetPanelsOfficerQuery } from '@/store/api/officer/panelApiSlide';
 import { Panel } from '@/types/officer-management';
 import { formatDateTime } from '@/utils/datetime';
 import { capitalize } from '@/utils/format-string';
@@ -42,7 +42,7 @@ export default function PanelList() {
   const [panels, setPanels] = useState<Panel[]>([]);
   const [wards, setWards] = useState<number[]>([]);
 
-  const { data, isLoading, refetch } = useGetPanelsQuery({
+  const { data, isLoading, refetch } = useGetPanelsOfficerQuery({
     page: page,
     take: 10,
     wards: wards,

@@ -8,7 +8,7 @@ import { apiSlice } from '../baseApiSlice';
 
 export const officerReportApiSlice = apiSlice.injectEndpoints({
   endpoints: (build) => ({
-    getReports: build.query<
+    getReportsOfficer: build.query<
       GetListResult<Report>,
       {
         page?: number;
@@ -46,11 +46,11 @@ export const officerReportApiSlice = apiSlice.injectEndpoints({
         };
       },
     }),
-    getReportById: build.query<Report, string>({
+    getReportByIdOfficer: build.query<Report, string>({
       query: (id) => `/reports/${id}`,
       transformResponse: (response: { data: Report }) => response.data,
     }),
-    updateReport: build.mutation<MessageResponse, UpdateReportDto>({
+    updateReportOfficer: build.mutation<MessageResponse, UpdateReportDto>({
       query: (arg) => ({
         url: `/reports/${arg.id}`,
         method: 'PATCH',
@@ -64,9 +64,9 @@ export const officerReportApiSlice = apiSlice.injectEndpoints({
 });
 
 export const {
-  useGetReportsQuery,
-  useLazyGetReportsQuery,
-  useGetReportByIdQuery,
-  useLazyGetReportByIdQuery,
-  useUpdateReportMutation,
+  useGetReportsOfficerQuery,
+  useLazyGetReportsOfficerQuery,
+  useGetReportByIdOfficerQuery,
+  useLazyGetReportByIdOfficerQuery,
+  useUpdateReportOfficerMutation,
 } = officerReportApiSlice;

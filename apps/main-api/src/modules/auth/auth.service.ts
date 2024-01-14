@@ -1,18 +1,16 @@
 import {
   BadRequestException,
-  ForbiddenException,
   Injectable,
   InternalServerErrorException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { PrismaService } from '../../services/prisma/prisma.service';
-import { SignInDto, CreateUserDto, ChangePasswordDto } from './dto';
+import { SignInDto, ChangePasswordDto } from './dto';
 import * as argon from 'argon2';
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { JwtService } from '@nestjs/jwt';
 import { ITokenPayload } from './interfaces/ITokenPayload';
 
-import { UserRole, user } from '@prisma/client';
+import { user } from '@prisma/client';
 import { SendMailTemplateDto } from '../../services/mail/mail.dto';
 import { MailService } from '../../services/mail/mail.service';
 
@@ -262,7 +260,7 @@ export class AuthService {
     );
 
     // Generate verification link
-    const verificationLink = `http://localhost:3000/reset-password?token=${verificationToken}`; // Replace with frontend url
+    const verificationLink = `${process.env.FRONTEND_URL}/reset-password?token=${verificationToken}`; // Replace with frontend url
 
     // Send verification email with token
     const templateData = {

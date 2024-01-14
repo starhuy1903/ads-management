@@ -24,7 +24,7 @@ import { ModalKey } from '@/constants/modal';
 import { MAX_ID_LENGTH } from '@/constants/url-params';
 import { ImageFileConfig } from '@/constants/validation';
 import {
-  useLazyGetPanelByIdQuery,
+  useLazyGetPanelByIdOfficerQuery,
   useLazyGetPanelTypesOfficerQuery,
 } from '@/store/api/officer/panelApiSlide';
 import { useCreateUpdatePanelRequestMutation } from '@/store/api/officer/requestApiSlide';
@@ -46,7 +46,8 @@ export default function PanelEditing() {
   const [panel, setPanel] = useState<Panel | null>(null);
   const [panelTypes, setPanelTypes] = useState<PanelType[]>([]);
 
-  const [getPanel, { isLoading: panelLoading }] = useLazyGetPanelByIdQuery();
+  const [getPanel, { isLoading: panelLoading }] =
+    useLazyGetPanelByIdOfficerQuery();
   const [getPanelTypes, { isLoading: panelTypesLoading }] =
     useLazyGetPanelTypesOfficerQuery();
 
@@ -102,12 +103,20 @@ export default function PanelEditing() {
 
   useEffect(() => {
     if (panel?.imageUrls) {
-      fetch(panel.imageUrls[0])
-        .then((res) => res.blob())
-        .then((blob) => {
-          const file = new File([blob], panel?.imageUrls[0]);
-          setValue('images', [file]);
-        });
+      const fetchImages = async () => {
+        const files = [];
+        for (const url of panel.imageUrls) {
+          try {
+            const response = await fetch(url);
+            const blob = await response.blob();
+            files.push(new File([blob], 'image.jpg', { type: blob.type }));
+          } catch (error) {
+            console.error(`Error fetching image ${url}:`, error);
+          }
+        }
+        setValue('images', files);
+      };
+      fetchImages();
     }
   }, [panel?.imageUrls, setValue]);
 
@@ -391,7 +400,7 @@ export default function PanelEditing() {
               onDeleteImage={handleDeleteImage}
             />
           ))}
-          {formValue.images.length < 1 && (
+          {formValue.images.length < 2 && (
             <DropFileContainer
               onDropFile={handleUpdateImage}
               acceptMIMETypes={ImageFileConfig.ACCEPTED_MINE_TYPES}

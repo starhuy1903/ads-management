@@ -8,7 +8,7 @@ import {
 } from '@/components/Common/FormComponents';
 import { DetailWrapper } from '@/components/Common/Layout/ScreenWrapper';
 import { MAX_ID_LENGTH } from '@/constants/url-params';
-import { useLazyGetPanelByIdQuery } from '@/store/api/officer/panelApiSlide';
+import { useLazyGetPanelByIdOfficerQuery } from '@/store/api/officer/panelApiSlide';
 import { Panel } from '@/types/officer-management';
 import { formatDateTime } from '@/utils/datetime';
 import { capitalize } from '@/utils/format-string';
@@ -20,7 +20,7 @@ export default function PanelDetail() {
   const [panel, setPanel] = useState<Panel | null>(null);
   const { panelId } = useParams<{ panelId: string }>();
 
-  const [getPanel, { isLoading }] = useLazyGetPanelByIdQuery();
+  const [getPanel, { isLoading }] = useLazyGetPanelByIdOfficerQuery();
 
   function handleInvalidRequest() {
     setPanel(null);

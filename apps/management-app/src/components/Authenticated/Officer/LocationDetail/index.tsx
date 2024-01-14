@@ -8,7 +8,7 @@ import {
 } from '@/components/Common/FormComponents';
 import { DetailWrapper } from '@/components/Common/Layout/ScreenWrapper';
 import { MAX_ID_LENGTH } from '@/constants/url-params';
-import { useLazyGetLocationByIdQuery } from '@/store/api/officer/locationApiSlice';
+import { useLazyGetLocationByIdOfficerQuery } from '@/store/api/officer/locationApiSlice';
 import { Location } from '@/types/officer-management';
 import { formatDateTime } from '@/utils/datetime';
 import { capitalize } from '@/utils/format-string';
@@ -20,7 +20,7 @@ export default function LocationDetail() {
   const [location, setLocation] = useState<Location | null>(null);
   const { locationId } = useParams<{ locationId: string }>();
 
-  const [getLocation, { isLoading }] = useLazyGetLocationByIdQuery();
+  const [getLocation, { isLoading }] = useLazyGetLocationByIdOfficerQuery();
 
   function handleInvalidRequest() {
     setLocation(null);
@@ -74,7 +74,7 @@ export default function LocationDetail() {
 
         <ReadOnlyTextField
           label="Planned"
-          value={location?.isPlanning ? 'Yes' : 'No'}
+          value={location?.isPlanning ? 'No' : 'Yes'}
         />
 
         <ReadOnlyTextField

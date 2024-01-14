@@ -9,6 +9,7 @@ import { useAppSelector } from '@/store';
 import { useLazyGetProfileQuery } from '@/store/api/userApiSlice';
 import { checkRole } from '@/store/slice/userSlice';
 import AccountsCreate from './Authenticated/CDO/AccountsCreate';
+import AccountsDetail from './Authenticated/CDO/AccountsDetail';
 import AccountsListView from './Authenticated/CDO/AccountsListView';
 import AdsTypesCreate from './Authenticated/CDO/AdsTypesCreate';
 import AdsTypesDetail from './Authenticated/CDO/AdsTypesDetail';
@@ -60,6 +61,8 @@ import PanelList from './Authenticated/Officer/PanelList';
 import PanelReportDetail from './Authenticated/Officer/PanelReportDetail';
 import PanelReportList from './Authenticated/Officer/PanelReportList';
 import PanelSendRequest from './Authenticated/Officer/PanelSendRequest';
+import PointReportDetail from './Authenticated/Officer/PointReportDetail';
+import PointReportList from './Authenticated/Officer/PointReportList';
 import ReportResponse from './Authenticated/Officer/ReportResponse';
 import ResetPassword from './Authenticated/ResetPassword';
 import CenterLoading from './Common/CenterLoading';
@@ -69,7 +72,6 @@ import CitizenReport from './Unauthenticated/Citizen/CitizenReport';
 import ForgotPassword from './Unauthenticated/ForgotPassword';
 import Login from './Unauthenticated/Login';
 import Verify from './Unauthenticated/Verify';
-import AccountsDetail from './Authenticated/CDO/AccountsDetail';
 
 // Culture Department Officer
 const CDORoutes = createBrowserRouter([
@@ -281,6 +283,14 @@ const officerRoutes = createBrowserRouter([
       {
         path: 'panel-reports/:reportId',
         element: <PanelReportDetail />,
+      },
+      {
+        path: 'point-reports',
+        element: <PointReportList />,
+      },
+      {
+        path: 'point-reports/:reportId',
+        element: <PointReportDetail />,
       },
       {
         path: 'reports/:reportId/response',

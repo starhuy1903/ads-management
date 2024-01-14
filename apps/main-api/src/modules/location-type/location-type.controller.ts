@@ -71,6 +71,19 @@ export class LocationTypeController {
     }
   }
 
+  @Get(':id')
+  async findOne(@Param('id') id: string, @Res() res: CustomResponse) {
+    try {
+      const advertisementType = await this.locationTypeService.findOne(+id);
+      return res.success({ data: advertisementType });
+    } catch (error) {
+      return res.error({
+        statusCode: error.status || 500,
+        message: error.message || 'Internal Server Error',
+      });
+    }
+  }
+
   @Patch(':id')
   @UseGuards(JwtGuard, RolesGuard)
   @Roles(UserRole.cdo)

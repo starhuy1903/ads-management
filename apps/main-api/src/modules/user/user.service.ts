@@ -3,10 +3,11 @@ import {
   ForbiddenException,
   Injectable,
   InternalServerErrorException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import * as argon from 'argon2';
 import { PrismaService } from '../../services/prisma/prisma.service';
-import { CreateUserDto, UpdateUserDto } from '../auth/dto';
+import { CdoUpdateUserDto, CreateUserDto, UpdateUserDto } from './dto';
 import { UserRole } from '@prisma/client';
 import { PageOptionsUserDto } from './dto/get-user-list.dto';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
@@ -254,6 +255,143 @@ export class UserService {
         },
         data: {
           ...dto,
+        },
+        select: {
+          id: true,
+          email: true,
+          firstName: true,
+          lastName: true,
+          phoneNumber: true,
+          dob: true,
+          role: true,
+          ward: {
+            select: {
+              id: true,
+              name: true,
+              district: {
+                select: {
+                  id: true,
+                  name: true,
+                },
+              },
+            },
+          },
+          district: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+        },
+      });
+
+      return {
+        user: updatedUser,
+      };
+    } catch (err) {
+      console.log('Error: ', err);
+      throw new InternalServerErrorException({
+        message: 'Something went wrong',
+      });
+    }
+  }
+
+  async cdoUpdateUserAccount(
+    currentUserId: number,
+    userId: number,
+    dto: CdoUpdateUserDto,
+  ) {
+    // Check if user exists
+    const user = await this.prismaService.user.findUnique({
+      where: {
+        id: userId,
+      },
+    });
+
+    if (!user) {
+      throw new BadRequestException({
+        message: 'User not found',
+      });
+    }
+
+    // Check if the update target is the current user
+    if (currentUserId === user.id) {
+      throw new UnauthorizedException({
+        message: 'You cannot update your own account',
+      });
+    }
+
+    // Validate role
+    const role = dto.role as UserRole;
+    if (!Object.values(UserRole).includes(role)) {
+      throw new BadRequestException({
+        message: 'Invalid user role',
+      });
+    }
+
+    // Build update info
+    const updateInfo = {
+      role: role,
+      wardId: null,
+      districtId: null,
+    };
+
+    // Validate ward and district
+    // Check if ward or district is provided for the role
+    if (role === UserRole.ward_officer) {
+      if (!dto.wardId) {
+        throw new BadRequestException({
+          message: 'ward_id is required',
+        });
+      }
+
+      // Check if ward exists in db
+      const ward = await this.prismaService.ward.findUnique({
+        where: {
+          id: dto.wardId,
+        },
+      });
+
+      if (!ward) {
+        throw new BadRequestException({
+          message: 'ward_id is invalid',
+        });
+      }
+
+      // Update ward id
+      updateInfo.wardId = dto.wardId;
+    } else if (role === UserRole.district_officer) {
+      if (!dto.districtId) {
+        throw new BadRequestException({
+          message: 'district_id is required',
+        });
+      }
+
+      // Check if district exists in db
+      const district = await this.prismaService.district.findUnique({
+        where: {
+          id: dto.districtId,
+        },
+      });
+
+      if (!district) {
+        throw new BadRequestException({
+          message: 'district_id is invalid',
+        });
+      }
+
+      // Update district id
+      updateInfo.districtId = dto.districtId;
+    }
+
+    try {
+      // Update user info
+      const updatedUser = await this.prismaService.user.update({
+        where: {
+          id: userId,
+        },
+        data: {
+          ...updateInfo,
         },
         select: {
           id: true,

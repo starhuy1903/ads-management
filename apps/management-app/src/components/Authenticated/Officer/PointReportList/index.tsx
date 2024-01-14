@@ -23,8 +23,6 @@ import { capitalize } from '@/utils/format-string';
 
 const titles = [
   'ID',
-  'Name',
-  'Address',
   'Ward',
   'District',
   'Type',
@@ -36,7 +34,7 @@ const titles = [
   '',
 ];
 
-export default function LocationReportList() {
+export default function PointReportList() {
   const role = useAppSelector((state) => state.user?.profile?.role);
 
   const [page, setPage] = useState<number>(1);
@@ -47,7 +45,7 @@ export default function LocationReportList() {
     {
       page: page,
       take: 10,
-      targetType: 'Location',
+      targetType: 'Point',
       wards: wards,
     },
     {
@@ -70,7 +68,7 @@ export default function LocationReportList() {
   }
 
   return (
-    <ListWrapper label="Location Reports">
+    <ListWrapper label="Point Reports">
       <Box
         sx={{
           width: '100%',
@@ -81,7 +79,7 @@ export default function LocationReportList() {
         )}
 
         <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 650 }} aria-label="location reports">
+          <Table sx={{ minWidth: 650 }} aria-label="point reports">
             <TableHead>
               <TableRow>
                 {titles.map((title) => (
@@ -96,17 +94,9 @@ export default function LocationReportList() {
                 reports.map((report: Report) => (
                   <TableRow key={report?.id}>
                     <TableCell align="center">{report?.id}</TableCell>
+                    <TableCell align="center">{report?.ward?.name}</TableCell>
                     <TableCell align="center">
-                      {report?.location?.name}
-                    </TableCell>
-                    <TableCell align="center">
-                      {report?.location?.fullAddress}
-                    </TableCell>
-                    <TableCell align="center">
-                      {report?.location?.ward?.name}
-                    </TableCell>
-                    <TableCell align="center">
-                      {report?.location?.district?.name}
+                      {report?.district?.name}
                     </TableCell>
                     <TableCell align="center">
                       {report?.reportType?.name}
@@ -129,7 +119,7 @@ export default function LocationReportList() {
                           gap: 2,
                         }}
                       >
-                        <Info link={`/location-reports/${report?.id}`} />
+                        <Info link={`/point-reports/${report?.id}`} />
                         <Response link={`/reports/${report?.id}/response`} />
                       </Box>
                     </TableCell>

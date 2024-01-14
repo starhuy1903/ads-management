@@ -67,9 +67,16 @@ export type Report = BaseType & {
   targetType: string;
   status: string;
   resolvedContent: string;
-  location?: Location;
-  panel?: Panel;
   reportType: ReportType;
+  // Location report
+  location?: Location;
+  // Panel report
+  panel?: Panel;
+  // Point report
+  lat?: string;
+  long?: string;
+  ward?: Ward;
+  district?: District;
 };
 
 export type User = BaseType & {
