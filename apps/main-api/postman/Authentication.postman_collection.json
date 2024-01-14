@@ -2,7 +2,7 @@
 	"info": {
 		"_postman_id": "586ffb49-c7ad-4ae2-b915-eefa714f55be",
 		"name": "Authentication",
-		"description": "Authentication API for the ads management app",
+		"description": "This is an api documentation for Authentication of the advertisements management app.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
 		"_exporter_id": "24188163"
 	},
@@ -21,7 +21,7 @@
 						}
 					}
 				},
-				"url": "{{URL}}/api/auth/signin"
+				"url": "{{SERVE_URL}}/api/auth/signin"
 			},
 			"response": [
 				{
@@ -38,7 +38,7 @@
 								}
 							}
 						},
-						"url": "{{URL}}/api/auth/signin"
+						"url": "http://localhost:8194/api/auth/signin"
 					},
 					"status": "Created",
 					"code": 201,
@@ -100,7 +100,7 @@
 						"disabled": true
 					}
 				],
-				"url": "{{URL}}/api/auth/logout"
+				"url": "{{SERVE_URL}}/api/auth/logout"
 			},
 			"response": [
 				{
@@ -115,7 +115,7 @@
 								"disabled": true
 							}
 						],
-						"url": "{{URL}}/api/auth/logout"
+						"url": "http://localhost:8194/api/auth/logout"
 					},
 					"status": "OK",
 					"code": 200,
@@ -234,7 +234,7 @@
 						}
 					}
 				},
-				"url": "{{URL}}/api/auth/refresh"
+				"url": "{{SERVE_URL}}/api/auth/refresh"
 			},
 			"response": [
 				{
@@ -258,7 +258,7 @@
 								}
 							}
 						},
-						"url": "{{URL}}/api/auth/refresh"
+						"url": "http://localhost:8194/api/auth/refresh"
 					},
 					"status": "Forbidden",
 					"code": 403,
@@ -442,7 +442,7 @@
 						}
 					}
 				},
-				"url": "{{URL}}/api/auth/forgot-password"
+				"url": "{{SERVE_URL}}/api/auth/forgot-password"
 			},
 			"response": [
 				{
@@ -459,7 +459,7 @@
 								}
 							}
 						},
-						"url": "{{URL}}/api/auth/forgot-password"
+						"url": "http://localhost:8194/api/auth/forgot-password"
 					},
 					"status": "OK",
 					"code": 200,
@@ -573,7 +573,7 @@
 						}
 					}
 				},
-				"url": "{{URL}}/api/auth/reset-password"
+				"url": "{{SERVE_URL}}/api/auth/reset-password"
 			},
 			"response": [
 				{
@@ -590,7 +590,7 @@
 								}
 							}
 						},
-						"url": "{{URL}}/api/auth/reset-password"
+						"url": "http://localhost:8194/api/auth/reset-password"
 					},
 					"status": "Forbidden",
 					"code": 403,
@@ -710,7 +710,7 @@
 						}
 					}
 				},
-				"url": "{{URL}}/api/auth/change-password"
+				"url": "{{SERVE_URL}}/api/auth/change-password"
 			},
 			"response": [
 				{
@@ -727,7 +727,7 @@
 								}
 							}
 						},
-						"url": "{{URL}}/api/auth/change-password"
+						"url": "http://localhost:8194/api/auth/change-password"
 					},
 					"status": "OK",
 					"code": 200,
