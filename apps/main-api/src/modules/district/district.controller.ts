@@ -17,7 +17,7 @@ import { CreateDistrictDto } from './dto/create-district.dto';
 import { UpdateDistrictDto } from './dto/update-district.dto';
 import { PageOptionsDistrictDto } from './dto/find-all-district.dto';
 import { CustomResponse } from '../../middlewares'; // Import your CustomResponse type
-import { JwtGuard } from '../auth/guards';
+import { JwtGuard, RolesGuard } from '../auth/guards';
 import { UserRole } from '@prisma/client';
 import { Roles } from '../auth/decorators';
 
@@ -26,7 +26,7 @@ export class DistrictController {
   constructor(private readonly districtService: DistrictService) {}
 
   @Post()
-  @UseGuards(JwtGuard)
+  @UseGuards(JwtGuard, RolesGuard)
   @Roles(UserRole.cdo)
   async create(
     @Body() createDistrictDto: CreateDistrictDto,
@@ -47,7 +47,7 @@ export class DistrictController {
   }
 
   @Get()
-  @UseGuards(JwtGuard)
+  @UseGuards(JwtGuard, RolesGuard)
   @Roles(UserRole.cdo, UserRole.ward_officer, UserRole.district_officer)
   async findAll(@Query() pageOptionsDistrictDto: PageOptionsDistrictDto) {
     try {
@@ -88,7 +88,7 @@ export class DistrictController {
   }
 
   @Get(':id')
-  @UseGuards(JwtGuard)
+  @UseGuards(JwtGuard, RolesGuard)
   @Roles(UserRole.cdo)
   async findOne(@Param('id') id: string, @Res() res: CustomResponse) {
     try {
@@ -103,7 +103,7 @@ export class DistrictController {
   }
 
   @Patch(':id')
-  @UseGuards(JwtGuard)
+  @UseGuards(JwtGuard, RolesGuard)
   @Roles(UserRole.cdo)
   async update(
     @Param('id') id: string,
@@ -128,7 +128,7 @@ export class DistrictController {
   }
 
   @Delete(':id')
-  @UseGuards(JwtGuard)
+  @UseGuards(JwtGuard, RolesGuard)
   @Roles(UserRole.cdo)
   async remove(@Param('id') id: string, @Res() res: CustomResponse) {
     try {
