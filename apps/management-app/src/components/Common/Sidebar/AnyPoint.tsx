@@ -20,7 +20,7 @@ export default function AnyPoint({ address, lat, lng }: AnyPointProps) {
   const navigate = useNavigate();
 
   const goToReport = useCallback(() => {
-    navigate(`/report?=${lat}&lng=${lng}`);
+    navigate(`/report?lat=${lat}&lng=${lng}`);
   }, [navigate, lat, lng]);
 
   return (

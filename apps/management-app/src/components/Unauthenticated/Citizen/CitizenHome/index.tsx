@@ -14,6 +14,7 @@ import { useAppDispatch, useAppSelector } from '@/store';
 import Maps from '@/components/Common/Maps';
 import ActionBar from '@/components/Common/Maps/ActionBar';
 import SidebarContainer from '@/components/Common/Sidebar';
+import { ModalKey } from '@/constants/modal';
 import { SidebarKey } from '@/constants/sidebar';
 import { useGetLocationQuery } from '@/store/api/citizen/locationApiSlice';
 import { useGetSentReportsQuery } from '@/store/api/citizen/reportApiSlice';
@@ -22,9 +23,14 @@ import {
   setIsShowingViolatedReport,
   setSelectedLocation,
 } from '@/store/slice/mapsSlice';
+import { showModal } from '@/store/slice/modal';
 import { hideSidebar, showSidebar } from '@/store/slice/sidebar';
 import { AdLocation } from '@/types/location';
+import { CreatedPointReport, CreatedReport } from '@/types/report';
 import anonymousUser from '@/utils/anonymous-user';
+
+const isPointReport = (report: CreatedReport): report is CreatedPointReport =>
+  report.targetType === 'Point';
 
 export default function CitizenHome() {
   const dispatch = useAppDispatch();
@@ -65,6 +71,11 @@ export default function CitizenHome() {
 
   const vioPanelReports = useMemo(
     () => vioReports?.data.filter((report) => report.targetType === 'Panel'),
+    [vioReports?.data],
+  );
+
+  const vioPointReports = useMemo(
+    () => vioReports?.data.filter((report) => report.targetType === 'Point'),
     [vioReports?.data],
   );
 
@@ -127,6 +138,43 @@ export default function CitizenHome() {
       dispatch(hideSidebar());
     };
   }, [dispatch, selectedLocation, vioLocationReports, vioPanelReports]);
+
+  const renderViolatedPoint = () => {
+    if (!vioPointReports) {
+      return null;
+    }
+
+    return vioPointReports.map((report) => {
+      if (isPointReport(report))
+        return (
+          <Marker
+            key={report.id}
+            longitude={report.long}
+            latitude={report.lat}
+            anchor="center"
+          >
+            <Avatar
+              sx={{
+                bgcolor: 'red',
+                width: 20,
+                height: 20,
+                fontSize: '10px',
+                border: 'none',
+              }}
+              children=""
+              onClick={(e) => {
+                e.stopPropagation();
+                dispatch(
+                  showModal(ModalKey.REPORT_DETAIL, { reports: [report] }),
+                );
+              }}
+            />
+          </Marker>
+        );
+
+      return null;
+    });
+  };
 
   const renderLocationMarkers = () =>
     adLocationData?.data.map((loc) => {
@@ -194,7 +242,7 @@ export default function CitizenHome() {
           }}
         >
           {renderLocationMarkers()}
-
+          {isShowingViolatedReport && renderViolatedPoint()}
           <Box
             sx={{
               position: 'absolute',
