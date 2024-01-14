@@ -59,9 +59,11 @@ export class CreateReportDto {
 
   @IsOptional()
   @IsNumber()
+  @Type(() => Number)
   readonly lat?: number;
 
   @IsOptional()
   @IsNumber()
+  @Type(() => Number)
   readonly long?: number;
 }
