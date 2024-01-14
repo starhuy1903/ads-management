@@ -19,8 +19,8 @@ import { TargetType } from '@/constants/ads-request';
 import { ReportStatus } from '@/constants/report';
 import { MAX_ID_LENGTH } from '@/constants/url-params';
 import {
-  useLazyGetReportByIdQuery,
-  useUpdateReportMutation,
+  useLazyGetReportByIdOfficerQuery,
+  useUpdateReportOfficerMutation,
 } from '@/store/api/officer/reportApiSlice';
 import { Report, UpdateReportDto } from '@/types/officer-management';
 import { capitalize } from '@/utils/format-string';
@@ -32,7 +32,7 @@ export default function ReportResponse() {
 
   const [report, setReport] = useState<Report | null>(null);
   const { reportId } = useParams<{ reportId: string }>();
-  const [getReport, { isLoading }] = useLazyGetReportByIdQuery();
+  const [getReport, { isLoading }] = useLazyGetReportByIdOfficerQuery();
 
   const { handleSubmit, register, formState, control, reset } =
     useForm<UpdateReportDto>({
@@ -76,7 +76,8 @@ export default function ReportResponse() {
 
   const { errors: formError } = formState;
 
-  const [updateReport, { isLoading: isSubmitting }] = useUpdateReportMutation();
+  const [updateReport, { isLoading: isSubmitting }] =
+    useUpdateReportOfficerMutation();
 
   const onSubmit = async (data: UpdateReportDto) => {
     try {

@@ -25,7 +25,7 @@ import { MAX_ID_LENGTH } from '@/constants/url-params';
 import { ImageFileConfig } from '@/constants/validation';
 import {
   useLazyGetAdsTypesOfficerQuery,
-  useLazyGetLocationByIdQuery,
+  useLazyGetLocationByIdOfficerQuery,
   useLazyGetLocationTypesOfficerQuery,
 } from '@/store/api/officer/locationApiSlice';
 import { useCreateUpdateLocationRequestMutation } from '@/store/api/officer/requestApiSlide';
@@ -53,7 +53,7 @@ export default function LocationEditing() {
   const [adsTypes, setAdsTypes] = useState<AdsType[]>([]);
 
   const [getLocation, { isLoading: locationLoading }] =
-    useLazyGetLocationByIdQuery();
+    useLazyGetLocationByIdOfficerQuery();
   const [getLocationTypes, { isLoading: locationTypesLoading }] =
     useLazyGetLocationTypesOfficerQuery();
   const [getAdsTypes, { isLoading: adsTypesLoading }] =
@@ -115,12 +115,20 @@ export default function LocationEditing() {
 
   useEffect(() => {
     if (location?.imageUrls) {
-      fetch(location.imageUrls[0])
-        .then((res) => res.blob())
-        .then((blob) => {
-          const file = new File([blob], location?.imageUrls[0]);
-          setValue('images', [file]);
-        });
+      const fetchImages = async () => {
+        const files = [];
+        for (const url of location.imageUrls) {
+          try {
+            const response = await fetch(url);
+            const blob = await response.blob();
+            files.push(new File([blob], 'image.jpg', { type: blob.type }));
+          } catch (error) {
+            console.error(`Error fetching image ${url}:`, error);
+          }
+        }
+        setValue('images', files);
+      };
+      fetchImages();
     }
   }, [location?.imageUrls, setValue]);
 
@@ -206,7 +214,7 @@ export default function LocationEditing() {
         <ReadOnlyTextForm
           field="name"
           label="Planned"
-          value={location?.isPlanning ? 'Yes' : 'No'}
+          value={location?.isPlanning ? 'No' : 'Yes'}
         />
 
         <ReadOnlyTextForm
@@ -322,7 +330,7 @@ export default function LocationEditing() {
               onDeleteImage={handleDeleteImage}
             />
           ))}
-          {formValue.images.length < 1 && (
+          {formValue.images.length < 2 && (
             <DropFileContainer
               onDropFile={handleUpdateImage}
               acceptMIMETypes={ImageFileConfig.ACCEPTED_MINE_TYPES}

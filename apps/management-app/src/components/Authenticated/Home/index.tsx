@@ -7,8 +7,8 @@ import ActionBar from '@/components/Common/Maps/ActionBar';
 import SidebarContainer from '@/components/Common/Sidebar';
 import { ModalKey } from '@/constants/modal';
 import { SidebarKey } from '@/constants/sidebar';
-import { useGetLocationsQuery } from '@/store/api/officer/locationApiSlice';
-import { useGetReportsQuery } from '@/store/api/officer/reportApiSlice';
+import { useGetLocationsOfficerQuery } from '@/store/api/officer/locationApiSlice';
+import { useGetReportsOfficerQuery } from '@/store/api/officer/reportApiSlice';
 import {
   setIsShowingPlannedLocation,
   setIsShowingViolatedReport,
@@ -36,7 +36,7 @@ export default function Home() {
   const { isWardOfficer, isDistrictOfficer } = useAppSelector(checkRole);
 
   const { data: adLocationData, isLoading: fetchingAllAdsLocation } =
-    useGetLocationsQuery(
+    useGetLocationsOfficerQuery(
       {
         districts: isDistrictOfficer
           ? profile?.district?.id.toString()
@@ -49,7 +49,7 @@ export default function Home() {
       },
     );
   const { data: vioReports, isLoading: fetchingViolatedReport } =
-    useGetReportsQuery(
+    useGetReportsOfficerQuery(
       {
         districts: isDistrictOfficer
           ? profile?.district?.id.toString()

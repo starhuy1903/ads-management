@@ -1,21 +1,24 @@
+import FilterAltIcon from '@mui/icons-material/FilterAlt';
+import RefreshIcon from '@mui/icons-material/Refresh';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
+import Fab from '@mui/material/Fab';
 import Skeleton from '@mui/material/Skeleton';
 import Typography from '@mui/material/Typography';
 import {
   GridColDef,
   GridRowsProp,
   GridRenderCellParams,
+  GridRowParams,
 } from '@mui/x-data-grid';
 import { useCallback, useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAppDispatch } from '@/store';
 import { ModalKey } from '@/constants/modal';
 import {
   useGetDistrictsQuery,
   useGetWardsQuery,
-} from '@/store/api/generalManagementApiSlice';
-import { useLazyGetModificationRequestsQuery } from '@/store/api/requestManagementApiSlice';
+} from '@/store/api/cdo/generalManagementApiSlice';
+import { useLazyGetModificationRequestsQuery } from '@/store/api/cdo/requestManagementApiSlice';
 import { showModal } from '@/store/slice/modal';
 import {
   AdsRequestStatus,
@@ -30,6 +33,7 @@ import StaticActionBar from '../StaticActionBar';
 const ModificationRequestsListView = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const [viewOptions, setViewOptions] = useState<IAdsRequestViewOptions>({
     districts: [],
@@ -195,7 +199,9 @@ const ModificationRequestsListView = () => {
           width: 300,
           sortable: false,
           renderCell: (params: GridRenderCellParams) => (
-            <Typography fontSize="0.875rem">{displayTimestamp(params.value)}</Typography>
+            <Typography fontSize="0.875rem">
+              {displayTimestamp(params.value)}
+            </Typography>
           ),
         },
         {
@@ -204,7 +210,9 @@ const ModificationRequestsListView = () => {
           width: 300,
           sortable: false,
           renderCell: (params: GridRenderCellParams) => (
-            <Typography fontSize="0.875rem">{displayTimestamp(params.value)}</Typography>
+            <Typography fontSize="0.875rem">
+              {displayTimestamp(params.value)}
+            </Typography>
           ),
         },
         {
@@ -279,14 +287,27 @@ const ModificationRequestsListView = () => {
               />
             )}
           </Box>
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <Button
-              variant="contained"
-              sx={{ color: 'common.white' }}
-              onClick={handleFilter}
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <Fab color="primary" size="medium" onClick={handleFilter}>
+              <FilterAltIcon
+                sx={{ color: (theme) => theme.palette.common.white }}
+              />
+            </Fab>
+            <Fab
+              color="primary"
+              size="medium"
+              onClick={() => {
+                getModificationRequests({
+                  page: parseInt(searchParams.get('page') || '1'),
+                  take: parseInt(searchParams.get('pageSize') || '10'),
+                  ...viewOptions,
+                });
+              }}
             >
-              Options
-            </Button>
+              <RefreshIcon
+                sx={{ color: (theme) => theme.palette.common.white }}
+              />
+            </Fab>
           </Box>
         </>
       }
@@ -308,6 +329,9 @@ const ModificationRequestsListView = () => {
             page: (model.page + 1).toString(),
             pageSize: model.pageSize.toString(),
           });
+        }}
+        onRowDoubleClick={(params: GridRowParams) => {
+          navigate('/modification-requests/' + params.row.id);
         }}
       />
     </StaticActionBar>

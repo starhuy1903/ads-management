@@ -2,7 +2,9 @@
   "name": "ads-management",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "start:backend": "cd apps/main-api && npx prisma generate && nx serve"
+  },
   "private": true,
   "dependencies": {
     "@aws-sdk/client-ses": "^3.425.0",

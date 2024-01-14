@@ -5,7 +5,7 @@ import { apiSlice } from '../baseApiSlice';
 
 export const officerLocationApiSlice = apiSlice.injectEndpoints({
   endpoints: (build) => ({
-    getLocations: build.query<
+    getLocationsOfficer: build.query<
       GetList<AdLocation>,
       {
         page?: number;
@@ -40,7 +40,7 @@ export const officerLocationApiSlice = apiSlice.injectEndpoints({
         };
       },
     }),
-    getLocationById: build.query<Location, string>({
+    getLocationByIdOfficer: build.query<Location, string>({
       query: (id) => `/locations/${id}`,
       transformResponse: (response: { data: Location }) => response.data,
     }),
@@ -60,10 +60,10 @@ export const officerLocationApiSlice = apiSlice.injectEndpoints({
 });
 
 export const {
-  useGetLocationsQuery,
-  useLazyGetLocationsQuery,
-  useGetLocationByIdQuery,
-  useLazyGetLocationByIdQuery,
+  useGetLocationsOfficerQuery,
+  useLazyGetLocationsOfficerQuery,
+  useGetLocationByIdOfficerQuery,
+  useLazyGetLocationByIdOfficerQuery,
   useGetLocationTypesOfficerQuery,
   useLazyGetLocationTypesOfficerQuery,
   useGetAdsTypesOfficerQuery,

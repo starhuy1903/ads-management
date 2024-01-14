@@ -10,7 +10,7 @@ import {
   useGetDistrictsQuery,
   useGetLocationTypesQuery,
   useGetWardsQuery,
-} from '@/store/api/generalManagementApiSlice';
+} from '@/store/api/cdo/generalManagementApiSlice';
 import { showModal } from '@/store/slice/modal';
 import {
   LocationStatus,
@@ -59,7 +59,7 @@ const LocationListViewOptions = ({
 
   return (
     <GeneralModal
-      headerText="Apply view options"
+      headerText="Apply filter options"
       onModalClose={onModalClose}
       onClickPrimaryButton={() => {
         onSubmit({

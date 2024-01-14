@@ -1,5 +1,4 @@
 import { Button, Stack, TextField, Typography } from '@mui/material';
-import 'moment-timezone';
 import { useCallback, useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import CenterLoading from '@/components/Common/CenterLoading';
@@ -11,7 +10,7 @@ import {
 import { DetailWrapper } from '@/components/Common/Layout/ScreenWrapper';
 import { ReportStatus } from '@/constants/report';
 import { MAX_ID_LENGTH } from '@/constants/url-params';
-import { useLazyGetReportByIdQuery } from '@/store/api/officer/reportApiSlice';
+import { useLazyGetReportByIdOfficerQuery } from '@/store/api/officer/reportApiSlice';
 import { Report } from '@/types/officer-management';
 import { formatDateTime } from '@/utils/datetime';
 import { capitalize } from '@/utils/format-string';
@@ -23,7 +22,7 @@ export default function LocationReportDetail() {
   const [report, setReport] = useState<Report | null>(null);
   const { reportId } = useParams<{ reportId: string }>();
 
-  const [getReport, { isLoading }] = useLazyGetReportByIdQuery();
+  const [getReport, { isLoading }] = useLazyGetReportByIdOfficerQuery();
 
   const handleInvalidRequest = useCallback(() => {
     setReport(null);
@@ -137,7 +136,7 @@ export default function LocationReportDetail() {
 
         <ReadOnlyTextField
           label="Planned"
-          value={report.location?.isPlanning ? 'Yes' : 'No'}
+          value={report.location?.isPlanning ? 'No' : 'Yes'}
         />
 
         <ReadOnlyTextField

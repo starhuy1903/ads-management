@@ -9,7 +9,7 @@ import {
   useGetDistrictsQuery,
   useGetPanelTypesQuery,
   useGetWardsQuery,
-} from '@/store/api/generalManagementApiSlice';
+} from '@/store/api/cdo/generalManagementApiSlice';
 import { showModal } from '@/store/slice/modal';
 import {
   PanelStatus,
@@ -55,7 +55,7 @@ const PanelListViewOptions = ({
 
   return (
     <GeneralModal
-      headerText="Apply view options"
+      headerText="Apply filter options"
       onModalClose={onModalClose}
       onClickPrimaryButton={() => {
         onSubmit({

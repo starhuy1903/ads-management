@@ -3,6 +3,7 @@ import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
+import RefreshIcon from '@mui/icons-material/Refresh';
 import Box from '@mui/material/Box';
 import Fab from '@mui/material/Fab';
 import IconButton from '@mui/material/IconButton';
@@ -12,6 +13,7 @@ import {
   GridColDef,
   GridRowsProp,
   GridRenderCellParams,
+  GridRowParams,
 } from '@mui/x-data-grid';
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
@@ -20,13 +22,13 @@ import { ModalKey } from '@/constants/modal';
 import {
   useDeleteLocationsMutation,
   useLazyGetLocationsQuery,
-} from '@/store/api/adsManagementApiSlice';
+} from '@/store/api/cdo/adsManagementApiSlice';
 import {
   useGetAdsTypesQuery,
   useGetDistrictsQuery,
   useGetLocationTypesQuery,
   useGetWardsQuery,
-} from '@/store/api/generalManagementApiSlice';
+} from '@/store/api/cdo/generalManagementApiSlice';
 import { showModal } from '@/store/slice/modal';
 import { ILocationListViewOptions, Ward } from '@/types/cdoManagement';
 import { displayTimestamp } from '@/utils/format';
@@ -460,6 +462,21 @@ const LocationsListView = () => {
             <Fab
               color="primary"
               size="medium"
+              onClick={() => {
+                getLocations({
+                  page: parseInt(searchParams.get('page') || '1'),
+                  limit: parseInt(searchParams.get('pageSize') || '10'),
+                  ...viewOptions,
+                });
+              }}
+            >
+              <RefreshIcon
+                sx={{ color: (theme) => theme.palette.common.white }}
+              />
+            </Fab>
+            <Fab
+              color="primary"
+              size="medium"
               onClick={() => navigate('/locations/create')}
             >
               <AddIcon sx={{ color: (theme) => theme.palette.common.white }} />
@@ -485,6 +502,9 @@ const LocationsListView = () => {
             page: (model.page + 1).toString(),
             pageSize: model.pageSize.toString(),
           });
+        }}
+        onRowDoubleClick={(params: GridRowParams) => {
+          navigate('/locations/' + params.row.id);
         }}
       />
     </StaticActionBar>

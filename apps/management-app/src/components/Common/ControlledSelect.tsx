@@ -13,6 +13,7 @@ interface ControlledSelectProps<T extends number | string> {
     value: T;
     label: string;
   }>;
+  disabled?: boolean;
 }
 
 const ControlledSelect = <T extends number | string>({
@@ -20,6 +21,7 @@ const ControlledSelect = <T extends number | string>({
   name,
   label = name,
   options,
+  disabled = false,
 }: ControlledSelectProps<T>) => {
   const id = useId();
 
@@ -40,6 +42,7 @@ const ControlledSelect = <T extends number | string>({
             value={value}
             onChange={onChange}
             onBlur={onBlur}
+            disabled={disabled}
           >
             {options.map((item) => (
               <MenuItem value={item.value} key={item.value}>

@@ -1,8 +1,4 @@
-import {
-  ForbiddenException,
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { CreateReportDto } from './dto/create-report.dto';
 import { UpdateReportDto } from './dto/update-report.dto';
 import { PrismaService } from '../../services/prisma/prisma.service';
@@ -22,6 +18,7 @@ import moment from 'moment-timezone';
 import { UserRole } from '@prisma/client';
 import { MailService } from '../../services/mail/mail.service';
 import { SendMailTemplateDto } from '../../services/mail/mail.dto';
+import axios from 'axios';
 
 @Injectable()
 export class ReportService {
@@ -35,6 +32,8 @@ export class ReportService {
     images?: Express.Multer.File[],
   ) {
     let imageUrls = [];
+    let administrativeAreaLevel2;
+    let administrativeAreaLevel3;
     try {
       if (images?.length) {
         const uploadImagesData = await uploadFilesFromFirebase(
@@ -61,6 +60,8 @@ export class ReportService {
         panel: undefined,
         lat: undefined,
         long: undefined,
+        district: undefined,
+        ward: undefined,
       };
       if (createReportDto.targetType == TargetType.LOCATION) {
         data.location = { connect: { id: createReportDto.locationId } };
@@ -71,8 +72,47 @@ export class ReportService {
       } else if (createReportDto.targetType == TargetType.POINT) {
         data.lat = createReportDto.lat;
         data.long = createReportDto.long;
-      }
+        const reverseGeocodingUrl = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${createReportDto.lat},${createReportDto.long}&result_type=administrative_area_level_3&key=${process.env.GOOGLE_MAP_API_KEY}`;
+        const reverseGeocodingResponse = await axios.get(reverseGeocodingUrl);
 
+        if (
+          reverseGeocodingResponse.data &&
+          reverseGeocodingResponse.data.status === 'OK'
+        ) {
+          const results = reverseGeocodingResponse.data.results;
+
+          if (results && results.length > 0) {
+            // Lấy administrative_area_level_2 và administrative_area_level_3 từ response
+            const addressComponents = results[0].address_components;
+            for (const component of addressComponents) {
+              if (component.types.includes('administrative_area_level_2')) {
+                administrativeAreaLevel2 = component.long_name;
+              }
+              if (component.types.includes('administrative_area_level_3')) {
+                administrativeAreaLevel3 = component.long_name;
+              }
+            }
+          }
+        }
+
+        const district = await this.prismaService.district.findFirst({
+          where: {
+            name: {
+              contains: administrativeAreaLevel2,
+            },
+          },
+        });
+        const ward = await this.prismaService.ward.findFirst({
+          where: {
+            name: {
+              contains: administrativeAreaLevel3,
+            },
+            districtId: district.id,
+          },
+        });
+        data.district = { connect: { id: district.id } };
+        data.ward = { connect: { id: ward.id } };
+      }
       const result = await this.prismaService.report.create({
         data,
         include: {
@@ -125,6 +165,9 @@ export class ReportService {
     if (user.role === UserRole.ward_officer) {
       conditions.where.OR = [
         {
+          wardId: user.wardId,
+        },
+        {
           location: {
             wardId: user.wardId,
           },
@@ -161,6 +204,10 @@ export class ReportService {
 
       conditions.where.OR = [
         {
+          districtId: user.districtId,
+          wardId: { in: filteredWards },
+        },
+        {
           location: {
             districtId: user.districtId,
             wardId: { in: filteredWards },
@@ -177,6 +224,10 @@ export class ReportService {
       ];
     } else {
       conditions.where.OR = [
+        {
+          districtId: { in: pageOptionsReportDto?.districts },
+          wardId: { in: pageOptionsReportDto?.wards },
+        },
         {
           location: {
             districtId: { in: pageOptionsReportDto?.districts },
@@ -197,6 +248,8 @@ export class ReportService {
     const [result, totalCount] = await Promise.all([
       this.prismaService.report.findMany({
         include: {
+          district: true,
+          ward: true,
           reportType: true,
           location: {
             include: {
@@ -238,6 +291,8 @@ export class ReportService {
   findOne(id: number) {
     return this.prismaService.report.findFirst({
       include: {
+        district: true,
+        ward: true,
         reportType: true,
         location: {
           include: {

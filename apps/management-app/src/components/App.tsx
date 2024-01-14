@@ -8,6 +8,9 @@ import {
 import { useAppSelector } from '@/store';
 import { useLazyGetProfileQuery } from '@/store/api/userApiSlice';
 import { checkRole } from '@/store/slice/userSlice';
+import AccountsCreate from './Authenticated/CDO/AccountsCreate';
+import AccountsDetail from './Authenticated/CDO/AccountsDetail';
+import AccountsListView from './Authenticated/CDO/AccountsListView';
 import AdsTypesCreate from './Authenticated/CDO/AdsTypesCreate';
 import AdsTypesDetail from './Authenticated/CDO/AdsTypesDetail';
 import AdsTypesListView from './Authenticated/CDO/AdsTypesListView';
@@ -17,12 +20,16 @@ import DistrictsListView from './Authenticated/CDO/DistrictsListView';
 import LocationTypesCreate from './Authenticated/CDO/LocationTypesCreate';
 import LocationTypesDetail from './Authenticated/CDO/LocationTypesDetail';
 import LocationTypesListView from './Authenticated/CDO/LocationTypesListView';
+import LocationsCreate from './Authenticated/CDO/LocationsCreate';
+import LocationsDetail from './Authenticated/CDO/LocationsDetail';
 import LocationsListView from './Authenticated/CDO/LocationsListView';
 import ModificationRequestsDetail from './Authenticated/CDO/ModificationRequestDetail';
 import ModificationRequestsListView from './Authenticated/CDO/ModificationRequestsListView';
 import PanelTypesCreate from './Authenticated/CDO/PanelTypesCreate';
 import PanelTypesDetail from './Authenticated/CDO/PanelTypesDetail';
 import PanelTypesListView from './Authenticated/CDO/PanelTypesListView';
+import PanelsCreate from './Authenticated/CDO/PanelsCreate';
+import PanelsDetail from './Authenticated/CDO/PanelsDetail';
 import PanelsListView from './Authenticated/CDO/PanelsListView';
 import PermissionRequestsDetail from './Authenticated/CDO/PermissionRequestDetail';
 import PermissionRequestsListView from './Authenticated/CDO/PermissionRequestsListView';
@@ -33,6 +40,7 @@ import ReportTypesListView from './Authenticated/CDO/ReportTypesListView';
 import WardsCreate from './Authenticated/CDO/WardsCreate';
 import WardsDetail from './Authenticated/CDO/WardsDetail';
 import WardsListView from './Authenticated/CDO/WardsListView';
+import ChangePassword from './Authenticated/ChangePassword';
 import Dashboard from './Authenticated/Dashboard';
 import Home from './Authenticated/Home';
 import CDOLayout from './Authenticated/Layout/CDOLayout';
@@ -53,20 +61,17 @@ import PanelList from './Authenticated/Officer/PanelList';
 import PanelReportDetail from './Authenticated/Officer/PanelReportDetail';
 import PanelReportList from './Authenticated/Officer/PanelReportList';
 import PanelSendRequest from './Authenticated/Officer/PanelSendRequest';
+import PointReportDetail from './Authenticated/Officer/PointReportDetail';
+import PointReportList from './Authenticated/Officer/PointReportList';
 import ReportResponse from './Authenticated/Officer/ReportResponse';
 import ResetPassword from './Authenticated/ResetPassword';
 import CenterLoading from './Common/CenterLoading';
-import ChangePassword from './Authenticated/ChangePassword';
 import PageLayout from './Common/Layout/PageLayout';
 import CitizenHome from './Unauthenticated/Citizen/CitizenHome';
 import CitizenReport from './Unauthenticated/Citizen/CitizenReport';
 import ForgotPassword from './Unauthenticated/ForgotPassword';
 import Login from './Unauthenticated/Login';
 import Verify from './Unauthenticated/Verify';
-import LocationsCreate from './Authenticated/CDO/LocationsCreate';
-import LocationsDetail from './Authenticated/CDO/LocationsDetail';
-import PanelsCreate from './Authenticated/CDO/PanelsCreate';
-import PanelsDetail from './Authenticated/CDO/PanelsDetail';
 
 // Culture Department Officer
 const CDORoutes = createBrowserRouter([
@@ -196,7 +201,15 @@ const CDORoutes = createBrowserRouter([
       },
       {
         path: 'accounts',
-        element: <div>Officer accounts</div>,
+        element: <AccountsListView />,
+      },
+      {
+        path: 'accounts/create',
+        element: <AccountsCreate />,
+      },
+      {
+        path: 'accounts/:id',
+        element: <AccountsDetail />,
       },
       {
         path: 'change-password',
@@ -270,6 +283,14 @@ const officerRoutes = createBrowserRouter([
       {
         path: 'panel-reports/:reportId',
         element: <PanelReportDetail />,
+      },
+      {
+        path: 'point-reports',
+        element: <PointReportList />,
+      },
+      {
+        path: 'point-reports/:reportId',
+        element: <PointReportDetail />,
       },
       {
         path: 'reports/:reportId/response',

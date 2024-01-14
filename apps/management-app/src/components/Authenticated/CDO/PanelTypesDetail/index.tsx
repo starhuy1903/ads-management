@@ -14,7 +14,7 @@ import {
   useDeletePanelTypesMutation,
   useLazyGetPanelTypeByIdQuery,
   useUpdatePanelTypeMutation,
-} from '@/store/api/generalManagementApiSlice';
+} from '@/store/api/cdo/generalManagementApiSlice';
 import { isApiErrorResponse } from '@/store/api/helper';
 import { showModal } from '@/store/slice/modal';
 import { showError } from '@/utils/toast';

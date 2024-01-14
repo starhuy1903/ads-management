@@ -24,8 +24,8 @@ import { ImageFileConfig } from '@/constants/validation';
 import {
   useCreatePanelMutation,
   useLazyGetLocationsQuery,
-} from '@/store/api/adsManagementApiSlice';
-import { useLazyGetPanelTypesQuery } from '@/store/api/generalManagementApiSlice';
+} from '@/store/api/cdo/adsManagementApiSlice';
+import { useLazyGetPanelTypesQuery } from '@/store/api/cdo/generalManagementApiSlice';
 import { showModal } from '@/store/slice/modal';
 import { PanelStatus } from '@/types/cdoManagement';
 import FormInputSkeleton from '../FormInputSkeleton';

@@ -1,5 +1,6 @@
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
+import RefreshIcon from '@mui/icons-material/Refresh';
 import Fab from '@mui/material/Fab';
 import IconButton from '@mui/material/IconButton';
 import Skeleton from '@mui/material/Skeleton';
@@ -7,6 +8,7 @@ import {
   GridColDef,
   GridRowsProp,
   GridRenderCellParams,
+  GridRowParams,
 } from '@mui/x-data-grid';
 import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
@@ -15,7 +17,7 @@ import { ModalKey } from '@/constants/modal';
 import {
   useDeleteReportTypesMutation,
   useGetReportTypesQuery,
-} from '@/store/api/generalManagementApiSlice';
+} from '@/store/api/cdo/generalManagementApiSlice';
 import { showModal } from '@/store/slice/modal';
 import CustomDataGrid from '../CustomDatagrid';
 import CustomLink from '../CustomLink';
@@ -117,7 +119,7 @@ const ReportTypesListView = () => {
           sortable: false,
           renderHeader: () => null,
           renderCell: (params: GridRenderCellParams) => (
-            <CustomLink to={'/reportTypes/' + params.row.id}>
+            <CustomLink to={'/report-types/' + params.row.id}>
               View details
             </CustomLink>
           ),
@@ -156,13 +158,18 @@ const ReportTypesListView = () => {
   return (
     <StaticActionBar
       actionBar={
-        <Fab
-          color="primary"
-          size="medium"
-          onClick={() => navigate('/report-types/create')}
-        >
-          <AddIcon sx={{ color: (theme) => theme.palette.common.white }} />
-        </Fab>
+        <>
+          <Fab color="primary" size="medium" onClick={() => refetch()}>
+            <RefreshIcon sx={{ color: (theme) => theme.palette.common.white }} />
+          </Fab>
+          <Fab
+            color="primary"
+            size="medium"
+            onClick={() => navigate('/report-types/create')}
+          >
+            <AddIcon sx={{ color: (theme) => theme.palette.common.white }} />
+          </Fab>
+        </>
       }
     >
       <CustomDataGrid
@@ -182,6 +189,9 @@ const ReportTypesListView = () => {
             page: (model.page + 1).toString(),
             pageSize: model.pageSize.toString(),
           });
+        }}
+        onRowDoubleClick={(params: GridRowParams) => {
+          navigate('/report-types/' + params.row.id);
         }}
       />
     </StaticActionBar>
