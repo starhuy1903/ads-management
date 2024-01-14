@@ -47,7 +47,7 @@ export interface CreatedReportBase {
   email: string;
   content: string;
   phoneNumber: string;
-  imageUrl: string[];
+  imageUrls: string[];
   status: string;
   resolvedContent: string;
   createdAt: string;

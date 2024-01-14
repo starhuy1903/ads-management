@@ -16,6 +16,7 @@ import {
   CreatedReport,
 } from '@/types/report';
 import { formatDateTime } from '@/utils/datetime';
+import { ImageListField } from '../Common/FormComponents';
 import GeneralModal from './GeneralModal';
 
 interface ReportDetailProps {
@@ -123,6 +124,7 @@ function ReportDetail({
                 <Typography>Content</Typography>
                 <Box>{parse(report.content)}</Box>
               </Stack>
+              <ImageListField images={report.imageUrls} />
             </CardContent>
             {report.status !== 'DONE' && onHandleReport && (
               <CardActions>
