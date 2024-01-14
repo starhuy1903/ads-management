@@ -1,5 +1,5 @@
 import { Stack, Typography } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import CenterLoading from '@/components/Common/CenterLoading';
 import {
@@ -22,10 +22,10 @@ export default function LocationDetail() {
 
   const [getLocation, { isLoading }] = useLazyGetLocationByIdOfficerQuery();
 
-  function handleInvalidRequest() {
+  const handleInvalidRequest = useCallback(() => {
     setLocation(null);
     navigate('/locations', { replace: true });
-  }
+  }, [navigate]);
 
   useEffect(() => {
     if (
@@ -39,7 +39,7 @@ export default function LocationDetail() {
 
     async function fetchData() {
       try {
-        const res = await getLocation(locationId!, true).unwrap();
+        const res = await getLocation(locationId!).unwrap();
         setLocation(res);
       } catch (error) {
         console.log(error);
@@ -48,7 +48,7 @@ export default function LocationDetail() {
     }
 
     fetchData();
-  }, [getLocation, locationId]);
+  }, [getLocation, handleInvalidRequest, locationId]);
 
   if (isLoading || !location) {
     return <CenterLoading />;

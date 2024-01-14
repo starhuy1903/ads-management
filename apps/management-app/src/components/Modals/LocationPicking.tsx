@@ -9,6 +9,7 @@ import { configs } from '@/configurations';
 import { INITIAL_MAP_CENTER } from '@/constants/app';
 import { useLazyGetLocationsQuery } from '@/store/api/cdo/adsManagementApiSlice';
 import { LocationFull } from '@/types/cdoManagement';
+import GeocoderControl from '../Common/Maps/GeocoderControl';
 import GeneralModal from './GeneralModal';
 
 interface LocationPickingProps {
@@ -26,7 +27,7 @@ const LocationPicking = ({
 }: LocationPickingProps) => {
   const [getLocations, { data: locations }] = useLazyGetLocationsQuery();
 
-  const [location, setLocation] = useState<LocationFull | undefined>();
+  const [location, setLocation] = useState<LocationFull | undefined | null>();
 
   useEffect(() => {
     const fetch = async () => {
@@ -37,7 +38,7 @@ const LocationPicking = ({
       setLocation(
         initialLocation
           ? getLocationsResult.data.find((e) => e.id === initialLocation)
-          : undefined,
+          : null,
       );
     };
     fetch();
@@ -57,56 +58,62 @@ const LocationPicking = ({
       }}
     >
       <Box>
-        <Map
-          initialViewState={{
-            longitude: INITIAL_MAP_CENTER.lng,
-            latitude: INITIAL_MAP_CENTER.lat,
-            zoom: 15,
-          }}
-          cursor="crosshair"
-          style={{
-            width: '100%',
-            height: '100%',
-            zIndex: 1,
-          }}
-          mapStyle="mapbox://styles/mapbox/streets-v9"
-          mapboxAccessToken={configs.mapBox}
-          logoPosition="bottom-right"
-          doubleClickZoom={false}
-        >
-          <FullscreenControl position="bottom-right" />
-          {locations &&
-            locations.data.map((e) => (
-              <Marker
-                longitude={e.long}
-                latitude={e.lat}
-                style={{ cursor: 'pointer' }}
-                onClick={() => setLocation(e)}
-              >
-                {e === location ? (
-                  <AddLocationIcon
-                    sx={{
-                      color: (theme) => theme.palette.primary.main,
-                      transform: 'scale(1.3) translateY(-50%)',
-                      transition: 'all 0.5s ease',
-                    }}
-                  />
-                ) : (
-                  <LocationOnIcon
-                    sx={{
-                      color: (theme) => theme.palette.primary.main,
-                      transform: 'translateY(-50%)',
-                      transition: 'all 0.5s ease',
-
-                      '&:hover': {
+        {location !== undefined && (
+          <Map
+            initialViewState={{
+              longitude: location ? location.long : INITIAL_MAP_CENTER.lng,
+              latitude: location ? location.lat : INITIAL_MAP_CENTER.lat,
+              zoom: 15,
+            }}
+            cursor="crosshair"
+            style={{
+              width: '100%',
+              height: '100%',
+              zIndex: 1,
+            }}
+            mapStyle="mapbox://styles/mapbox/streets-v9"
+            mapboxAccessToken={configs.mapBox}
+            logoPosition="bottom-right"
+            doubleClickZoom={false}
+          >
+            <GeocoderControl
+              mapboxAccessToken={configs.mapBox}
+              position="top-left"
+            />
+            <FullscreenControl position="bottom-right" />
+            {locations &&
+              locations.data.map((e) => (
+                <Marker
+                  longitude={e.long}
+                  latitude={e.lat}
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => setLocation(e)}
+                >
+                  {e === location ? (
+                    <AddLocationIcon
+                      sx={{
+                        color: (theme) => theme.palette.primary.main,
                         transform: 'scale(1.3) translateY(-50%)',
-                      },
-                    }}
-                  />
-                )}
-              </Marker>
-            ))}
-        </Map>
+                        transition: 'all 0.5s ease',
+                      }}
+                    />
+                  ) : (
+                    <LocationOnIcon
+                      sx={{
+                        color: (theme) => theme.palette.primary.main,
+                        transform: 'translateY(-50%)',
+                        transition: 'all 0.5s ease',
+
+                        '&:hover': {
+                          transform: 'scale(1.3) translateY(-50%)',
+                        },
+                      }}
+                    />
+                  )}
+                </Marker>
+              ))}
+          </Map>
+        )}
       </Box>
       {location && (
         <Stack

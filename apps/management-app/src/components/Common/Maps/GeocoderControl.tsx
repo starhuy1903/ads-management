@@ -20,7 +20,7 @@ type GeocoderControlProps = Omit<
 
 /* eslint-disable complexity,max-statements */
 export default function GeocoderControl(props: GeocoderControlProps) {
-  const [marker, setMarker] = useState(null);
+  const [marker, setMarker] = useState<any>(null);
 
   const geocoder = useControl<MapboxGeocoder>(
     () => {
@@ -29,10 +29,21 @@ export default function GeocoderControl(props: GeocoderControlProps) {
         marker: false,
         accessToken: props.mapboxAccessToken,
       });
-      ctrl.on('loading', props.onLoading);
-      ctrl.on('results', props.onResults);
+      if (props.onLoading) {
+        ctrl.on('loading', props.onLoading);
+      }
+      type GeocoderControlProps = Omit<
+        GeocoderOptions,
+        'accessToken' | 'mapboxgl' | 'marker'
+      > & {
+        // ...
+        onResults?: ((e: object) => void) | undefined;
+        // ...
+      };
       ctrl.on('result', (evt) => {
-        props.onResult(evt);
+        if (props.onResult) {
+          props.onResult(evt);
+        }
 
         const { result } = evt;
         const location =
@@ -40,9 +51,11 @@ export default function GeocoderControl(props: GeocoderControlProps) {
           (result.center ||
             (result.geometry?.type === 'Point' && result.geometry.coordinates));
         if (location && props.marker) {
+          const marker =
+            typeof props.marker === 'object' ? { ...props.marker } : {};
           setMarker(
             <Marker
-              {...props.marker}
+              {...marker}
               longitude={location[0]}
               latitude={location[1]}
             />,
@@ -51,7 +64,7 @@ export default function GeocoderControl(props: GeocoderControlProps) {
           setMarker(null);
         }
       });
-      ctrl.on('error', props.onError);
+      ctrl.on('error', props.onError as (...args: any[]) => void);
       return ctrl;
     },
     {
@@ -59,6 +72,7 @@ export default function GeocoderControl(props: GeocoderControlProps) {
     },
   );
 
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore (TS2339) private member
   if (geocoder._map) {
     if (
@@ -132,7 +146,7 @@ export default function GeocoderControl(props: GeocoderControlProps) {
   return marker;
 }
 
-const noop = () => {};
+const noop = () => ({});
 
 GeocoderControl.defaultProps = {
   marker: true,

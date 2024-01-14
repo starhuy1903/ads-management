@@ -14,6 +14,7 @@ export const reportApiToastSlice = apiWithToastSlice.injectEndpoints({
           }
           bodyFormData.append(key, value);
         });
+        body.images?.forEach((image) => bodyFormData.append('images', image));
 
         return {
           url: 'reports',

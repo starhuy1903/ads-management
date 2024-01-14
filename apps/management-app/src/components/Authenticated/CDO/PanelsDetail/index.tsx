@@ -202,9 +202,10 @@ const PanelsDetail = () => {
           });
           dispatch(showModal(null));
         },
+        initialLocation: formValue.locationId,
       }),
     );
-  }, [dispatch, setValue]);
+  }, [dispatch, formValue.locationId, setValue]);
 
   const [updatePanel] = useUpdatePanelMutation();
 

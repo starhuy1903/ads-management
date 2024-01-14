@@ -1,21 +1,22 @@
+import { GetList } from '@/types/common';
 import {
-  GetListResult,
   MessageResponse,
   Report,
   UpdateReportDto,
 } from '@/types/officer-management';
+import { CreatedReport } from '@/types/report';
 import { apiSlice } from '../baseApiSlice';
 
 export const officerReportApiSlice = apiSlice.injectEndpoints({
   endpoints: (build) => ({
     getReportsOfficer: build.query<
-      GetListResult<Report>,
+      GetList<CreatedReport>,
       {
         page?: number;
         take?: number;
         wards?: number[];
         districts?: string;
-        targetType: string;
+        targetType?: string;
         typeId?: number;
       }
     >({

@@ -1,20 +1,9 @@
-import {
-  Box,
-  IconButton,
-  Menu,
-  MenuItem,
-  Tooltip,
-  Typography,
-} from '@mui/material';
+import { Box } from '@mui/material';
 import { Avatar } from '@mui/material';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
 import { Marker } from 'react-map-gl';
-import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '@/store';
-import CitizenNotification from '@/components/Common/Layout/CitizenNotification';
 import Maps from '@/components/Common/Maps';
-import ActionBar from '@/components/Common/Maps/ActionBar';
-import SidebarContainer from '@/components/Common/Sidebar';
 import { ModalKey } from '@/constants/modal';
 import { SidebarKey } from '@/constants/sidebar';
 import { useGetLocationQuery } from '@/store/api/citizen/locationApiSlice';
@@ -29,13 +18,14 @@ import { hideSidebar, showSidebar } from '@/store/slice/sidebar';
 import { AdLocation } from '@/types/location';
 import { CreatedPointReport, CreatedReport } from '@/types/report';
 import anonymousUser from '@/utils/anonymous-user';
+import ActionBar from './ActionBar';
+import SidebarContainer from './Sidebar';
 
 const isPointReport = (report: CreatedReport): report is CreatedPointReport =>
   report.targetType === 'Point';
 
-export default function CitizenHome() {
+const Dashboard = () => {
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
   const {
     isShowingPlannedLocation,
     isShowingViolatedReport,
@@ -43,8 +33,6 @@ export default function CitizenHome() {
   } = useAppSelector((state) => state.maps);
 
   const ref = useRef<any>(null);
-
-  const [anchorElUser, setAnchorElUser] = useState<HTMLElement | null>(null);
 
   const selectedViewPort = selectedLocation
     ? {
@@ -110,17 +98,6 @@ export default function CitizenHome() {
     },
     [dispatch],
   );
-
-  const handleOpenUserMenu = useCallback(
-    (event: React.MouseEvent<HTMLElement>) => {
-      setAnchorElUser(event.currentTarget);
-    },
-    [],
-  );
-
-  const handleCloseUserMenu = useCallback(() => {
-    setAnchorElUser(null);
-  }, []);
 
   useEffect(() => {
     if (selectedLocation) {
@@ -227,11 +204,10 @@ export default function CitizenHome() {
   return (
     <>
       <Box
-        position="absolute"
         top={0}
         left={0}
-        width="100vw"
-        height="100vh"
+        width="100%"
+        height="100%"
         zIndex={-1}
         display="flex"
       >
@@ -244,43 +220,6 @@ export default function CitizenHome() {
         >
           {renderLocationMarkers()}
           {isShowingViolatedReport && renderViolatedPoint()}
-          <Box
-            sx={{
-              position: 'absolute',
-              top: 10,
-              right: 10,
-            }}
-          >
-            <Tooltip title="Notification">
-              <CitizenNotification />
-            </Tooltip>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0, ml: 2 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: '45px' }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              <MenuItem onClick={() => navigate('/login')}>
-                <Typography textAlign="center">Log in</Typography>
-              </MenuItem>
-            </Menu>
-          </Box>
-
           <Box
             sx={{
               position: 'absolute',
@@ -305,4 +244,6 @@ export default function CitizenHome() {
       <SidebarContainer style={{ minWidth: 250, maxWidth: 300 }} />
     </>
   );
-}
+};
+
+export default Dashboard;

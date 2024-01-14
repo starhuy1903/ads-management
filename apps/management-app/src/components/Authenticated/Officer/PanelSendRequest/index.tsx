@@ -37,7 +37,7 @@ export default function PanelSendRequest() {
 
     async function fetchData() {
       try {
-        const res = await getPanel(panelId!, true).unwrap();
+        const res = await getPanel(panelId!).unwrap();
         if (!res) {
           navigate('/panels', { replace: true });
         }
@@ -48,7 +48,7 @@ export default function PanelSendRequest() {
     }
 
     fetchData();
-  }, [getPanel, panelId]);
+  }, [getPanel, navigate, panelId]);
 
   const { handleSubmit, register, formState, control } = useForm<{
     reason: string;

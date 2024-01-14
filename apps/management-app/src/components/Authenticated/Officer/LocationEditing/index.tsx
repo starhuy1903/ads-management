@@ -64,10 +64,10 @@ export default function LocationEditing() {
       mode: 'onChange',
     });
 
-  function handleInvalidRequest() {
+  const handleInvalidRequest = useCallback(() => {
     setLocation(null);
     navigate('/locations', { replace: true });
-  }
+  }, [navigate]);
 
   useEffect(() => {
     if (
@@ -81,7 +81,7 @@ export default function LocationEditing() {
 
     async function fetchData() {
       try {
-        const locationData = await getLocation(locationId!, true).unwrap();
+        const locationData = await getLocation(locationId!).unwrap();
         const locationTypesData = await getLocationTypes().unwrap();
         const adsTypesData = await getAdsTypes().unwrap();
 
@@ -111,7 +111,15 @@ export default function LocationEditing() {
     }
 
     fetchData();
-  }, [getAdsTypes, getLocation, getLocationTypes, locationId, userId]);
+  }, [
+    getAdsTypes,
+    getLocation,
+    getLocationTypes,
+    handleInvalidRequest,
+    locationId,
+    reset,
+    userId,
+  ]);
 
   useEffect(() => {
     if (location?.imageUrls) {

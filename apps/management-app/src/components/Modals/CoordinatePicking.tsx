@@ -6,6 +6,7 @@ import { memo, useEffect, useState } from 'react';
 import Map, { FullscreenControl, Marker } from 'react-map-gl';
 import { configs } from '@/configurations';
 import { INITIAL_MAP_CENTER } from '@/constants/app';
+import GeocoderControl from '../Common/Maps/GeocoderControl';
 import GeneralModal from './GeneralModal';
 
 interface CoordinatePickingProps {
@@ -50,8 +51,8 @@ const CoordinatePicking = ({
       <Box sx={{ width: '100%', flex: 1 }}>
         <Map
           initialViewState={{
-            longitude: INITIAL_MAP_CENTER.lng,
-            latitude: INITIAL_MAP_CENTER.lat,
+            longitude: initialCoordinate?.lng || INITIAL_MAP_CENTER.lng,
+            latitude: initialCoordinate?.lat || INITIAL_MAP_CENTER.lat,
             zoom: 15,
           }}
           cursor="crosshair"
@@ -68,6 +69,10 @@ const CoordinatePicking = ({
             setCoordinate({ lat: event.lngLat.lat, lng: event.lngLat.lng });
           }}
         >
+          <GeocoderControl
+            mapboxAccessToken={configs.mapBox}
+            position="top-left"
+          />
           <FullscreenControl position="bottom-right" />
           {coordinate && (
             <Marker

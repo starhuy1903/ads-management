@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   Card,
+  CardActions,
   CardContent,
   CardHeader,
   Stack,
@@ -15,12 +16,14 @@ import {
   CreatedReport,
 } from '@/types/report';
 import { formatDateTime } from '@/utils/datetime';
+import { ImageListField } from '../Common/FormComponents';
 import GeneralModal from './GeneralModal';
 
 interface ReportDetailProps {
   reports: CreatedReport[];
   createNew?: () => void;
   onModalClose: () => void;
+  onHandleReport?: (reportId: number) => void;
 }
 
 const isLocationReport = (
@@ -40,11 +43,24 @@ const getTitle = (report: CreatedReport) => {
   return 'Point';
 };
 
-function ReportDetail({ reports, createNew, onModalClose }: ReportDetailProps) {
+function ReportDetail({
+  reports,
+  createNew,
+  onModalClose,
+  onHandleReport,
+}: ReportDetailProps) {
   const handleCreateNew = useCallback(() => {
     onModalClose();
     createNew?.();
   }, [onModalClose, createNew]);
+
+  const handleReport = useCallback(
+    (reportId: number) => {
+      onModalClose();
+      onHandleReport?.(reportId);
+    },
+    [onModalClose, onHandleReport],
+  );
 
   const renderStatus = (status: string) => {
     switch (status) {
@@ -108,7 +124,15 @@ function ReportDetail({ reports, createNew, onModalClose }: ReportDetailProps) {
                 <Typography>Content</Typography>
                 <Box>{parse(report.content)}</Box>
               </Stack>
+              <ImageListField images={report.imageUrls} />
             </CardContent>
+            {report.status !== 'DONE' && onHandleReport && (
+              <CardActions>
+                <Button onClick={() => handleReport(report.id)}>
+                  Xử lí báo cáo
+                </Button>
+              </CardActions>
+            )}
           </Card>
         ))}
       </Stack>

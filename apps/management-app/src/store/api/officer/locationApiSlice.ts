@@ -1,15 +1,12 @@
-import {
-  AdsType,
-  GetListResult,
-  Location,
-  LocationType,
-} from '@/types/officer-management';
+import { GetList } from '@/types/common';
+import { AdLocation } from '@/types/location';
+import { AdsType, Location, LocationType } from '@/types/officer-management';
 import { apiSlice } from '../baseApiSlice';
 
 export const officerLocationApiSlice = apiSlice.injectEndpoints({
   endpoints: (build) => ({
     getLocationsOfficer: build.query<
-      GetListResult<Location>,
+      GetList<AdLocation>,
       {
         page?: number;
         take?: number;
