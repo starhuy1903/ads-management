@@ -18,11 +18,9 @@ export default function ForgotPassword() {
   } = useForm<ForgotPasswordPayload>();
   const onSubmit: SubmitHandler<ForgotPasswordPayload> = async (data) => {
     try {
-      const res = await requestForgetPassword(data).unwrap();
+      await requestForgetPassword(data).unwrap();
 
-      if (res.statusCode === 200) {
-        setIsSent(true);
-      }
+      setIsSent(true);
     } catch (err) {
       if (isApiErrorResponse(err)) {
         showError(err.data.message);

@@ -24,14 +24,12 @@ export default function ResetPassword() {
     newPassword: string;
   }> = async (data) => {
     try {
-      const res = await requestResetPassword({
+      await requestResetPassword({
         newPassword: data.newPassword,
         verifyToken,
       }).unwrap();
 
-      if (res.statusCode === 200) {
-        setIsReset(true);
-      }
+      setIsReset(true);
     } catch (err) {
       if (isApiErrorResponse(err)) {
         showError(err.data.message);
@@ -68,19 +66,6 @@ export default function ResetPassword() {
                       value: 20,
                       message: 'Password must be at most 20 characters!',
                     },
-                    validate: {
-                      hasNumber: (value) =>
-                        /\d/.test(value) || 'Password must contain a number!',
-                      hasUppercase: (value) =>
-                        /[A-Z]/.test(value) ||
-                        'Password must contain an uppercase letter!',
-                      hasLowercase: (value) =>
-                        /[a-z]/.test(value) ||
-                        'Password must contain a lowercase letter!',
-                      hasSpecialChar: (value) =>
-                        /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(value) ||
-                        'Password must contain a special character!',
-                    },
                   })}
                   type="password"
                   placeholder="Enter your password"
@@ -99,9 +84,9 @@ export default function ResetPassword() {
                 className="w-full text-white bg-[#7F56D9] py-2 rounded-lg font-semibold"
               >
                 {isLoading ? (
-                  <span>'Loading...'</span>
+                  <span>Loading...</span>
                 ) : (
-                  <span>'Reset Password'</span>
+                  <span>Reset Password</span>
                 )}
               </button>
             </form>
