@@ -1,0 +1,4784 @@
+{
+	"info": {
+		"_postman_id": "11c5c44b-59c8-42d2-82de-d860ecab788a",
+		"name": "All APIs",
+		"description": "This is an api documentation for Ward and District Officer\n\nNote: to run this api, you must obtain the access_token_key by login as Ward or District Officer",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18634609"
+	},
+	"item": [
+		{
+			"name": "Reports",
+			"item": [
+				{
+					"name": "Update report",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoiY2hpaGllbjIwMDI3MUBnbWFpbC5jb20iLCJyb2xlIjoiY2RvIiwiaWF0IjoxNzA0OTkwNDgwLCJleHAiOjE3MDQ5OTA3ODB9.r4ez1pDnU_SXEC4GGfi7eQ-xd-vm35FKXekSV6XY5sQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "https://ads-management-api.onrender.com/api/reports/27",
+							"protocol": "https",
+							"host": [
+								"ads-management-api",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"reports",
+								"27"
+							]
+						},
+						"description": "This api used by officer to update a specified report by its id\n\n| Attribute | Type | Description |\n| --- | --- | --- |\n| `status` | enums(DONE, NEW, PENDING) | status of report |\n| `resolvedContent` | string | the resolved content of report |"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoiY2hpaGllbjIwMDI3MUBnbWFpbC5jb20iLCJyb2xlIjoiY2RvIiwiaWF0IjoxNzA0OTkwNDgwLCJleHAiOjE3MDQ5OTA3ODB9.r4ez1pDnU_SXEC4GGfi7eQ-xd-vm35FKXekSV6XY5sQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"resolvedContent\": \"Nộp đơn tại XYZT\",\r\n    \"status\": \"DONE\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://ads-management-api.onrender.com/api/reports/27",
+							"protocol": "https",
+							"host": [
+								"ads-management-api",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"reports",
+								"27"
+							]
+						},
+						"description": "This api used by officer to update a specified report by its id\n\n| Attribute | Type | Description |\n| --- | --- | --- |\n| `status` | enums(DONE, NEW, PENDING) | status of report |\n| `resolvedContent` | string | the resolved content of report |"
+					},
+					"response": []
+				},
+				{
+					"name": "Get report",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoiY2hpaGllbjIwMDI3MUBnbWFpbC5jb20iLCJyb2xlIjoiY2RvIiwiaWF0IjoxNzA0OTkwNDgwLCJleHAiOjE3MDQ5OTA3ODB9.r4ez1pDnU_SXEC4GGfi7eQ-xd-vm35FKXekSV6XY5sQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://ads-management-api.onrender.com/api/reports/15",
+							"protocol": "https",
+							"host": [
+								"ads-management-api",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"reports",
+								"15"
+							]
+						},
+						"description": "This api returns detail of report by id"
+					},
+					"response": []
+				},
+				{
+					"name": "Get own reports",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjI1LCJlbWFpbCI6ImNoaWhpZW4yMDAyNzExMTExQGdtYWlsLmNvbSIsInJvbGUiOiJ3YXJkX29mZmljZXIiLCJpYXQiOjE3MDUyMTM5NzcsImV4cCI6MTcwNTIxNDI3N30.e_reC3vlHublgiKcX3ddHW6KqpOIwQuCL45YQx5DtpE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://ads-management-api.onrender.com/api/reports/get-me?userUuid=asdkfjhasjkdf-12341234&targetType=Point&typeId=1&page=1&take=10&status=PENDING",
+							"protocol": "https",
+							"host": [
+								"ads-management-api",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"reports",
+								"get-me"
+							],
+							"query": [
+								{
+									"key": "wards",
+									"value": "1,36",
+									"disabled": true
+								},
+								{
+									"key": "userUuid",
+									"value": "asdkfjhasjkdf-12341234"
+								},
+								{
+									"key": "targetType",
+									"value": "Point"
+								},
+								{
+									"key": "typeId",
+									"value": "1"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "take",
+									"value": "10"
+								},
+								{
+									"key": "status",
+									"value": "PENDING"
+								}
+							]
+						},
+						"description": "| **Attribute** | **Type** | **Desscription** |\n| --- | --- | --- |\n| `page` | number (default = 1) | Specifies the page number of the results to retrieve |\n| `take` | number (default = 10) | Determines the number of items to retrieve per page |\n| `typeId` | number | Represents a numerical identifier, used for filtering or categorizing data |\n| `targetType` | enum (Location, Panel) | Specifies the type of target entities to be included in the results |\n| `status` | enums(DONE, NEW, PENDING) | Represents the status of the items to be retrieved |\n| `take` | number (default = 10) | Determines the number of items to retrieve per page |\n| `userUuid` | string | Determines the user that send this report, store this into localStorage |"
+					},
+					"response": []
+				},
+				{
+					"name": "List reports",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjI1LCJlbWFpbCI6ImNoaWhpZW4yMDAyNzExMTExQGdtYWlsLmNvbSIsInJvbGUiOiJ3YXJkX29mZmljZXIiLCJpYXQiOjE3MDUyMTM5NzcsImV4cCI6MTcwNTIxNDI3N30.e_reC3vlHublgiKcX3ddHW6KqpOIwQuCL45YQx5DtpE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://ads-management-api.onrender.com/api/reports?page=1&take=10",
+							"protocol": "https",
+							"host": [
+								"ads-management-api",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"reports"
+							],
+							"query": [
+								{
+									"key": "wards",
+									"value": "1,36",
+									"disabled": true
+								},
+								{
+									"key": "districts",
+									"value": "2",
+									"disabled": true
+								},
+								{
+									"key": "targetType",
+									"value": "Point",
+									"disabled": true
+								},
+								{
+									"key": "typeId",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "take",
+									"value": "10"
+								}
+							]
+						},
+						"description": "| **Attribute** | **Type** | **Desscription** |\n| --- | --- | --- |\n| `page` | number (default = 1) | Specifies the page number of the results to retrieve |\n| `take` | number (default = 10) | Determines the number of items to retrieve per page |\n| `typeId` | number | Represents a numerical identifier, used for filtering or categorizing data |\n| `targetType` | enum (Location, Panel) | Specifies the type of target entities to be included in the results |\n| `status` | enums(DONE, NEW, PENDING) | Represents the status of the items to be retrieved |\n| `wards` | string | Represents a string value, related to geographical, can contains many value |\n| `districts` | string | Represents a string value, related to geographical at the district level. |"
+					},
+					"response": []
+				},
+				{
+					"name": "Get statistic",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjI1LCJlbWFpbCI6ImNoaWhpZW4yMDAyNzExMTExQGdtYWlsLmNvbSIsInJvbGUiOiJ3YXJkX29mZmljZXIiLCJpYXQiOjE3MDUyMTM5NzcsImV4cCI6MTcwNTIxNDI3N30.e_reC3vlHublgiKcX3ddHW6KqpOIwQuCL45YQx5DtpE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://ads-management-api.onrender.com/api/reports/statistic?districtIds=[1,2,3]&wardIds=[1,2,3]&dateValue=2024-01-07 14:47:03.247&dateType=MONTH",
+							"protocol": "https",
+							"host": [
+								"ads-management-api",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"reports",
+								"statistic"
+							],
+							"query": [
+								{
+									"key": "wards",
+									"value": "1,36",
+									"disabled": true
+								},
+								{
+									"key": "districtIds",
+									"value": "[1,2,3]"
+								},
+								{
+									"key": "wardIds",
+									"value": "[1,2,3]"
+								},
+								{
+									"key": "dateValue",
+									"value": "2024-01-07 14:47:03.247"
+								},
+								{
+									"key": "dateType",
+									"value": "MONTH"
+								}
+							]
+						},
+						"description": "| **Attribute** | **Type** | **Desscription** |\n| --- | --- | --- |\n| `districtIds` | number\\[\\] | List of filtered districts |\n| `wardIds` | number\\[\\] | List of filtered districts |\n| `dateValue` | Date | Start date |\n| `dateType` | enum (MONTH, YEAR) | Type of return statistic, by month (30,31 elements for days) or by year (12 elements for 12 month) |"
+					},
+					"response": []
+				},
+				{
+					"name": "Get user notification",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://ads-management-api.onrender.com/api/reports/user/sse/123123-12341234",
+							"protocol": "https",
+							"host": [
+								"ads-management-api",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"reports",
+								"user",
+								"sse",
+								"123123-12341234"
+							]
+						},
+						"description": "This API is SSE api type, make this realtime and make sure to closed this when unmount.\n\nParams: :userUuid\n\nuserUuid is stored when user submit report\n\nResponse: a JSON stringifyed string when a report of this user is updated."
+					},
+					"response": []
+				},
+				{
+					"name": "Get officer notification",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://ads-management-api.onrender.com/api/reports/officer/sse/123123",
+							"protocol": "https",
+							"host": [
+								"ads-management-api",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"reports",
+								"officer",
+								"sse",
+								"123123"
+							]
+						},
+						"description": "This API is SSE api type, make this realtime and make sure to closed this when unmount.\n\nParams: :userId\n\nuserId is the id of officer\n\nResponse: a JSON stringifyed string when a report is created."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Ads Request",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoiY2hpaGllbjIwMDI3MUBnbWFpbC5jb20iLCJyb2xlIjoiY2RvIiwiaWF0IjoxNzA1MTUxNzY0LCJleHAiOjE3MDUxNTIwNjR9.-DrqyC4_lr2wp9X3eBo7Lg7X_6YQ32WRFyGXaIpeU2A",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"userId\": 2,\r\n  \"reason\": \"This is a sample ads-request reason.\",\r\n  \"panelId\": 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://ads-management-api.onrender.com/api/ads-requests",
+							"protocol": "https",
+							"host": [
+								"ads-management-api",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"ads-requests"
+							]
+						},
+						"description": "| Attribute | Type | Description |\n| --- | --- | --- |\n| `userId` | number | Represents a numerical identifier associated with a user. |\n| `reason` | string | Describes the reason associated with a request. |\n| `panelId` | number | Represents a numerical identifier associated with a panel. |"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoiY2hpaGllbjIwMDI3MUBnbWFpbC5jb20iLCJyb2xlIjoiY2RvIiwiaWF0IjoxNzA1MTUxNzY0LCJleHAiOjE3MDUxNTIwNjR9.-DrqyC4_lr2wp9X3eBo7Lg7X_6YQ32WRFyGXaIpeU2A",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"status\": \"REJECTED\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://ads-management-api.onrender.com/api/ads-requests/1",
+							"protocol": "https",
+							"host": [
+								"ads-management-api",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"ads-requests",
+								"1"
+							]
+						},
+						"description": "| **Attribute** | **Type** | **Description** |\n| --- | --- | --- |\n| `status` | enum (PENDING, APPROVED, REJECTED, CANCELED) | Represents the status of the ads-request to be retrieved |"
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoiY2hpaGllbjIwMDI3MUBnbWFpbC5jb20iLCJyb2xlIjoiY2RvIiwiaWF0IjoxNzA1MTUxNzY0LCJleHAiOjE3MDUxNTIwNjR9.-DrqyC4_lr2wp9X3eBo7Lg7X_6YQ32WRFyGXaIpeU2A",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"status\": \"REJECTED\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://ads-management-api.onrender.com/api/ads-requests/1",
+							"protocol": "https",
+							"host": [
+								"ads-management-api",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"ads-requests",
+								"1"
+							]
+						},
+						"description": "| **Attribute** | **Type** | **Description** |\n| --- | --- | --- |\n| `status` | enum (PENDING, APPROVED, REJECTED, CANCELED) | Represents the status of the ads-request to be retrieved |"
+					},
+					"response": []
+				},
+				{
+					"name": "Get one",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoiY2hpaGllbjIwMDI3MUBnbWFpbC5jb20iLCJyb2xlIjoiY2RvIiwiaWF0IjoxNzA1MTUxNzY0LCJleHAiOjE3MDUxNTIwNjR9.-DrqyC4_lr2wp9X3eBo7Lg7X_6YQ32WRFyGXaIpeU2A",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://ads-management-api.onrender.com/api/ads-requests/1",
+							"protocol": "https",
+							"host": [
+								"ads-management-api",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"ads-requests",
+								"1"
+							]
+						},
+						"description": "This API returns detailed information for an ads request based on its ID"
+					},
+					"response": []
+				},
+				{
+					"name": "Find all",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoiY2hpaGllbjIwMDI3MUBnbWFpbC5jb20iLCJyb2xlIjoiY2RvIiwiaWF0IjoxNzA1MTUxNzY0LCJleHAiOjE3MDUxNTIwNjR9.-DrqyC4_lr2wp9X3eBo7Lg7X_6YQ32WRFyGXaIpeU2A",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://ads-management-api.onrender.com/api/ads-requests?wards=2",
+							"protocol": "https",
+							"host": [
+								"ads-management-api",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"ads-requests"
+							],
+							"query": [
+								{
+									"key": "wards",
+									"value": "2"
+								},
+								{
+									"key": "districts",
+									"value": "3",
+									"disabled": true
+								},
+								{
+									"key": "targetType",
+									"value": "Location",
+									"disabled": true
+								},
+								{
+									"key": "status",
+									"value": "REJECTED",
+									"disabled": true
+								},
+								{
+									"key": "type",
+									"value": "UPDATE_DATA",
+									"disabled": true
+								}
+							]
+						},
+						"description": "| **Attribute** | **Type** | **Desscription** |\n| --- | --- | --- |\n| `page` | number (default = 1) | Specifies the page number of the results to retrieve |\n| `take` | number (default = 10) | Determines the number of items to retrieve per page |\n| `targetType` | enum (Location, Panel) | Specifies the type of target entities to be included in the results |\n| `status` | enum (PENDING, APPROVED, REJECTED, CANCELED) | Represents the status of the items to be retrieved |\n| `wards` | string | Represents a string value, related to geographical, can contains many value |\n| `districts` | string | Represents a string value, related to geographical at the district level, can contains many value |\n| `type` | enum(UPDATE_DATE, APPROVED_PANEL) | Specifies the type of target entities to be included in the results |"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Update Panel",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoiY2hpaGllbjIwMDI3MUBnbWFpbC5jb20iLCJyb2xlIjoiY2RvIiwiaWF0IjoxNzA1MTUxNzY0LCJleHAiOjE3MDUxNTIwNjR9.-DrqyC4_lr2wp9X3eBo7Lg7X_6YQ32WRFyGXaIpeU2A",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "images",
+									"type": "file",
+									"src": "postman-cloud:///1eea1b4c-b6bf-4820-b8e0-34ce8e6ff798"
+								},
+								{
+									"key": "typeId",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "width",
+									"value": "10",
+									"type": "text"
+								},
+								{
+									"key": "height",
+									"value": "20",
+									"type": "text"
+								},
+								{
+									"key": "locationId",
+									"value": "5",
+									"type": "text"
+								},
+								{
+									"key": "createContractDate",
+									"value": "2023-12-23T00:00:00.000Z",
+									"type": "text"
+								},
+								{
+									"key": "expiredContractDate",
+									"value": "2024-12-23T00:00:00.000Z",
+									"type": "text"
+								},
+								{
+									"key": "companyEmail",
+									"value": "example@example.com",
+									"type": "text"
+								},
+								{
+									"key": "companyNumber",
+									"value": "123456789",
+									"type": "text"
+								},
+								{
+									"key": "userId",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "reason",
+									"value": "Cần chỉnh sửa thông tin",
+									"type": "text"
+								},
+								{
+									"key": "belongPanelId",
+									"value": "3",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://ads-management-api.onrender.com/api/ads-requests/update-panel",
+							"protocol": "https",
+							"host": [
+								"ads-management-api",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"ads-requests",
+								"update-panel"
+							]
+						},
+						"description": "| Attribute | Type | Description |\n| --- | --- | --- |\n| `images` | file | Represents new images |\n| `typeId` | number | Represents a numerical identifier, indicating the type of the uploaded content. |\n| `width` | number | Specifies the width of the panel. |\n| `height` | number | Specifies the height of the panel. |\n| `locationId` | number | Represents a numerical identifier associated with a location. |\n| `createContractDate` | string | Indicates the date and time when a contract was created. |\n| `expiredContractDate` | string | Indicates the date and time when the contract is set to expire. |\n| `companyEmail` | string | Represents the email associated with a company. |\n| `companyNumber` | number | Represents the numerical identifier or registration number of a company. |\n| `userId` | number | Represents a numerical identifier associated with a user. |\n| `reason` | string | Describes the reason associated with a request. |\n| `belongPanelId` | number | Represents a numerical identifier associated with a panel to which the image belongs. |"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Update Location",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoiY2hpaGllbjIwMDI3MUBnbWFpbC5jb20iLCJyb2xlIjoiY2RvIiwiaWF0IjoxNzA1MTUxNzY0LCJleHAiOjE3MDUxNTIwNjR9.-DrqyC4_lr2wp9X3eBo7Lg7X_6YQ32WRFyGXaIpeU2A",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "images",
+									"type": "file",
+									"src": "postman-cloud:///1eea1b4c-b6bf-4820-b8e0-34ce8e6ff798"
+								},
+								{
+									"key": "typeId",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "adsTypeId",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "long",
+									"value": "20",
+									"type": "text"
+								},
+								{
+									"key": "lat",
+									"value": "5",
+									"type": "text"
+								},
+								{
+									"key": "isPlanning",
+									"value": "true",
+									"type": "text"
+								},
+								{
+									"key": "districtId",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "wardId",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "fullAddress",
+									"value": "227, Nguyễn Văn Cừ, Quận 5",
+									"type": "text"
+								},
+								{
+									"key": "name",
+									"value": "Trường đại học Khoa học Tự nhiên",
+									"type": "text"
+								},
+								{
+									"key": "userId",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "reason",
+									"value": "Cần chỉnh sửa thông tin",
+									"type": "text"
+								},
+								{
+									"key": "belongLocationId",
+									"value": "5",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://ads-management-api.onrender.com/api/ads-requests/update-location",
+							"protocol": "https",
+							"host": [
+								"ads-management-api",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"ads-requests",
+								"update-location"
+							]
+						},
+						"description": "| Attribute | Type | Description |\n| --- | --- | --- |\n| `images` | file | Represents new images |\n| `typeId` | number | Represents a numerical identifier, indicating the type of the uploaded content. |\n| `adsTypeId` | number | Represents a numerical identifier associated with the type of advertisements. |\n| `long` | number | Represents the longitude coordinates of the location. |\n| `lat` | number | Represents the latitude coordinates of the location. |\n| `isPlanning` | boolean | Indicates whether the location is in the planning stage (true) or not (false). |\n| `districtId` | number | Represents a numerical identifier associated with the district of the location. |\n| `wardId` | number | Represents a numerical identifier associated with the ward of the location. |\n| `fullAddress` | string | Represents the full address of the location. |\n| `name` | string | Represents the name of the location. |\n| `userId` | number | Represents a numerical identifier associated with a user. |\n| `reason` | string | Describes the reason for updating the location. |\n| `belongLocationId` | number | Represents a numerical identifier associated with old location. |"
+					},
+					"response": []
+				},
+				{
+					"name": "Reject Request",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoiY2hpaGllbjIwMDI3MUBnbWFpbC5jb20iLCJyb2xlIjoiY2RvIiwiaWF0IjoxNzA1MTUxNzY0LCJleHAiOjE3MDUxNTIwNjR9.-DrqyC4_lr2wp9X3eBo7Lg7X_6YQ32WRFyGXaIpeU2A",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "https://ads-management-api.onrender.com/api/ads-requests/1/reject",
+							"protocol": "https",
+							"host": [
+								"ads-management-api",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"ads-requests",
+								"1",
+								"reject"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Approve Request",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoiY2hpaGllbjIwMDI3MUBnbWFpbC5jb20iLCJyb2xlIjoiY2RvIiwiaWF0IjoxNzA1MTUxNzY0LCJleHAiOjE3MDUxNTIwNjR9.-DrqyC4_lr2wp9X3eBo7Lg7X_6YQ32WRFyGXaIpeU2A",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "https://ads-management-api.onrender.com/api/ads-requests/1/approve",
+							"protocol": "https",
+							"host": [
+								"ads-management-api",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"ads-requests",
+								"1",
+								"approve"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Location",
+			"item": [
+				{
+					"name": "List",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE3LCJlbWFpbCI6InE2QGdtYWlsLmNvbSIsInJvbGUiOiJkaXN0cmljdF9vZmZpY2VyIiwiaWF0IjoxNzA0ODkyOTcyLCJleHAiOjE3MDc0ODQ5NzJ9.a4kFNg95_xPjgjI5V6MXJkClc6eY9I2trkmZYx8PiNs",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://ads-management-api.onrender.com/api/locations?districts=18&wards=263&status=AWAITING_UPDATE&page=1&take=10",
+							"protocol": "https",
+							"host": [
+								"ads-management-api",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"locations"
+							],
+							"query": [
+								{
+									"key": "districts",
+									"value": "18"
+								},
+								{
+									"key": "wards",
+									"value": "263"
+								},
+								{
+									"key": "status",
+									"value": "AWAITING_UPDATE"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "take",
+									"value": "10"
+								}
+							]
+						},
+						"description": "| Attribute | Type | Description |\n| --- | --- | --- |\n| `page` | number | Specifies the page number of the results to retrieve |\n| `take` | number | Determines the number of items to retrieve per page |\n| `districts` | string | Represents numerical identifiers or codes of districts. Multiple values are separated by commas. |\n| `wards` | string | Represents numerical identifiers or codes of wards. Multiple values are separated by commas. |\n| `status` | enum (APPROVED, AWAITING_UPDATE) | Represents the status of the location. |"
+					},
+					"response": []
+				},
+				{
+					"name": "Find all by Crew",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE3LCJlbWFpbCI6InE2QGdtYWlsLmNvbSIsInJvbGUiOiJkaXN0cmljdF9vZmZpY2VyIiwiaWF0IjoxNzA0ODkyOTcyLCJleHAiOjE3MDc0ODQ5NzJ9.a4kFNg95_xPjgjI5V6MXJkClc6eY9I2trkmZYx8PiNs",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://ads-management-api.onrender.com/api/locations/map?districts=18&wards=263&status=AWAITING_UPDATE&page=1&take=10",
+							"protocol": "https",
+							"host": [
+								"ads-management-api",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"locations",
+								"map"
+							],
+							"query": [
+								{
+									"key": "districts",
+									"value": "18"
+								},
+								{
+									"key": "wards",
+									"value": "263"
+								},
+								{
+									"key": "status",
+									"value": "AWAITING_UPDATE"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "take",
+									"value": "10"
+								}
+							]
+						},
+						"description": "| Attribute | Type | Description |\n| --- | --- | --- |\n| `page` | number | Specifies the page number of the results to retrieve |\n| `take` | number | Determines the number of items to retrieve per page |\n| `districts` | string | Represents numerical identifiers or codes of districts. Multiple values are separated by commas. |\n| `wards` | string | Represents numerical identifiers or codes of wards. Multiple values are separated by commas. |\n| `status` | enum (APPROVED, AWAITING_UPDATE) | Represents the status of the location. |"
+					},
+					"response": []
+				},
+				{
+					"name": "Get",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoiY2hpaGllbjIwMDI3MUBnbWFpbC5jb20iLCJyb2xlIjoiY2RvIiwiaWF0IjoxNzA0OTkwNDgwLCJleHAiOjE3MDQ5OTA3ODB9.r4ez1pDnU_SXEC4GGfi7eQ-xd-vm35FKXekSV6XY5sQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://ads-management-api.onrender.com/api/locations/25",
+							"protocol": "https",
+							"host": [
+								"ads-management-api",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"locations",
+								"25"
+							]
+						},
+						"description": "This API returns detailed information for a location based on its ID"
+					},
+					"response": []
+				},
+				{
+					"name": "List Panel by Location id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoiY2hpaGllbjIwMDI3MUBnbWFpbC5jb20iLCJyb2xlIjoiY2RvIiwiaWF0IjoxNzA0OTkwNDgwLCJleHAiOjE3MDQ5OTA3ODB9.r4ez1pDnU_SXEC4GGfi7eQ-xd-vm35FKXekSV6XY5sQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://ads-management-api.onrender.com/api/locations/5/panels?page=1&take=5",
+							"protocol": "https",
+							"host": [
+								"ads-management-api",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"locations",
+								"5",
+								"panels"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "take",
+									"value": "5"
+								}
+							]
+						},
+						"description": "This API returns a list of panels belonging to a specified location\n\n  \n| Attribute | Type | Description |  \n| --- | --- | --- |  \n| `page` | number | Specifies the page number of the results to retrieve |  \n| `take` | number | Determines the number of items to retrieve per page |"
+					},
+					"response": []
+				},
+				{
+					"name": "Create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoiY2hpaGllbjIwMDI3MUBnbWFpbC5jb20iLCJyb2xlIjoiY2RvIiwiaWF0IjoxNzA0OTkwNDgwLCJleHAiOjE3MDQ5OTA3ODB9.r4ez1pDnU_SXEC4GGfi7eQ-xd-vm35FKXekSV6XY5sQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "images",
+									"type": "file",
+									"src": "postman-cloud:///1eea1b4c-b6bf-4820-b8e0-34ce8e6ff798"
+								},
+								{
+									"key": "typeId",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "adsTypeId",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "long",
+									"value": "20",
+									"type": "text"
+								},
+								{
+									"key": "lat",
+									"value": "5",
+									"type": "text"
+								},
+								{
+									"key": "isPlanning",
+									"value": "true",
+									"type": "text"
+								},
+								{
+									"key": "districtId",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "wardId",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "fullAddress",
+									"value": "12/3A, Phan Văn Trị, Quận Gò Vấp",
+									"type": "text"
+								},
+								{
+									"key": "name",
+									"value": "Vincom",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://ads-management-api.onrender.com/api/locations",
+							"protocol": "https",
+							"host": [
+								"ads-management-api",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"locations"
+							]
+						},
+						"description": "| Attribute | Type | Description |\n| --- | --- | --- |\n| `images` | file | Represents new images |\n| `typeId` | number | Represents a numerical identifier, indicating the type of the uploaded content. |\n| `adsTypeId` | number | Represents a numerical identifier associated with the type of advertisements. |\n| `long` | number | Represents the longitude coordinates of the location. |\n| `lat` | number | Represents the latitude coordinates of the location. |\n| `isPlanning` | boolean | Indicates whether the location is in the planning stage (true) or not (false). |\n| `districtId` | number | Represents a numerical identifier associated with the district of the location. |\n| `wardId` | number | Represents a numerical identifier associated with the ward of the location. |\n| `fullAddress` | string | Represents the full address of the location. |\n| `name` | string | Represents the name of the location. |"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoiY2hpaGllbjIwMDI3MUBnbWFpbC5jb20iLCJyb2xlIjoiY2RvIiwiaWF0IjoxNzA0OTkwNDgwLCJleHAiOjE3MDQ5OTA3ODB9.r4ez1pDnU_SXEC4GGfi7eQ-xd-vm35FKXekSV6XY5sQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://ads-management-api.onrender.com/api/locations/1",
+							"protocol": "https",
+							"host": [
+								"ads-management-api",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"locations",
+								"1"
+							]
+						},
+						"description": "| Attribute | Type | Description |\n| --- | --- | --- |\n| `images` | file | Represents new images |\n| `typeId` | number | Represents a numerical identifier, indicating the type of the uploaded content. |\n| `adsTypeId` | number | Represents a numerical identifier associated with the type of advertisements. |\n| `long` | number | Represents the longitude coordinates of the location. |\n| `lat` | number | Represents the latitude coordinates of the location. |\n| `isPlanning` | boolean | Indicates whether the location is in the planning stage (true) or not (false). |\n| `districtId` | number | Represents a numerical identifier associated with the district of the location. |\n| `wardId` | number | Represents a numerical identifier associated with the ward of the location. |\n| `fullAddress` | string | Represents the full address of the location. |\n| `name` | string | Represents the name of the location. |"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Copy",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoiY2hpaGllbjIwMDI3MUBnbWFpbC5jb20iLCJyb2xlIjoiY2RvIiwiaWF0IjoxNzA0OTkwNDgwLCJleHAiOjE3MDQ5OTA3ODB9.r4ez1pDnU_SXEC4GGfi7eQ-xd-vm35FKXekSV6XY5sQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "images",
+									"type": "file",
+									"src": "postman-cloud:///1eea1b4c-b6bf-4820-b8e0-34ce8e6ff798"
+								},
+								{
+									"key": "typeId",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "adsTypeId",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "long",
+									"value": "20",
+									"type": "text"
+								},
+								{
+									"key": "lat",
+									"value": "5",
+									"type": "text"
+								},
+								{
+									"key": "isPlanning",
+									"value": "true",
+									"type": "text"
+								},
+								{
+									"key": "districtId",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "wardId",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "fullAddress",
+									"value": "12/3A, Phan Văn Trị, Quận Gò Vấp",
+									"type": "text"
+								},
+								{
+									"key": "name",
+									"value": "Vincom",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://ads-management-api.onrender.com/api/locations/1",
+							"protocol": "https",
+							"host": [
+								"ads-management-api",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"locations",
+								"1"
+							]
+						},
+						"description": "| Attribute | Type | Description |\n| --- | --- | --- |\n| `images` | file | Represents new images |\n| `typeId` | number | Represents a numerical identifier, indicating the type of the uploaded content. |\n| `adsTypeId` | number | Represents a numerical identifier associated with the type of advertisements. |\n| `long` | number | Represents the longitude coordinates of the location. |\n| `lat` | number | Represents the latitude coordinates of the location. |\n| `isPlanning` | boolean | Indicates whether the location is in the planning stage (true) or not (false). |\n| `districtId` | number | Represents a numerical identifier associated with the district of the location. |\n| `wardId` | number | Represents a numerical identifier associated with the ward of the location. |\n| `fullAddress` | string | Represents the full address of the location. |\n| `name` | string | Represents the name of the location. |"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Panel",
+			"item": [
+				{
+					"name": "List",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoiY2hpaGllbjIwMDI3MUBnbWFpbC5jb20iLCJyb2xlIjoiY2RvIiwiaWF0IjoxNzA1MTUxNzY0LCJleHAiOjE3MDUxNTIwNjR9.-DrqyC4_lr2wp9X3eBo7Lg7X_6YQ32WRFyGXaIpeU2A",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://ads-management-api.onrender.com/api/panels?wards=1&status=APPROVED,DRAFT&page=1&take=10",
+							"protocol": "https",
+							"host": [
+								"ads-management-api",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"panels"
+							],
+							"query": [
+								{
+									"key": "districts",
+									"value": "18",
+									"disabled": true
+								},
+								{
+									"key": "wards",
+									"value": "1"
+								},
+								{
+									"key": "typeId",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "status",
+									"value": "APPROVED,DRAFT"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "take",
+									"value": "10"
+								}
+							]
+						},
+						"description": "| Attribute | Type | Description |\n| --- | --- | --- |\n| `page` | number | Specifies the page number of the results to retrieve |\n| `take` | number | Determines the number of items to retrieve per page |\n| `districts` | string | Represents numerical identifiers or codes of districts. Multiple values are separated by commas. |\n| `wards` | string | Represents numerical identifiers or codes of wards. Multiple values are separated by commas. |\n| `typeId` | number | Represents a numerical identifier, potentially indicating the type of the location. |\n| `status` | enum (APPROVED, DRAFT, AWAITING_UPDATE) | Represents the status of the location. Multiple values are separated by commas. Possible values: APPROVED, DRAFT. |"
+					},
+					"response": []
+				},
+				{
+					"name": "Get",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoiY2hpaGllbjIwMDI3MUBnbWFpbC5jb20iLCJyb2xlIjoiY2RvIiwiaWF0IjoxNzA1MTUxNzY0LCJleHAiOjE3MDUxNTIwNjR9.-DrqyC4_lr2wp9X3eBo7Lg7X_6YQ32WRFyGXaIpeU2A",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8194/api/panels/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8194",
+							"path": [
+								"api",
+								"panels",
+								"2"
+							]
+						},
+						"description": "This API returns detailed information for a panel based on its ID"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoiY2hpaGllbjIwMDI3MUBnbWFpbC5jb20iLCJyb2xlIjoiY2RvIiwiaWF0IjoxNzA1MTUxNzY0LCJleHAiOjE3MDUxNTIwNjR9.-DrqyC4_lr2wp9X3eBo7Lg7X_6YQ32WRFyGXaIpeU2A",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://ads-management-api.onrender.com/api/ads-requests/1/reject/api/panels/1",
+							"protocol": "https",
+							"host": [
+								"ads-management-api",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"ads-requests",
+								"1",
+								"reject",
+								"api",
+								"panels",
+								"1"
+							]
+						},
+						"description": "| Attribute | Type | Description |\n| --- | --- | --- |\n| `images` | file | Represents new images |\n| `typeId` | number | Represents a numerical identifier, indicating the type of the uploaded content. |\n| `width` | number | Specifies the width of the panel. |\n| `height` | number | Specifies the height of the panel. |\n| `locationId` | number | Represents a numerical identifier associated with a location. |\n| `createContractDate` | string | Indicates the date and time when a contract was created. |\n| `expiredContractDate` | string | Indicates the date and time when the contract is set to expire. |\n| `companyEmail` | string | Represents the email associated with a company. |\n| `companyNumber` | number | Represents the numerical identifier or registration number of a company. |"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Copy",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoiY2hpaGllbjIwMDI3MUBnbWFpbC5jb20iLCJyb2xlIjoiY2RvIiwiaWF0IjoxNzA1MTUxNzY0LCJleHAiOjE3MDUxNTIwNjR9.-DrqyC4_lr2wp9X3eBo7Lg7X_6YQ32WRFyGXaIpeU2A",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "images",
+									"type": "file",
+									"src": "postman-cloud:///1eeb09c8-0375-4240-a835-5f71fe1ed85e"
+								},
+								{
+									"key": "typeId",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "width",
+									"value": "10",
+									"type": "text"
+								},
+								{
+									"key": "height",
+									"value": "20",
+									"type": "text"
+								},
+								{
+									"key": "locationId",
+									"value": "5",
+									"type": "text"
+								},
+								{
+									"key": "createContractDate",
+									"value": "2023-12-23T00:00:00.000Z",
+									"type": "text"
+								},
+								{
+									"key": "expiredContractDate",
+									"value": "2024-12-23T00:00:00.000Z",
+									"type": "text"
+								},
+								{
+									"key": "companyEmail",
+									"value": "example@example.com",
+									"type": "text"
+								},
+								{
+									"key": "companyNumber",
+									"value": "123456789",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8194/api/panels/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8194",
+							"path": [
+								"api",
+								"panels",
+								"1"
+							]
+						},
+						"description": "| Attribute | Type | Description |\n| --- | --- | --- |\n| `images` | file | Represents new images |\n| `typeId` | number | Represents a numerical identifier, indicating the type of the uploaded content. |\n| `width` | number | Specifies the width of the panel. |\n| `height` | number | Specifies the height of the panel. |\n| `locationId` | number | Represents a numerical identifier associated with a location. |\n| `createContractDate` | string | Indicates the date and time when a contract was created. |\n| `expiredContractDate` | string | Indicates the date and time when the contract is set to expire. |\n| `companyEmail` | string | Represents the email associated with a company. |\n| `companyNumber` | number | Represents the numerical identifier or registration number of a company. |"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Copy",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoiY2hpaGllbjIwMDI3MUBnbWFpbC5jb20iLCJyb2xlIjoiY2RvIiwiaWF0IjoxNzA1MTUxNzY0LCJleHAiOjE3MDUxNTIwNjR9.-DrqyC4_lr2wp9X3eBo7Lg7X_6YQ32WRFyGXaIpeU2A",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "images",
+									"type": "file",
+									"src": "postman-cloud:///1eeb09c8-0375-4240-a835-5f71fe1ed85e"
+								},
+								{
+									"key": "typeId",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "width",
+									"value": "10",
+									"type": "text"
+								},
+								{
+									"key": "height",
+									"value": "20",
+									"type": "text"
+								},
+								{
+									"key": "locationId",
+									"value": "5",
+									"type": "text"
+								},
+								{
+									"key": "createContractDate",
+									"value": "2023-12-23T00:00:00.000Z",
+									"type": "text"
+								},
+								{
+									"key": "expiredContractDate",
+									"value": "2024-12-23T00:00:00.000Z",
+									"type": "text"
+								},
+								{
+									"key": "companyEmail",
+									"value": "example@example.com",
+									"type": "text"
+								},
+								{
+									"key": "companyNumber",
+									"value": "123456789",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8194/api/panels",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8194",
+							"path": [
+								"api",
+								"panels"
+							]
+						},
+						"description": "| Attribute | Type | Description |\n| --- | --- | --- |\n| `images` | file | Represents new images |\n| `typeId` | number | Represents a numerical identifier, indicating the type of the uploaded content. |\n| `width` | number | Specifies the width of the panel. |\n| `height` | number | Specifies the height of the panel. |\n| `locationId` | number | Represents a numerical identifier associated with a location. |\n| `createContractDate` | string | Indicates the date and time when a contract was created. |\n| `expiredContractDate` | string | Indicates the date and time when the contract is set to expire. |\n| `companyEmail` | string | Represents the email associated with a company. |\n| `companyNumber` | number | Represents the numerical identifier or registration number of a company. |"
+					},
+					"response": []
+				},
+				{
+					"name": "Find all by Crew",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE3LCJlbWFpbCI6InE2QGdtYWlsLmNvbSIsInJvbGUiOiJkaXN0cmljdF9vZmZpY2VyIiwiaWF0IjoxNzA0ODkyOTcyLCJleHAiOjE3MDc0ODQ5NzJ9.a4kFNg95_xPjgjI5V6MXJkClc6eY9I2trkmZYx8PiNs",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://ads-management-api.onrender.com/api/panels/map?districts=18&wards=263&status=AWAITING_UPDATE&page=1&take=10",
+							"protocol": "https",
+							"host": [
+								"ads-management-api",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"panels",
+								"map"
+							],
+							"query": [
+								{
+									"key": "districts",
+									"value": "18"
+								},
+								{
+									"key": "wards",
+									"value": "263"
+								},
+								{
+									"key": "status",
+									"value": "AWAITING_UPDATE"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "take",
+									"value": "10"
+								}
+							]
+						},
+						"description": "| Attribute | Type | Description |\n| --- | --- | --- |\n| `page` | number | Specifies the page number of the results to retrieve |\n| `take` | number | Determines the number of items to retrieve per page |\n| `districts` | string | Represents numerical identifiers or codes of districts. Multiple values are separated by commas. |\n| `wards` | string | Represents numerical identifiers or codes of wards. Multiple values are separated by commas. |\n| `status` | enum (APPROVED, AWAITING_UPDATE) | Represents the status of the location. |"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "District",
+			"item": [
+				{
+					"name": "Get Ward By District",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoiY2hpaGllbjIwMDI3MUBnbWFpbC5jb20iLCJyb2xlIjoiY2RvIiwiaWF0IjoxNzA0OTkwNDgwLCJleHAiOjE3MDQ5OTA3ODB9.r4ez1pDnU_SXEC4GGfi7eQ-xd-vm35FKXekSV6XY5sQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://ads-management-api.onrender.com/api/districts/",
+							"protocol": "https",
+							"host": [
+								"ads-management-api",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"districts",
+								""
+							]
+						},
+						"description": "This api returns a list of ward belonging to specified district\n\n| Attribute | Type | Description |\n| --- | --- | --- |\n| order | string | Represents the order in which results should be sorted. Possible values: \"asc\" (ascending) or \"desc\" (descending). |"
+					},
+					"response": []
+				},
+				{
+					"name": "Create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoiY2hpaGllbjIwMDI3MUBnbWFpbC5jb20iLCJyb2xlIjoiY2RvIiwiaWF0IjoxNzA0OTkwNDgwLCJleHAiOjE3MDQ5OTA3ODB9.r4ez1pDnU_SXEC4GGfi7eQ-xd-vm35FKXekSV6XY5sQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Test\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://ads-management-api.onrender.com/api/districts",
+							"protocol": "https",
+							"host": [
+								"ads-management-api",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"districts"
+							]
+						},
+						"description": "| Attribute | Type | Description |\n| --- | --- | --- |\n| name | string | Name of the advertisement type |"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoiY2hpaGllbjIwMDI3MUBnbWFpbC5jb20iLCJyb2xlIjoiY2RvIiwiaWF0IjoxNzA1MTUxNzY0LCJleHAiOjE3MDUxNTIwNjR9.-DrqyC4_lr2wp9X3eBo7Lg7X_6YQ32WRFyGXaIpeU2A",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://ads-management-api.onrender.com/api/districts/1",
+							"protocol": "https",
+							"host": [
+								"ads-management-api",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"districts",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get one",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoiY2hpaGllbjIwMDI3MUBnbWFpbC5jb20iLCJyb2xlIjoiY2RvIiwiaWF0IjoxNzA1MTUxNzY0LCJleHAiOjE3MDUxNTIwNjR9.-DrqyC4_lr2wp9X3eBo7Lg7X_6YQ32WRFyGXaIpeU2A",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://ads-management-api.onrender.com/api/districts/1",
+							"protocol": "https",
+							"host": [
+								"ads-management-api",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"districts",
+								"1"
+							]
+						},
+						"description": "This API returns detailed information for an ads request based on its ID"
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoiY2hpaGllbjIwMDI3MUBnbWFpbC5jb20iLCJyb2xlIjoiY2RvIiwiaWF0IjoxNzA1MTUxNzY0LCJleHAiOjE3MDUxNTIwNjR9.-DrqyC4_lr2wp9X3eBo7Lg7X_6YQ32WRFyGXaIpeU2A",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"New types\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://ads-management-api.onrender.com/api/districts/1",
+							"protocol": "https",
+							"host": [
+								"ads-management-api",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"districts",
+								"1"
+							]
+						},
+						"description": "| **Attribute** | **Type** | **Description** |\n| --- | --- | --- |\n| `name` | string | Name of the new description |"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Advertisement-type",
+			"item": [
+				{
+					"name": "List",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE3LCJlbWFpbCI6InE2QGdtYWlsLmNvbSIsInJvbGUiOiJkaXN0cmljdF9vZmZpY2VyIiwiaWF0IjoxNzA0ODkyOTcyLCJleHAiOjE3MDc0ODQ5NzJ9.a4kFNg95_xPjgjI5V6MXJkClc6eY9I2trkmZYx8PiNs",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://ads-management-api.onrender.com/api/advertisement-types?page=1&take=10",
+							"protocol": "https",
+							"host": [
+								"ads-management-api",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"advertisement-types"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "take",
+									"value": "10"
+								}
+							]
+						},
+						"description": "| Attribute | Type | Description |\n| --- | --- | --- |\n| `page` | number | Specifies the page number of the results to retrieve |\n| `take` | number | Determines the number of items to retrieve per page |\n|  |  |  |\n|  |  |  |\n|  |  |  |"
+					},
+					"response": []
+				},
+				{
+					"name": "Create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoiY2hpaGllbjIwMDI3MUBnbWFpbC5jb20iLCJyb2xlIjoiY2RvIiwiaWF0IjoxNzA0OTkwNDgwLCJleHAiOjE3MDQ5OTA3ODB9.r4ez1pDnU_SXEC4GGfi7eQ-xd-vm35FKXekSV6XY5sQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Test\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://ads-management-api.onrender.com/api/advertisement-types",
+							"protocol": "https",
+							"host": [
+								"ads-management-api",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"advertisement-types"
+							]
+						},
+						"description": "| Attribute | Type | Description |\n| --- | --- | --- |\n| name | string | Name of the advertisement type |"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoiY2hpaGllbjIwMDI3MUBnbWFpbC5jb20iLCJyb2xlIjoiY2RvIiwiaWF0IjoxNzA1MTUxNzY0LCJleHAiOjE3MDUxNTIwNjR9.-DrqyC4_lr2wp9X3eBo7Lg7X_6YQ32WRFyGXaIpeU2A",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://ads-management-api.onrender.com/api/advertisement-types/1",
+							"protocol": "https",
+							"host": [
+								"ads-management-api",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"advertisement-types",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get one",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoiY2hpaGllbjIwMDI3MUBnbWFpbC5jb20iLCJyb2xlIjoiY2RvIiwiaWF0IjoxNzA1MTUxNzY0LCJleHAiOjE3MDUxNTIwNjR9.-DrqyC4_lr2wp9X3eBo7Lg7X_6YQ32WRFyGXaIpeU2A",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://ads-management-api.onrender.com/api/advertisement-types/1",
+							"protocol": "https",
+							"host": [
+								"ads-management-api",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"advertisement-types",
+								"1"
+							]
+						},
+						"description": "This API returns detailed information for an ads request based on its ID"
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoiY2hpaGllbjIwMDI3MUBnbWFpbC5jb20iLCJyb2xlIjoiY2RvIiwiaWF0IjoxNzA1MTUxNzY0LCJleHAiOjE3MDUxNTIwNjR9.-DrqyC4_lr2wp9X3eBo7Lg7X_6YQ32WRFyGXaIpeU2A",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"New types\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://ads-management-api.onrender.com/api/advertisement-types/1",
+							"protocol": "https",
+							"host": [
+								"ads-management-api",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"advertisement-types",
+								"1"
+							]
+						},
+						"description": "| **Attribute** | **Type** | **Description** |\n| --- | --- | --- |\n| `name` | string | Name of the new description |"
+					},
+					"response": []
+				}
+			],
+			"description": "These API used for CRUD type of advertisment"
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Sign in",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"chihien20023@gmail.com\",\n    \"password\": \"123456789\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://ads-management-api.onrender.com/api/ads-requests/1/reject/api/auth/signin",
+							"protocol": "https",
+							"host": [
+								"ads-management-api",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"ads-requests",
+								"1",
+								"reject",
+								"api",
+								"auth",
+								"signin"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"chihien20025@gmail.com\",\n    \"password\": \"123456789\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8194/api/auth/signin",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8194",
+									"path": [
+										"api",
+										"auth",
+										"signin"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "614"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"266-VXso0OlJc6y3r7BTEEuh9S9iAuE\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 02 Jan 2024 01:06:16 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjcsImVtYWlsIjoiY2hpaGllbjIwMDI1QGdtYWlsLmNvbSIsInJvbGUiOiJkaXN0cmljdF9vZmZpY2VyIiwiaWF0IjoxNzA0MTU3NTc2LCJleHAiOjE3MDQxNTc4NzZ9.2DDXJQjksCDSr88bQdqzTkY_HAPO8MrS8LNv7AShqeM\",\n    \"refreshToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjcsImVtYWlsIjoiY2hpaGllbjIwMDI1QGdtYWlsLmNvbSIsInJvbGUiOiJkaXN0cmljdF9vZmZpY2VyIiwiaWF0IjoxNzA0MTU3NTc2LCJleHAiOjE3MDQyNDM5NzZ9.VDZroVgsU8Mq0XDvTVnXJYvm_zwXiEH2rfDsLua3e0s\",\n    \"user\": {\n        \"id\": 7,\n        \"email\": \"chihien20025@gmail.com\",\n        \"firstName\": \"Hien\",\n        \"lastName\": \"Truong\",\n        \"phoneNumber\": null,\n        \"dob\": null,\n        \"role\": \"district_officer\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Log out",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjcsImVtYWlsIjoiY2hpaGllbjIwMDI1QGdtYWlsLmNvbSIsInJvbGUiOiJkaXN0cmljdF9vZmZpY2VyIiwiaWF0IjoxNzA0MTU3ODY4LCJleHAiOjE3MDQxNTgxNjh9.alFaeFGIUq7-_z4BiyBPtyqGIr2w3IkK5wGFkGEUVF4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "https://ads-management-api.onrender.com/api/ads-requests/1/reject/api/auth/logout",
+							"protocol": "https",
+							"host": [
+								"ads-management-api",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"ads-requests",
+								"1",
+								"reject",
+								"api",
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "",
+										"value": "",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8194/api/auth/logout",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8194",
+									"path": [
+										"api",
+										"auth",
+										"logout"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "2"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"2-vyGp6PvFo4RvsFtPoIWeCReyIC8\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 02 Jan 2024 01:11:16 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{}"
+						},
+						{
+							"name": "User not found/ Already log out",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "",
+										"value": "",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "{{URL}}/api/auth/logout",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"api",
+										"auth",
+										"logout"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "26"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"1a-pljHtlo127JYJR4E/RYOPb6ucbw\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 02 Jan 2024 01:11:27 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Unauthorized\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Refresh token",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"refreshToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjcyLCJlbWFpbCI6ImNoaWhpZW4yMDAyNUBnbWFpbC5jb20iLCJyb2xlIjoiZGlzdHJpY3Rfb2ZmaWNlciIsImlhdCI6MTcwNDE1NzkzNiwiZXhwIjoxNzA0MjQ0MzM2fQ.hMfAkVC6xwZSLK3WoTsNN6kGhCB7WYLgrYXOEJsUM7c\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://ads-management-api.onrender.com/api/ads-requests/1/reject/api/auth/refresh",
+							"protocol": "https",
+							"host": [
+								"ads-management-api",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"ads-requests",
+								"1",
+								"reject",
+								"api",
+								"auth",
+								"refresh"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Token expires",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "",
+										"value": "",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"refreshToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjcsImVtYWlsIjoiY2hpaGllbjIwMDI1QGdtYWlsLmNvbSIsInJvbGUiOiJkaXN0cmljdF9vZmZpY2VyIiwiaWF0IjoxNzA0MTU3OTM2LCJleHAiOjE3MDQyNDQzMzZ9.hMfAkVC6xwZSLK3WoTsNN6kGhCB7WYLgrYXOEJsUM7c\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8194/api/auth/refresh",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8194",
+									"path": [
+										"api",
+										"auth",
+										"refresh"
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "68"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"44-VD61CEkLKOda4UPl7MMHZ+ELbr4\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 02 Jan 2024 01:12:02 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Token has expired\",\n    \"error\": \"Forbidden\",\n    \"statusCode\": 403\n}"
+						},
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "",
+										"value": "",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"refreshToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjcsImVtYWlsIjoiY2hpaGllbjIwMDI1QGdtYWlsLmNvbSIsInJvbGUiOiJkaXN0cmljdF9vZmZpY2VyIiwiaWF0IjoxNzA0MTU3OTM2LCJleHAiOjE3MDQyNDQzMzZ9.hMfAkVC6xwZSLK3WoTsNN6kGhCB7WYLgrYXOEJsUM7c\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL}}/api/auth/refresh",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"api",
+										"auth",
+										"refresh"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "470"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"1d6-6oUaG/YVZqSkEyqd+WrKh7ik7HA\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 02 Jan 2024 01:12:33 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjcsImVtYWlsIjoiY2hpaGllbjIwMDI1QGdtYWlsLmNvbSIsInJvbGUiOiJkaXN0cmljdF9vZmZpY2VyIiwiaWF0IjoxNzA0MTU3OTUzLCJleHAiOjE3MDQxNTgyNTN9.IvIRqp6YGcfrqbhzCsH73g9Ww3fCypduxRkSn-qOdMU\",\n    \"refreshToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjcsImVtYWlsIjoiY2hpaGllbjIwMDI1QGdtYWlsLmNvbSIsInJvbGUiOiJkaXN0cmljdF9vZmZpY2VyIiwiaWF0IjoxNzA0MTU3OTUzLCJleHAiOjE3MDQyNDQzNTN9.j39E72CfQxBwpu6_AcxiNJy_NQiQCwBplM8q_4h-tCM\"\n}"
+						},
+						{
+							"name": "Use old/ invalid refresh token",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "",
+										"value": "",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"refreshToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjcsImVtYWlsIjoiY2hpaGllbjIwMDI1QGdtYWlsLmNvbSIsInJvbGUiOiJkaXN0cmljdF9vZmZpY2VyIiwiaWF0IjoxNzA0MTU3OTM2LCJleHAiOjE3MDQyNDQzMzZ9.hMfAkVC6xwZSLK3WoTsNN6kGhCB7WYLgrYXOEJsUM7c\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL}}/api/auth/refresh",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"api",
+										"auth",
+										"refresh"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "26"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"1a-pljHtlo127JYJR4E/RYOPb6ucbw\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 02 Jan 2024 01:12:45 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Unauthorized\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Forgot password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"chihien200211@gmail.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://ads-management-api.onrender.com/api/ads-requests/1/reject/api/auth/forgot-password",
+							"protocol": "https",
+							"host": [
+								"ads-management-api",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"ads-requests",
+								"1",
+								"reject",
+								"api",
+								"auth",
+								"forgot-password"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"chihien2002@gmail.com\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8194/api/auth/forgot-password",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8194",
+									"path": [
+										"api",
+										"auth",
+										"forgot-password"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "2"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"2-vyGp6PvFo4RvsFtPoIWeCReyIC8\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 02 Jan 2024 01:16:10 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{}"
+						},
+						{
+							"name": "Invalid email",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"chihien200211@gmail.com\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL}}/api/auth/forgot-password",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"api",
+										"auth",
+										"forgot-password"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "27"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"1b-evcYq0xWsuHqdKUOxQRsPiOIt60\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 02 Jan 2024 01:16:22 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Invalid email\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Reset password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"verifyToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjksImVtYWlsIjoiY2hpaGllbjIwMDJAZ21haWwuY29tIiwicm9sZSI6ImRpc3RyaWN0X29mZmljZXIiLCJpYXQiOjE3MDQxNTgxNjksImV4cCI6MTcwNDE1ODQ2OX0.ulSWepxPrl8lWe_eQ4nLnhN4t5JZEkr4SUwaJvhtjsU\",\n    \"newPassword\": \"111111111\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://ads-management-api.onrender.com/api/ads-requests/1/reject/api/auth/reset-password",
+							"protocol": "https",
+							"host": [
+								"ads-management-api",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"ads-requests",
+								"1",
+								"reject",
+								"api",
+								"auth",
+								"reset-password"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Token expire",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"verifyToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjQsImVtYWlsIjoiY2hpaGllbjIwMDJAZ21haWwuY29tIiwicm9sZSI6IldBUkRfT0ZGSUNFUiIsImlhdCI6MTcwMzQ5NzA5MSwiZXhwIjoxNzAzNDk3MzkxfQ.Sbc2EPRr8mw7p6Za2ZzwYWz1nyUirzHq-kqae-YfM6Q\",\n    \"newPassword\": \"111111111\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8194/api/auth/reset-password",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8194",
+									"path": [
+										"api",
+										"auth",
+										"reset-password"
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "68"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"44-VD61CEkLKOda4UPl7MMHZ+ELbr4\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 02 Jan 2024 01:16:38 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Token has expired\",\n    \"error\": \"Forbidden\",\n    \"statusCode\": 403\n}"
+						},
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"verifyToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjksImVtYWlsIjoiY2hpaGllbjIwMDJAZ21haWwuY29tIiwicm9sZSI6ImRpc3RyaWN0X29mZmljZXIiLCJpYXQiOjE3MDQxNTgxNjksImV4cCI6MTcwNDE1ODQ2OX0.ulSWepxPrl8lWe_eQ4nLnhN4t5JZEkr4SUwaJvhtjsU\",\n    \"newPassword\": \"111111111\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL}}/api/auth/reset-password",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"api",
+										"auth",
+										"reset-password"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "2"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"2-vyGp6PvFo4RvsFtPoIWeCReyIC8\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 02 Jan 2024 01:17:21 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{}"
+						}
+					]
+				},
+				{
+					"name": "Change password",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEwLCJlbWFpbCI6ImNoaWhpZW4yMDAyMkBnbWFpbC5jb20iLCJyb2xlIjoid2FyZF9vZmZpY2VyIiwiaWF0IjoxNzA0OTQyNDA2LCJleHAiOjE3MDQ5NDI3MDZ9.tXq-4DhS79EWNoc6_pGw1BoGvj9mYQbN86zjsFWmXCA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"oldPassword\": \"123222\",\n    \"newPassword\": \"123456789\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://ads-management-api.onrender.com/api/ads-requests/1/reject/api/auth/change-password",
+							"protocol": "https",
+							"host": [
+								"ads-management-api",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"ads-requests",
+								"1",
+								"reject",
+								"api",
+								"auth",
+								"change-password"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"oldPassword\": \"123222\",\n    \"newPassword\": \"123456789\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8194/api/auth/change-password",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8194",
+									"path": [
+										"api",
+										"auth",
+										"change-password"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "2"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"2-vyGp6PvFo4RvsFtPoIWeCReyIC8\""
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 11 Jan 2024 03:06:57 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{}"
+						},
+						{
+							"name": "passwords the same",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"oldPassword\": \"123\",\n    \"newPassword\": \"123\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL}}/api/auth/change-password",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"api",
+										"auth",
+										"change-password"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "62"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"3e-Kwgm0E0r8JcFoifY++vi2KgW25s\""
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 11 Jan 2024 03:05:22 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"New password must be different from old password\"\n}"
+						},
+						{
+							"name": "Incorrect old password",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"oldPassword\": \"123\",\n    \"newPassword\": \"123456\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URL}}/api/auth/change-password",
+									"host": [
+										"{{URL}}"
+									],
+									"path": [
+										"api",
+										"auth",
+										"change-password"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "39"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"27-cObcdYiRJLYE6f5a21gVA2IX5EE\""
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 11 Jan 2024 03:05:42 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Old password is incorrect\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Panel types",
+			"item": [
+				{
+					"name": "List",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE3LCJlbWFpbCI6InE2QGdtYWlsLmNvbSIsInJvbGUiOiJkaXN0cmljdF9vZmZpY2VyIiwiaWF0IjoxNzA0ODkyOTcyLCJleHAiOjE3MDc0ODQ5NzJ9.a4kFNg95_xPjgjI5V6MXJkClc6eY9I2trkmZYx8PiNs",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://ads-management-api.onrender.com/api/advertisement-types?page=1&take=10",
+							"protocol": "https",
+							"host": [
+								"ads-management-api",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"advertisement-types"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "take",
+									"value": "10"
+								}
+							]
+						},
+						"description": "| Attribute | Type | Description |\n| --- | --- | --- |\n| `page` | number | Specifies the page number of the results to retrieve |\n| `take` | number | Determines the number of items to retrieve per page |\n|  |  |  |\n|  |  |  |\n|  |  |  |"
+					},
+					"response": []
+				},
+				{
+					"name": "Create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoiY2hpaGllbjIwMDI3MUBnbWFpbC5jb20iLCJyb2xlIjoiY2RvIiwiaWF0IjoxNzA0OTkwNDgwLCJleHAiOjE3MDQ5OTA3ODB9.r4ez1pDnU_SXEC4GGfi7eQ-xd-vm35FKXekSV6XY5sQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Test\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://ads-management-api.onrender.com/api/advertisement-types",
+							"protocol": "https",
+							"host": [
+								"ads-management-api",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"advertisement-types"
+							]
+						},
+						"description": "| Attribute | Type | Description |\n| --- | --- | --- |\n| name | string | Name of the advertisement type |"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoiY2hpaGllbjIwMDI3MUBnbWFpbC5jb20iLCJyb2xlIjoiY2RvIiwiaWF0IjoxNzA1MTUxNzY0LCJleHAiOjE3MDUxNTIwNjR9.-DrqyC4_lr2wp9X3eBo7Lg7X_6YQ32WRFyGXaIpeU2A",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://ads-management-api.onrender.com/api/advertisement-types/1",
+							"protocol": "https",
+							"host": [
+								"ads-management-api",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"advertisement-types",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get one",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoiY2hpaGllbjIwMDI3MUBnbWFpbC5jb20iLCJyb2xlIjoiY2RvIiwiaWF0IjoxNzA1MTUxNzY0LCJleHAiOjE3MDUxNTIwNjR9.-DrqyC4_lr2wp9X3eBo7Lg7X_6YQ32WRFyGXaIpeU2A",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://ads-management-api.onrender.com/api/advertisement-types/1",
+							"protocol": "https",
+							"host": [
+								"ads-management-api",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"advertisement-types",
+								"1"
+							]
+						},
+						"description": "This API returns detailed information for an ads request based on its ID"
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoiY2hpaGllbjIwMDI3MUBnbWFpbC5jb20iLCJyb2xlIjoiY2RvIiwiaWF0IjoxNzA1MTUxNzY0LCJleHAiOjE3MDUxNTIwNjR9.-DrqyC4_lr2wp9X3eBo7Lg7X_6YQ32WRFyGXaIpeU2A",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"New types\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://ads-management-api.onrender.com/api/advertisement-types/1",
+							"protocol": "https",
+							"host": [
+								"ads-management-api",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"advertisement-types",
+								"1"
+							]
+						},
+						"description": "| **Attribute** | **Type** | **Description** |\n| --- | --- | --- |\n| `name` | string | Name of the new description |"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Report types",
+			"item": [
+				{
+					"name": "List",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE3LCJlbWFpbCI6InE2QGdtYWlsLmNvbSIsInJvbGUiOiJkaXN0cmljdF9vZmZpY2VyIiwiaWF0IjoxNzA0ODkyOTcyLCJleHAiOjE3MDc0ODQ5NzJ9.a4kFNg95_xPjgjI5V6MXJkClc6eY9I2trkmZYx8PiNs",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://ads-management-api.onrender.com/api/report-types?page=1&take=10",
+							"protocol": "https",
+							"host": [
+								"ads-management-api",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"report-types"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "take",
+									"value": "10"
+								}
+							]
+						},
+						"description": "| Attribute | Type | Description |\n| --- | --- | --- |\n| `page` | number | Specifies the page number of the results to retrieve |\n| `take` | number | Determines the number of items to retrieve per page |\n|  |  |  |\n|  |  |  |\n|  |  |  |"
+					},
+					"response": []
+				},
+				{
+					"name": "Create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoiY2hpaGllbjIwMDI3MUBnbWFpbC5jb20iLCJyb2xlIjoiY2RvIiwiaWF0IjoxNzA0OTkwNDgwLCJleHAiOjE3MDQ5OTA3ODB9.r4ez1pDnU_SXEC4GGfi7eQ-xd-vm35FKXekSV6XY5sQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Test\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://ads-management-api.onrender.com/api/report-types",
+							"protocol": "https",
+							"host": [
+								"ads-management-api",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"report-types"
+							]
+						},
+						"description": "| Attribute | Type | Description |\n| --- | --- | --- |\n| name | string | Name of the advertisement type |"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoiY2hpaGllbjIwMDI3MUBnbWFpbC5jb20iLCJyb2xlIjoiY2RvIiwiaWF0IjoxNzA1MTUxNzY0LCJleHAiOjE3MDUxNTIwNjR9.-DrqyC4_lr2wp9X3eBo7Lg7X_6YQ32WRFyGXaIpeU2A",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://ads-management-api.onrender.com/api/report-types/1",
+							"protocol": "https",
+							"host": [
+								"ads-management-api",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"report-types",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get one",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoiY2hpaGllbjIwMDI3MUBnbWFpbC5jb20iLCJyb2xlIjoiY2RvIiwiaWF0IjoxNzA1MTUxNzY0LCJleHAiOjE3MDUxNTIwNjR9.-DrqyC4_lr2wp9X3eBo7Lg7X_6YQ32WRFyGXaIpeU2A",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://ads-management-api.onrender.com/api/report-types/1",
+							"protocol": "https",
+							"host": [
+								"ads-management-api",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"report-types",
+								"1"
+							]
+						},
+						"description": "This API returns detailed information for an ads request based on its ID"
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoiY2hpaGllbjIwMDI3MUBnbWFpbC5jb20iLCJyb2xlIjoiY2RvIiwiaWF0IjoxNzA1MTUxNzY0LCJleHAiOjE3MDUxNTIwNjR9.-DrqyC4_lr2wp9X3eBo7Lg7X_6YQ32WRFyGXaIpeU2A",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"New types\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://ads-management-api.onrender.com/api/report-types/1",
+							"protocol": "https",
+							"host": [
+								"ads-management-api",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"report-types",
+								"1"
+							]
+						},
+						"description": "| **Attribute** | **Type** | **Description** |\n| --- | --- | --- |\n| `name` | string | Name of the new description |"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Cdo's user apis",
+					"item": [
+						{
+							"name": "Get user's details info",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE5LCJlbWFpbCI6ImNoaWhpZW4yMDAyM0BnbWFpbC5jb20iLCJyb2xlIjoiY2RvIiwiaWF0IjoxNzA1MTI1NzgyLCJleHAiOjE3MDUxMjYwODJ9.6tI5OkkavEZRFEOa_LmJi_ixkiCgQNO_C-o9asdC_9k",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{SERVE_URL}}/api/users/15",
+									"host": [
+										"{{SERVE_URL}}"
+									],
+									"path": [
+										"api",
+										"users",
+										"15"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Success",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{URL}}/api/users/15",
+											"host": [
+												"{{URL}}"
+											],
+											"path": [
+												"api",
+												"users",
+												"15"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "214"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"d6-LrU2w/g+jfQ5PuONUkQWRn6g030\""
+										},
+										{
+											"key": "Date",
+											"value": "Sat, 13 Jan 2024 06:07:16 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"id\": 15,\n    \"email\": \"p6q6@gmail.com\",\n    \"firstName\": \"Tri\",\n    \"lastName\": \"Do\",\n    \"phoneNumber\": null,\n    \"dob\": null,\n    \"role\": \"ward_officer\",\n    \"ward\": {\n        \"id\": 262,\n        \"name\": \"Phường 6\",\n        \"district\": {\n            \"id\": 18,\n            \"name\": \"Quận 6\"\n        }\n    },\n    \"district\": null\n}"
+								}
+							]
+						},
+						{
+							"name": "Get user list",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE5LCJlbWFpbCI6ImNoaWhpZW4yMDAyM0BnbWFpbC5jb20iLCJyb2xlIjoiY2RvIiwiaWF0IjoxNzA1MTI1NzIxLCJleHAiOjE3MDUxMjYwMjF9.8HQRrHS0Jsr211nmIwz2meMVImVA-gHZMPqme_vFyGY",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{SERVE_URL}}/api/users?take=3&page=1&role=district_officer",
+									"host": [
+										"{{SERVE_URL}}"
+									],
+									"path": [
+										"api",
+										"users"
+									],
+									"query": [
+										{
+											"key": "take",
+											"value": "3"
+										},
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "role",
+											"value": "district_officer"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Filter by role",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{URL}}/api/users?take=3&page=1&role=district_officer",
+											"host": [
+												"{{URL}}"
+											],
+											"path": [
+												"api",
+												"users"
+											],
+											"query": [
+												{
+													"key": "take",
+													"value": "3"
+												},
+												{
+													"key": "page",
+													"value": "1"
+												},
+												{
+													"key": "role",
+													"value": "district_officer"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "612"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"264-XHr87D7Px32cKNThQPQEk1XaGIY\""
+										},
+										{
+											"key": "Date",
+											"value": "Sat, 13 Jan 2024 06:04:30 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"data\": [\n        {\n            \"id\": 17,\n            \"email\": \"q6@gmail.com\",\n            \"firstName\": \"Tri\",\n            \"lastName\": \"Do\",\n            \"phoneNumber\": null,\n            \"dob\": null,\n            \"role\": \"district_officer\",\n            \"ward\": null,\n            \"district\": {\n                \"id\": 18,\n                \"name\": \"Quận 6\"\n            }\n        },\n        {\n            \"id\": 13,\n            \"email\": \"officerd1@gmail.com\",\n            \"firstName\": \"Tri\",\n            \"lastName\": \"Do\",\n            \"phoneNumber\": null,\n            \"dob\": null,\n            \"role\": \"district_officer\",\n            \"ward\": null,\n            \"district\": {\n                \"id\": 1,\n                \"name\": \"Thành Phố Thủ Đức\"\n            }\n        },\n        {\n            \"id\": 12,\n            \"email\": \"chihien20027111@gmail.com\",\n            \"firstName\": \"Hien\",\n            \"lastName\": \"Truong\",\n            \"phoneNumber\": null,\n            \"dob\": null,\n            \"role\": \"district_officer\",\n            \"ward\": null,\n            \"district\": {\n                \"id\": 12,\n                \"name\": \"Quận Tân Bình\"\n            }\n        }\n    ],\n    \"totalPages\": 2,\n    \"totalCount\": 6\n}"
+								},
+								{
+									"name": "Pagination",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{URL}}/api/users?take=3&page=1",
+											"host": [
+												"{{URL}}"
+											],
+											"path": [
+												"api",
+												"users"
+											],
+											"query": [
+												{
+													"key": "take",
+													"value": "3"
+												},
+												{
+													"key": "page",
+													"value": "1"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "671"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"29f-g8r+lelpUVCt1Z9gyz9+pOqkTg0\""
+										},
+										{
+											"key": "Date",
+											"value": "Sat, 13 Jan 2024 06:05:03 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"data\": [\n        {\n            \"id\": 20,\n            \"email\": \"chihien20024@gmail.com\",\n            \"firstName\": \"Hien\",\n            \"lastName\": \"Truong\",\n            \"phoneNumber\": null,\n            \"dob\": null,\n            \"role\": \"ward_officer\",\n            \"ward\": {\n                \"id\": 5,\n                \"name\": \"Phường Thảo Điền\",\n                \"district\": {\n                    \"id\": 1,\n                    \"name\": \"Thành Phố Thủ Đức\"\n                }\n            },\n            \"district\": null\n        },\n        {\n            \"id\": 19,\n            \"email\": \"chihien20023@gmail.com\",\n            \"firstName\": \"Hien\",\n            \"lastName\": \"Truong\",\n            \"phoneNumber\": null,\n            \"dob\": null,\n            \"role\": \"cdo\",\n            \"ward\": null,\n            \"district\": null\n        },\n        {\n            \"id\": 18,\n            \"email\": \"p5q6-1@gmail.com\",\n            \"firstName\": \"Hien\",\n            \"lastName\": \"Truong\",\n            \"phoneNumber\": null,\n            \"dob\": null,\n            \"role\": \"ward_officer\",\n            \"ward\": {\n                \"id\": 263,\n                \"name\": \"Phường 5\",\n                \"district\": {\n                    \"id\": 18,\n                    \"name\": \"Quận 6\"\n                }\n            },\n            \"district\": null\n        }\n    ],\n    \"totalPages\": 7,\n    \"totalCount\": 20\n}"
+								}
+							]
+						},
+						{
+							"name": "Create user",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE5LCJlbWFpbCI6ImNoaWhpZW4yMDAyM0BnbWFpbC5jb20iLCJyb2xlIjoiY2RvIiwiaWF0IjoxNzA1MTI1MDM1LCJleHAiOjE3MDUxMjUzMzV9.zyRSyvfL5IW7h7P7I8To636uk9eQOeaYujmTkJ-pAkk",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"chihien20024@gmail.com\",\n    \"password\": \"123456789\",\n    \"firstName\": \"Hien\",\n    \"lastName\": \"Truong\",\n    \"role\": \"ward_officer\",\n    \"wardId\": 5\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{SERVE_URL}}/api/users",
+									"host": [
+										"{{SERVE_URL}}"
+									],
+									"path": [
+										"api",
+										"users"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Success",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"email\": \"chihien20025@gmail.com\",\n    \"password\": \"123456789\",\n    \"firstName\": \"Hien\",\n    \"lastName\": \"Truong\",\n    \"role\": \"district_officer\",\n    \"districtId\": 1\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{URL}}/api/auth/create-user",
+											"host": [
+												"{{URL}}"
+											],
+											"path": [
+												"api",
+												"auth",
+												"create-user"
+											]
+										}
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "38"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"26-bPwNG458oL+42k8l9BND77BInJo\""
+										},
+										{
+											"key": "Date",
+											"value": "Tue, 02 Jan 2024 01:05:54 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"message\": \"Create user successfully\"\n}"
+								}
+							]
+						},
+						{
+							"name": "Update user account",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE5LCJlbWFpbCI6ImNoaWhpZW4yMDAyM0BnbWFpbC5jb20iLCJyb2xlIjoiY2RvIiwiaWF0IjoxNzA1MjIxMjcwLCJleHAiOjE3MDUyMjMwNzB9.dn6PzZwFHbj73dtgsvM9UmTcJSZc98Jdy8cvPOigT4s",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"role\": \"ward_officer\",\n    \"wardId\": 2\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{SERVE_URL}}/api/users/18",
+									"host": [
+										"{{SERVE_URL}}"
+									],
+									"path": [
+										"api",
+										"users",
+										"18"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Update account to cdo",
+									"originalRequest": {
+										"method": "PATCH",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"role\": \"cdo\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{URL}}/api/users/20",
+											"host": [
+												"{{URL}}"
+											],
+											"path": [
+												"api",
+												"users",
+												"20"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "161"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"a1-BsYP+C7v1Y6H1VaquDftLVXHSvo\""
+										},
+										{
+											"key": "Date",
+											"value": "Sun, 14 Jan 2024 08:43:07 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"user\": {\n        \"id\": 20,\n        \"email\": \"chihien20024@gmail.com\",\n        \"firstName\": \"Hien\",\n        \"lastName\": \"Truong\",\n        \"phoneNumber\": null,\n        \"dob\": null,\n        \"role\": \"cdo\",\n        \"ward\": null,\n        \"district\": null\n    }\n}"
+								},
+								{
+									"name": "Update account to ward officer",
+									"originalRequest": {
+										"method": "PATCH",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"role\": \"ward_officer\",\n    \"wardId\": 2\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{URL}}/api/users/20",
+											"host": [
+												"{{URL}}"
+											],
+											"path": [
+												"api",
+												"users",
+												"20"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "266"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"10a-BpsNKMAoWeyyqfSRgsKHQwOFbZU\""
+										},
+										{
+											"key": "Date",
+											"value": "Sun, 14 Jan 2024 08:43:47 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"user\": {\n        \"id\": 20,\n        \"email\": \"chihien20024@gmail.com\",\n        \"firstName\": \"Hien\",\n        \"lastName\": \"Truong\",\n        \"phoneNumber\": null,\n        \"dob\": null,\n        \"role\": \"ward_officer\",\n        \"ward\": {\n            \"id\": 2,\n            \"name\": \"Phường Bình Trưng Tây\",\n            \"district\": {\n                \"id\": 1,\n                \"name\": \"Thành Phố Thủ Đức\"\n            }\n        },\n        \"district\": null\n    }\n}"
+								},
+								{
+									"name": "Update account to district officer",
+									"originalRequest": {
+										"method": "PATCH",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"role\": \"district_officer\",\n    \"districtId\": 2\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{URL}}/api/users/20",
+											"host": [
+												"{{URL}}"
+											],
+											"path": [
+												"api",
+												"users",
+												"20"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "207"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"cf-D9T4bWjEknR7T/7k+6JnpwBtPVA\""
+										},
+										{
+											"key": "Date",
+											"value": "Sun, 14 Jan 2024 08:44:22 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"user\": {\n        \"id\": 20,\n        \"email\": \"chihien20024@gmail.com\",\n        \"firstName\": \"Hien\",\n        \"lastName\": \"Truong\",\n        \"phoneNumber\": null,\n        \"dob\": null,\n        \"role\": \"district_officer\",\n        \"ward\": null,\n        \"district\": {\n            \"id\": 2,\n            \"name\": \"Huyện Cần Giờ\"\n        }\n    }\n}"
+								}
+							]
+						}
+					],
+					"description": "CRUD officer apis for CDO (Culture department officer)"
+				},
+				{
+					"name": "Officer's user apis",
+					"item": [
+						{
+							"name": "Get user info",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjksImVtYWlsIjoiY2hpaGllbjIwMDJAZ21haWwuY29tIiwicm9sZSI6ImRpc3RyaWN0X29mZmljZXIiLCJpYXQiOjE3MDQxNTgyNzYsImV4cCI6MTcwNDE1ODU3Nn0.gI8p1yu9JhNyKk56fBfH5St-lasxw9224-Wcm-q9ao4",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{SERVE_URL}}/api/users/me",
+									"host": [
+										"{{SERVE_URL}}"
+									],
+									"path": [
+										"api",
+										"users",
+										"me"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Success",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{URL}}/api/users/me",
+											"host": [
+												"{{URL}}"
+											],
+											"path": [
+												"api",
+												"users",
+												"me"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "211"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"d3-SFeSkHatEVtDBG267/pGrVrm3C8\""
+										},
+										{
+											"key": "Date",
+											"value": "Tue, 02 Jan 2024 01:18:00 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"user\": {\n        \"id\": 9,\n        \"email\": \"chihien2002@gmail.com\",\n        \"firstName\": \"Hien\",\n        \"lastName\": \"Truong\",\n        \"phoneNumber\": null,\n        \"dob\": null,\n        \"role\": \"district_officer\",\n        \"ward\": null,\n        \"district\": {\n            \"id\": 1,\n            \"name\": \"Thành Phố Thủ Đức\"\n        }\n    }\n}"
+								},
+								{
+									"name": "Invalid token",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{URL}}/api/users/me",
+											"host": [
+												"{{URL}}"
+											],
+											"path": [
+												"api",
+												"users",
+												"me"
+											]
+										}
+									},
+									"status": "Unauthorized",
+									"code": 401,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "43"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"2b-dGnJzt6gv1nJjX6DJ9RztDWptng\""
+										},
+										{
+											"key": "Date",
+											"value": "Tue, 02 Jan 2024 01:18:14 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"message\": \"Unauthorized\",\n    \"statusCode\": 401\n}"
+								},
+								{
+									"name": "Token expires",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{URL}}/api/users/me",
+											"host": [
+												"{{URL}}"
+											],
+											"path": [
+												"api",
+												"users",
+												"me"
+											]
+										}
+									},
+									"status": "Forbidden",
+									"code": 403,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "68"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"44-VD61CEkLKOda4UPl7MMHZ+ELbr4\""
+										},
+										{
+											"key": "Date",
+											"value": "Tue, 02 Jan 2024 01:18:43 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"message\": \"Token has expired\",\n    \"error\": \"Forbidden\",\n    \"statusCode\": 403\n}"
+								}
+							]
+						},
+						{
+							"name": "Update user info",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEwLCJlbWFpbCI6ImNoaWhpZW4yMDAyMkBnbWFpbC5jb20iLCJyb2xlIjoid2FyZF9vZmZpY2VyIiwiaWF0IjoxNzA1MTI2MTc2LCJleHAiOjE3MDUxMjY0NzZ9.3GdfKghxUQaGYYzF4BB7NGAHzLHf62Ikep5dWAyZ2U4",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"phoneNumber\": \"0795907075\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{SERVE_URL}}/api/users/me",
+									"host": [
+										"{{SERVE_URL}}"
+									],
+									"path": [
+										"api",
+										"users",
+										"me"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Token expires",
+									"originalRequest": {
+										"method": "PATCH",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"phone_number\": \"0795907075\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{URL}}/api/users/me",
+											"host": [
+												"{{URL}}"
+											],
+											"path": [
+												"api",
+												"users",
+												"me"
+											]
+										}
+									},
+									"status": "Forbidden",
+									"code": 403,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "68"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"44-VD61CEkLKOda4UPl7MMHZ+ELbr4\""
+										},
+										{
+											"key": "Date",
+											"value": "Tue, 02 Jan 2024 01:18:28 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"message\": \"Token has expired\",\n    \"error\": \"Forbidden\",\n    \"statusCode\": 403\n}"
+								},
+								{
+									"name": "Success",
+									"originalRequest": {
+										"method": "PATCH",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"phone_number\": \"0795907075\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{URL}}/api/users/me",
+											"host": [
+												"{{URL}}"
+											],
+											"path": [
+												"api",
+												"users",
+												"me"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "211"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"d3-SFeSkHatEVtDBG267/pGrVrm3C8\""
+										},
+										{
+											"key": "Date",
+											"value": "Tue, 02 Jan 2024 01:19:09 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"user\": {\n        \"id\": 9,\n        \"email\": \"chihien2002@gmail.com\",\n        \"firstName\": \"Hien\",\n        \"lastName\": \"Truong\",\n        \"phoneNumber\": null,\n        \"dob\": null,\n        \"role\": \"district_officer\",\n        \"ward\": null,\n        \"district\": {\n            \"id\": 1,\n            \"name\": \"Thành Phố Thủ Đức\"\n        }\n    }\n}"
+								}
+							]
+						}
+					],
+					"description": "Apis for all officers:\n\n- Get user's info\n    \n- Update user's info"
+				}
+			]
+		},
+		{
+			"name": "Wards",
+			"item": [
+				{
+					"name": "Get list",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoiY2hpaGllbjIwMDI3MUBnbWFpbC5jb20iLCJyb2xlIjoiY2RvIiwiaWF0IjoxNzA0OTkwNDgwLCJleHAiOjE3MDQ5OTA3ODB9.r4ez1pDnU_SXEC4GGfi7eQ-xd-vm35FKXekSV6XY5sQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://ads-management-api.onrender.com/api/wards/",
+							"protocol": "https",
+							"host": [
+								"ads-management-api",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"wards",
+								""
+							]
+						},
+						"description": "This api returns a list of ward belonging to specified district\n\n| Attribute | Type | Description |\n| --- | --- | --- |\n| order | string | Represents the order in which results should be sorted. Possible values: \"asc\" (ascending) or \"desc\" (descending). |"
+					},
+					"response": []
+				},
+				{
+					"name": "Create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoiY2hpaGllbjIwMDI3MUBnbWFpbC5jb20iLCJyb2xlIjoiY2RvIiwiaWF0IjoxNzA0OTkwNDgwLCJleHAiOjE3MDQ5OTA3ODB9.r4ez1pDnU_SXEC4GGfi7eQ-xd-vm35FKXekSV6XY5sQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Test\",\n    \"districtId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://ads-management-api.onrender.com/api/wards",
+							"protocol": "https",
+							"host": [
+								"ads-management-api",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"wards"
+							]
+						},
+						"description": "| Attribute | Type | Description |\n| --- | --- | --- |\n| name | string | Name of the advertisement type |"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoiY2hpaGllbjIwMDI3MUBnbWFpbC5jb20iLCJyb2xlIjoiY2RvIiwiaWF0IjoxNzA1MTUxNzY0LCJleHAiOjE3MDUxNTIwNjR9.-DrqyC4_lr2wp9X3eBo7Lg7X_6YQ32WRFyGXaIpeU2A",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://ads-management-api.onrender.com/api/wards/1",
+							"protocol": "https",
+							"host": [
+								"ads-management-api",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"wards",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get one",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoiY2hpaGllbjIwMDI3MUBnbWFpbC5jb20iLCJyb2xlIjoiY2RvIiwiaWF0IjoxNzA1MTUxNzY0LCJleHAiOjE3MDUxNTIwNjR9.-DrqyC4_lr2wp9X3eBo7Lg7X_6YQ32WRFyGXaIpeU2A",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://ads-management-api.onrender.com/api/wards/1",
+							"protocol": "https",
+							"host": [
+								"ads-management-api",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"wards",
+								"1"
+							]
+						},
+						"description": "This API returns detailed information for an ads request based on its ID"
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoiY2hpaGllbjIwMDI3MUBnbWFpbC5jb20iLCJyb2xlIjoiY2RvIiwiaWF0IjoxNzA1MTUxNzY0LCJleHAiOjE3MDUxNTIwNjR9.-DrqyC4_lr2wp9X3eBo7Lg7X_6YQ32WRFyGXaIpeU2A",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"New ward\",\r\n    \"districtId\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://ads-management-api.onrender.com/api/wards/1",
+							"protocol": "https",
+							"host": [
+								"ads-management-api",
+								"onrender",
+								"com"
+							],
+							"path": [
+								"api",
+								"wards",
+								"1"
+							]
+						},
+						"description": "| **Attribute** | **Type** | **Description** |\n| --- | --- | --- |\n| `name` | string | Name of the new description |"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
