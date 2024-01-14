@@ -108,7 +108,7 @@ const PanelsDetail = () => {
               await fetch(e)
                 .then((res) => res.blob())
                 .then((blob) => {
-                  return new File([blob], e);
+                  return new File([blob], 'image.jpg', { type: blob.type });
                 }),
           ),
         );
