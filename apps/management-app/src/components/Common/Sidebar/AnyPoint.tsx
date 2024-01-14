@@ -9,6 +9,8 @@ import {
 } from '@mui/material';
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAppSelector } from '@/store';
+import { checkRole } from '@/store/slice/userSlice';
 
 interface AnyPointProps {
   address: string;
@@ -18,6 +20,8 @@ interface AnyPointProps {
 
 export default function AnyPoint({ address, lat, lng }: AnyPointProps) {
   const navigate = useNavigate();
+
+  const { isCitizen } = useAppSelector(checkRole);
 
   const goToReport = useCallback(() => {
     navigate(`/report?lat=${lat}&lng=${lng}`);
@@ -33,17 +37,19 @@ export default function AnyPoint({ address, lat, lng }: AnyPointProps) {
         <CardContent>
           <Typography fontWeight={500}>{address}</Typography>
         </CardContent>
-        <CardActions>
-          <Button
-            variant="outlined"
-            color="error"
-            onClick={goToReport}
-            sx={{ textTransform: 'uppercase' }}
-          >
-            {/* {hasReported ? 'Xem lại báo cáo' : 'Báo cáo vi phạm'} */}
-            Báo cáo vi phạm
-          </Button>
-        </CardActions>
+        {isCitizen && (
+          <CardActions>
+            <Button
+              variant="outlined"
+              color="error"
+              onClick={goToReport}
+              sx={{ textTransform: 'uppercase' }}
+            >
+              {/* {hasReported ? 'Xem lại báo cáo' : 'Báo cáo vi phạm'} */}
+              Báo cáo vi phạm
+            </Button>
+          </CardActions>
+        )}
       </Card>
     </Stack>
   );
