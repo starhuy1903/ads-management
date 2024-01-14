@@ -80,6 +80,11 @@ function Sidebar({ open, handleOnClose }: SidebarProps) {
               icon={<ReportIcon />}
               href="/panel-reports"
             />
+            <NavItem
+              title="Point Reports"
+              icon={<ReportIcon />}
+              href="/point-reports"
+            />
           </NavGroupWrapper>
           <NavGroupWrapper title="Requests">
             <NavItem

@@ -257,7 +257,7 @@ export default function EditingRequestDetail() {
 
             <ReadOnlyTextField
               label="Planned"
-              value={request?.location?.isPlanning ? 'Yes' : 'No'}
+              value={request?.location?.isPlanning ? 'No' : 'Yes'}
             />
 
             <ReadOnlyTextField

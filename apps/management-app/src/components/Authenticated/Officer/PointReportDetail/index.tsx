@@ -1,7 +1,10 @@
+import AddLocationIcon from '@mui/icons-material/AddLocation';
 import { Button, Stack, TextField, Typography } from '@mui/material';
 import 'moment-timezone';
 import { useEffect, useState } from 'react';
+import { Map, Marker } from 'react-map-gl';
 import { Link, useNavigate, useParams } from 'react-router-dom';
+import { configs } from '@/configurations';
 import CenterLoading from '@/components/Common/CenterLoading';
 import {
   ImageListField,
@@ -9,6 +12,7 @@ import {
   ReadOnlyTinyEditor,
 } from '@/components/Common/FormComponents';
 import { DetailWrapper } from '@/components/Common/Layout/ScreenWrapper';
+import { INITIAL_MAP_CENTER } from '@/constants/app';
 import { ReportStatus } from '@/constants/report';
 import { MAX_ID_LENGTH } from '@/constants/url-params';
 import { useLazyGetReportByIdQuery } from '@/store/api/officer/reportApiSlice';
@@ -17,7 +21,7 @@ import { formatDateTime } from '@/utils/datetime';
 import { capitalize } from '@/utils/format-string';
 import { isString, isValidLength } from '@/utils/validate';
 
-export default function LocationReportDetail() {
+export default function PointReportDetail() {
   const navigate = useNavigate();
 
   const [report, setReport] = useState<Report | null>(null);
@@ -27,7 +31,7 @@ export default function LocationReportDetail() {
 
   function handleInvalidRequest() {
     setReport(null);
-    navigate('/location-reports', { replace: true });
+    navigate('/point-reports', { replace: true });
   }
 
   useEffect(() => {
@@ -58,7 +62,7 @@ export default function LocationReportDetail() {
   }
 
   return (
-    <DetailWrapper label="Location Report Details">
+    <DetailWrapper label="Point Report Details">
       <Typography
         variant="h5"
         sx={{
@@ -122,74 +126,20 @@ export default function LocationReportDetail() {
           fontWeight: 'medium',
         }}
       >
-        Location Information
+        Point Information
       </Typography>
 
       <Typography variant="h6">Location</Typography>
-      <Stack
-        direction={{ xs: 'column', sm: 'row' }}
-        spacing={2}
-        sx={{
-          mb: 1,
-        }}
-      >
-        <ReadOnlyTextField label="ID" value={report.location?.id} />
 
-        <ReadOnlyTextField label="Name" value={report.location?.name} />
-
-        <ReadOnlyTextField
-          label="Planned"
-          value={report.location?.isPlanning ? 'No' : 'Yes'}
-        />
-
-        <ReadOnlyTextField
-          label="Status"
-          value={capitalize(report.location?.status)}
-        />
-
-        <ReadOnlyTextField
-          label="Created Time"
-          value={
-            report.location ? formatDateTime(report.location?.createdAt) : ''
-          }
-        />
-
-        <ReadOnlyTextField
-          label="Updated Time"
-          value={
-            report.location ? formatDateTime(report.location?.updatedAt) : ''
-          }
-        />
-      </Stack>
       <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-        <ReadOnlyTextField
-          label="Address"
-          value={report.location?.fullAddress}
-        />
+        <ReadOnlyTextField label="Ward" value={report.ward?.name} />
 
-        <ReadOnlyTextField label="Ward" value={report.location?.ward?.name} />
+        <ReadOnlyTextField label="District" value={report.district?.name} />
 
-        <ReadOnlyTextField
-          label="District"
-          value={report.location?.district?.name}
-        />
+        <ReadOnlyTextField label="Latitude" value={report.lat} />
 
-        <ReadOnlyTextField label="Latitude" value={report.location?.lat} />
-
-        <ReadOnlyTextField label="Longtitude" value={report.location?.long} />
+        <ReadOnlyTextField label="Longtitude" value={report.long} />
       </Stack>
-
-      <Typography variant="h6">Classification</Typography>
-      <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-        <ReadOnlyTextField label="Type" value={report.location?.type?.name} />
-
-        <ReadOnlyTextField
-          label="Advertising Type"
-          value={report.location?.adType?.name}
-        />
-      </Stack>
-
-      <ImageListField images={report.location?.imageUrls} />
 
       <Link to={`/reports/${report.id}/response`}>
         <Button

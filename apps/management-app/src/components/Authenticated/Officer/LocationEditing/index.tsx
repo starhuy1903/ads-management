@@ -206,7 +206,7 @@ export default function LocationEditing() {
         <ReadOnlyTextForm
           field="name"
           label="Planned"
-          value={location?.isPlanning ? 'Yes' : 'No'}
+          value={location?.isPlanning ? 'No' : 'Yes'}
         />
 
         <ReadOnlyTextForm

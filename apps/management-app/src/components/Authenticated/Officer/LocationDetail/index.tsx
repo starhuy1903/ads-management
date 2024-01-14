@@ -74,7 +74,7 @@ export default function LocationDetail() {
 
         <ReadOnlyTextField
           label="Planned"
-          value={location?.isPlanning ? 'Yes' : 'No'}
+          value={location?.isPlanning ? 'No' : 'Yes'}
         />
 
         <ReadOnlyTextField

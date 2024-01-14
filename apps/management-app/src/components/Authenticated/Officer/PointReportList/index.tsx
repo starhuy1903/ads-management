@@ -12,59 +12,58 @@ import {
 import { useEffect, useState } from 'react';
 import { useAppSelector } from '@/store';
 import CenterLoading from '@/components/Common/CenterLoading';
-import { Edit, Info } from '@/components/Common/Icons';
+import { Info, Response } from '@/components/Common/Icons';
 import { ListWrapper } from '@/components/Common/Layout/ScreenWrapper';
 import WardSelect from '@/components/Common/WardSelect';
-import { LocationStatus } from '@/constants/location';
 import { UserRole } from '@/constants/user';
-import { useGetLocationsQuery } from '@/store/api/officer/locationApiSlice';
-import { Location } from '@/types/officer-management';
+import { useGetReportsQuery } from '@/store/api/officer/reportApiSlice';
+import { Report } from '@/types/officer-management';
 import { formatDateTime } from '@/utils/datetime';
 import { capitalize } from '@/utils/format-string';
 
 const titles = [
   'ID',
-  'Name',
-  'Address',
   'Ward',
   'District',
-  'Planned',
+  'Type',
+  'Reporter',
+  'Email',
   'Created Time',
   'Updated Time',
   'Status',
   '',
 ];
 
-export default function LocationList() {
+export default function PointReportList() {
   const role = useAppSelector((state) => state.user?.profile?.role);
 
   const [page, setPage] = useState<number>(1);
-  const [locations, setLocations] = useState<Location[]>([]);
+  const [reports, setReports] = useState<Report[]>([]);
   const [wards, setWards] = useState<number[]>([]);
 
-  const { data, isLoading, refetch } = useGetLocationsQuery({
+  const { data, isLoading, refetch } = useGetReportsQuery({
     page: page,
     take: 10,
-    status: LocationStatus?.APPROVED,
+    targetType: 'Point',
     wards: wards,
   });
 
   useEffect(() => {
     refetch();
-  }, [locations, page, refetch, wards]);
+  }, [reports, refetch]);
 
   useEffect(() => {
     if (data) {
-      setLocations(data.data);
+      setReports(data.data);
     }
   }, [data]);
 
-  if (isLoading || !locations) {
+  if (isLoading || !reports) {
     return <CenterLoading />;
   }
 
   return (
-    <ListWrapper label="Locations">
+    <ListWrapper label="Point Reports">
       <Box
         sx={{
           width: '100%',
@@ -75,7 +74,7 @@ export default function LocationList() {
         )}
 
         <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 650 }} aria-label="locations">
+          <Table sx={{ minWidth: 650 }} aria-label="point reports">
             <TableHead>
               <TableRow>
                 {titles.map((title) => (
@@ -86,29 +85,27 @@ export default function LocationList() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {locations?.length !== 0 ? (
-                locations.map((location: Location) => (
-                  <TableRow key={location?.id}>
-                    <TableCell align="center">{location?.id}</TableCell>
-                    <TableCell align="center">{location?.name}</TableCell>
+              {reports.length !== 0 ? (
+                reports.map((report: Report) => (
+                  <TableRow key={report?.id}>
+                    <TableCell align="center">{report?.id}</TableCell>
+                    <TableCell align="center">{report?.ward?.name}</TableCell>
                     <TableCell align="center">
-                      {location?.fullAddress}
-                    </TableCell>
-                    <TableCell align="center">{location?.ward?.name}</TableCell>
-                    <TableCell align="center">
-                      {location?.district?.name}
-                    </TableCell>
-                    <TableCell align="center">{`${
-                      location?.isPlanning ? 'No' : 'Yes'
-                    }`}</TableCell>
-                    <TableCell align="center">
-                      {formatDateTime(location?.createdAt)}
+                      {report?.district?.name}
                     </TableCell>
                     <TableCell align="center">
-                      {formatDateTime(location?.updatedAt)}
+                      {report?.reportType?.name}
+                    </TableCell>
+                    <TableCell align="center">{report?.fullName}</TableCell>
+                    <TableCell align="center">{report?.email}</TableCell>
+                    <TableCell align="center">
+                      {formatDateTime(report?.createdAt)}
                     </TableCell>
                     <TableCell align="center">
-                      {capitalize(location?.status)}
+                      {formatDateTime(report?.updatedAt)}
+                    </TableCell>
+                    <TableCell align="center">
+                      {capitalize(report?.status)}
                     </TableCell>
                     <TableCell>
                       <Box
@@ -117,8 +114,8 @@ export default function LocationList() {
                           gap: 2,
                         }}
                       >
-                        <Info link={`/locations/${location?.id}`} />
-                        <Edit link={`/locations/${location?.id}/edit`} />
+                        <Info link={`/point-reports/${report?.id}`} />
+                        <Response link={`/reports/${report?.id}/response`} />
                       </Box>
                     </TableCell>
                   </TableRow>
