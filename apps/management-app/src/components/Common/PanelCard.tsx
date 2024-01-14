@@ -50,7 +50,8 @@ export default function PanelCard({
   const dispatch = useAppDispatch();
   const [expanded, setExpanded] = useState(false);
 
-  const { isCitizen } = useAppSelector(checkRole);
+  const { isCitizen, isDistrictOfficer, isWardOfficer } =
+    useAppSelector(checkRole);
 
   const isViolated = violatedReports.length !== 0;
 
@@ -58,14 +59,33 @@ export default function PanelCard({
     navigate(`/report?panel=${data.id}`);
   }, [navigate, data.id]);
 
+  const goToHandleReport = useCallback(
+    (reportId: number) => {
+      navigate(`/reports/${reportId}/response`);
+    },
+    [navigate],
+  );
+
   const viewAllReports = useCallback(() => {
     dispatch(
       showModal(ModalKey.REPORT_DETAIL, {
         reports: violatedReports,
         createNew: isCitizen ? goToReportPage : undefined,
+        onHandleReport:
+          isDistrictOfficer || isWardOfficer
+            ? (reportId: number) => goToHandleReport(reportId)
+            : undefined,
       }),
     );
-  }, [dispatch, violatedReports, goToReportPage, isCitizen]);
+  }, [
+    dispatch,
+    violatedReports,
+    goToReportPage,
+    isCitizen,
+    isDistrictOfficer,
+    isWardOfficer,
+    goToHandleReport,
+  ]);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
