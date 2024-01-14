@@ -1,6 +1,6 @@
 import { Button, Stack, TextField, Typography } from '@mui/material';
 import 'moment-timezone';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import CenterLoading from '@/components/Common/CenterLoading';
 import {
@@ -25,10 +25,10 @@ export default function LocationReportDetail() {
 
   const [getReport, { isLoading }] = useLazyGetReportByIdQuery();
 
-  function handleInvalidRequest() {
+  const handleInvalidRequest = useCallback(() => {
     setReport(null);
     navigate('/location-reports', { replace: true });
-  }
+  }, [navigate]);
 
   useEffect(() => {
     if (
@@ -40,18 +40,16 @@ export default function LocationReportDetail() {
       return;
     }
 
-    async function fetchData() {
+    (async () => {
       try {
-        const res = await getReport(reportId!, true).unwrap();
+        const res = await getReport(reportId!).unwrap();
         setReport(res);
       } catch (error) {
         console.log(error);
         handleInvalidRequest();
       }
-    }
-
-    fetchData();
-  }, [getReport, reportId]);
+    })();
+  }, [getReport, reportId, handleInvalidRequest]);
 
   if (isLoading || !report) {
     return <CenterLoading />;

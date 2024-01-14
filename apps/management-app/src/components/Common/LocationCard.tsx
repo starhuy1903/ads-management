@@ -28,20 +28,40 @@ export default function LocationCard({
 }: LocationCardProps) {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { isCitizen } = useAppSelector(checkRole);
+  const { isCitizen, isDistrictOfficer, isWardOfficer } =
+    useAppSelector(checkRole);
 
   const goToReport = useCallback(() => {
     navigate(`/report?location=${data.id}`);
   }, [navigate, data.id]);
+
+  const goToHandleReport = useCallback(
+    (reportId: number) => {
+      navigate(`/reports/${reportId}/response`);
+    },
+    [navigate],
+  );
 
   const viewAllReports = useCallback(() => {
     dispatch(
       showModal(ModalKey.REPORT_DETAIL, {
         reports,
         createNew: isCitizen ? goToReport : undefined,
+        onHandleReport:
+          isDistrictOfficer || isWardOfficer
+            ? (reportId: number) => goToHandleReport(reportId)
+            : undefined,
       }),
     );
-  }, [dispatch, reports, goToReport, isCitizen]);
+  }, [
+    dispatch,
+    reports,
+    goToReport,
+    isCitizen,
+    isDistrictOfficer,
+    isWardOfficer,
+    goToHandleReport,
+  ]);
 
   return (
     <Card sx={{ background: 'rgb(240 253 244)' }}>

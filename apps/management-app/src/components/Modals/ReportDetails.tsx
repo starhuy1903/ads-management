@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   Card,
+  CardActions,
   CardContent,
   CardHeader,
   Stack,
@@ -21,6 +22,7 @@ interface ReportDetailProps {
   reports: CreatedReport[];
   createNew?: () => void;
   onModalClose: () => void;
+  onHandleReport?: (reportId: number) => void;
 }
 
 const isLocationReport = (
@@ -40,11 +42,24 @@ const getTitle = (report: CreatedReport) => {
   return 'Point';
 };
 
-function ReportDetail({ reports, createNew, onModalClose }: ReportDetailProps) {
+function ReportDetail({
+  reports,
+  createNew,
+  onModalClose,
+  onHandleReport,
+}: ReportDetailProps) {
   const handleCreateNew = useCallback(() => {
     onModalClose();
     createNew?.();
   }, [onModalClose, createNew]);
+
+  const handleReport = useCallback(
+    (reportId: number) => {
+      onModalClose();
+      onHandleReport?.(reportId);
+    },
+    [onModalClose, onHandleReport],
+  );
 
   const renderStatus = (status: string) => {
     switch (status) {
@@ -109,6 +124,13 @@ function ReportDetail({ reports, createNew, onModalClose }: ReportDetailProps) {
                 <Box>{parse(report.content)}</Box>
               </Stack>
             </CardContent>
+            {report.status !== 'DONE' && onHandleReport && (
+              <CardActions>
+                <Button onClick={() => handleReport(report.id)}>
+                  Xử lí báo cáo
+                </Button>
+              </CardActions>
+            )}
           </Card>
         ))}
       </Stack>
