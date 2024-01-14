@@ -1,5 +1,5 @@
 import { Stack, Typography } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import CenterLoading from '@/components/Common/CenterLoading';
 import {
@@ -22,10 +22,10 @@ export default function PanelDetail() {
 
   const [getPanel, { isLoading }] = useLazyGetPanelByIdOfficerQuery();
 
-  function handleInvalidRequest() {
+  const handleInvalidRequest = useCallback(() => {
     setPanel(null);
     navigate('/panels', { replace: true });
-  }
+  }, [navigate]);
 
   useEffect(() => {
     if (
@@ -39,7 +39,7 @@ export default function PanelDetail() {
 
     async function fetchData() {
       try {
-        const res = await getPanel(panelId!, true).unwrap();
+        const res = await getPanel(panelId!).unwrap();
         setPanel(res);
       } catch (error) {
         console.log(error);
@@ -48,7 +48,7 @@ export default function PanelDetail() {
     }
 
     fetchData();
-  }, [getPanel, panelId]);
+  }, [getPanel, handleInvalidRequest, panelId]);
 
   if (isLoading || !panel) {
     return <CenterLoading />;

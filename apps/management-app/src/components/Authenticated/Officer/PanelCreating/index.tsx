@@ -28,14 +28,15 @@ import {
   useGetPanelTypesOfficerQuery,
 } from '@/store/api/officer/panelApiSlide';
 import { showModal } from '@/store/slice/modal';
-import { Location, PanelDto, PanelType } from '@/types/officer-management';
+import { AdLocation } from '@/types/location';
+import { PanelDto, PanelType } from '@/types/officer-management';
 import { showError, showSuccess } from '@/utils/toast';
 
 export default function PanelCreating() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const [locations, setLocations] = useState<Location[]>([]);
+  const [locations, setLocations] = useState<AdLocation[]>([]);
   const [panelTypes, setPanelTypes] = useState<PanelType[]>([]);
 
   const { data: locationData, isLoading: locationLoading } =

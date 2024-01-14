@@ -1,4 +1,5 @@
 import { AdLocation } from './location';
+import { District, Ward } from './officer-management';
 import { Panel } from './panel';
 
 export interface CreateReportForm {
@@ -75,6 +76,8 @@ export interface CreatedPointReport extends CreatedReportBase {
   locationId: null;
   lat: number;
   long: number;
+  district?: District;
+  ward?: Ward;
 }
 
 export type CreatedReport =

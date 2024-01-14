@@ -1,3 +1,24 @@
+import CenterLoading from '@/components/Common/CenterLoading';
+import DropFileContainer from '@/components/Common/DropFileContainer';
+import { ReadOnlyTextForm } from '@/components/Common/FormComponents';
+import { DetailWrapper } from '@/components/Common/Layout/ScreenWrapper';
+import ImagePreview from '@/components/Unauthenticated/Citizen/CitizenReport/ImagePreview';
+import UploadImageCard from '@/components/Unauthenticated/Citizen/CitizenReport/UploadImageCard';
+import { ModalKey } from '@/constants/modal';
+import { MAX_ID_LENGTH } from '@/constants/url-params';
+import { ImageFileConfig } from '@/constants/validation';
+import { useAppDispatch, useAppSelector } from '@/store';
+import {
+  useLazyGetPanelByIdOfficerQuery,
+  useLazyGetPanelTypesOfficerQuery,
+} from '@/store/api/officer/panelApiSlide';
+import { useCreateUpdatePanelRequestMutation } from '@/store/api/officer/requestApiSlide';
+import { showModal } from '@/store/slice/modal';
+import { Panel, PanelType, UpdatePanelDto } from '@/types/officer-management';
+import { formatDateTime } from '@/utils/datetime';
+import { capitalize } from '@/utils/format-string';
+import { showError, showSuccess } from '@/utils/toast';
+import { isString, isValidLength } from '@/utils/validate';
 import { DevTool } from '@hookform/devtools';
 import {
   Button,
@@ -13,27 +34,6 @@ import {
 import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '@/store';
-import CenterLoading from '@/components/Common/CenterLoading';
-import DropFileContainer from '@/components/Common/DropFileContainer';
-import { ReadOnlyTextForm } from '@/components/Common/FormComponents';
-import { DetailWrapper } from '@/components/Common/Layout/ScreenWrapper';
-import ImagePreview from '@/components/Unauthenticated/Citizen/CitizenReport/ImagePreview';
-import UploadImageCard from '@/components/Unauthenticated/Citizen/CitizenReport/UploadImageCard';
-import { ModalKey } from '@/constants/modal';
-import { MAX_ID_LENGTH } from '@/constants/url-params';
-import { ImageFileConfig } from '@/constants/validation';
-import {
-  useLazyGetPanelByIdOfficerQuery,
-  useLazyGetPanelTypesOfficerQuery,
-} from '@/store/api/officer/panelApiSlide';
-import { useCreateUpdatePanelRequestMutation } from '@/store/api/officer/requestApiSlide';
-import { showModal } from '@/store/slice/modal';
-import { Panel, PanelType, UpdatePanelDto } from '@/types/officer-management';
-import { formatDateTime } from '@/utils/datetime';
-import { capitalize } from '@/utils/format-string';
-import { showError, showSuccess } from '@/utils/toast';
-import { isString, isValidLength } from '@/utils/validate';
 
 export default function PanelEditing() {
   const dispatch = useAppDispatch();
@@ -56,10 +56,10 @@ export default function PanelEditing() {
       mode: 'onChange',
     });
 
-  function handleInvalidRequest() {
+  const handleInvalidRequest = useCallback(() => {
     setPanel(null);
     navigate('/panels', { replace: true });
-  }
+  }, [navigate]);
 
   useEffect(() => {
     if (
@@ -72,7 +72,7 @@ export default function PanelEditing() {
     }
     async function fetchData() {
       try {
-        const panelData = await getPanel(panelId!, true).unwrap();
+        const panelData = await getPanel(panelId!).unwrap();
         const panelTypesData = await getPanelTypes().unwrap();
 
         setPanel(panelData);
@@ -99,7 +99,7 @@ export default function PanelEditing() {
     }
 
     fetchData();
-  }, [getPanel, getPanelTypes, panelId, reset, userId]);
+  }, [getPanel, getPanelTypes, handleInvalidRequest, panelId, reset, userId]);
 
   useEffect(() => {
     if (panel?.imageUrls) {
