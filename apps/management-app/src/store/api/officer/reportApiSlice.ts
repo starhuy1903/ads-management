@@ -15,7 +15,7 @@ export const officerReportApiSlice = apiSlice.injectEndpoints({
         take?: number;
         wards?: number[];
         districts?: string;
-        targetType: string;
+        targetType?: string;
         typeId?: number;
       }
     >({

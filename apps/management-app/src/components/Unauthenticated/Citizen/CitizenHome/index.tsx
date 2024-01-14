@@ -11,6 +11,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Marker } from 'react-map-gl';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '@/store';
+import CitizenNotification from '@/components/Common/Layout/CitizenNotification';
 import Maps from '@/components/Common/Maps';
 import ActionBar from '@/components/Common/Maps/ActionBar';
 import SidebarContainer from '@/components/Common/Sidebar';
@@ -202,8 +203,11 @@ export default function CitizenHome() {
               right: 10,
             }}
           >
+            <Tooltip title="Notification">
+              <CitizenNotification />
+            </Tooltip>
             <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0, ml: 2 }}>
                 <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
               </IconButton>
             </Tooltip>
