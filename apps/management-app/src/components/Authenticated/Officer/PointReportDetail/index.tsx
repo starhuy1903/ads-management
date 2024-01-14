@@ -1,6 +1,9 @@
-import { Button, Stack, TextField, Typography } from '@mui/material';
+import FmdBadIcon from '@mui/icons-material/FmdBad';
+import { Box, Button, Stack, TextField, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
+import { Map, Marker } from 'react-map-gl';
 import { Link, useNavigate, useParams } from 'react-router-dom';
+import { configs } from '@/configurations';
 import CenterLoading from '@/components/Common/CenterLoading';
 import {
   ImageListField,
@@ -124,7 +127,7 @@ export default function PointReportDetail() {
         Point Information
       </Typography>
 
-      <Typography variant="h6">Location</Typography>
+      <Typography variant="h6">Point</Typography>
 
       <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
         <ReadOnlyTextField label="Ward" value={report.ward?.name} />
@@ -135,6 +138,38 @@ export default function PointReportDetail() {
 
         <ReadOnlyTextField label="Longtitude" value={report.long} />
       </Stack>
+
+      <Box
+        sx={{
+          height: 500,
+        }}
+      >
+        <Map
+          initialViewState={{
+            longitude: Number(report.long),
+            latitude: Number(report.lat),
+            zoom: 15,
+          }}
+          style={{
+            width: '100%',
+            height: '100%',
+            zIndex: 1,
+          }}
+          mapStyle="mapbox://styles/mapbox/streets-v9"
+          mapboxAccessToken={configs.mapBox}
+          logoPosition="bottom-right"
+        >
+          <Marker longitude={Number(report.long)} latitude={Number(report.lat)}>
+            <FmdBadIcon
+              sx={{
+                color: 'red',
+                transform: 'translateY(-50%)',
+                fontSize: '2rem',
+              }}
+            />
+          </Marker>
+        </Map>
+      </Box>
 
       <Link to={`/reports/${report.id}/response`}>
         <Button
