@@ -291,6 +291,8 @@ export class ReportService {
   findOne(id: number) {
     return this.prismaService.report.findFirst({
       include: {
+        district: true,
+        ward: true,
         reportType: true,
         location: {
           include: {
