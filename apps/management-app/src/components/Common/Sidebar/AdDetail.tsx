@@ -50,15 +50,17 @@ export default function AdDetail({
         </Card>
       ) : (
         <>
-          {panels.map((panel) => (
-            <PanelCard
-              key={panel.id}
-              data={panel}
-              violatedReports={vioPanelReports?.filter(
-                (report) => report.panelId === panel.id,
-              )}
-            />
-          ))}
+          {panels
+            .filter((panel) => panel.status === 'APPROVED')
+            .map((panel) => (
+              <PanelCard
+                key={panel.id}
+                data={panel}
+                violatedReports={vioPanelReports?.filter(
+                  (report) => report.panelId === panel.id,
+                )}
+              />
+            ))}
         </>
       )}
     </Stack>
