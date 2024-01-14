@@ -119,7 +119,7 @@ const PanelTypesListView = () => {
           sortable: false,
           renderHeader: () => null,
           renderCell: (params: GridRenderCellParams) => (
-            <CustomLink to={'/panelTypes/' + params.row.id}>
+            <CustomLink to={'/panel-types/' + params.row.id}>
               View details
             </CustomLink>
           ),

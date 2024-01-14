@@ -119,7 +119,7 @@ const ReportTypesListView = () => {
           sortable: false,
           renderHeader: () => null,
           renderCell: (params: GridRenderCellParams) => (
-            <CustomLink to={'/reportTypes/' + params.row.id}>
+            <CustomLink to={'/report-types/' + params.row.id}>
               View details
             </CustomLink>
           ),

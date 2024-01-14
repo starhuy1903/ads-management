@@ -119,7 +119,7 @@ const AdsTypesListView = () => {
           sortable: false,
           renderHeader: () => null,
           renderCell: (params: GridRenderCellParams) => (
-            <CustomLink to={'/adsTypes/' + params.row.id}>
+            <CustomLink to={'/ads-types/' + params.row.id}>
               View details
             </CustomLink>
           ),
