@@ -14,7 +14,11 @@ import IconButton, { IconButtonProps } from '@mui/material/IconButton';
 import { styled } from '@mui/material/styles';
 import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAppDispatch } from '@/store';
+import { ModalKey } from '@/constants/modal';
+import { showModal } from '@/store/slice/modal';
 import { Panel } from '@/types/panel';
+import { CreatedReport } from '@/types/report';
 import { formatDate } from '@/utils/datetime';
 
 interface ExpandMoreProps extends IconButtonProps {
@@ -34,15 +38,31 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
 
 interface PanelCardProps {
   data: Panel;
+  violatedReports?: CreatedReport[];
 }
 
-export default function PanelCard({ data }: PanelCardProps) {
+export default function PanelCard({
+  data,
+  violatedReports = [],
+}: PanelCardProps) {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const [expanded, setExpanded] = useState(false);
+
+  const isViolated = violatedReports.length !== 0;
 
   const goToReportPage = useCallback(() => {
     navigate(`/report?panel=${data.id}`);
   }, [navigate, data.id]);
+
+  const viewAllReports = useCallback(() => {
+    dispatch(
+      showModal(ModalKey.REPORT_DETAIL, {
+        reports: violatedReports,
+        createNew: goToReportPage,
+      }),
+    );
+  }, [dispatch, violatedReports, goToReportPage]);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -81,10 +101,10 @@ export default function PanelCard({ data }: PanelCardProps) {
         <Button
           variant="outlined"
           color="error"
-          onClick={goToReportPage}
+          onClick={isViolated ? viewAllReports : goToReportPage}
           sx={{ textTransform: 'uppercase' }}
         >
-          Báo cáo vi phạm
+          {isViolated ? 'Xem lại báo cáo' : 'Báo cáo vi phạm'}
         </Button>
         <ExpandMore
           expand={expanded}
