@@ -293,7 +293,7 @@ export default function PanelCreating() {
               onDeleteImage={handleDeleteImage}
             />
           ))}
-          {formValue.images.length < 1 && (
+          {formValue.images.length < 2 && (
             <DropFileContainer
               onDropFile={handleUpdateImage}
               acceptMIMETypes={ImageFileConfig.ACCEPTED_MINE_TYPES}
