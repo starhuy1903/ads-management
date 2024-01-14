@@ -1,7 +1,7 @@
-import { SubmitHandler, useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
 import { useLoginMutation } from '@/store/api/userApiSlice';
 import { CredentialPayload } from '@/types/user';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { Link } from 'react-router-dom';
 
 export default function Login() {
   const [requestLogin, { isLoading }] = useLoginMutation();
@@ -94,6 +94,12 @@ export default function Login() {
           >
             {isLoading ? <span>Loading...</span> : <span>Sign in</span>}
           </button>
+
+          <Link to="/">
+            <button className="w-full text-white bg-gray-300 py-2 rounded-lg font-semibold mt-4">
+              Back
+            </button>
+          </Link>
         </form>
       </div>
     </div>

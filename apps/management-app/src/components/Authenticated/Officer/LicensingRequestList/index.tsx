@@ -20,7 +20,7 @@ import { ModalKey } from '@/constants/modal';
 import { UserRole } from '@/constants/user';
 import {
   useDeleteRequestMutation,
-  useGetRequestsQuery,
+  useGetRequestsOfficerQuery,
 } from '@/store/api/officer/requestApiSlide';
 import { showModal } from '@/store/slice/modal';
 import { AdsRequest } from '@/types/officer-management';
@@ -49,7 +49,7 @@ export default function LicensingRequestList() {
   const [requests, setRequests] = useState<AdsRequest[]>([]);
   const [wards, setWards] = useState<number[]>([]);
 
-  const { data, isLoading, refetch } = useGetRequestsQuery({
+  const { data, isLoading, refetch } = useGetRequestsOfficerQuery({
     page: page,
     take: 10,
     type: AdsRequestType?.APPROVED_PANEL,

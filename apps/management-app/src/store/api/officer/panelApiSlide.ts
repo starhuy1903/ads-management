@@ -9,7 +9,7 @@ import { apiSlice } from '../baseApiSlice';
 
 export const officerPanelApiSlice = apiSlice.injectEndpoints({
   endpoints: (build) => ({
-    getPanels: build.query<
+    getPanelsOfficer: build.query<
       GetListResult<Panel>,
       {
         page?: number;
@@ -46,7 +46,7 @@ export const officerPanelApiSlice = apiSlice.injectEndpoints({
         };
       },
     }),
-    getPanelById: build.query<Panel, string>({
+    getPanelByIdOfficer: build.query<Panel, string>({
       query: (id) => `/panels/${id}`,
       transformResponse: (response: { data: Panel }) => response.data,
     }),
@@ -56,7 +56,7 @@ export const officerPanelApiSlice = apiSlice.injectEndpoints({
       }),
       transformResponse: (response: { data: PanelType[] }) => response.data,
     }),
-    createPanel: build.mutation<MessageResponse, PanelDto>({
+    createPanelOfficer: build.mutation<MessageResponse, PanelDto>({
       query: (body) => {
         const bodyFormData = new FormData();
 
@@ -87,11 +87,11 @@ export const officerPanelApiSlice = apiSlice.injectEndpoints({
 });
 
 export const {
-  useGetPanelsQuery,
-  useLazyGetPanelsQuery,
-  useGetPanelByIdQuery,
-  useLazyGetPanelByIdQuery,
+  useGetPanelsOfficerQuery,
+  useLazyGetPanelsOfficerQuery,
+  useGetPanelByIdOfficerQuery,
+  useLazyGetPanelByIdOfficerQuery,
   useGetPanelTypesOfficerQuery,
   useLazyGetPanelTypesOfficerQuery,
-  useCreatePanelMutation,
+  useCreatePanelOfficerMutation,
 } = officerPanelApiSlice;

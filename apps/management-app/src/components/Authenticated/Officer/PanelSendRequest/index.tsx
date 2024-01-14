@@ -12,7 +12,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useAppSelector } from '@/store';
 import { DetailWrapper } from '@/components/Common/Layout/ScreenWrapper';
 import { MAX_ID_LENGTH } from '@/constants/url-params';
-import { useLazyGetPanelByIdQuery } from '@/store/api/officer/panelApiSlide';
+import { useLazyGetPanelByIdOfficerQuery } from '@/store/api/officer/panelApiSlide';
 import { useCreatePanelRequestMutation } from '@/store/api/officer/requestApiSlide';
 import { showError, showSuccess } from '@/utils/toast';
 import { isString, isValidLength } from '@/utils/validate';
@@ -23,7 +23,7 @@ export default function PanelSendRequest() {
   const { panelId } = useParams<{ panelId: string }>();
   const userId = useAppSelector((state) => state?.user?.profile?.id);
 
-  const [getPanel] = useLazyGetPanelByIdQuery();
+  const [getPanel] = useLazyGetPanelByIdOfficerQuery();
 
   useEffect(() => {
     if (

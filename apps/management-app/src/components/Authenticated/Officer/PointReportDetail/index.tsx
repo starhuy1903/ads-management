@@ -1,6 +1,9 @@
-import { Button, Stack, TextField, Typography } from '@mui/material';
+import FmdBadIcon from '@mui/icons-material/FmdBad';
+import { Box, Button, Stack, TextField, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
+import { Map, Marker } from 'react-map-gl';
 import { Link, useNavigate, useParams } from 'react-router-dom';
+import { configs } from '@/configurations';
 import CenterLoading from '@/components/Common/CenterLoading';
 import {
   ImageListField,
@@ -16,7 +19,7 @@ import { formatDateTime } from '@/utils/datetime';
 import { capitalize } from '@/utils/format-string';
 import { isString, isValidLength } from '@/utils/validate';
 
-export default function PanelReportDetail() {
+export default function PointReportDetail() {
   const navigate = useNavigate();
 
   const [report, setReport] = useState<Report | null>(null);
@@ -26,7 +29,7 @@ export default function PanelReportDetail() {
 
   function handleInvalidRequest() {
     setReport(null);
-    navigate('/panel-reports', { replace: true });
+    navigate('/point-reports', { replace: true });
   }
 
   useEffect(() => {
@@ -38,6 +41,7 @@ export default function PanelReportDetail() {
       handleInvalidRequest();
       return;
     }
+
     async function fetchData() {
       try {
         const res = await getReport(reportId!, true).unwrap();
@@ -56,7 +60,7 @@ export default function PanelReportDetail() {
   }
 
   return (
-    <DetailWrapper label={`Panel Report #${report?.id}`}>
+    <DetailWrapper label="Point Report Details">
       <Typography
         variant="h5"
         sx={{
@@ -67,20 +71,14 @@ export default function PanelReportDetail() {
       </Typography>
 
       <Typography variant="h6">Report</Typography>
-      <Stack
-        direction={{ xs: 'column', sm: 'row' }}
-        spacing={2}
-        sx={{
-          mb: 1,
-        }}
-      >
+      <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
         <ReadOnlyTextField label="ID" value={report?.id} />
+
+        <ReadOnlyTextField label="Type" value={report?.reportType?.name} />
 
         <ReadOnlyTextField label="Full Name" value={report?.fullName} />
 
         <ReadOnlyTextField label="Email" value={report?.email} />
-
-        <ReadOnlyTextField label="Type" value={report?.reportType?.name} />
 
         <ReadOnlyTextField label="Status" value={capitalize(report?.status)} />
 
@@ -126,118 +124,60 @@ export default function PanelReportDetail() {
           fontWeight: 'medium',
         }}
       >
-        Panel Information
+        Point Information
       </Typography>
 
-      <Typography variant="h6">Panel</Typography>
-      <Stack
-        direction={{ xs: 'column', sm: 'row' }}
-        spacing={2}
-        sx={{
-          mb: 1,
-        }}
-      >
-        <ReadOnlyTextField label="ID" value={report?.panel?.id} />
+      <Typography variant="h6">Point</Typography>
 
-        <ReadOnlyTextField label="Type" value={report?.panel?.type?.name} />
-
-        <ReadOnlyTextField label="Width" value={report?.panel?.width} />
-
-        <ReadOnlyTextField label="Height" value={report?.panel?.height} />
-
-        <ReadOnlyTextField
-          label="Status"
-          value={capitalize(report?.panel?.status)}
-        />
-
-        <ReadOnlyTextField
-          label="Created Time"
-          value={report?.panel ? formatDateTime(report?.panel?.createdAt) : ''}
-        />
-
-        <ReadOnlyTextField
-          label="Updated Time"
-          value={report?.panel ? formatDateTime(report?.panel?.updatedAt) : ''}
-        />
-      </Stack>
-
-      <Typography variant="h6">Location</Typography>
-      <Stack
-        direction={{ xs: 'column', sm: 'row' }}
-        spacing={2}
-        sx={{
-          mb: 1,
-        }}
-      >
-        <ReadOnlyTextField label="Name" value={report?.panel?.location?.name} />
-
-        <ReadOnlyTextField
-          label="Address"
-          value={report?.panel?.location?.fullAddress}
-        />
-
-        <ReadOnlyTextField
-          label="Ward"
-          value={report?.panel?.location?.ward?.name}
-        />
-
-        <ReadOnlyTextField
-          label="District"
-          value={report?.panel?.location?.district?.name}
-        />
-      </Stack>
       <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-        <ReadOnlyTextField
-          label="Type"
-          value={report?.panel?.location?.type?.name}
-        />
+        <ReadOnlyTextField label="Ward" value={report.ward?.name} />
 
-        <ReadOnlyTextField
-          label="Advertising Type"
-          value={report?.panel?.location?.adType?.name}
-        />
+        <ReadOnlyTextField label="District" value={report.district?.name} />
+
+        <ReadOnlyTextField label="Latitude" value={report.lat} />
+
+        <ReadOnlyTextField label="Longtitude" value={report.long} />
       </Stack>
 
-      <ImageListField images={report?.panel?.imageUrls} />
-
-      <Typography variant="h6">Company</Typography>
-      <Stack
-        direction={{ xs: 'column', sm: 'row' }}
-        spacing={2}
+      <Box
         sx={{
-          mb: 1,
+          height: 500,
         }}
       >
-        <ReadOnlyTextField label="Email" value={report?.panel?.companyEmail} />
+        <Map
+          initialViewState={{
+            longitude: Number(report.long),
+            latitude: Number(report.lat),
+            zoom: 15,
+          }}
+          style={{
+            width: '100%',
+            height: '100%',
+            zIndex: 1,
+          }}
+          mapStyle="mapbox://styles/mapbox/streets-v9"
+          mapboxAccessToken={configs.mapBox}
+          logoPosition="bottom-right"
+        >
+          <Marker longitude={Number(report.long)} latitude={Number(report.lat)}>
+            <FmdBadIcon
+              sx={{
+                color: 'red',
+                transform: 'translateY(-50%)',
+                fontSize: '2rem',
+              }}
+            />
+          </Marker>
+        </Map>
+      </Box>
 
-        <ReadOnlyTextField label="Phone" value={report?.panel?.companyNumber} />
-
-        <ReadOnlyTextField
-          label="Created Contract Time"
-          value={
-            report?.panel
-              ? formatDateTime(report?.panel?.createContractDate)
-              : ''
-          }
-        />
-
-        <ReadOnlyTextField
-          label="Expired Contract Time"
-          value={
-            report?.panel
-              ? formatDateTime(report?.panel?.expiredContractDate)
-              : ''
-          }
-        />
-      </Stack>
-
-      <Link to={`/reports/${report?.id}/response`}>
+      <Link to={`/reports/${report.id}/response`}>
         <Button
           variant="contained"
           color="primary"
           sx={{ mt: 2, color: 'white' }}
         >
-          {report?.status === ReportStatus?.NEW
+          {report.status === ReportStatus?.NEW
             ? 'Respond to report'
             : 'Update response'}
         </Button>

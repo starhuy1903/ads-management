@@ -9,7 +9,7 @@ import {
 import { DetailWrapper } from '@/components/Common/Layout/ScreenWrapper';
 import { MAX_ID_LENGTH } from '@/constants/url-params';
 import { UserRole } from '@/constants/user';
-import { useLazyGetRequestByIdQuery } from '@/store/api/officer/requestApiSlide';
+import { useLazyGetRequestByIdOfficerQuery } from '@/store/api/officer/requestApiSlide';
 import { AdsRequest } from '@/types/officer-management';
 import { formatDateTime } from '@/utils/datetime';
 import { capitalize, formatRole } from '@/utils/format-string';
@@ -21,7 +21,7 @@ export default function LicensingRequestDetail() {
   const [request, setRequest] = useState<AdsRequest | null>(null);
   const { requestId } = useParams<{ requestId: string }>();
 
-  const [getRequest, { isLoading }] = useLazyGetRequestByIdQuery();
+  const [getRequest, { isLoading }] = useLazyGetRequestByIdOfficerQuery();
 
   function handleInvalidRequest() {
     setRequest(null);

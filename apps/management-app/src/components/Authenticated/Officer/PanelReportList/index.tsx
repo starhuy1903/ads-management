@@ -14,12 +14,12 @@ import { useAppSelector } from '@/store';
 import CenterLoading from '@/components/Common/CenterLoading';
 import { Info, Response } from '@/components/Common/Icons';
 import { ListWrapper } from '@/components/Common/Layout/ScreenWrapper';
-import { useGetReportsQuery } from '@/store/api/officer/reportApiSlice';
+import WardSelect from '@/components/Common/WardSelect';
+import { UserRole } from '@/constants/user';
+import { useGetReportsOfficerQuery } from '@/store/api/officer/reportApiSlice';
 import { Report } from '@/types/officer-management';
 import { formatDateTime } from '@/utils/datetime';
 import { capitalize } from '@/utils/format-string';
-import WardSelect from '@/components/Common/WardSelect';
-import { UserRole } from '@/constants/user';
 
 const titles = [
   'ID',
@@ -43,12 +43,17 @@ export default function PanelReportList() {
   const [reports, setReports] = useState<Report[]>([]);
   const [wards, setWards] = useState<number[]>([]);
 
-  const { data, isLoading, refetch } = useGetReportsQuery({
-    page: page,
-    take: 10,
-    targetType: 'Panel',
-    wards: wards,
-  });
+  const { data, isLoading, refetch } = useGetReportsOfficerQuery(
+    {
+      page: page,
+      take: 10,
+      targetType: 'Panel',
+      wards: wards,
+    },
+    {
+      pollingInterval: 2000,
+    },
+  );
 
   useEffect(() => {
     refetch();

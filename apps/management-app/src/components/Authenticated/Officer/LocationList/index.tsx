@@ -17,7 +17,7 @@ import { ListWrapper } from '@/components/Common/Layout/ScreenWrapper';
 import WardSelect from '@/components/Common/WardSelect';
 import { LocationStatus } from '@/constants/location';
 import { UserRole } from '@/constants/user';
-import { useGetLocationsQuery } from '@/store/api/officer/locationApiSlice';
+import { useGetLocationsOfficerQuery } from '@/store/api/officer/locationApiSlice';
 import { Location } from '@/types/officer-management';
 import { formatDateTime } from '@/utils/datetime';
 import { capitalize } from '@/utils/format-string';
@@ -42,7 +42,7 @@ export default function LocationList() {
   const [locations, setLocations] = useState<Location[]>([]);
   const [wards, setWards] = useState<number[]>([]);
 
-  const { data, isLoading, refetch } = useGetLocationsQuery({
+  const { data, isLoading, refetch } = useGetLocationsOfficerQuery({
     page: page,
     take: 10,
     status: LocationStatus?.APPROVED,
@@ -99,7 +99,7 @@ export default function LocationList() {
                       {location?.district?.name}
                     </TableCell>
                     <TableCell align="center">{`${
-                      location?.isPlanning ? 'Yes' : 'No'
+                      location?.isPlanning ? 'No' : 'Yes'
                     }`}</TableCell>
                     <TableCell align="center">
                       {formatDateTime(location?.createdAt)}

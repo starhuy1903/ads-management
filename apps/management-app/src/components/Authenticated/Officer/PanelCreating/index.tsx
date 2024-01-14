@@ -22,9 +22,9 @@ import ImagePreview from '@/components/Unauthenticated/Citizen/CitizenReport/Ima
 import UploadImageCard from '@/components/Unauthenticated/Citizen/CitizenReport/UploadImageCard';
 import { ModalKey } from '@/constants/modal';
 import { ImageFileConfig } from '@/constants/validation';
-import { useGetLocationsQuery } from '@/store/api/officer/locationApiSlice';
+import { useGetLocationsOfficerQuery } from '@/store/api/officer/locationApiSlice';
 import {
-  useCreatePanelMutation,
+  useCreatePanelOfficerMutation,
   useGetPanelTypesOfficerQuery,
 } from '@/store/api/officer/panelApiSlide';
 import { showModal } from '@/store/slice/modal';
@@ -39,7 +39,7 @@ export default function PanelCreating() {
   const [panelTypes, setPanelTypes] = useState<PanelType[]>([]);
 
   const { data: locationData, isLoading: locationLoading } =
-    useGetLocationsQuery({});
+    useGetLocationsOfficerQuery({});
   const { data: panelTypeData, isLoading: panelTypeLoading } =
     useGetPanelTypesOfficerQuery();
 
@@ -109,7 +109,8 @@ export default function PanelCreating() {
     disabled: boolean;
   }) => <UploadImageCard open={open} disabled={disabled} />;
 
-  const [createPanel, { isLoading: isSubmitting }] = useCreatePanelMutation();
+  const [createPanel, { isLoading: isSubmitting }] =
+    useCreatePanelOfficerMutation();
 
   const onSubmit = async (data: PanelDto) => {
     try {
@@ -292,7 +293,7 @@ export default function PanelCreating() {
               onDeleteImage={handleDeleteImage}
             />
           ))}
-          {formValue.images.length < 1 && (
+          {formValue.images.length < 2 && (
             <DropFileContainer
               onDropFile={handleUpdateImage}
               acceptMIMETypes={ImageFileConfig.ACCEPTED_MINE_TYPES}

@@ -11,7 +11,7 @@ import { apiSlice } from '../baseApiSlice';
 
 export const officerRequestApiSlice = apiSlice.injectEndpoints({
   endpoints: (build) => ({
-    getRequests: build.query<
+    getRequestsOfficer: build.query<
       GetListResult<AdsRequest>,
       {
         page?: number;
@@ -52,7 +52,7 @@ export const officerRequestApiSlice = apiSlice.injectEndpoints({
         };
       },
     }),
-    getRequestById: build.query<AdsRequest, string>({
+    getRequestByIdOfficer: build.query<AdsRequest, string>({
       query: (id) => `/ads-requests/${id}`,
       transformResponse: (response: { data: AdsRequest }) => response.data,
     }),
@@ -137,10 +137,10 @@ export const officerRequestApiSlice = apiSlice.injectEndpoints({
 });
 
 export const {
-  useGetRequestsQuery,
-  useLazyGetRequestsQuery,
-  useGetRequestByIdQuery,
-  useLazyGetRequestByIdQuery,
+  useGetRequestsOfficerQuery,
+  useLazyGetRequestsOfficerQuery,
+  useGetRequestByIdOfficerQuery,
+  useLazyGetRequestByIdOfficerQuery,
   useCreatePanelRequestMutation,
   useCreateUpdateLocationRequestMutation,
   useCreateUpdatePanelRequestMutation,
