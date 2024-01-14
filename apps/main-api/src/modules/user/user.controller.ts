@@ -13,10 +13,10 @@ import {
 import { UserService } from './user.service';
 import { JwtGuard, RolesGuard } from '../auth/guards';
 import { IRequestWithUser } from '../auth/interfaces';
-import { CreateUserDto, UpdateUserDto } from '../auth/dto';
+import { CdoUpdateUserDto, CreateUserDto, UpdateUserDto } from './dto';
 import { Roles } from '../auth/decorators';
 import { UserRole } from '@prisma/client';
-import { PageOptionsUserDto } from './dto/get-user-list.dto';
+import { PageOptionsUserDto } from './dto';
 
 @Controller('users')
 export class UserController {
@@ -61,10 +61,12 @@ export class UserController {
   @Patch(':id')
   @UseGuards(JwtGuard, RolesGuard)
   @Roles(UserRole.cdo)
-  async updateUserInfo(
+  async cdoUpdateUserAccount(
+    @Req() req: IRequestWithUser,
     @Param('id', ParseIntPipe) id: number,
-    @Body() dto: UpdateUserDto,
+    @Body() dto: CdoUpdateUserDto,
   ) {
-    return await this.userService.updateUserInfo(id, dto);
+    const currentUserId = req.user['sub'];
+    return await this.userService.cdoUpdateUserAccount(currentUserId, id, dto);
   }
 }

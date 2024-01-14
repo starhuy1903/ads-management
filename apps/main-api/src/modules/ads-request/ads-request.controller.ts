@@ -37,6 +37,8 @@ export class AdsRequestController {
   constructor(private readonly adsRequestService: AdsRequestService) {}
 
   @Post()
+  @UseGuards(JwtGuard, RolesGuard)
+  @Roles(UserRole.cdo, UserRole.district_officer, UserRole.ward_officer)
   async create(
     @Body() createAdsRequestDto: CreateAdsRequestDto,
     @Res() res: CustomResponse,
@@ -58,6 +60,8 @@ export class AdsRequestController {
   }
 
   @Post('update-panel')
+  @UseGuards(JwtGuard, RolesGuard)
+  @Roles(UserRole.cdo, UserRole.district_officer, UserRole.ward_officer)
   @UseInterceptors(FilesInterceptor('images', 2))
   async createAdsRequestUpdatePanel(
     @Body() createPanelDto: CreateAdsRequestUpdatePanelDto,
@@ -88,6 +92,8 @@ export class AdsRequestController {
   }
 
   @Post('update-location')
+  @UseGuards(JwtGuard, RolesGuard)
+  @Roles(UserRole.cdo, UserRole.district_officer, UserRole.ward_officer)
   @UseInterceptors(FilesInterceptor('images', 2))
   async createAdsRequestUpdateLocation(
     @Body() createPanelDto: CreateAdsRequestUpdateLocationDto,
@@ -142,7 +148,7 @@ export class AdsRequestController {
 
   @Get(':id')
   @UseGuards(JwtGuard, RolesGuard)
-  @Roles(UserRole.cdo)
+  @Roles(UserRole.cdo, UserRole.district_officer, UserRole.ward_officer)
   async findOne(@Param('id') id: string, @Res() res: CustomResponse) {
     try {
       const adsRequest = await this.adsRequestService.findOne(+id);
@@ -156,6 +162,8 @@ export class AdsRequestController {
   }
 
   @Patch('/:id/approve')
+  @UseGuards(JwtGuard, RolesGuard)
+  @Roles(UserRole.cdo)
   async approveRequest(@Param('id') id: string, @Res() res: CustomResponse) {
     try {
       const result = await this.adsRequestService.approveRequest(+id);
@@ -173,6 +181,8 @@ export class AdsRequestController {
   }
 
   @Patch('/:id/reject')
+  @UseGuards(JwtGuard, RolesGuard)
+  @Roles(UserRole.cdo)
   async rejectRequest(@Param('id') id: string, @Res() res: CustomResponse) {
     try {
       const result = await this.adsRequestService.rejectRequest(+id);
@@ -191,7 +201,7 @@ export class AdsRequestController {
 
   @Patch(':id')
   @UseGuards(JwtGuard, RolesGuard)
-  @Roles(UserRole.cdo)
+  @Roles(UserRole.cdo, UserRole.district_officer, UserRole.ward_officer)
   async update(
     @Param('id') id: string,
     @Body() updateAdsRequestDto: UpdateAdsRequestDto,
@@ -215,6 +225,8 @@ export class AdsRequestController {
   }
 
   @Delete(':id')
+  @UseGuards(JwtGuard, RolesGuard)
+  @Roles(UserRole.cdo)
   async remove(@Param('id') id: string, @Res() res: CustomResponse) {
     try {
       await this.adsRequestService.remove(+id);
