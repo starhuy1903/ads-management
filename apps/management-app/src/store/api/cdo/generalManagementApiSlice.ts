@@ -16,8 +16,8 @@ import {
   Ward,
   WardDto,
 } from '@/types/cdoManagement';
-import { apiSlice } from './baseApiSlice';
-import { getOnMutationFunction } from './helper';
+import { apiSlice } from '../baseApiSlice';
+import { getOnMutationFunction } from '../helper';
 
 export const generalManagementApiSlice = apiSlice.injectEndpoints({
   endpoints: (build) => ({

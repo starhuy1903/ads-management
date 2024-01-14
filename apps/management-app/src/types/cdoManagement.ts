@@ -222,7 +222,7 @@ export type LocationDto = {
   fullAddress: string;
   typeId: number;
   adsTypeId: number;
-  image?: Array<File>;
+  images?: Array<File>;
   imageUrls?: Array<string>;
   status: LocationStatus;
 };
@@ -232,7 +232,7 @@ export type PanelDto = {
   width: number;
   height: number;
   locationId: number;
-  image?: Array<File>;
+  images?: Array<File>;
   createContractDate: string;
   expiredContractDate: string;
   companyEmail: string;
@@ -267,4 +267,54 @@ export type PanelListQueryOptions = IPanelListViewOptions & {
   limit?: number;
   districts?: Array<number>;
   wards?: Array<number>;
+};
+
+export enum AccountRole {
+  DISTRICT_OFFICER = 'district_officer',
+  WARD_OFFICER = 'ward_officer',
+  CDO = 'cdo',
+}
+
+export type Account = {
+  id: number;
+  email: string;
+  firstName: string;
+  lastName: string;
+  phoneNumber?: string;
+  dob?: string;
+  role: AccountRole;
+  ward?: Ward;
+  district?: District;
+};
+
+export type AccountDto = {
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+  dob?: string;
+  phoneNumber?: string;
+  role: AccountRole;
+  wardId?: number;
+  districtId?: number;
+};
+
+export type UpdateAccountDto = {
+  email: string;
+  firstName: string;
+  lastName: string;
+  dob?: string;
+  phoneNumber?: string;
+  role: AccountRole;
+  wardId?: number;
+  districtId?: number;
+}
+
+export type IAccountListViewOptions = {
+  role?: AccountRole;
+};
+
+export type AccountListQueryOptions = IAccountListViewOptions & {
+  page?: number;
+  limit?: number;
 };

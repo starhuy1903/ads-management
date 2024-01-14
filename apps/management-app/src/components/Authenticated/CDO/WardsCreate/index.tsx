@@ -13,7 +13,7 @@ import {
   useCreateWardMutation,
   useGetDistrictsQuery,
   useLazyGetDistrictsQuery,
-} from '@/store/api/generalManagementApiSlice';
+} from '@/store/api/cdo/generalManagementApiSlice';
 import { showModal } from '@/store/slice/modal';
 import FormInputSkeleton from '../FormInputSkeleton';
 import StaticActionBar from '../StaticActionBar';

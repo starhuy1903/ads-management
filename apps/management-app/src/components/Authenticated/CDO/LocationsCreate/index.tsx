@@ -20,13 +20,13 @@ import UploadImageCard from '@/components/Unauthenticated/Citizen/CitizenReport/
 import { INITIAL_MAP_CENTER } from '@/constants/app';
 import { ModalKey } from '@/constants/modal';
 import { ImageFileConfig } from '@/constants/validation';
-import { useCreateLocationMutation } from '@/store/api/adsManagementApiSlice';
+import { useCreateLocationMutation } from '@/store/api/cdo/adsManagementApiSlice';
 import {
   useLazyGetAdsTypesQuery,
   useLazyGetDistrictsQuery,
   useLazyGetLocationTypesQuery,
   useLazyGetWardsQuery,
-} from '@/store/api/generalManagementApiSlice';
+} from '@/store/api/cdo/generalManagementApiSlice';
 import { showModal } from '@/store/slice/modal';
 import { LocationStatus } from '@/types/cdoManagement';
 import FormInputSkeleton from '../FormInputSkeleton';

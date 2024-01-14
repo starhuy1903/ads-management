@@ -12,13 +12,13 @@ import { ModalKey } from '@/constants/modal';
 import {
   useLazyGetLocationByIdQuery,
   useLazyGetPanelByIdQuery,
-} from '@/store/api/adsManagementApiSlice';
+} from '@/store/api/cdo/adsManagementApiSlice';
 import { isApiErrorResponse } from '@/store/api/helper';
 import {
   useApproveRequestMutation,
   useGetModificationRequestByIdQuery,
   useRejectRequestMutation,
-} from '@/store/api/requestManagementApiSlice';
+} from '@/store/api/cdo/requestManagementApiSlice';
 import { showModal } from '@/store/slice/modal';
 import { displayTimestamp } from '@/utils/format';
 import { showError } from '@/utils/toast';
