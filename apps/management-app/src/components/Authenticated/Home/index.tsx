@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from '@/store';
 import Maps from '@/components/Common/Maps';
 import ActionBar from '@/components/Common/Maps/ActionBar';
 import SidebarContainer from '@/components/Common/Sidebar';
+import { ModalKey } from '@/constants/modal';
 import { SidebarKey } from '@/constants/sidebar';
 import { useGetLocationsQuery } from '@/store/api/officer/locationApiSlice';
 import { useGetReportsQuery } from '@/store/api/officer/reportApiSlice';
@@ -12,9 +13,14 @@ import {
   setIsShowingPlannedLocation,
   setIsShowingViolatedReport,
 } from '@/store/slice/mapsSlice';
+import { showModal } from '@/store/slice/modal';
 import { showSidebar } from '@/store/slice/sidebar';
 import { checkRole } from '@/store/slice/userSlice';
 import { AdLocation } from '@/types/location';
+import { CreatedPointReport, CreatedReport } from '@/types/report';
+
+const isPointReport = (report: CreatedReport): report is CreatedPointReport =>
+  report.targetType === 'Point';
 
 export default function Home() {
   const dispatch = useAppDispatch();
@@ -44,7 +50,12 @@ export default function Home() {
     );
   const { data: vioReports, isLoading: fetchingViolatedReport } =
     useGetReportsQuery(
-      {},
+      {
+        districts: isDistrictOfficer
+          ? profile?.district?.id.toString()
+          : undefined,
+        wards: isWardOfficer ? [profile?.ward?.id as number] : undefined,
+      },
       {
         skip: false,
         refetchOnMountOrArgChange: true,
@@ -61,6 +72,11 @@ export default function Home() {
     [vioReports?.data],
   );
 
+  const vioPointReports = useMemo(
+    () => vioReports?.data.filter((report) => report.targetType === 'Point'),
+    [vioReports?.data],
+  );
+
   const handleViewLocationDetail = useCallback(
     (loc: AdLocation) => {
       ref.current?.clearMarker();
@@ -68,7 +84,7 @@ export default function Home() {
         showSidebar(SidebarKey.AD_DETAIL, {
           location: loc,
           vioLocationReports: vioLocationReports?.filter(
-            (report) => report.location?.id === loc.id,
+            (report) => report.locationId === loc.id,
           ),
           vioPanelReports,
         }),
@@ -91,11 +107,48 @@ export default function Home() {
     [dispatch],
   );
 
+  const renderViolatedPoint = () => {
+    if (!vioPointReports) {
+      return null;
+    }
+
+    return vioPointReports.map((report) => {
+      if (isPointReport(report))
+        return (
+          <Marker
+            key={report.id}
+            longitude={report.long}
+            latitude={report.lat}
+            anchor="center"
+          >
+            <Avatar
+              sx={{
+                bgcolor: 'red',
+                width: 20,
+                height: 20,
+                fontSize: '10px',
+                border: 'none',
+              }}
+              children=""
+              onClick={(e) => {
+                e.stopPropagation();
+                dispatch(
+                  showModal(ModalKey.REPORT_DETAIL, { reports: [report] }),
+                );
+              }}
+            />
+          </Marker>
+        );
+
+      return null;
+    });
+  };
+
   const renderLocationMarkers = () =>
     adLocationData?.data.map((loc) => {
       let bgColor;
       const isViolatedLocation = vioLocationReports?.find(
-        (report) => report.location?.id === loc.id,
+        (report) => report.locationId === loc.id,
       );
       const isSelected = selectedLocation?.id === loc.id;
 
@@ -161,7 +214,7 @@ export default function Home() {
             padding={1}
           >
             {renderLocationMarkers()}
-
+            {isShowingViolatedReport && renderViolatedPoint()}
             <ActionBar
               isShowingPlannedLocation={isShowingPlannedLocation}
               isShowingViolatedReport={isShowingViolatedReport}
