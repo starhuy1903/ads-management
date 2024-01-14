@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  ads-management-postgres-db:
+    image: postgres:alpine
+    environment:
+      POSTGRES_DB: ads-management
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+    ports:
+      - '5432:5432'
+    volumes:
+      - ./sql-script/ads_manangement_db.sql:/docker-entrypoint-initdb.d/init.sql
