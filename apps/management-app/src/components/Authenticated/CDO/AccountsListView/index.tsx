@@ -395,6 +395,9 @@ const AccountsListView = () => {
             pageSize: model.pageSize.toString(),
           });
         }}
+        onRowDoubleClick={(params: GridRowParams) => {
+          navigate('/accounts/' + params.row.id);
+        }}
       />
     </StaticActionBar>
   );

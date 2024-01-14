@@ -8,6 +8,7 @@ import {
   GridColDef,
   GridRowsProp,
   GridRenderCellParams,
+  GridRowParams,
 } from '@mui/x-data-grid';
 import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
@@ -190,6 +191,9 @@ const DistrictsListView = () => {
             page: (model.page + 1).toString(),
             pageSize: model.pageSize.toString(),
           });
+        }}
+        onRowDoubleClick={(params: GridRowParams) => {
+          navigate('/districts/' + params.row.id);
         }}
       />
     </StaticActionBar>

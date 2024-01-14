@@ -8,9 +8,10 @@ import {
   GridColDef,
   GridRowsProp,
   GridRenderCellParams,
+  GridRowParams,
 } from '@mui/x-data-grid';
 import { useCallback, useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAppDispatch } from '@/store';
 import { ModalKey } from '@/constants/modal';
 import {
@@ -32,6 +33,7 @@ import StaticActionBar from '../StaticActionBar';
 const ModificationRequestsListView = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const [viewOptions, setViewOptions] = useState<IAdsRequestViewOptions>({
     districts: [],
@@ -327,6 +329,9 @@ const ModificationRequestsListView = () => {
             page: (model.page + 1).toString(),
             pageSize: model.pageSize.toString(),
           });
+        }}
+        onRowDoubleClick={(params: GridRowParams) => {
+          navigate('/modification-requests/' + params.row.id);
         }}
       />
     </StaticActionBar>
