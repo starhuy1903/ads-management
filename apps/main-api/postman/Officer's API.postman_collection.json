@@ -2,6 +2,7 @@
 	"info": {
 		"_postman_id": "17ef4a48-87da-4fba-bdd4-bde49a5cb124",
 		"name": "Officer's API",
+		"description": "This is an api documentation for Ward and District Officer\n\nNote: to run this api, you must obtain the access_token_key by login as Ward or District Officer",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "24967219"
 	},
@@ -10,42 +11,23 @@
 			"name": "Reports",
 			"item": [
 				{
-					"name": "Create",
+					"name": "Update report",
 					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"typeId\": 1,\r\n  \"fullName\": \"John Doe\",\r\n  \"email\": \"john.doe@example.com\",\r\n  \"content\": \"This is a sample report content.\",\r\n  \"imgUrls\": [\"url1\", \"url2\"],\r\n  \"targetType\": \"Location\",\r\n  \"panelId\": 1,\r\n  \"locationId\": 5\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoiY2hpaGllbjIwMDI3MUBnbWFpbC5jb20iLCJyb2xlIjoiY2RvIiwiaWF0IjoxNzA0OTkwNDgwLCJleHAiOjE3MDQ5OTA3ODB9.r4ez1pDnU_SXEC4GGfi7eQ-xd-vm35FKXekSV6XY5sQ",
+									"type": "string"
 								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:8194/api/reports",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8194",
-							"path": [
-								"api",
-								"reports"
 							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Update",
-					"request": {
+						},
 						"method": "PATCH",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"resolvedContent\": \"Nộp đơn tại XYZT\",\r\n    \"status\": \"123\"\r\n}",
+							"raw": "{\r\n    \"resolvedContent\": \"Nộp đơn tại XYZT\",\r\n    \"status\": \"DONE\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -64,13 +46,93 @@
 								"reports",
 								"27"
 							]
-						}
+						},
+						"description": "This api used by officer to update a specified report by its id\n\n| Attribute | Type | Description |\n| --- | --- | --- |\n| `status` | enums(DONE, NEW, PENDING) | status of report |\n| `resolvedContent` | string | the resolved content of report |"
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Update report",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"resolvedContent\": \"Nộp đơn tại XYZT\",\r\n    \"status\": \"DONE\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8194/api/reports/27",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8194",
+									"path": [
+										"api",
+										"reports",
+										"27"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "475"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"1db-KhueOd/BchTXC28vhToe3oLwyLg\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 14 Jan 2024 13:05:04 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"data\": {\n        \"id\": 27,\n        \"typeId\": 1,\n        \"fullName\": \"Thong\",\n        \"email\": \"9a3.12.khai@gmail.com\",\n        \"content\": \"<p>Biển quảng cáo này quá xấu lần 4</p>\",\n        \"imageUrls\": [],\n        \"targetType\": \"Location\",\n        \"locationId\": 5,\n        \"panelId\": null,\n        \"status\": \"DONE\",\n        \"resolvedContent\": \"Nộp đơn tại XYZT\",\n        \"createdAt\": \"2024-01-08T10:04:10.103Z\",\n        \"updatedAt\": \"2024-01-14T13:05:03.603Z\",\n        \"userUuid\": \"2412341234-asfasdfasdf\",\n        \"lat\": null,\n        \"long\": null,\n        \"districtId\": null,\n        \"wardId\": null\n    },\n    \"message\": \"Success\"\n}"
+						}
+					]
 				},
 				{
-					"name": "Get",
+					"name": "Get report",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoiY2hpaGllbjIwMDI3MUBnbWFpbC5jb20iLCJyb2xlIjoiY2RvIiwiaWF0IjoxNzA0OTkwNDgwLCJleHAiOjE3MDQ5OTA3ODB9.r4ez1pDnU_SXEC4GGfi7eQ-xd-vm35FKXekSV6XY5sQ",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -85,19 +147,80 @@
 								"reports",
 								"15"
 							]
-						}
+						},
+						"description": "This api returns detail of report by id"
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Get report",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8194/api/reports/15",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8194",
+									"path": [
+										"api",
+										"reports",
+										"15"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "1093"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"445-35b+dTbyfwcdsftJnVzGgR9XBcg\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 14 Jan 2024 13:06:36 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"data\": {\n        \"id\": 15,\n        \"typeId\": 1,\n        \"fullName\": \"Thong\",\n        \"email\": \"adfas@gmail.com\",\n        \"content\": \"<p>Biển quảng cáo này quá xấu lần 4</p>\",\n        \"imageUrls\": [],\n        \"targetType\": \"Location\",\n        \"locationId\": 7,\n        \"panelId\": null,\n        \"status\": \"NEW\",\n        \"resolvedContent\": \"\",\n        \"createdAt\": \"2024-01-07T13:59:14.621Z\",\n        \"updatedAt\": \"2024-01-07T13:59:14.621Z\",\n        \"userUuid\": \"2412341234-asfasdfasdf\",\n        \"lat\": null,\n        \"long\": null,\n        \"districtId\": null,\n        \"wardId\": null,\n        \"district\": null,\n        \"ward\": null,\n        \"reportType\": {\n            \"id\": 1,\n            \"name\": \"Tố giác sai phạm\"\n        },\n        \"location\": {\n            \"id\": 7,\n            \"lat\": \"5\",\n            \"long\": \"20\",\n            \"isPlanning\": true,\n            \"districtId\": 2,\n            \"wardId\": 2,\n            \"fullAddress\": \"227 Nguyen Van Cu\",\n            \"typeId\": 1,\n            \"adTypeId\": 1,\n            \"imageUrls\": [],\n            \"createdAt\": \"2023-12-30T06:38:41.878Z\",\n            \"updatedAt\": \"2023-12-30T06:38:41.878Z\",\n            \"name\": \"Location 1\",\n            \"belongLocationId\": null,\n            \"status\": \"APPROVED\",\n            \"district\": {\n                \"id\": 2,\n                \"name\": \"Huyện Cần Giờ\"\n            },\n            \"ward\": {\n                \"id\": 2,\n                \"name\": \"Phường Bình Trưng Tây\",\n                \"districtId\": 1\n            },\n            \"type\": {\n                \"id\": 1,\n                \"name\": \"Đất công/Công viên/Hành lang an toàn giao thông\"\n            },\n            \"adType\": {\n                \"id\": 1,\n                \"name\": \"Cổ động chính trị\"\n            }\n        },\n        \"panel\": null\n    },\n    \"message\": \"Success\"\n}"
+						}
+					]
 				},
 				{
-					"name": "List",
+					"name": "List reports",
 					"request": {
 						"auth": {
 							"type": "bearer",
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoiY2hpaGllbjIwMDI3MUBnbWFpbC5jb20iLCJyb2xlIjoiY2RvIiwiaWF0IjoxNzA0ODc4NTc0LCJleHAiOjE3MDQ4Nzg4NzR9.HVg-Bo5HMpoUD254iCqWoIknvHQkLUILnIwcTYjx0Ps",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoiY2hpaGllbjIwMDI3MUBnbWFpbC5jb20iLCJyb2xlIjoiY2RvIiwiaWF0IjoxNzA1MjM3NjM5LCJleHAiOjE3MDUyMzc5Mzl9.5zP3IFuDvL0ugTRhV7d1EKXBJyncDE4wLnrE5qsVMII",
 									"type": "string"
 								}
 							]
@@ -105,7 +228,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8194/api/reports?districts=2&typeId=1&page=1&take=10",
+							"raw": "http://localhost:8194/api/reports?page=1&take=10",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -123,16 +246,18 @@
 								},
 								{
 									"key": "districts",
-									"value": "2"
+									"value": "2",
+									"disabled": true
 								},
 								{
 									"key": "targetType",
-									"value": "Location",
+									"value": "Point",
 									"disabled": true
 								},
 								{
 									"key": "typeId",
-									"value": "1"
+									"value": "1",
+									"disabled": true
 								},
 								{
 									"key": "page",
@@ -143,9 +268,99 @@
 									"value": "10"
 								}
 							]
-						}
+						},
+						"description": "| **Attribute** | **Type** | **Desscription** |\n| --- | --- | --- |\n| `page` | number (default = 1) | Specifies the page number of the results to retrieve |\n| `take` | number (default = 10) | Determines the number of items to retrieve per page |\n| `typeId` | number | Represents a numerical identifier, used for filtering or categorizing data |\n| `targetType` | enum (Location, Panel) | Specifies the type of target entities to be included in the results |\n| `status` | enums(DONE, NEW, PENDING) | Represents the status of the items to be retrieved |\n| `wards` | string | Represents a string value, related to geographical, can contains many value |\n| `districts` | string | Represents a string value, related to geographical at the district level. |"
 					},
-					"response": []
+					"response": [
+						{
+							"name": "List reports",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8194/api/reports?page=1&take=10",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8194",
+									"path": [
+										"api",
+										"reports"
+									],
+									"query": [
+										{
+											"key": "wards",
+											"value": "1,36",
+											"disabled": true
+										},
+										{
+											"key": "districts",
+											"value": "2",
+											"disabled": true
+										},
+										{
+											"key": "targetType",
+											"value": "Point",
+											"disabled": true
+										},
+										{
+											"key": "typeId",
+											"value": "1",
+											"disabled": true
+										},
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "take",
+											"value": "10"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "12819"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"3213-d4ENxnnwTWLBDwCvkoMugodcR74\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 14 Jan 2024 13:07:36 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": [\n        {\n            \"id\": 97,\n            \"typeId\": 3,\n            \"fullName\": \"Huy Nguyen\",\n            \"email\": \"huy@gmail.com\",\n            \"content\": \"<p>dsfdsfsdfsdfsdf</p>\",\n            \"imageUrls\": [\n                \"https://firebasestorage.googleapis.com/v0/b/ads-management-a274a.appspot.com/o/report%2F1705236459093-React.png?alt=media\",\n                \"https://firebasestorage.googleapis.com/v0/b/ads-management-a274a.appspot.com/o/report%2F1705236459095-Redux-Toolkit.png?alt=media\"\n            ],\n            \"targetType\": \"Panel\",\n            \"locationId\": null,\n            \"panelId\": 7,\n            \"status\": \"NEW\",\n            \"resolvedContent\": \"\",\n            \"createdAt\": \"2024-01-14T12:47:42.222Z\",\n            \"updatedAt\": \"2024-01-14T12:47:42.222Z\",\n            \"userUuid\": \"b803747e-a96a-42f9-8412-11b90d95fff9\",\n            \"lat\": null,\n            \"long\": null,\n            \"districtId\": null,\n            \"wardId\": null,\n            \"district\": null,\n            \"ward\": null,\n            \"reportType\": {\n                \"id\": 3,\n                \"name\": \"Đóng góp ý kiến\"\n            },\n            \"location\": null,\n            \"panel\": {\n                \"id\": 7,\n                \"typeId\": 1,\n                \"width\": \"1\",\n                \"height\": \"1.5\",\n                \"locationId\": 3,\n                \"imageUrls\": [\n                    \"https://firebasestorage.googleapis.com/v0/b/ads-management-a274a.appspot.com/o/report%2F1703918521679-shopee.png?alt=media\"\n                ],\n                \"createContractDate\": \"2023-12-23T00:00:00.000Z\",\n                \"expiredContractDate\": \"2024-12-23T00:00:00.000Z\",\n                \"companyEmail\": \"example@example.com\",\n                \"companyNumber\": \"123456789\",\n                \"createdAt\": \"2023-12-30T06:42:03.640Z\",\n                \"updatedAt\": \"2023-12-30T06:42:03.640Z\",\n                \"status\": \"DRAFT\",\n                \"belongPanelId\": null,\n                \"type\": {\n                    \"id\": 1,\n                    \"name\": \"Trụ bảng hiflex\"\n                },\n                \"location\": {\n                    \"id\": 3,\n                    \"lat\": \"10.8361919\",\n                    \"long\": \"106.6564331\",\n                    \"isPlanning\": false,\n                    \"districtId\": 1,\n                    \"wardId\": 1,\n                    \"fullAddress\": \"227 Nguyen Van Cu\",\n                    \"typeId\": 1,\n                    \"adTypeId\": 1,\n                    \"imageUrls\": [],\n                    \"createdAt\": \"2023-12-30T06:38:34.119Z\",\n                    \"updatedAt\": \"2024-01-09T16:54:18.087Z\",\n                    \"name\": \"Chợ Hạnh Thông Tây\",\n                    \"belongLocationId\": null,\n                    \"status\": \"APPROVED\",\n                    \"district\": {\n                        \"id\": 1,\n                        \"name\": \"Thành Phố Thủ Đức\"\n                    },\n                    \"ward\": {\n                        \"id\": 1,\n                        \"name\": \"Phường An Khánh\",\n                        \"districtId\": 1\n                    },\n                    \"type\": {\n                        \"id\": 1,\n                        \"name\": \"Đất công/Công viên/Hành lang an toàn giao thông\"\n                    },\n                    \"adType\": {\n                        \"id\": 1,\n                        \"name\": \"Cổ động chính trị\"\n                    }\n                }\n            }\n        },\n        {\n            \"id\": 93,\n            \"typeId\": 1,\n            \"fullName\": \"Thong\",\n            \"email\": \"adfas@gmail.com\",\n            \"content\": \"<p>Biển quảng cáo này quá xấu lần 4</p>\",\n            \"imageUrls\": [\n                \"https://firebasestorage.googleapis.com/v0/b/ads-management-a274a.appspot.com/o/report%2F1705232889566-pg-mkt-img-1.jpeg?alt=media\",\n                \"https://firebasestorage.googleapis.com/v0/b/ads-management-a274a.appspot.com/o/report%2F1705232889575-pg-mkt-img-2.jpeg?alt=media\"\n            ],\n            \"targetType\": \"Location\",\n            \"locationId\": 5,\n            \"panelId\": null,\n            \"status\": \"PENDING\",\n            \"resolvedContent\": \"abc\",\n            \"createdAt\": \"2024-01-14T11:48:12.841Z\",\n            \"updatedAt\": \"2024-01-14T12:05:41.274Z\",\n            \"userUuid\": \"2412341234-asfasdfasdf\",\n            \"lat\": null,\n            \"long\": null,\n            \"districtId\": null,\n            \"wardId\": null,\n            \"district\": null,\n            \"ward\": null,\n            \"reportType\": {\n                \"id\": 1,\n                \"name\": \"Tố giác sai phạm\"\n            },\n            \"location\": {\n                \"id\": 5,\n                \"lat\": \"10.8499775\",\n                \"long\": \"106.6616569\",\n                \"isPlanning\": true,\n                \"districtId\": 1,\n                \"wardId\": 1,\n                \"fullAddress\": \"227 Nguyen Van Cu\",\n                \"typeId\": 1,\n                \"adTypeId\": 1,\n                \"imageUrls\": [],\n                \"createdAt\": \"2023-12-30T06:38:36.934Z\",\n                \"updatedAt\": \"2024-01-10T15:33:36.528Z\",\n                \"name\": \"Chợ Xóm Mới\",\n                \"belongLocationId\": null,\n                \"status\": \"APPROVED\",\n                \"district\": {\n                    \"id\": 1,\n                    \"name\": \"Thành Phố Thủ Đức\"\n                },\n                \"ward\": {\n                    \"id\": 1,\n                    \"name\": \"Phường An Khánh\",\n                    \"districtId\": 1\n                },\n                \"type\": {\n                    \"id\": 1,\n                    \"name\": \"Đất công/Công viên/Hành lang an toàn giao thông\"\n                },\n                \"adType\": {\n                    \"id\": 1,\n                    \"name\": \"Cổ động chính trị\"\n                }\n            },\n            \"panel\": null\n        },\n        {\n            \"id\": 92,\n            \"typeId\": 1,\n            \"fullName\": \"Thong\",\n            \"email\": \"adfas@gmail.com\",\n            \"content\": \"<p>Biển quảng cáo này quá xấu lần 4</p>\",\n            \"imageUrls\": [],\n            \"targetType\": \"Location\",\n            \"locationId\": 5,\n            \"panelId\": null,\n            \"status\": \"DONE\",\n            \"resolvedContent\": \"abcde\",\n            \"createdAt\": \"2024-01-14T11:45:40.103Z\",\n            \"updatedAt\": \"2024-01-14T12:16:28.725Z\",\n            \"userUuid\": \"2412341234-asfasdfasdf\",\n            \"lat\": null,\n            \"long\": null,\n            \"districtId\": null,\n            \"wardId\": null,\n            \"district\": null,\n            \"ward\": null,\n            \"reportType\": {\n                \"id\": 1,\n                \"name\": \"Tố giác sai phạm\"\n            },\n            \"location\": {\n                \"id\": 5,\n                \"lat\": \"10.8499775\",\n                \"long\": \"106.6616569\",\n                \"isPlanning\": true,\n                \"districtId\": 1,\n                \"wardId\": 1,\n                \"fullAddress\": \"227 Nguyen Van Cu\",\n                \"typeId\": 1,\n                \"adTypeId\": 1,\n                \"imageUrls\": [],\n                \"createdAt\": \"2023-12-30T06:38:36.934Z\",\n                \"updatedAt\": \"2024-01-10T15:33:36.528Z\",\n                \"name\": \"Chợ Xóm Mới\",\n                \"belongLocationId\": null,\n                \"status\": \"APPROVED\",\n                \"district\": {\n                    \"id\": 1,\n                    \"name\": \"Thành Phố Thủ Đức\"\n                },\n                \"ward\": {\n                    \"id\": 1,\n                    \"name\": \"Phường An Khánh\",\n                    \"districtId\": 1\n                },\n                \"type\": {\n                    \"id\": 1,\n                    \"name\": \"Đất công/Công viên/Hành lang an toàn giao thông\"\n                },\n                \"adType\": {\n                    \"id\": 1,\n                    \"name\": \"Cổ động chính trị\"\n                }\n            },\n            \"panel\": null\n        },\n        {\n            \"id\": 90,\n            \"typeId\": 1,\n            \"fullName\": \"Tri\",\n            \"email\": \"minhtri.do2410@gmail.com\",\n            \"content\": \"<p>Đặt bảng ở đ&acirc;y l&agrave; vi phạm ti&ecirc;u chuẩn cộng đồng</p>\",\n            \"imageUrls\": [],\n            \"targetType\": \"Location\",\n            \"locationId\": 23,\n            \"panelId\": null,\n            \"status\": \"NEW\",\n            \"resolvedContent\": \"\",\n            \"createdAt\": \"2024-01-14T11:11:13.777Z\",\n            \"updatedAt\": \"2024-01-14T11:11:13.777Z\",\n            \"userUuid\": \"5e860b99-5641-4d18-bb38-2cd025c5eebb\",\n            \"lat\": null,\n            \"long\": null,\n            \"districtId\": null,\n            \"wardId\": null,\n            \"district\": null,\n            \"ward\": null,\n            \"reportType\": {\n                \"id\": 1,\n                \"name\": \"Tố giác sai phạm\"\n            },\n            \"location\": {\n                \"id\": 23,\n                \"lat\": \"10.747446\",\n                \"long\": \"106.64311\",\n                \"isPlanning\": false,\n                \"districtId\": 18,\n                \"wardId\": 263,\n                \"fullAddress\": \"247A Phan Văn Khỏe\",\n                \"typeId\": 5,\n                \"adTypeId\": 2,\n                \"imageUrls\": [\n                    \"https://firebasestorage.googleapis.com/v0/b/ads-management-a274a.appspot.com/o/report%2F1704892290845-3.jpg?alt=media\"\n                ],\n                \"createdAt\": \"2024-01-10T13:11:32.742Z\",\n                \"updatedAt\": \"2024-01-10T13:11:32.742Z\",\n                \"name\": \"Trạm xăng dầu SAIGON PETRO số 9\",\n                \"belongLocationId\": null,\n                \"status\": \"APPROVED\",\n                \"district\": {\n                    \"id\": 18,\n                    \"name\": \"Quận 6\"\n                },\n                \"ward\": {\n                    \"id\": 263,\n                    \"name\": \"Phường 5\",\n                    \"districtId\": 18\n                },\n                \"type\": {\n                    \"id\": 5,\n                    \"name\": \"Cây xăng\"\n                },\n                \"adType\": {\n                    \"id\": 2,\n                    \"name\": \"Quảng cáo thương mại\"\n                }\n            },\n            \"panel\": null\n        },\n        {\n            \"id\": 89,\n            \"typeId\": 1,\n            \"fullName\": \"Minh Tri\",\n            \"email\": \"mitidevus1@gmail.com\",\n            \"content\": \"<p>Bảng n&agrave;y xấu qu&aacute;</p>\",\n            \"imageUrls\": [],\n            \"targetType\": \"Location\",\n            \"locationId\": 23,\n            \"panelId\": null,\n            \"status\": \"NEW\",\n            \"resolvedContent\": \"\",\n            \"createdAt\": \"2024-01-14T10:55:53.598Z\",\n            \"updatedAt\": \"2024-01-14T10:55:53.598Z\",\n            \"userUuid\": \"5e860b99-5641-4d18-bb38-2cd025c5eebb\",\n            \"lat\": null,\n            \"long\": null,\n            \"districtId\": null,\n            \"wardId\": null,\n            \"district\": null,\n            \"ward\": null,\n            \"reportType\": {\n                \"id\": 1,\n                \"name\": \"Tố giác sai phạm\"\n            },\n            \"location\": {\n                \"id\": 23,\n                \"lat\": \"10.747446\",\n                \"long\": \"106.64311\",\n                \"isPlanning\": false,\n                \"districtId\": 18,\n                \"wardId\": 263,\n                \"fullAddress\": \"247A Phan Văn Khỏe\",\n                \"typeId\": 5,\n                \"adTypeId\": 2,\n                \"imageUrls\": [\n                    \"https://firebasestorage.googleapis.com/v0/b/ads-management-a274a.appspot.com/o/report%2F1704892290845-3.jpg?alt=media\"\n                ],\n                \"createdAt\": \"2024-01-10T13:11:32.742Z\",\n                \"updatedAt\": \"2024-01-10T13:11:32.742Z\",\n                \"name\": \"Trạm xăng dầu SAIGON PETRO số 9\",\n                \"belongLocationId\": null,\n                \"status\": \"APPROVED\",\n                \"district\": {\n                    \"id\": 18,\n                    \"name\": \"Quận 6\"\n                },\n                \"ward\": {\n                    \"id\": 263,\n                    \"name\": \"Phường 5\",\n                    \"districtId\": 18\n                },\n                \"type\": {\n                    \"id\": 5,\n                    \"name\": \"Cây xăng\"\n                },\n                \"adType\": {\n                    \"id\": 2,\n                    \"name\": \"Quảng cáo thương mại\"\n                }\n            },\n            \"panel\": null\n        },\n        {\n            \"id\": 88,\n            \"typeId\": 1,\n            \"fullName\": \"Tri Do\",\n            \"email\": \"mitidevus@gmail.com\",\n            \"content\": \"<p>Đặt quảng c&aacute;o ở đ&acirc;y kh&ocirc;ng hợp lệ</p>\",\n            \"imageUrls\": [],\n            \"targetType\": \"Location\",\n            \"locationId\": 23,\n            \"panelId\": null,\n            \"status\": \"NEW\",\n            \"resolvedContent\": \"\",\n            \"createdAt\": \"2024-01-14T10:49:22.291Z\",\n            \"updatedAt\": \"2024-01-14T10:49:22.291Z\",\n            \"userUuid\": \"5e860b99-5641-4d18-bb38-2cd025c5eebb\",\n            \"lat\": null,\n            \"long\": null,\n            \"districtId\": null,\n            \"wardId\": null,\n            \"district\": null,\n            \"ward\": null,\n            \"reportType\": {\n                \"id\": 1,\n                \"name\": \"Tố giác sai phạm\"\n            },\n            \"location\": {\n                \"id\": 23,\n                \"lat\": \"10.747446\",\n                \"long\": \"106.64311\",\n                \"isPlanning\": false,\n                \"districtId\": 18,\n                \"wardId\": 263,\n                \"fullAddress\": \"247A Phan Văn Khỏe\",\n                \"typeId\": 5,\n                \"adTypeId\": 2,\n                \"imageUrls\": [\n                    \"https://firebasestorage.googleapis.com/v0/b/ads-management-a274a.appspot.com/o/report%2F1704892290845-3.jpg?alt=media\"\n                ],\n                \"createdAt\": \"2024-01-10T13:11:32.742Z\",\n                \"updatedAt\": \"2024-01-10T13:11:32.742Z\",\n                \"name\": \"Trạm xăng dầu SAIGON PETRO số 9\",\n                \"belongLocationId\": null,\n                \"status\": \"APPROVED\",\n                \"district\": {\n                    \"id\": 18,\n                    \"name\": \"Quận 6\"\n                },\n                \"ward\": {\n                    \"id\": 263,\n                    \"name\": \"Phường 5\",\n                    \"districtId\": 18\n                },\n                \"type\": {\n                    \"id\": 5,\n                    \"name\": \"Cây xăng\"\n                },\n                \"adType\": {\n                    \"id\": 2,\n                    \"name\": \"Quảng cáo thương mại\"\n                }\n            },\n            \"panel\": null\n        },\n        {\n            \"id\": 78,\n            \"typeId\": 1,\n            \"fullName\": \"Tri Do\",\n            \"email\": \"mitidevus@gmail.com\",\n            \"content\": \"<p>ABC123</p>\",\n            \"imageUrls\": [],\n            \"targetType\": \"Location\",\n            \"locationId\": 21,\n            \"panelId\": null,\n            \"status\": \"PENDING\",\n            \"resolvedContent\": \"We are processing\",\n            \"createdAt\": \"2024-01-14T04:59:38.415Z\",\n            \"updatedAt\": \"2024-01-14T10:36:46.336Z\",\n            \"userUuid\": \"4883fc45-7530-45af-b26d-2e289a520b64\",\n            \"lat\": null,\n            \"long\": null,\n            \"districtId\": null,\n            \"wardId\": null,\n            \"district\": null,\n            \"ward\": null,\n            \"reportType\": {\n                \"id\": 1,\n                \"name\": \"Tố giác sai phạm\"\n            },\n            \"location\": {\n                \"id\": 21,\n                \"lat\": \"10.749965\",\n                \"long\": \"106.643068\",\n                \"isPlanning\": false,\n                \"districtId\": 18,\n                \"wardId\": 262,\n                \"fullAddress\": \"188 Hậu Giang\",\n                \"typeId\": 3,\n                \"adTypeId\": 2,\n                \"imageUrls\": [\n                    \"https://firebasestorage.googleapis.com/v0/b/ads-management-a274a.appspot.com/o/report%2F1704891567567-1.jpg?alt=media\"\n                ],\n                \"createdAt\": \"2024-01-10T12:59:31.842Z\",\n                \"updatedAt\": \"2024-01-10T12:59:31.842Z\",\n                \"name\": \"Co.opmart Hậu Giang\",\n                \"belongLocationId\": null,\n                \"status\": \"APPROVED\",\n                \"district\": {\n                    \"id\": 18,\n                    \"name\": \"Quận 6\"\n                },\n                \"ward\": {\n                    \"id\": 262,\n                    \"name\": \"Phường 6\",\n                    \"districtId\": 18\n                },\n                \"type\": {\n                    \"id\": 3,\n                    \"name\": \"Trung tâm thương mại\"\n                },\n                \"adType\": {\n                    \"id\": 2,\n                    \"name\": \"Quảng cáo thương mại\"\n                }\n            },\n            \"panel\": null\n        },\n        {\n            \"id\": 76,\n            \"typeId\": 2,\n            \"fullName\": \"Huy\",\n            \"email\": \"huy@gmail.com\",\n            \"content\": \"<p><strong>T&ocirc;i muốn tạo 1 bảng quảng c&aacute;o hợp l&iacute; hơn</strong></p>\",\n            \"imageUrls\": [],\n            \"targetType\": \"Location\",\n            \"locationId\": 3,\n            \"panelId\": null,\n            \"status\": \"DONE\",\n            \"resolvedContent\": \"abc\",\n            \"createdAt\": \"2024-01-14T04:08:42.875Z\",\n            \"updatedAt\": \"2024-01-14T12:13:21.547Z\",\n            \"userUuid\": \"b803747e-a96a-42f9-8412-11b90d95fff9\",\n            \"lat\": null,\n            \"long\": null,\n            \"districtId\": null,\n            \"wardId\": null,\n            \"district\": null,\n            \"ward\": null,\n            \"reportType\": {\n                \"id\": 2,\n                \"name\": \"Đăng ký nội dung\"\n            },\n            \"location\": {\n                \"id\": 3,\n                \"lat\": \"10.8361919\",\n                \"long\": \"106.6564331\",\n                \"isPlanning\": false,\n                \"districtId\": 1,\n                \"wardId\": 1,\n                \"fullAddress\": \"227 Nguyen Van Cu\",\n                \"typeId\": 1,\n                \"adTypeId\": 1,\n                \"imageUrls\": [],\n                \"createdAt\": \"2023-12-30T06:38:34.119Z\",\n                \"updatedAt\": \"2024-01-09T16:54:18.087Z\",\n                \"name\": \"Chợ Hạnh Thông Tây\",\n                \"belongLocationId\": null,\n                \"status\": \"APPROVED\",\n                \"district\": {\n                    \"id\": 1,\n                    \"name\": \"Thành Phố Thủ Đức\"\n                },\n                \"ward\": {\n                    \"id\": 1,\n                    \"name\": \"Phường An Khánh\",\n                    \"districtId\": 1\n                },\n                \"type\": {\n                    \"id\": 1,\n                    \"name\": \"Đất công/Công viên/Hành lang an toàn giao thông\"\n                },\n                \"adType\": {\n                    \"id\": 1,\n                    \"name\": \"Cổ động chính trị\"\n                }\n            },\n            \"panel\": null\n        },\n        {\n            \"id\": 71,\n            \"typeId\": 1,\n            \"fullName\": \"Tri Do\",\n            \"email\": \"mitidevus@gmail.com\",\n            \"content\": \"<p>Haha</p>\",\n            \"imageUrls\": [],\n            \"targetType\": \"Location\",\n            \"locationId\": 1,\n            \"panelId\": null,\n            \"status\": \"DONE\",\n            \"resolvedContent\": \"Done\",\n            \"createdAt\": \"2024-01-13T14:24:15.428Z\",\n            \"updatedAt\": \"2024-01-13T14:28:32.317Z\",\n            \"userUuid\": \"61e5a59d-6fb1-4538-a9ce-377c6047628f\",\n            \"lat\": null,\n            \"long\": null,\n            \"districtId\": null,\n            \"wardId\": null,\n            \"district\": null,\n            \"ward\": null,\n            \"reportType\": {\n                \"id\": 1,\n                \"name\": \"Tố giác sai phạm\"\n            },\n            \"location\": {\n                \"id\": 1,\n                \"lat\": \"10.8483839\",\n                \"long\": \"106.6586948\",\n                \"isPlanning\": true,\n                \"districtId\": 1,\n                \"wardId\": 1,\n                \"fullAddress\": \"227 Nguyen Van Cu\",\n                \"typeId\": 1,\n                \"adTypeId\": 1,\n                \"imageUrls\": [],\n                \"createdAt\": \"2023-12-30T06:38:16.323Z\",\n                \"updatedAt\": \"2024-01-02T01:47:22.546Z\",\n                \"name\": \"Location 1\",\n                \"belongLocationId\": null,\n                \"status\": \"APPROVED\",\n                \"district\": {\n                    \"id\": 1,\n                    \"name\": \"Thành Phố Thủ Đức\"\n                },\n                \"ward\": {\n                    \"id\": 1,\n                    \"name\": \"Phường An Khánh\",\n                    \"districtId\": 1\n                },\n                \"type\": {\n                    \"id\": 1,\n                    \"name\": \"Đất công/Công viên/Hành lang an toàn giao thông\"\n                },\n                \"adType\": {\n                    \"id\": 1,\n                    \"name\": \"Cổ động chính trị\"\n                }\n            },\n            \"panel\": null\n        },\n        {\n            \"id\": 70,\n            \"typeId\": 1,\n            \"fullName\": \"Huy Nguyen\",\n            \"email\": \"huy@gmail.com\",\n            \"content\": \"<p>abc 123</p>\",\n            \"imageUrls\": [],\n            \"targetType\": \"Panel\",\n            \"locationId\": null,\n            \"panelId\": 3,\n            \"status\": \"NEW\",\n            \"resolvedContent\": \"\",\n            \"createdAt\": \"2024-01-13T14:23:12.107Z\",\n            \"updatedAt\": \"2024-01-13T14:23:12.107Z\",\n            \"userUuid\": \"b803747e-a96a-42f9-8412-11b90d95fff9\",\n            \"lat\": null,\n            \"long\": null,\n            \"districtId\": null,\n            \"wardId\": null,\n            \"district\": null,\n            \"ward\": null,\n            \"reportType\": {\n                \"id\": 1,\n                \"name\": \"Tố giác sai phạm\"\n            },\n            \"location\": null,\n            \"panel\": {\n                \"id\": 3,\n                \"typeId\": 1,\n                \"width\": \"1\",\n                \"height\": \"1.5\",\n                \"locationId\": 1,\n                \"imageUrls\": [\n                    \"https://firebasestorage.googleapis.com/v0/b/ads-management-a274a.appspot.com/o/report%2F1703918502994-shopee.png?alt=media\"\n                ],\n                \"createContractDate\": \"2023-12-23T00:00:00.000Z\",\n                \"expiredContractDate\": \"2024-12-23T00:00:00.000Z\",\n                \"companyEmail\": \"example@example.com\",\n                \"companyNumber\": \"123456789\",\n                \"createdAt\": \"2023-12-30T06:41:45.208Z\",\n                \"updatedAt\": \"2023-12-30T06:41:45.208Z\",\n                \"status\": \"APPROVED\",\n                \"belongPanelId\": null,\n                \"type\": {\n                    \"id\": 1,\n                    \"name\": \"Trụ bảng hiflex\"\n                },\n                \"location\": {\n                    \"id\": 1,\n                    \"lat\": \"10.8483839\",\n                    \"long\": \"106.6586948\",\n                    \"isPlanning\": true,\n                    \"districtId\": 1,\n                    \"wardId\": 1,\n                    \"fullAddress\": \"227 Nguyen Van Cu\",\n                    \"typeId\": 1,\n                    \"adTypeId\": 1,\n                    \"imageUrls\": [],\n                    \"createdAt\": \"2023-12-30T06:38:16.323Z\",\n                    \"updatedAt\": \"2024-01-02T01:47:22.546Z\",\n                    \"name\": \"Location 1\",\n                    \"belongLocationId\": null,\n                    \"status\": \"APPROVED\",\n                    \"district\": {\n                        \"id\": 1,\n                        \"name\": \"Thành Phố Thủ Đức\"\n                    },\n                    \"ward\": {\n                        \"id\": 1,\n                        \"name\": \"Phường An Khánh\",\n                        \"districtId\": 1\n                    },\n                    \"type\": {\n                        \"id\": 1,\n                        \"name\": \"Đất công/Công viên/Hành lang an toàn giao thông\"\n                    },\n                    \"adType\": {\n                        \"id\": 1,\n                        \"name\": \"Cổ động chính trị\"\n                    }\n                }\n            }\n        }\n    ],\n    \"totalPages\": 8,\n    \"totalCount\": 77\n}"
+						}
+					]
 				}
 			]
 		},
@@ -153,8 +368,18 @@
 			"name": "Ads Request",
 			"item": [
 				{
-					"name": "Create",
+					"name": "Create Ads Request",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoiY2hpaGllbjIwMDI3MUBnbWFpbC5jb20iLCJyb2xlIjoiY2RvIiwiaWF0IjoxNzA1MjM3NjM5LCJleHAiOjE3MDUyMzc5Mzl9.5zP3IFuDvL0ugTRhV7d1EKXBJyncDE4wLnrE5qsVMII",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
@@ -177,9 +402,78 @@
 								"api",
 								"ads-requests"
 							]
-						}
+						},
+						"description": "| Attribute | Type | Description |\n| --- | --- | --- |\n| `userId` | number | Represents a numerical identifier associated with a user. |\n| `reason` | string | Describes the reason associated with a request. |\n| `panelId` | number | Represents a numerical identifier associated with a panel. |"
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Create Ads Request",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"userId\": 2,\r\n  \"reason\": \"This is a sample ads-request reason.\",\r\n  \"panelId\": 2\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8194/api/ads-requests",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8194",
+									"path": [
+										"api",
+										"ads-requests"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "309"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"135-jyCTW34G+ycx/kdBmJVmlj5cZWk\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 14 Jan 2024 13:07:52 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"data\": {\n        \"id\": 50,\n        \"reason\": \"This is a sample ads-request reason.\",\n        \"status\": \"PENDING\",\n        \"targetType\": \"Panel\",\n        \"userId\": 2,\n        \"locationId\": null,\n        \"panelId\": 2,\n        \"createdAt\": \"2024-01-14T13:07:52.125Z\",\n        \"updatedAt\": \"2024-01-14T13:07:52.125Z\",\n        \"type\": \"APPROVED_PANEL\"\n    },\n    \"message\": \"Ads request created successfully\"\n}"
+						}
+					]
 				},
 				{
 					"name": "Update",
@@ -189,7 +483,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE0LCJlbWFpbCI6ImNoaWhpZW4yMDAyNzFAZ21haWwuY29tIiwicm9sZSI6IkRFUEFSVE1FTlRfT0ZGSUNFUiIsImlhdCI6MTcwMzkxMjQ1OSwiZXhwIjoxNzAzOTEyNzU5fQ.1wqeULMLUmHXBoBv7szzaxf-oxYyLCWpIl8I8V887qk",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoiY2hpaGllbjIwMDI3MUBnbWFpbC5jb20iLCJyb2xlIjoiY2RvIiwiaWF0IjoxNzA1MjM3NjM5LCJleHAiOjE3MDUyMzc5Mzl9.5zP3IFuDvL0ugTRhV7d1EKXBJyncDE4wLnrE5qsVMII",
 									"type": "string"
 								}
 							]
@@ -198,7 +492,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"status\": \"Không chấp nhận\"\r\n}",
+							"raw": "{\r\n    \"status\": \"REJECTED\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -217,9 +511,79 @@
 								"ads-requests",
 								"1"
 							]
-						}
+						},
+						"description": "| **Attribute** | **Type** | **Description** |\n| --- | --- | --- |\n| `status` | enum (PENDING, APPROVED, REJECTED, CANCELED) | Represents the status of the ads-request to be retrieved |"
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Update",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"status\": \"REJECTED\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8194/api/ads-requests/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8194",
+									"path": [
+										"api",
+										"ads-requests",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "309"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"135-i1NAruCCo8ihyWc3oaSLte7eyGI\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 14 Jan 2024 13:08:03 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"data\": {\n        \"id\": 1,\n        \"reason\": \"This is a sample ads-request reason.\",\n        \"status\": \"REJECTED\",\n        \"targetType\": \"Panel\",\n        \"userId\": 2,\n        \"locationId\": null,\n        \"panelId\": 1,\n        \"createdAt\": \"2023-12-30T07:33:56.216Z\",\n        \"updatedAt\": \"2024-01-14T13:08:03.051Z\",\n        \"type\": \"APPROVED_PANEL\"\n    },\n    \"message\": \"Ads request updated successfully\"\n}"
+						}
+					]
 				},
 				{
 					"name": "Get",
@@ -229,7 +593,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE0LCJlbWFpbCI6ImNoaWhpZW4yMDAyNzFAZ21haWwuY29tIiwicm9sZSI6IkRFUEFSVE1FTlRfT0ZGSUNFUiIsImlhdCI6MTcwMzkxMjQ1OSwiZXhwIjoxNzAzOTEyNzU5fQ.1wqeULMLUmHXBoBv7szzaxf-oxYyLCWpIl8I8V887qk",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoiY2hpaGllbjIwMDI3MUBnbWFpbC5jb20iLCJyb2xlIjoiY2RvIiwiaWF0IjoxNzA1MjM3NjM5LCJleHAiOjE3MDUyMzc5Mzl9.5zP3IFuDvL0ugTRhV7d1EKXBJyncDE4wLnrE5qsVMII",
 									"type": "string"
 								}
 							]
@@ -248,9 +612,70 @@
 								"ads-requests",
 								"1"
 							]
-						}
+						},
+						"description": "This API returns detailed information for an ads request based on its ID"
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Get",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8194/api/ads-requests/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8194",
+									"path": [
+										"api",
+										"ads-requests",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "2022"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"7e6-4BG/4NNDk0wp5wSc7qNBhGSfY4c\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 14 Jan 2024 13:08:19 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"data\": {\n        \"id\": 1,\n        \"reason\": \"This is a sample ads-request reason.\",\n        \"status\": \"REJECTED\",\n        \"targetType\": \"Panel\",\n        \"userId\": 2,\n        \"locationId\": null,\n        \"panelId\": 1,\n        \"createdAt\": \"2023-12-30T07:33:56.216Z\",\n        \"updatedAt\": \"2024-01-14T13:08:03.051Z\",\n        \"type\": \"APPROVED_PANEL\",\n        \"user\": {\n            \"id\": 2,\n            \"email\": \"officerw1@gmail.com\",\n            \"password\": \"$argon2id$v=19$m=65536,t=3,p=4$z8zLkxHvWXINjrzV0z2mDg$WvDUvJHilmbe0We7X88e12OZGMyf3hzSXC7ohp2MIx0\",\n            \"firstName\": \"Tri\",\n            \"lastName\": \"Do\",\n            \"phoneNumber\": null,\n            \"dob\": null,\n            \"resetPassword\": false,\n            \"createdAt\": \"2023-12-30T07:33:08.538Z\",\n            \"updatedAt\": \"2024-01-14T13:04:24.163Z\",\n            \"wardId\": 1,\n            \"districtId\": null,\n            \"role\": \"ward_officer\",\n            \"refreshToken\": \"$argon2id$v=19$m=65536,t=3,p=4$WEYDER6GePRjpv8SIzDhkQ$h4gVB7CSPd92a++x1uPh7vDT00+6fTb5b6Et2l7+txQ\",\n            \"district\": null,\n            \"ward\": {\n                \"id\": 1,\n                \"name\": \"Phường An Khánh\",\n                \"districtId\": 1,\n                \"district\": {\n                    \"id\": 1,\n                    \"name\": \"Thành Phố Thủ Đức\"\n                }\n            }\n        },\n        \"location\": null,\n        \"panel\": {\n            \"id\": 1,\n            \"typeId\": 1,\n            \"width\": \"1\",\n            \"height\": \"1.5\",\n            \"locationId\": 1,\n            \"imageUrls\": [\n                \"https://firebasestorage.googleapis.com/v0/b/ads-management-a274a.appspot.com/o/report%2F1703918486230-shopee.png?alt=media\"\n            ],\n            \"createContractDate\": \"2023-12-23T00:00:00.000Z\",\n            \"expiredContractDate\": \"2024-12-23T00:00:00.000Z\",\n            \"companyEmail\": \"example@example.com\",\n            \"companyNumber\": \"123456789\",\n            \"createdAt\": \"2023-12-30T06:41:29.936Z\",\n            \"updatedAt\": \"2023-12-30T06:41:29.936Z\",\n            \"status\": \"APPROVED\",\n            \"belongPanelId\": null,\n            \"type\": {\n                \"id\": 1,\n                \"name\": \"Trụ bảng hiflex\"\n            },\n            \"location\": {\n                \"id\": 1,\n                \"lat\": \"10.8483839\",\n                \"long\": \"106.6586948\",\n                \"isPlanning\": true,\n                \"districtId\": 1,\n                \"wardId\": 1,\n                \"fullAddress\": \"227 Nguyen Van Cu\",\n                \"typeId\": 1,\n                \"adTypeId\": 1,\n                \"imageUrls\": [],\n                \"createdAt\": \"2023-12-30T06:38:16.323Z\",\n                \"updatedAt\": \"2024-01-02T01:47:22.546Z\",\n                \"name\": \"Location 1\",\n                \"belongLocationId\": null,\n                \"status\": \"APPROVED\",\n                \"district\": {\n                    \"id\": 1,\n                    \"name\": \"Thành Phố Thủ Đức\"\n                },\n                \"ward\": {\n                    \"id\": 1,\n                    \"name\": \"Phường An Khánh\",\n                    \"districtId\": 1\n                },\n                \"type\": {\n                    \"id\": 1,\n                    \"name\": \"Đất công/Công viên/Hành lang an toàn giao thông\"\n                },\n                \"adType\": {\n                    \"id\": 1,\n                    \"name\": \"Cổ động chính trị\"\n                }\n            }\n        }\n    },\n    \"message\": \"Success\"\n}"
+						}
+					]
 				},
 				{
 					"name": "List",
@@ -260,7 +685,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoiY2hpaGllbjIwMDI3MUBnbWFpbC5jb20iLCJyb2xlIjoiY2RvIiwiaWF0IjoxNzA0Nzk3MzUyLCJleHAiOjE3MDQ3OTc2NTJ9.j09Y-6yKyQ-rbOcCIPUmE3ct6gt8O9gNaeooKv8jnuI",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoiY2hpaGllbjIwMDI3MUBnbWFpbC5jb20iLCJyb2xlIjoiY2RvIiwiaWF0IjoxNzA1MjM3NjM5LCJleHAiOjE3MDUyMzc5Mzl9.5zP3IFuDvL0ugTRhV7d1EKXBJyncDE4wLnrE5qsVMII",
 									"type": "string"
 								}
 							]
@@ -268,7 +693,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8194/api/ads-requests?wards=36,1,2,35&targetType=Location&type=UPDATE_DATA",
+							"raw": "http://localhost:8194/api/ads-requests?wards=2",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -281,34 +706,132 @@
 							"query": [
 								{
 									"key": "wards",
-									"value": "36,1,2,35"
+									"value": "2"
 								},
 								{
 									"key": "districts",
-									"value": "1",
+									"value": "3",
 									"disabled": true
 								},
 								{
 									"key": "targetType",
-									"value": "Location"
+									"value": "Location",
+									"disabled": true
 								},
 								{
 									"key": "status",
-									"value": "Không chấp nhận",
+									"value": "REJECTED",
 									"disabled": true
 								},
 								{
 									"key": "type",
-									"value": "UPDATE_DATA"
+									"value": "UPDATE_DATA",
+									"disabled": true
 								}
 							]
-						}
+						},
+						"description": "| **Attribute** | **Type** | **Desscription** |\n| --- | --- | --- |\n| `page` | number (default = 1) | Specifies the page number of the results to retrieve |\n| `take` | number (default = 10) | Determines the number of items to retrieve per page |\n| `targetType` | enum (Location, Panel) | Specifies the type of target entities to be included in the results |\n| `status` | enum (PENDING, APPROVED, REJECTED, CANCELED) | Represents the status of the items to be retrieved |\n| `wards` | string | Represents a string value, related to geographical, can contains many value |\n| `districts` | string | Represents a string value, related to geographical at the district level, can contains many value |\n| `type` | enum(UPDATE_DATE, APPROVED_PANEL) | Specifies the type of target entities to be included in the results |"
 					},
-					"response": []
+					"response": [
+						{
+							"name": "List",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8194/api/ads-requests?wards=2",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8194",
+									"path": [
+										"api",
+										"ads-requests"
+									],
+									"query": [
+										{
+											"key": "wards",
+											"value": "2"
+										},
+										{
+											"key": "districts",
+											"value": "3",
+											"disabled": true
+										},
+										{
+											"key": "targetType",
+											"value": "Location",
+											"disabled": true
+										},
+										{
+											"key": "status",
+											"value": "REJECTED",
+											"disabled": true
+										},
+										{
+											"key": "type",
+											"value": "UPDATE_DATA",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "19388"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"4bbc-Mx02dl0cHYMAv23nZ3aYE2171wk\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 14 Jan 2024 13:08:31 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": [\n        {\n            \"id\": 47,\n            \"reason\": \"Cần chỉnh sửa thông tin\",\n            \"status\": \"PENDING\",\n            \"targetType\": \"Location\",\n            \"userId\": 2,\n            \"locationId\": 30,\n            \"panelId\": null,\n            \"createdAt\": \"2024-01-13T13:18:07.567Z\",\n            \"updatedAt\": \"2024-01-13T13:18:07.567Z\",\n            \"type\": \"UPDATE_DATA\",\n            \"user\": {\n                \"id\": 2,\n                \"email\": \"officerw1@gmail.com\",\n                \"password\": \"$argon2id$v=19$m=65536,t=3,p=4$z8zLkxHvWXINjrzV0z2mDg$WvDUvJHilmbe0We7X88e12OZGMyf3hzSXC7ohp2MIx0\",\n                \"firstName\": \"Tri\",\n                \"lastName\": \"Do\",\n                \"phoneNumber\": null,\n                \"dob\": null,\n                \"resetPassword\": false,\n                \"createdAt\": \"2023-12-30T07:33:08.538Z\",\n                \"updatedAt\": \"2024-01-14T13:04:24.163Z\",\n                \"wardId\": 1,\n                \"districtId\": null,\n                \"role\": \"ward_officer\",\n                \"refreshToken\": \"$argon2id$v=19$m=65536,t=3,p=4$WEYDER6GePRjpv8SIzDhkQ$h4gVB7CSPd92a++x1uPh7vDT00+6fTb5b6Et2l7+txQ\",\n                \"district\": null,\n                \"ward\": {\n                    \"id\": 1,\n                    \"name\": \"Phường An Khánh\",\n                    \"districtId\": 1,\n                    \"district\": {\n                        \"id\": 1,\n                        \"name\": \"Thành Phố Thủ Đức\"\n                    }\n                }\n            },\n            \"location\": {\n                \"id\": 30,\n                \"lat\": \"5\",\n                \"long\": \"20\",\n                \"isPlanning\": true,\n                \"districtId\": 1,\n                \"wardId\": 2,\n                \"fullAddress\": \"227, Nguyễn Văn Cừ, Quận 5\",\n                \"typeId\": 1,\n                \"adTypeId\": 1,\n                \"imageUrls\": [\n                    \"https://firebasestorage.googleapis.com/v0/b/ads-management-a274a.appspot.com/o/report%2F1705151885894-Activity Diagram_ Android Application.png?alt=media\"\n                ],\n                \"createdAt\": \"2024-01-13T13:18:07.567Z\",\n                \"updatedAt\": \"2024-01-13T13:18:07.567Z\",\n                \"name\": \"Trường đại học Khoa học Tự nhiên\",\n                \"belongLocationId\": 5,\n                \"status\": \"AWAITING_UPDATE\",\n                \"district\": {\n                    \"id\": 1,\n                    \"name\": \"Thành Phố Thủ Đức\"\n                },\n                \"ward\": {\n                    \"id\": 2,\n                    \"name\": \"Phường Bình Trưng Tây\",\n                    \"districtId\": 1\n                },\n                \"type\": {\n                    \"id\": 1,\n                    \"name\": \"Đất công/Công viên/Hành lang an toàn giao thông\"\n                },\n                \"adType\": {\n                    \"id\": 1,\n                    \"name\": \"Cổ động chính trị\"\n                }\n            },\n            \"panel\": null\n        },\n        {\n            \"id\": 32,\n            \"reason\": \"123Haha\",\n            \"status\": \"PENDING\",\n            \"targetType\": \"Panel\",\n            \"userId\": 11,\n            \"locationId\": null,\n            \"panelId\": 18,\n            \"createdAt\": \"2024-01-05T07:23:37.460Z\",\n            \"updatedAt\": \"2024-01-05T07:23:37.460Z\",\n            \"type\": \"APPROVED_PANEL\",\n            \"user\": {\n                \"id\": 11,\n                \"email\": \"officerw2@gmail.com\",\n                \"password\": \"$argon2id$v=19$m=65536,t=3,p=4$bdlyRmdDIKvcgt+rYqhG/w$rD/lI1mbAjBX/d6p7wmin7gl5EapHZ+jKU/b+20we1c\",\n                \"firstName\": \"Tri\",\n                \"lastName\": \"Do\",\n                \"phoneNumber\": null,\n                \"dob\": null,\n                \"resetPassword\": false,\n                \"createdAt\": \"2024-01-02T15:19:45.638Z\",\n                \"updatedAt\": \"2024-01-10T12:27:11.220Z\",\n                \"wardId\": 2,\n                \"districtId\": null,\n                \"role\": \"ward_officer\",\n                \"refreshToken\": \"$argon2id$v=19$m=65536,t=3,p=4$2smW0Q9UXDV/XfnOgkWSOQ$KsfT4oVTerndsZyqQWJJqxeH1mD3b0RuKSmsZgPDyaw\",\n                \"district\": null,\n                \"ward\": {\n                    \"id\": 2,\n                    \"name\": \"Phường Bình Trưng Tây\",\n                    \"districtId\": 1,\n                    \"district\": {\n                        \"id\": 1,\n                        \"name\": \"Thành Phố Thủ Đức\"\n                    }\n                }\n            },\n            \"location\": null,\n            \"panel\": {\n                \"id\": 18,\n                \"typeId\": 2,\n                \"width\": \"5\",\n                \"height\": \"10\",\n                \"locationId\": 9,\n                \"imageUrls\": [\n                    \"https://firebasestorage.googleapis.com/v0/b/ads-management-a274a.appspot.com/o/report%2F1704383418058-Screenshot from 2024-01-04 15-01-25.png?alt=media\"\n                ],\n                \"createContractDate\": \"2024-01-18T00:00:00.000Z\",\n                \"expiredContractDate\": \"2024-01-19T00:00:00.000Z\",\n                \"companyEmail\": \"grab@gmail.com\",\n                \"companyNumber\": \"090123456789\",\n                \"createdAt\": \"2024-01-04T15:50:19.571Z\",\n                \"updatedAt\": \"2024-01-04T15:50:19.571Z\",\n                \"status\": \"DRAFT\",\n                \"belongPanelId\": null,\n                \"type\": {\n                    \"id\": 2,\n                    \"name\": \"Trụ màn hình điện tử LED\"\n                },\n                \"location\": {\n                    \"id\": 9,\n                    \"lat\": \"5\",\n                    \"long\": \"20\",\n                    \"isPlanning\": true,\n                    \"districtId\": 1,\n                    \"wardId\": 2,\n                    \"fullAddress\": \"227 Nguyen Van Cu\",\n                    \"typeId\": 1,\n                    \"adTypeId\": 1,\n                    \"imageUrls\": [],\n                    \"createdAt\": \"2023-12-30T06:38:44.543Z\",\n                    \"updatedAt\": \"2023-12-30T06:38:44.543Z\",\n                    \"name\": \"Location 1\",\n                    \"belongLocationId\": null,\n                    \"status\": \"APPROVED\",\n                    \"district\": {\n                        \"id\": 1,\n                        \"name\": \"Thành Phố Thủ Đức\"\n                    },\n                    \"ward\": {\n                        \"id\": 2,\n                        \"name\": \"Phường Bình Trưng Tây\",\n                        \"districtId\": 1\n                    },\n                    \"type\": {\n                        \"id\": 1,\n                        \"name\": \"Đất công/Công viên/Hành lang an toàn giao thông\"\n                    },\n                    \"adType\": {\n                        \"id\": 1,\n                        \"name\": \"Cổ động chính trị\"\n                    }\n                }\n            }\n        },\n        {\n            \"id\": 31,\n            \"reason\": \"Haha\",\n            \"status\": \"PENDING\",\n            \"targetType\": \"Panel\",\n            \"userId\": 11,\n            \"locationId\": null,\n            \"panelId\": 12,\n            \"createdAt\": \"2024-01-05T07:23:20.182Z\",\n            \"updatedAt\": \"2024-01-05T07:23:20.182Z\",\n            \"type\": \"APPROVED_PANEL\",\n            \"user\": {\n                \"id\": 11,\n                \"email\": \"officerw2@gmail.com\",\n                \"password\": \"$argon2id$v=19$m=65536,t=3,p=4$bdlyRmdDIKvcgt+rYqhG/w$rD/lI1mbAjBX/d6p7wmin7gl5EapHZ+jKU/b+20we1c\",\n                \"firstName\": \"Tri\",\n                \"lastName\": \"Do\",\n                \"phoneNumber\": null,\n                \"dob\": null,\n                \"resetPassword\": false,\n                \"createdAt\": \"2024-01-02T15:19:45.638Z\",\n                \"updatedAt\": \"2024-01-10T12:27:11.220Z\",\n                \"wardId\": 2,\n                \"districtId\": null,\n                \"role\": \"ward_officer\",\n                \"refreshToken\": \"$argon2id$v=19$m=65536,t=3,p=4$2smW0Q9UXDV/XfnOgkWSOQ$KsfT4oVTerndsZyqQWJJqxeH1mD3b0RuKSmsZgPDyaw\",\n                \"district\": null,\n                \"ward\": {\n                    \"id\": 2,\n                    \"name\": \"Phường Bình Trưng Tây\",\n                    \"districtId\": 1,\n                    \"district\": {\n                        \"id\": 1,\n                        \"name\": \"Thành Phố Thủ Đức\"\n                    }\n                }\n            },\n            \"location\": null,\n            \"panel\": {\n                \"id\": 12,\n                \"typeId\": 2,\n                \"width\": \"2\",\n                \"height\": \"1\",\n                \"locationId\": 9,\n                \"imageUrls\": [\n                    \"https://firebasestorage.googleapis.com/v0/b/ads-management-a274a.appspot.com/o/report%2F1704205649383-shopee.png?alt=media\"\n                ],\n                \"createContractDate\": \"2024-01-10T00:00:00.000Z\",\n                \"expiredContractDate\": \"2024-02-01T00:00:00.000Z\",\n                \"companyEmail\": \"shopee@gmail.com\",\n                \"companyNumber\": \"0123123123\",\n                \"createdAt\": \"2024-01-02T14:27:31.153Z\",\n                \"updatedAt\": \"2024-01-02T14:27:31.153Z\",\n                \"status\": \"DRAFT\",\n                \"belongPanelId\": null,\n                \"type\": {\n                    \"id\": 2,\n                    \"name\": \"Trụ màn hình điện tử LED\"\n                },\n                \"location\": {\n                    \"id\": 9,\n                    \"lat\": \"5\",\n                    \"long\": \"20\",\n                    \"isPlanning\": true,\n                    \"districtId\": 1,\n                    \"wardId\": 2,\n                    \"fullAddress\": \"227 Nguyen Van Cu\",\n                    \"typeId\": 1,\n                    \"adTypeId\": 1,\n                    \"imageUrls\": [],\n                    \"createdAt\": \"2023-12-30T06:38:44.543Z\",\n                    \"updatedAt\": \"2023-12-30T06:38:44.543Z\",\n                    \"name\": \"Location 1\",\n                    \"belongLocationId\": null,\n                    \"status\": \"APPROVED\",\n                    \"district\": {\n                        \"id\": 1,\n                        \"name\": \"Thành Phố Thủ Đức\"\n                    },\n                    \"ward\": {\n                        \"id\": 2,\n                        \"name\": \"Phường Bình Trưng Tây\",\n                        \"districtId\": 1\n                    },\n                    \"type\": {\n                        \"id\": 1,\n                        \"name\": \"Đất công/Công viên/Hành lang an toàn giao thông\"\n                    },\n                    \"adType\": {\n                        \"id\": 1,\n                        \"name\": \"Cổ động chính trị\"\n                    }\n                }\n            }\n        },\n        {\n            \"id\": 30,\n            \"reason\": \"0123\",\n            \"status\": \"PENDING\",\n            \"targetType\": \"Panel\",\n            \"userId\": 11,\n            \"locationId\": null,\n            \"panelId\": 12,\n            \"createdAt\": \"2024-01-05T07:22:06.461Z\",\n            \"updatedAt\": \"2024-01-05T07:22:06.461Z\",\n            \"type\": \"APPROVED_PANEL\",\n            \"user\": {\n                \"id\": 11,\n                \"email\": \"officerw2@gmail.com\",\n                \"password\": \"$argon2id$v=19$m=65536,t=3,p=4$bdlyRmdDIKvcgt+rYqhG/w$rD/lI1mbAjBX/d6p7wmin7gl5EapHZ+jKU/b+20we1c\",\n                \"firstName\": \"Tri\",\n                \"lastName\": \"Do\",\n                \"phoneNumber\": null,\n                \"dob\": null,\n                \"resetPassword\": false,\n                \"createdAt\": \"2024-01-02T15:19:45.638Z\",\n                \"updatedAt\": \"2024-01-10T12:27:11.220Z\",\n                \"wardId\": 2,\n                \"districtId\": null,\n                \"role\": \"ward_officer\",\n                \"refreshToken\": \"$argon2id$v=19$m=65536,t=3,p=4$2smW0Q9UXDV/XfnOgkWSOQ$KsfT4oVTerndsZyqQWJJqxeH1mD3b0RuKSmsZgPDyaw\",\n                \"district\": null,\n                \"ward\": {\n                    \"id\": 2,\n                    \"name\": \"Phường Bình Trưng Tây\",\n                    \"districtId\": 1,\n                    \"district\": {\n                        \"id\": 1,\n                        \"name\": \"Thành Phố Thủ Đức\"\n                    }\n                }\n            },\n            \"location\": null,\n            \"panel\": {\n                \"id\": 12,\n                \"typeId\": 2,\n                \"width\": \"2\",\n                \"height\": \"1\",\n                \"locationId\": 9,\n                \"imageUrls\": [\n                    \"https://firebasestorage.googleapis.com/v0/b/ads-management-a274a.appspot.com/o/report%2F1704205649383-shopee.png?alt=media\"\n                ],\n                \"createContractDate\": \"2024-01-10T00:00:00.000Z\",\n                \"expiredContractDate\": \"2024-02-01T00:00:00.000Z\",\n                \"companyEmail\": \"shopee@gmail.com\",\n                \"companyNumber\": \"0123123123\",\n                \"createdAt\": \"2024-01-02T14:27:31.153Z\",\n                \"updatedAt\": \"2024-01-02T14:27:31.153Z\",\n                \"status\": \"DRAFT\",\n                \"belongPanelId\": null,\n                \"type\": {\n                    \"id\": 2,\n                    \"name\": \"Trụ màn hình điện tử LED\"\n                },\n                \"location\": {\n                    \"id\": 9,\n                    \"lat\": \"5\",\n                    \"long\": \"20\",\n                    \"isPlanning\": true,\n                    \"districtId\": 1,\n                    \"wardId\": 2,\n                    \"fullAddress\": \"227 Nguyen Van Cu\",\n                    \"typeId\": 1,\n                    \"adTypeId\": 1,\n                    \"imageUrls\": [],\n                    \"createdAt\": \"2023-12-30T06:38:44.543Z\",\n                    \"updatedAt\": \"2023-12-30T06:38:44.543Z\",\n                    \"name\": \"Location 1\",\n                    \"belongLocationId\": null,\n                    \"status\": \"APPROVED\",\n                    \"district\": {\n                        \"id\": 1,\n                        \"name\": \"Thành Phố Thủ Đức\"\n                    },\n                    \"ward\": {\n                        \"id\": 2,\n                        \"name\": \"Phường Bình Trưng Tây\",\n                        \"districtId\": 1\n                    },\n                    \"type\": {\n                        \"id\": 1,\n                        \"name\": \"Đất công/Công viên/Hành lang an toàn giao thông\"\n                    },\n                    \"adType\": {\n                        \"id\": 1,\n                        \"name\": \"Cổ động chính trị\"\n                    }\n                }\n            }\n        },\n        {\n            \"id\": 29,\n            \"reason\": \"123000\",\n            \"status\": \"PENDING\",\n            \"targetType\": \"Panel\",\n            \"userId\": 11,\n            \"locationId\": null,\n            \"panelId\": 12,\n            \"createdAt\": \"2024-01-05T07:21:37.709Z\",\n            \"updatedAt\": \"2024-01-05T07:21:37.709Z\",\n            \"type\": \"APPROVED_PANEL\",\n            \"user\": {\n                \"id\": 11,\n                \"email\": \"officerw2@gmail.com\",\n                \"password\": \"$argon2id$v=19$m=65536,t=3,p=4$bdlyRmdDIKvcgt+rYqhG/w$rD/lI1mbAjBX/d6p7wmin7gl5EapHZ+jKU/b+20we1c\",\n                \"firstName\": \"Tri\",\n                \"lastName\": \"Do\",\n                \"phoneNumber\": null,\n                \"dob\": null,\n                \"resetPassword\": false,\n                \"createdAt\": \"2024-01-02T15:19:45.638Z\",\n                \"updatedAt\": \"2024-01-10T12:27:11.220Z\",\n                \"wardId\": 2,\n                \"districtId\": null,\n                \"role\": \"ward_officer\",\n                \"refreshToken\": \"$argon2id$v=19$m=65536,t=3,p=4$2smW0Q9UXDV/XfnOgkWSOQ$KsfT4oVTerndsZyqQWJJqxeH1mD3b0RuKSmsZgPDyaw\",\n                \"district\": null,\n                \"ward\": {\n                    \"id\": 2,\n                    \"name\": \"Phường Bình Trưng Tây\",\n                    \"districtId\": 1,\n                    \"district\": {\n                        \"id\": 1,\n                        \"name\": \"Thành Phố Thủ Đức\"\n                    }\n                }\n            },\n            \"location\": null,\n            \"panel\": {\n                \"id\": 12,\n                \"typeId\": 2,\n                \"width\": \"2\",\n                \"height\": \"1\",\n                \"locationId\": 9,\n                \"imageUrls\": [\n                    \"https://firebasestorage.googleapis.com/v0/b/ads-management-a274a.appspot.com/o/report%2F1704205649383-shopee.png?alt=media\"\n                ],\n                \"createContractDate\": \"2024-01-10T00:00:00.000Z\",\n                \"expiredContractDate\": \"2024-02-01T00:00:00.000Z\",\n                \"companyEmail\": \"shopee@gmail.com\",\n                \"companyNumber\": \"0123123123\",\n                \"createdAt\": \"2024-01-02T14:27:31.153Z\",\n                \"updatedAt\": \"2024-01-02T14:27:31.153Z\",\n                \"status\": \"DRAFT\",\n                \"belongPanelId\": null,\n                \"type\": {\n                    \"id\": 2,\n                    \"name\": \"Trụ màn hình điện tử LED\"\n                },\n                \"location\": {\n                    \"id\": 9,\n                    \"lat\": \"5\",\n                    \"long\": \"20\",\n                    \"isPlanning\": true,\n                    \"districtId\": 1,\n                    \"wardId\": 2,\n                    \"fullAddress\": \"227 Nguyen Van Cu\",\n                    \"typeId\": 1,\n                    \"adTypeId\": 1,\n                    \"imageUrls\": [],\n                    \"createdAt\": \"2023-12-30T06:38:44.543Z\",\n                    \"updatedAt\": \"2023-12-30T06:38:44.543Z\",\n                    \"name\": \"Location 1\",\n                    \"belongLocationId\": null,\n                    \"status\": \"APPROVED\",\n                    \"district\": {\n                        \"id\": 1,\n                        \"name\": \"Thành Phố Thủ Đức\"\n                    },\n                    \"ward\": {\n                        \"id\": 2,\n                        \"name\": \"Phường Bình Trưng Tây\",\n                        \"districtId\": 1\n                    },\n                    \"type\": {\n                        \"id\": 1,\n                        \"name\": \"Đất công/Công viên/Hành lang an toàn giao thông\"\n                    },\n                    \"adType\": {\n                        \"id\": 1,\n                        \"name\": \"Cổ động chính trị\"\n                    }\n                }\n            }\n        },\n        {\n            \"id\": 28,\n            \"reason\": \"000333\",\n            \"status\": \"PENDING\",\n            \"targetType\": \"Panel\",\n            \"userId\": 11,\n            \"locationId\": null,\n            \"panelId\": 18,\n            \"createdAt\": \"2024-01-05T07:21:19.439Z\",\n            \"updatedAt\": \"2024-01-05T07:21:19.439Z\",\n            \"type\": \"APPROVED_PANEL\",\n            \"user\": {\n                \"id\": 11,\n                \"email\": \"officerw2@gmail.com\",\n                \"password\": \"$argon2id$v=19$m=65536,t=3,p=4$bdlyRmdDIKvcgt+rYqhG/w$rD/lI1mbAjBX/d6p7wmin7gl5EapHZ+jKU/b+20we1c\",\n                \"firstName\": \"Tri\",\n                \"lastName\": \"Do\",\n                \"phoneNumber\": null,\n                \"dob\": null,\n                \"resetPassword\": false,\n                \"createdAt\": \"2024-01-02T15:19:45.638Z\",\n                \"updatedAt\": \"2024-01-10T12:27:11.220Z\",\n                \"wardId\": 2,\n                \"districtId\": null,\n                \"role\": \"ward_officer\",\n                \"refreshToken\": \"$argon2id$v=19$m=65536,t=3,p=4$2smW0Q9UXDV/XfnOgkWSOQ$KsfT4oVTerndsZyqQWJJqxeH1mD3b0RuKSmsZgPDyaw\",\n                \"district\": null,\n                \"ward\": {\n                    \"id\": 2,\n                    \"name\": \"Phường Bình Trưng Tây\",\n                    \"districtId\": 1,\n                    \"district\": {\n                        \"id\": 1,\n                        \"name\": \"Thành Phố Thủ Đức\"\n                    }\n                }\n            },\n            \"location\": null,\n            \"panel\": {\n                \"id\": 18,\n                \"typeId\": 2,\n                \"width\": \"5\",\n                \"height\": \"10\",\n                \"locationId\": 9,\n                \"imageUrls\": [\n                    \"https://firebasestorage.googleapis.com/v0/b/ads-management-a274a.appspot.com/o/report%2F1704383418058-Screenshot from 2024-01-04 15-01-25.png?alt=media\"\n                ],\n                \"createContractDate\": \"2024-01-18T00:00:00.000Z\",\n                \"expiredContractDate\": \"2024-01-19T00:00:00.000Z\",\n                \"companyEmail\": \"grab@gmail.com\",\n                \"companyNumber\": \"090123456789\",\n                \"createdAt\": \"2024-01-04T15:50:19.571Z\",\n                \"updatedAt\": \"2024-01-04T15:50:19.571Z\",\n                \"status\": \"DRAFT\",\n                \"belongPanelId\": null,\n                \"type\": {\n                    \"id\": 2,\n                    \"name\": \"Trụ màn hình điện tử LED\"\n                },\n                \"location\": {\n                    \"id\": 9,\n                    \"lat\": \"5\",\n                    \"long\": \"20\",\n                    \"isPlanning\": true,\n                    \"districtId\": 1,\n                    \"wardId\": 2,\n                    \"fullAddress\": \"227 Nguyen Van Cu\",\n                    \"typeId\": 1,\n                    \"adTypeId\": 1,\n                    \"imageUrls\": [],\n                    \"createdAt\": \"2023-12-30T06:38:44.543Z\",\n                    \"updatedAt\": \"2023-12-30T06:38:44.543Z\",\n                    \"name\": \"Location 1\",\n                    \"belongLocationId\": null,\n                    \"status\": \"APPROVED\",\n                    \"district\": {\n                        \"id\": 1,\n                        \"name\": \"Thành Phố Thủ Đức\"\n                    },\n                    \"ward\": {\n                        \"id\": 2,\n                        \"name\": \"Phường Bình Trưng Tây\",\n                        \"districtId\": 1\n                    },\n                    \"type\": {\n                        \"id\": 1,\n                        \"name\": \"Đất công/Công viên/Hành lang an toàn giao thông\"\n                    },\n                    \"adType\": {\n                        \"id\": 1,\n                        \"name\": \"Cổ động chính trị\"\n                    }\n                }\n            }\n        },\n        {\n            \"id\": 27,\n            \"reason\": \"333\",\n            \"status\": \"PENDING\",\n            \"targetType\": \"Panel\",\n            \"userId\": 11,\n            \"locationId\": null,\n            \"panelId\": 12,\n            \"createdAt\": \"2024-01-05T07:16:36.180Z\",\n            \"updatedAt\": \"2024-01-05T07:16:36.180Z\",\n            \"type\": \"APPROVED_PANEL\",\n            \"user\": {\n                \"id\": 11,\n                \"email\": \"officerw2@gmail.com\",\n                \"password\": \"$argon2id$v=19$m=65536,t=3,p=4$bdlyRmdDIKvcgt+rYqhG/w$rD/lI1mbAjBX/d6p7wmin7gl5EapHZ+jKU/b+20we1c\",\n                \"firstName\": \"Tri\",\n                \"lastName\": \"Do\",\n                \"phoneNumber\": null,\n                \"dob\": null,\n                \"resetPassword\": false,\n                \"createdAt\": \"2024-01-02T15:19:45.638Z\",\n                \"updatedAt\": \"2024-01-10T12:27:11.220Z\",\n                \"wardId\": 2,\n                \"districtId\": null,\n                \"role\": \"ward_officer\",\n                \"refreshToken\": \"$argon2id$v=19$m=65536,t=3,p=4$2smW0Q9UXDV/XfnOgkWSOQ$KsfT4oVTerndsZyqQWJJqxeH1mD3b0RuKSmsZgPDyaw\",\n                \"district\": null,\n                \"ward\": {\n                    \"id\": 2,\n                    \"name\": \"Phường Bình Trưng Tây\",\n                    \"districtId\": 1,\n                    \"district\": {\n                        \"id\": 1,\n                        \"name\": \"Thành Phố Thủ Đức\"\n                    }\n                }\n            },\n            \"location\": null,\n            \"panel\": {\n                \"id\": 12,\n                \"typeId\": 2,\n                \"width\": \"2\",\n                \"height\": \"1\",\n                \"locationId\": 9,\n                \"imageUrls\": [\n                    \"https://firebasestorage.googleapis.com/v0/b/ads-management-a274a.appspot.com/o/report%2F1704205649383-shopee.png?alt=media\"\n                ],\n                \"createContractDate\": \"2024-01-10T00:00:00.000Z\",\n                \"expiredContractDate\": \"2024-02-01T00:00:00.000Z\",\n                \"companyEmail\": \"shopee@gmail.com\",\n                \"companyNumber\": \"0123123123\",\n                \"createdAt\": \"2024-01-02T14:27:31.153Z\",\n                \"updatedAt\": \"2024-01-02T14:27:31.153Z\",\n                \"status\": \"DRAFT\",\n                \"belongPanelId\": null,\n                \"type\": {\n                    \"id\": 2,\n                    \"name\": \"Trụ màn hình điện tử LED\"\n                },\n                \"location\": {\n                    \"id\": 9,\n                    \"lat\": \"5\",\n                    \"long\": \"20\",\n                    \"isPlanning\": true,\n                    \"districtId\": 1,\n                    \"wardId\": 2,\n                    \"fullAddress\": \"227 Nguyen Van Cu\",\n                    \"typeId\": 1,\n                    \"adTypeId\": 1,\n                    \"imageUrls\": [],\n                    \"createdAt\": \"2023-12-30T06:38:44.543Z\",\n                    \"updatedAt\": \"2023-12-30T06:38:44.543Z\",\n                    \"name\": \"Location 1\",\n                    \"belongLocationId\": null,\n                    \"status\": \"APPROVED\",\n                    \"district\": {\n                        \"id\": 1,\n                        \"name\": \"Thành Phố Thủ Đức\"\n                    },\n                    \"ward\": {\n                        \"id\": 2,\n                        \"name\": \"Phường Bình Trưng Tây\",\n                        \"districtId\": 1\n                    },\n                    \"type\": {\n                        \"id\": 1,\n                        \"name\": \"Đất công/Công viên/Hành lang an toàn giao thông\"\n                    },\n                    \"adType\": {\n                        \"id\": 1,\n                        \"name\": \"Cổ động chính trị\"\n                    }\n                }\n            }\n        },\n        {\n            \"id\": 26,\n            \"reason\": \"123\",\n            \"status\": \"PENDING\",\n            \"targetType\": \"Panel\",\n            \"userId\": 11,\n            \"locationId\": null,\n            \"panelId\": 13,\n            \"createdAt\": \"2024-01-05T07:16:06.496Z\",\n            \"updatedAt\": \"2024-01-05T07:16:06.496Z\",\n            \"type\": \"APPROVED_PANEL\",\n            \"user\": {\n                \"id\": 11,\n                \"email\": \"officerw2@gmail.com\",\n                \"password\": \"$argon2id$v=19$m=65536,t=3,p=4$bdlyRmdDIKvcgt+rYqhG/w$rD/lI1mbAjBX/d6p7wmin7gl5EapHZ+jKU/b+20we1c\",\n                \"firstName\": \"Tri\",\n                \"lastName\": \"Do\",\n                \"phoneNumber\": null,\n                \"dob\": null,\n                \"resetPassword\": false,\n                \"createdAt\": \"2024-01-02T15:19:45.638Z\",\n                \"updatedAt\": \"2024-01-10T12:27:11.220Z\",\n                \"wardId\": 2,\n                \"districtId\": null,\n                \"role\": \"ward_officer\",\n                \"refreshToken\": \"$argon2id$v=19$m=65536,t=3,p=4$2smW0Q9UXDV/XfnOgkWSOQ$KsfT4oVTerndsZyqQWJJqxeH1mD3b0RuKSmsZgPDyaw\",\n                \"district\": null,\n                \"ward\": {\n                    \"id\": 2,\n                    \"name\": \"Phường Bình Trưng Tây\",\n                    \"districtId\": 1,\n                    \"district\": {\n                        \"id\": 1,\n                        \"name\": \"Thành Phố Thủ Đức\"\n                    }\n                }\n            },\n            \"location\": null,\n            \"panel\": {\n                \"id\": 13,\n                \"typeId\": 8,\n                \"width\": \"1\",\n                \"height\": \"2\",\n                \"locationId\": 9,\n                \"imageUrls\": [\n                    \"https://firebasestorage.googleapis.com/v0/b/ads-management-a274a.appspot.com/o/report%2F1704206782380-shopee.png?alt=media\"\n                ],\n                \"createContractDate\": \"2024-01-17T00:00:00.000Z\",\n                \"expiredContractDate\": \"2024-01-27T00:00:00.000Z\",\n                \"companyEmail\": \"shopee@gmail.com\",\n                \"companyNumber\": \"0123123123\",\n                \"createdAt\": \"2024-01-02T14:46:24.730Z\",\n                \"updatedAt\": \"2024-01-02T14:46:24.730Z\",\n                \"status\": \"DRAFT\",\n                \"belongPanelId\": null,\n                \"type\": {\n                    \"id\": 8,\n                    \"name\": \"Trụ/Cụm pano\"\n                },\n                \"location\": {\n                    \"id\": 9,\n                    \"lat\": \"5\",\n                    \"long\": \"20\",\n                    \"isPlanning\": true,\n                    \"districtId\": 1,\n                    \"wardId\": 2,\n                    \"fullAddress\": \"227 Nguyen Van Cu\",\n                    \"typeId\": 1,\n                    \"adTypeId\": 1,\n                    \"imageUrls\": [],\n                    \"createdAt\": \"2023-12-30T06:38:44.543Z\",\n                    \"updatedAt\": \"2023-12-30T06:38:44.543Z\",\n                    \"name\": \"Location 1\",\n                    \"belongLocationId\": null,\n                    \"status\": \"APPROVED\",\n                    \"district\": {\n                        \"id\": 1,\n                        \"name\": \"Thành Phố Thủ Đức\"\n                    },\n                    \"ward\": {\n                        \"id\": 2,\n                        \"name\": \"Phường Bình Trưng Tây\",\n                        \"districtId\": 1\n                    },\n                    \"type\": {\n                        \"id\": 1,\n                        \"name\": \"Đất công/Công viên/Hành lang an toàn giao thông\"\n                    },\n                    \"adType\": {\n                        \"id\": 1,\n                        \"name\": \"Cổ động chính trị\"\n                    }\n                }\n            }\n        },\n        {\n            \"id\": 25,\n            \"reason\": \"123123\",\n            \"status\": \"PENDING\",\n            \"targetType\": \"Panel\",\n            \"userId\": 11,\n            \"locationId\": null,\n            \"panelId\": 19,\n            \"createdAt\": \"2024-01-05T07:14:51.162Z\",\n            \"updatedAt\": \"2024-01-05T07:14:51.162Z\",\n            \"type\": \"APPROVED_PANEL\",\n            \"user\": {\n                \"id\": 11,\n                \"email\": \"officerw2@gmail.com\",\n                \"password\": \"$argon2id$v=19$m=65536,t=3,p=4$bdlyRmdDIKvcgt+rYqhG/w$rD/lI1mbAjBX/d6p7wmin7gl5EapHZ+jKU/b+20we1c\",\n                \"firstName\": \"Tri\",\n                \"lastName\": \"Do\",\n                \"phoneNumber\": null,\n                \"dob\": null,\n                \"resetPassword\": false,\n                \"createdAt\": \"2024-01-02T15:19:45.638Z\",\n                \"updatedAt\": \"2024-01-10T12:27:11.220Z\",\n                \"wardId\": 2,\n                \"districtId\": null,\n                \"role\": \"ward_officer\",\n                \"refreshToken\": \"$argon2id$v=19$m=65536,t=3,p=4$2smW0Q9UXDV/XfnOgkWSOQ$KsfT4oVTerndsZyqQWJJqxeH1mD3b0RuKSmsZgPDyaw\",\n                \"district\": null,\n                \"ward\": {\n                    \"id\": 2,\n                    \"name\": \"Phường Bình Trưng Tây\",\n                    \"districtId\": 1,\n                    \"district\": {\n                        \"id\": 1,\n                        \"name\": \"Thành Phố Thủ Đức\"\n                    }\n                }\n            },\n            \"location\": null,\n            \"panel\": {\n                \"id\": 19,\n                \"typeId\": 4,\n                \"width\": \"5\",\n                \"height\": \"10\",\n                \"locationId\": 9,\n                \"imageUrls\": [\n                    \"https://firebasestorage.googleapis.com/v0/b/ads-management-a274a.appspot.com/o/report%2F1704383623063-Screenshot from 2024-01-04 16-22-45.png?alt=media\"\n                ],\n                \"createContractDate\": \"2024-01-25T00:00:00.000Z\",\n                \"expiredContractDate\": \"2024-01-31T00:00:00.000Z\",\n                \"companyEmail\": \"grab@gmail.com\",\n                \"companyNumber\": \"090123123123\",\n                \"createdAt\": \"2024-01-04T15:53:44.248Z\",\n                \"updatedAt\": \"2024-01-04T15:53:44.248Z\",\n                \"status\": \"DRAFT\",\n                \"belongPanelId\": null,\n                \"type\": {\n                    \"id\": 4,\n                    \"name\": \"Bảng hiflex ốp tường\"\n                },\n                \"location\": {\n                    \"id\": 9,\n                    \"lat\": \"5\",\n                    \"long\": \"20\",\n                    \"isPlanning\": true,\n                    \"districtId\": 1,\n                    \"wardId\": 2,\n                    \"fullAddress\": \"227 Nguyen Van Cu\",\n                    \"typeId\": 1,\n                    \"adTypeId\": 1,\n                    \"imageUrls\": [],\n                    \"createdAt\": \"2023-12-30T06:38:44.543Z\",\n                    \"updatedAt\": \"2023-12-30T06:38:44.543Z\",\n                    \"name\": \"Location 1\",\n                    \"belongLocationId\": null,\n                    \"status\": \"APPROVED\",\n                    \"district\": {\n                        \"id\": 1,\n                        \"name\": \"Thành Phố Thủ Đức\"\n                    },\n                    \"ward\": {\n                        \"id\": 2,\n                        \"name\": \"Phường Bình Trưng Tây\",\n                        \"districtId\": 1\n                    },\n                    \"type\": {\n                        \"id\": 1,\n                        \"name\": \"Đất công/Công viên/Hành lang an toàn giao thông\"\n                    },\n                    \"adType\": {\n                        \"id\": 1,\n                        \"name\": \"Cổ động chính trị\"\n                    }\n                }\n            }\n        },\n        {\n            \"id\": 24,\n            \"reason\": \"123123\",\n            \"status\": \"PENDING\",\n            \"targetType\": \"Panel\",\n            \"userId\": 11,\n            \"locationId\": null,\n            \"panelId\": 18,\n            \"createdAt\": \"2024-01-05T07:14:22.321Z\",\n            \"updatedAt\": \"2024-01-05T07:14:22.321Z\",\n            \"type\": \"APPROVED_PANEL\",\n            \"user\": {\n                \"id\": 11,\n                \"email\": \"officerw2@gmail.com\",\n                \"password\": \"$argon2id$v=19$m=65536,t=3,p=4$bdlyRmdDIKvcgt+rYqhG/w$rD/lI1mbAjBX/d6p7wmin7gl5EapHZ+jKU/b+20we1c\",\n                \"firstName\": \"Tri\",\n                \"lastName\": \"Do\",\n                \"phoneNumber\": null,\n                \"dob\": null,\n                \"resetPassword\": false,\n                \"createdAt\": \"2024-01-02T15:19:45.638Z\",\n                \"updatedAt\": \"2024-01-10T12:27:11.220Z\",\n                \"wardId\": 2,\n                \"districtId\": null,\n                \"role\": \"ward_officer\",\n                \"refreshToken\": \"$argon2id$v=19$m=65536,t=3,p=4$2smW0Q9UXDV/XfnOgkWSOQ$KsfT4oVTerndsZyqQWJJqxeH1mD3b0RuKSmsZgPDyaw\",\n                \"district\": null,\n                \"ward\": {\n                    \"id\": 2,\n                    \"name\": \"Phường Bình Trưng Tây\",\n                    \"districtId\": 1,\n                    \"district\": {\n                        \"id\": 1,\n                        \"name\": \"Thành Phố Thủ Đức\"\n                    }\n                }\n            },\n            \"location\": null,\n            \"panel\": {\n                \"id\": 18,\n                \"typeId\": 2,\n                \"width\": \"5\",\n                \"height\": \"10\",\n                \"locationId\": 9,\n                \"imageUrls\": [\n                    \"https://firebasestorage.googleapis.com/v0/b/ads-management-a274a.appspot.com/o/report%2F1704383418058-Screenshot from 2024-01-04 15-01-25.png?alt=media\"\n                ],\n                \"createContractDate\": \"2024-01-18T00:00:00.000Z\",\n                \"expiredContractDate\": \"2024-01-19T00:00:00.000Z\",\n                \"companyEmail\": \"grab@gmail.com\",\n                \"companyNumber\": \"090123456789\",\n                \"createdAt\": \"2024-01-04T15:50:19.571Z\",\n                \"updatedAt\": \"2024-01-04T15:50:19.571Z\",\n                \"status\": \"DRAFT\",\n                \"belongPanelId\": null,\n                \"type\": {\n                    \"id\": 2,\n                    \"name\": \"Trụ màn hình điện tử LED\"\n                },\n                \"location\": {\n                    \"id\": 9,\n                    \"lat\": \"5\",\n                    \"long\": \"20\",\n                    \"isPlanning\": true,\n                    \"districtId\": 1,\n                    \"wardId\": 2,\n                    \"fullAddress\": \"227 Nguyen Van Cu\",\n                    \"typeId\": 1,\n                    \"adTypeId\": 1,\n                    \"imageUrls\": [],\n                    \"createdAt\": \"2023-12-30T06:38:44.543Z\",\n                    \"updatedAt\": \"2023-12-30T06:38:44.543Z\",\n                    \"name\": \"Location 1\",\n                    \"belongLocationId\": null,\n                    \"status\": \"APPROVED\",\n                    \"district\": {\n                        \"id\": 1,\n                        \"name\": \"Thành Phố Thủ Đức\"\n                    },\n                    \"ward\": {\n                        \"id\": 2,\n                        \"name\": \"Phường Bình Trưng Tây\",\n                        \"districtId\": 1\n                    },\n                    \"type\": {\n                        \"id\": 1,\n                        \"name\": \"Đất công/Công viên/Hành lang an toàn giao thông\"\n                    },\n                    \"adType\": {\n                        \"id\": 1,\n                        \"name\": \"Cổ động chính trị\"\n                    }\n                }\n            }\n        }\n    ],\n    \"totalPages\": 2,\n    \"totalCount\": 17\n}"
+						}
+					]
 				},
 				{
 					"name": "Update Panel",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoiY2hpaGllbjIwMDI3MUBnbWFpbC5jb20iLCJyb2xlIjoiY2RvIiwiaWF0IjoxNzA1MjM3NjM5LCJleHAiOjE3MDUyMzc5Mzl9.5zP3IFuDvL0ugTRhV7d1EKXBJyncDE4wLnrE5qsVMII",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
@@ -366,17 +889,12 @@
 								},
 								{
 									"key": "reason",
-									"value": "abc",
-									"type": "text"
-								},
-								{
-									"key": "imgUrls[]",
-									"value": "123,456",
+									"value": "Cần chỉnh sửa thông tin",
 									"type": "text"
 								},
 								{
 									"key": "belongPanelId",
-									"value": "2",
+									"value": "3",
 									"type": "text"
 								}
 							]
@@ -393,13 +911,149 @@
 								"ads-requests",
 								"update-panel"
 							]
-						}
+						},
+						"description": "| Attribute | Type | Description |\n| --- | --- | --- |\n| `images` | file | Represents new images |\n| `typeId` | number | Represents a numerical identifier, indicating the type of the uploaded content. |\n| `width` | number | Specifies the width of the panel. |\n| `height` | number | Specifies the height of the panel. |\n| `locationId` | number | Represents a numerical identifier associated with a location. |\n| `createContractDate` | string | Indicates the date and time when a contract was created. |\n| `expiredContractDate` | string | Indicates the date and time when the contract is set to expire. |\n| `companyEmail` | string | Represents the email associated with a company. |\n| `companyNumber` | number | Represents the numerical identifier or registration number of a company. |\n| `userId` | number | Represents a numerical identifier associated with a user. |\n| `reason` | string | Describes the reason associated with a request. |\n| `belongPanelId` | number | Represents a numerical identifier associated with a panel to which the image belongs. |"
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Update Panel",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "images",
+											"type": "file",
+											"src": "postman-cloud:///1eea1b4c-b6bf-4820-b8e0-34ce8e6ff798"
+										},
+										{
+											"key": "typeId",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "width",
+											"value": "10",
+											"type": "text"
+										},
+										{
+											"key": "height",
+											"value": "20",
+											"type": "text"
+										},
+										{
+											"key": "locationId",
+											"value": "5",
+											"type": "text"
+										},
+										{
+											"key": "createContractDate",
+											"value": "2023-12-23T00:00:00.000Z",
+											"type": "text"
+										},
+										{
+											"key": "expiredContractDate",
+											"value": "2024-12-23T00:00:00.000Z",
+											"type": "text"
+										},
+										{
+											"key": "companyEmail",
+											"value": "example@example.com",
+											"type": "text"
+										},
+										{
+											"key": "companyNumber",
+											"value": "123456789",
+											"type": "text"
+										},
+										{
+											"key": "userId",
+											"value": "2",
+											"type": "text"
+										},
+										{
+											"key": "reason",
+											"value": "Cần chỉnh sửa thông tin",
+											"type": "text"
+										},
+										{
+											"key": "belongPanelId",
+											"value": "3",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:8194/api/ads-requests/update-panel",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8194",
+									"path": [
+										"api",
+										"ads-requests",
+										"update-panel"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "276"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"114-XYjY9NT8cVJNY1IhOaunnIJ7VXo\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 14 Jan 2024 13:08:50 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"data\": {\n        \"id\": 51,\n        \"reason\": \"Cần chỉnh sửa thông tin\",\n        \"status\": \"PENDING\",\n        \"targetType\": \"Panel\",\n        \"userId\": 2,\n        \"locationId\": null,\n        \"panelId\": 45,\n        \"createdAt\": \"2024-01-14T13:08:48.705Z\",\n        \"updatedAt\": \"2024-01-14T13:08:48.705Z\",\n        \"type\": \"UPDATE_DATA\"\n    },\n    \"message\": \"Success\"\n}"
+						}
+					]
 				},
 				{
 					"name": "Update Location",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoiY2hpaGllbjIwMDI3MUBnbWFpbC5jb20iLCJyb2xlIjoiY2RvIiwiaWF0IjoxNzA1MjM3NjM5LCJleHAiOjE3MDUyMzc5Mzl9.5zP3IFuDvL0ugTRhV7d1EKXBJyncDE4wLnrE5qsVMII",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
@@ -447,27 +1101,22 @@
 								},
 								{
 									"key": "fullAddress",
-									"value": "kkjhkhkbkb ",
+									"value": "227, Nguyễn Văn Cừ, Quận 5",
 									"type": "text"
 								},
 								{
 									"key": "name",
-									"value": "akjhskjhskj",
+									"value": "Trường đại học Khoa học Tự nhiên",
 									"type": "text"
 								},
 								{
 									"key": "userId",
-									"value": "4",
+									"value": "2",
 									"type": "text"
 								},
 								{
 									"key": "reason",
-									"value": "lkjlklkjlk",
-									"type": "text"
-								},
-								{
-									"key": "imgUrls[]",
-									"value": "5621",
+									"value": "Cần chỉnh sửa thông tin",
 									"type": "text"
 								},
 								{
@@ -489,9 +1138,140 @@
 								"ads-requests",
 								"update-location"
 							]
-						}
+						},
+						"description": "| Attribute | Type | Description |\n| --- | --- | --- |\n| `images` | file | Represents new images |\n| `typeId` | number | Represents a numerical identifier, indicating the type of the uploaded content. |\n| `adsTypeId` | number | Represents a numerical identifier associated with the type of advertisements. |\n| `long` | number | Represents the longitude coordinates of the location. |\n| `lat` | number | Represents the latitude coordinates of the location. |\n| `isPlanning` | boolean | Indicates whether the location is in the planning stage (true) or not (false). |\n| `districtId` | number | Represents a numerical identifier associated with the district of the location. |\n| `wardId` | number | Represents a numerical identifier associated with the ward of the location. |\n| `fullAddress` | string | Represents the full address of the location. |\n| `name` | string | Represents the name of the location. |\n| `userId` | number | Represents a numerical identifier associated with a user. |\n| `reason` | string | Describes the reason for updating the location. |\n| `belongLocationId` | number | Represents a numerical identifier associated with old location. |"
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Update Location",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "images",
+											"type": "file",
+											"src": "postman-cloud:///1eea1b4c-b6bf-4820-b8e0-34ce8e6ff798"
+										},
+										{
+											"key": "typeId",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "adsTypeId",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "long",
+											"value": "20",
+											"type": "text"
+										},
+										{
+											"key": "lat",
+											"value": "5",
+											"type": "text"
+										},
+										{
+											"key": "isPlanning",
+											"value": "true",
+											"type": "text"
+										},
+										{
+											"key": "districtId",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "wardId",
+											"value": "2",
+											"type": "text"
+										},
+										{
+											"key": "fullAddress",
+											"value": "227, Nguyễn Văn Cừ, Quận 5",
+											"type": "text"
+										},
+										{
+											"key": "name",
+											"value": "Trường đại học Khoa học Tự nhiên",
+											"type": "text"
+										},
+										{
+											"key": "userId",
+											"value": "2",
+											"type": "text"
+										},
+										{
+											"key": "reason",
+											"value": "Cần chỉnh sửa thông tin",
+											"type": "text"
+										},
+										{
+											"key": "belongLocationId",
+											"value": "5",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:8194/api/ads-requests/update-location",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8194",
+									"path": [
+										"api",
+										"ads-requests",
+										"update-location"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "279"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"117-gsIwYkWQMWJK7UzQV+6huhpNATw\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 14 Jan 2024 13:09:08 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"data\": {\n        \"id\": 52,\n        \"reason\": \"Cần chỉnh sửa thông tin\",\n        \"status\": \"PENDING\",\n        \"targetType\": \"Location\",\n        \"userId\": 2,\n        \"locationId\": 41,\n        \"panelId\": null,\n        \"createdAt\": \"2024-01-14T13:09:07.227Z\",\n        \"updatedAt\": \"2024-01-14T13:09:07.227Z\",\n        \"type\": \"UPDATE_DATA\"\n    },\n    \"message\": \"Success\"\n}"
+						}
+					]
 				}
 			]
 		},
@@ -506,7 +1286,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoiY2hpaGllbjIwMDI3MUBnbWFpbC5jb20iLCJyb2xlIjoiY2RvIiwiaWF0IjoxNzA0NDY0ODI3LCJleHAiOjE3MDQ0NjUxMjd9.2BZNSPHiOGbPmWmfIFdAD-zyVVoyLLxLlxxM2MOlwIc",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoiY2hpaGllbjIwMDI3MUBnbWFpbC5jb20iLCJyb2xlIjoiY2RvIiwiaWF0IjoxNzA1MjM3NjM5LCJleHAiOjE3MDUyMzc5Mzl9.5zP3IFuDvL0ugTRhV7d1EKXBJyncDE4wLnrE5qsVMII",
 									"type": "string"
 								}
 							]
@@ -514,7 +1294,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8194/api/locations",
+							"raw": "http://localhost:8194/api/locations?districts=18&page=1&take=10",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -527,31 +1307,132 @@
 							"query": [
 								{
 									"key": "districts",
-									"value": "1,2,3",
-									"disabled": true
+									"value": "18"
 								},
 								{
 									"key": "wards",
-									"value": "1,2,3",
+									"value": "263",
 									"disabled": true
 								},
 								{
 									"key": "status",
 									"value": "AWAITING_UPDATE",
 									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "take",
+									"value": "10"
 								}
 							]
-						}
+						},
+						"description": "| Attribute | Type | Description |\n| --- | --- | --- |\n| `page` | number | Specifies the page number of the results to retrieve |\n| `take` | number | Determines the number of items to retrieve per page |\n| `districts` | string | Represents numerical identifiers or codes of districts. Multiple values are separated by commas. |\n| `wards` | string | Represents numerical identifiers or codes of wards. Multiple values are separated by commas. |\n| `status` | enum (APPROVED, AWAITING_UPDATE) | Represents the status of the location. |"
 					},
-					"response": []
+					"response": [
+						{
+							"name": "List",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8194/api/locations?districts=18&page=1&take=10",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8194",
+									"path": [
+										"api",
+										"locations"
+									],
+									"query": [
+										{
+											"key": "districts",
+											"value": "18"
+										},
+										{
+											"key": "wards",
+											"value": "263",
+											"disabled": true
+										},
+										{
+											"key": "status",
+											"value": "AWAITING_UPDATE",
+											"disabled": true
+										},
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "take",
+											"value": "10"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "10901"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"2a95-U/i2oQNSZap1DCAbBZsGVKhq15c\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 14 Jan 2024 13:10:25 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": [\n        {\n            \"id\": 38,\n            \"lat\": \"10.74663205027588\",\n            \"long\": \"106.6376767318916\",\n            \"isPlanning\": true,\n            \"districtId\": 18,\n            \"wardId\": 258,\n            \"fullAddress\": \"491 Hậu Giang\",\n            \"typeId\": 2,\n            \"adTypeId\": 2,\n            \"imageUrls\": [],\n            \"createdAt\": \"2024-01-14T05:38:05.426Z\",\n            \"updatedAt\": \"2024-01-14T05:38:05.426Z\",\n            \"name\": \"Chung cư Him Lam Chợ Lớn\",\n            \"belongLocationId\": null,\n            \"status\": \"APPROVED\",\n            \"panel\": [],\n            \"type\": {\n                \"id\": 2,\n                \"name\": \"Đất tư nhân/Nhà ở riêng lẻ\"\n            },\n            \"adType\": {\n                \"id\": 2,\n                \"name\": \"Quảng cáo thương mại\"\n            },\n            \"district\": {\n                \"id\": 18,\n                \"name\": \"Quận 6\"\n            },\n            \"ward\": {\n                \"id\": 258,\n                \"name\": \"Phường 10\",\n                \"districtId\": 18\n            }\n        },\n        {\n            \"id\": 37,\n            \"lat\": \"10.74265728344618\",\n            \"long\": \"106.6326895131663\",\n            \"isPlanning\": true,\n            \"districtId\": 18,\n            \"wardId\": 258,\n            \"fullAddress\": \"20U Cư Xá Phú Lâm D\",\n            \"typeId\": 1,\n            \"adTypeId\": 1,\n            \"imageUrls\": [],\n            \"createdAt\": \"2024-01-14T05:30:09.385Z\",\n            \"updatedAt\": \"2024-01-14T05:30:09.385Z\",\n            \"name\": \"Công viên Bình Phú\",\n            \"belongLocationId\": null,\n            \"status\": \"APPROVED\",\n            \"panel\": [],\n            \"type\": {\n                \"id\": 1,\n                \"name\": \"Đất công/Công viên/Hành lang an toàn giao thông\"\n            },\n            \"adType\": {\n                \"id\": 1,\n                \"name\": \"Cổ động chính trị\"\n            },\n            \"district\": {\n                \"id\": 18,\n                \"name\": \"Quận 6\"\n            },\n            \"ward\": {\n                \"id\": 258,\n                \"name\": \"Phường 10\",\n                \"districtId\": 18\n            }\n        },\n        {\n            \"id\": 36,\n            \"lat\": \"10.74707054067623\",\n            \"long\": \"106.6421512415594\",\n            \"isPlanning\": false,\n            \"districtId\": 18,\n            \"wardId\": 263,\n            \"fullAddress\": \"3 Bãi Sậy\",\n            \"typeId\": 1,\n            \"adTypeId\": 2,\n            \"imageUrls\": [],\n            \"createdAt\": \"2024-01-14T05:24:43.431Z\",\n            \"updatedAt\": \"2024-01-14T05:24:43.431Z\",\n            \"name\": \"Công viên Phạm Đình Hổ\",\n            \"belongLocationId\": null,\n            \"status\": \"APPROVED\",\n            \"panel\": [],\n            \"type\": {\n                \"id\": 1,\n                \"name\": \"Đất công/Công viên/Hành lang an toàn giao thông\"\n            },\n            \"adType\": {\n                \"id\": 2,\n                \"name\": \"Quảng cáo thương mại\"\n            },\n            \"district\": {\n                \"id\": 18,\n                \"name\": \"Quận 6\"\n            },\n            \"ward\": {\n                \"id\": 263,\n                \"name\": \"Phường 5\",\n                \"districtId\": 18\n            }\n        },\n        {\n            \"id\": 35,\n            \"lat\": \"10.75125546189416\",\n            \"long\": \"106.6519298020334\",\n            \"isPlanning\": false,\n            \"districtId\": 18,\n            \"wardId\": 266,\n            \"fullAddress\": \"46 Lê Quang Sung\",\n            \"typeId\": 6,\n            \"adTypeId\": 3,\n            \"imageUrls\": [],\n            \"createdAt\": \"2024-01-14T05:16:30.769Z\",\n            \"updatedAt\": \"2024-01-14T05:16:30.769Z\",\n            \"name\": \"Bến xe Chợ Lớn\",\n            \"belongLocationId\": null,\n            \"status\": \"APPROVED\",\n            \"panel\": [],\n            \"type\": {\n                \"id\": 6,\n                \"name\": \"Nhà chờ xe buýt\"\n            },\n            \"adType\": {\n                \"id\": 3,\n                \"name\": \"Xã hội hoá\"\n            },\n            \"district\": {\n                \"id\": 18,\n                \"name\": \"Quận 6\"\n            },\n            \"ward\": {\n                \"id\": 266,\n                \"name\": \"Phường 2\",\n                \"districtId\": 18\n            }\n        },\n        {\n            \"id\": 34,\n            \"lat\": \"10.7496912251334\",\n            \"long\": \"106.646686763498\",\n            \"isPlanning\": true,\n            \"districtId\": 18,\n            \"wardId\": 262,\n            \"fullAddress\": \"80 Hậu Giang\",\n            \"typeId\": 2,\n            \"adTypeId\": 2,\n            \"imageUrls\": [],\n            \"createdAt\": \"2024-01-14T05:12:12.349Z\",\n            \"updatedAt\": \"2024-01-14T05:12:12.349Z\",\n            \"name\": \"Techcombank Chi Nhánh Hậu Giang\",\n            \"belongLocationId\": null,\n            \"status\": \"APPROVED\",\n            \"panel\": [],\n            \"type\": {\n                \"id\": 2,\n                \"name\": \"Đất tư nhân/Nhà ở riêng lẻ\"\n            },\n            \"adType\": {\n                \"id\": 2,\n                \"name\": \"Quảng cáo thương mại\"\n            },\n            \"district\": {\n                \"id\": 18,\n                \"name\": \"Quận 6\"\n            },\n            \"ward\": {\n                \"id\": 262,\n                \"name\": \"Phường 6\",\n                \"districtId\": 18\n            }\n        },\n        {\n            \"id\": 28,\n            \"lat\": \"10.74976\",\n            \"long\": \"106.65101\",\n            \"isPlanning\": false,\n            \"districtId\": 18,\n            \"wardId\": 266,\n            \"fullAddress\": \"57A Tháp Mười\",\n            \"typeId\": 4,\n            \"adTypeId\": 3,\n            \"imageUrls\": [\n                \"https://firebasestorage.googleapis.com/v0/b/ads-management-a274a.appspot.com/o/report%2F1704988683704-2.jpg?alt=media\"\n            ],\n            \"createdAt\": \"2024-01-11T15:58:06.156Z\",\n            \"updatedAt\": \"2024-01-11T15:58:06.156Z\",\n            \"name\": \"Chợ Bình Tây\",\n            \"belongLocationId\": 22,\n            \"status\": \"AWAITING_UPDATE\",\n            \"panel\": [],\n            \"type\": {\n                \"id\": 4,\n                \"name\": \"Chợ\"\n            },\n            \"adType\": {\n                \"id\": 3,\n                \"name\": \"Xã hội hoá\"\n            },\n            \"district\": {\n                \"id\": 18,\n                \"name\": \"Quận 6\"\n            },\n            \"ward\": {\n                \"id\": 266,\n                \"name\": \"Phường 2\",\n                \"districtId\": 18\n            }\n        },\n        {\n            \"id\": 27,\n            \"lat\": \"10.749965\",\n            \"long\": \"106.643068\",\n            \"isPlanning\": false,\n            \"districtId\": 18,\n            \"wardId\": 262,\n            \"fullAddress\": \"188 Hậu Giang\",\n            \"typeId\": 3,\n            \"adTypeId\": 2,\n            \"imageUrls\": [\n                \"https://firebasestorage.googleapis.com/v0/b/ads-management-a274a.appspot.com/o/report%2F1704987520342-cm.jpg?alt=media\"\n            ],\n            \"createdAt\": \"2024-01-11T15:38:43.137Z\",\n            \"updatedAt\": \"2024-01-11T15:38:43.137Z\",\n            \"name\": \"Co.opmart Hậu Giang\",\n            \"belongLocationId\": 21,\n            \"status\": \"AWAITING_UPDATE\",\n            \"panel\": [],\n            \"type\": {\n                \"id\": 3,\n                \"name\": \"Trung tâm thương mại\"\n            },\n            \"adType\": {\n                \"id\": 2,\n                \"name\": \"Quảng cáo thương mại\"\n            },\n            \"district\": {\n                \"id\": 18,\n                \"name\": \"Quận 6\"\n            },\n            \"ward\": {\n                \"id\": 262,\n                \"name\": \"Phường 6\",\n                \"districtId\": 18\n            }\n        },\n        {\n            \"id\": 23,\n            \"lat\": \"10.747446\",\n            \"long\": \"106.64311\",\n            \"isPlanning\": false,\n            \"districtId\": 18,\n            \"wardId\": 263,\n            \"fullAddress\": \"247A Phan Văn Khỏe\",\n            \"typeId\": 5,\n            \"adTypeId\": 2,\n            \"imageUrls\": [\n                \"https://firebasestorage.googleapis.com/v0/b/ads-management-a274a.appspot.com/o/report%2F1704892290845-3.jpg?alt=media\"\n            ],\n            \"createdAt\": \"2024-01-10T13:11:32.742Z\",\n            \"updatedAt\": \"2024-01-10T13:11:32.742Z\",\n            \"name\": \"Trạm xăng dầu SAIGON PETRO số 9\",\n            \"belongLocationId\": null,\n            \"status\": \"APPROVED\",\n            \"panel\": [\n                {\n                    \"id\": 32,\n                    \"typeId\": 2,\n                    \"width\": \"5\",\n                    \"height\": \"4\",\n                    \"locationId\": 23,\n                    \"imageUrls\": [\n                        \"https://firebasestorage.googleapis.com/v0/b/ads-management-a274a.appspot.com/o/report%2F1704907545325-be.jpg?alt=media\"\n                    ],\n                    \"createContractDate\": \"2024-01-11T00:00:00.000Z\",\n                    \"expiredContractDate\": \"2025-01-11T00:00:00.000Z\",\n                    \"companyEmail\": \"contact@be.com\",\n                    \"companyNumber\": \"0924102002\",\n                    \"createdAt\": \"2024-01-10T17:25:49.270Z\",\n                    \"updatedAt\": \"2024-01-10T17:25:49.270Z\",\n                    \"status\": \"DRAFT\",\n                    \"belongPanelId\": null,\n                    \"type\": {\n                        \"id\": 2,\n                        \"name\": \"Trụ màn hình điện tử LED\"\n                    }\n                },\n                {\n                    \"id\": 40,\n                    \"typeId\": 2,\n                    \"width\": \"3\",\n                    \"height\": \"2\",\n                    \"locationId\": 23,\n                    \"imageUrls\": [\n                        \"https://firebasestorage.googleapis.com/v0/b/ads-management-a274a.appspot.com/o/report%2F1704986356716-be.jpg?alt=media\"\n                    ],\n                    \"createContractDate\": \"2024-01-20T00:00:00.000Z\",\n                    \"expiredContractDate\": \"2024-01-31T00:00:00.000Z\",\n                    \"companyEmail\": \"contact@be.com\",\n                    \"companyNumber\": \"0924102002\",\n                    \"createdAt\": \"2024-01-11T15:19:19.534Z\",\n                    \"updatedAt\": \"2024-01-11T15:19:19.534Z\",\n                    \"status\": \"AWAITING_UPDATE\",\n                    \"belongPanelId\": 32,\n                    \"type\": {\n                        \"id\": 2,\n                        \"name\": \"Trụ màn hình điện tử LED\"\n                    }\n                }\n            ],\n            \"type\": {\n                \"id\": 5,\n                \"name\": \"Cây xăng\"\n            },\n            \"adType\": {\n                \"id\": 2,\n                \"name\": \"Quảng cáo thương mại\"\n            },\n            \"district\": {\n                \"id\": 18,\n                \"name\": \"Quận 6\"\n            },\n            \"ward\": {\n                \"id\": 263,\n                \"name\": \"Phường 5\",\n                \"districtId\": 18\n            }\n        },\n        {\n            \"id\": 22,\n            \"lat\": \"10.74976\",\n            \"long\": \"106.65101\",\n            \"isPlanning\": false,\n            \"districtId\": 18,\n            \"wardId\": 266,\n            \"fullAddress\": \"57A Tháp Mười\",\n            \"typeId\": 4,\n            \"adTypeId\": 3,\n            \"imageUrls\": [\n                \"https://firebasestorage.googleapis.com/v0/b/ads-management-a274a.appspot.com/o/report%2F1704891905934-2.jpg?alt=media\"\n            ],\n            \"createdAt\": \"2024-01-10T13:05:07.777Z\",\n            \"updatedAt\": \"2024-01-10T13:05:07.777Z\",\n            \"name\": \"Chợ Bình Tây\",\n            \"belongLocationId\": null,\n            \"status\": \"APPROVED\",\n            \"panel\": [\n                {\n                    \"id\": 37,\n                    \"typeId\": 7,\n                    \"width\": \"3\",\n                    \"height\": \"2\",\n                    \"locationId\": 22,\n                    \"imageUrls\": [\n                        \"https://firebasestorage.googleapis.com/v0/b/ads-management-a274a.appspot.com/o/report%2F1704907982431-bvmt.jpg?alt=media\"\n                    ],\n                    \"createContractDate\": \"2024-01-11T00:00:00.000Z\",\n                    \"expiredContractDate\": \"2025-01-11T00:00:00.000Z\",\n                    \"companyEmail\": \"contact@district6.com\",\n                    \"companyNumber\": \"0924102002\",\n                    \"createdAt\": \"2024-01-10T17:33:06.155Z\",\n                    \"updatedAt\": \"2024-01-10T17:33:06.155Z\",\n                    \"status\": \"DRAFT\",\n                    \"belongPanelId\": null,\n                    \"type\": {\n                        \"id\": 7,\n                        \"name\": \"Trụ treo băng rôn ngang\"\n                    }\n                },\n                {\n                    \"id\": 36,\n                    \"typeId\": 7,\n                    \"width\": \"3\",\n                    \"height\": \"2\",\n                    \"locationId\": 22,\n                    \"imageUrls\": [\n                        \"https://firebasestorage.googleapis.com/v0/b/ads-management-a274a.appspot.com/o/report%2F1704907956267-tldt.jpg?alt=media\"\n                    ],\n                    \"createContractDate\": \"2024-01-11T00:00:00.000Z\",\n                    \"expiredContractDate\": \"2025-01-11T00:00:00.000Z\",\n                    \"companyEmail\": \"contact@district6.com\",\n                    \"companyNumber\": \"0924102002\",\n                    \"createdAt\": \"2024-01-10T17:32:39.529Z\",\n                    \"updatedAt\": \"2024-01-10T17:32:39.529Z\",\n                    \"status\": \"APPROVED\",\n                    \"belongPanelId\": null,\n                    \"type\": {\n                        \"id\": 7,\n                        \"name\": \"Trụ treo băng rôn ngang\"\n                    }\n                },\n                {\n                    \"id\": 41,\n                    \"typeId\": 7,\n                    \"width\": \"3\",\n                    \"height\": \"2\",\n                    \"locationId\": 22,\n                    \"imageUrls\": [\n                        \"https://firebasestorage.googleapis.com/v0/b/ads-management-a274a.appspot.com/o/report%2F1704986630257-tldt.jpg?alt=media\"\n                    ],\n                    \"createContractDate\": \"2024-02-01T00:00:00.000Z\",\n                    \"expiredContractDate\": \"2024-02-10T00:00:00.000Z\",\n                    \"companyEmail\": \"contact@district6.com\",\n                    \"companyNumber\": \"0924102002\",\n                    \"createdAt\": \"2024-01-11T15:23:52.188Z\",\n                    \"updatedAt\": \"2024-01-11T15:23:52.188Z\",\n                    \"status\": \"AWAITING_UPDATE\",\n                    \"belongPanelId\": 36,\n                    \"type\": {\n                        \"id\": 7,\n                        \"name\": \"Trụ treo băng rôn ngang\"\n                    }\n                }\n            ],\n            \"type\": {\n                \"id\": 4,\n                \"name\": \"Chợ\"\n            },\n            \"adType\": {\n                \"id\": 3,\n                \"name\": \"Xã hội hoá\"\n            },\n            \"district\": {\n                \"id\": 18,\n                \"name\": \"Quận 6\"\n            },\n            \"ward\": {\n                \"id\": 266,\n                \"name\": \"Phường 2\",\n                \"districtId\": 18\n            }\n        },\n        {\n            \"id\": 21,\n            \"lat\": \"10.749965\",\n            \"long\": \"106.643068\",\n            \"isPlanning\": false,\n            \"districtId\": 18,\n            \"wardId\": 262,\n            \"fullAddress\": \"188 Hậu Giang\",\n            \"typeId\": 3,\n            \"adTypeId\": 2,\n            \"imageUrls\": [\n                \"https://firebasestorage.googleapis.com/v0/b/ads-management-a274a.appspot.com/o/report%2F1704891567567-1.jpg?alt=media\"\n            ],\n            \"createdAt\": \"2024-01-10T12:59:31.842Z\",\n            \"updatedAt\": \"2024-01-10T12:59:31.842Z\",\n            \"name\": \"Co.opmart Hậu Giang\",\n            \"belongLocationId\": null,\n            \"status\": \"APPROVED\",\n            \"panel\": [\n                {\n                    \"id\": 35,\n                    \"typeId\": 5,\n                    \"width\": \"3\",\n                    \"height\": \"2\",\n                    \"locationId\": 21,\n                    \"imageUrls\": [\n                        \"https://firebasestorage.googleapis.com/v0/b/ads-management-a274a.appspot.com/o/report%2F1704907828298-simple.jpg?alt=media\"\n                    ],\n                    \"createContractDate\": \"2024-01-11T00:00:00.000Z\",\n                    \"expiredContractDate\": \"2025-01-11T00:00:00.000Z\",\n                    \"companyEmail\": \"contact@simple.com\",\n                    \"companyNumber\": \"0924102002\",\n                    \"createdAt\": \"2024-01-10T17:30:29.878Z\",\n                    \"updatedAt\": \"2024-01-10T17:30:29.878Z\",\n                    \"status\": \"DRAFT\",\n                    \"belongPanelId\": null,\n                    \"type\": {\n                        \"id\": 5,\n                        \"name\": \"Màn hình điện tử ốp tường\"\n                    }\n                },\n                {\n                    \"id\": 33,\n                    \"typeId\": 2,\n                    \"width\": \"5\",\n                    \"height\": \"4\",\n                    \"locationId\": 21,\n                    \"imageUrls\": [\n                        \"https://firebasestorage.googleapis.com/v0/b/ads-management-a274a.appspot.com/o/report%2F1704907655272-lazadalazada.jpg?alt=media\"\n                    ],\n                    \"createContractDate\": \"2024-01-11T00:00:00.000Z\",\n                    \"expiredContractDate\": \"2025-01-11T00:00:00.000Z\",\n                    \"companyEmail\": \"contact@lazada.com\",\n                    \"companyNumber\": \"0924102002\",\n                    \"createdAt\": \"2024-01-10T17:27:37.787Z\",\n                    \"updatedAt\": \"2024-01-10T17:27:37.787Z\",\n                    \"status\": \"APPROVED\",\n                    \"belongPanelId\": null,\n                    \"type\": {\n                        \"id\": 2,\n                        \"name\": \"Trụ màn hình điện tử LED\"\n                    }\n                },\n                {\n                    \"id\": 34,\n                    \"typeId\": 7,\n                    \"width\": \"5\",\n                    \"height\": \"4\",\n                    \"locationId\": 21,\n                    \"imageUrls\": [\n                        \"https://firebasestorage.googleapis.com/v0/b/ads-management-a274a.appspot.com/o/report%2F1704907726386-omo.jpg?alt=media\"\n                    ],\n                    \"createContractDate\": \"2024-01-11T00:00:00.000Z\",\n                    \"expiredContractDate\": \"2025-01-11T00:00:00.000Z\",\n                    \"companyEmail\": \"contact@omo.com\",\n                    \"companyNumber\": \"0924102002\",\n                    \"createdAt\": \"2024-01-10T17:28:49.524Z\",\n                    \"updatedAt\": \"2024-01-10T17:28:49.524Z\",\n                    \"status\": \"APPROVED\",\n                    \"belongPanelId\": null,\n                    \"type\": {\n                        \"id\": 7,\n                        \"name\": \"Trụ treo băng rôn ngang\"\n                    }\n                },\n                {\n                    \"id\": 38,\n                    \"typeId\": 2,\n                    \"width\": \"3\",\n                    \"height\": \"2\",\n                    \"locationId\": 21,\n                    \"imageUrls\": [\n                        \"https://firebasestorage.googleapis.com/v0/b/ads-management-a274a.appspot.com/o/report%2F1704908098226-shopeeshopee.jpg?alt=media\"\n                    ],\n                    \"createContractDate\": \"2024-01-11T00:00:00.000Z\",\n                    \"expiredContractDate\": \"2025-01-11T00:00:00.000Z\",\n                    \"companyEmail\": \"contact@shopee.com\",\n                    \"companyNumber\": \"0924102002\",\n                    \"createdAt\": \"2024-01-10T17:35:00.729Z\",\n                    \"updatedAt\": \"2024-01-10T17:35:00.729Z\",\n                    \"status\": \"APPROVED\",\n                    \"belongPanelId\": null,\n                    \"type\": {\n                        \"id\": 2,\n                        \"name\": \"Trụ màn hình điện tử LED\"\n                    }\n                }\n            ],\n            \"type\": {\n                \"id\": 3,\n                \"name\": \"Trung tâm thương mại\"\n            },\n            \"adType\": {\n                \"id\": 2,\n                \"name\": \"Quảng cáo thương mại\"\n            },\n            \"district\": {\n                \"id\": 18,\n                \"name\": \"Quận 6\"\n            },\n            \"ward\": {\n                \"id\": 262,\n                \"name\": \"Phường 6\",\n                \"districtId\": 18\n            }\n        }\n    ],\n    \"totalPages\": 1,\n    \"totalCount\": 10\n}"
+						}
+					]
 				},
 				{
 					"name": "Get",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoiY2hpaGllbjIwMDI3MUBnbWFpbC5jb20iLCJyb2xlIjoiY2RvIiwiaWF0IjoxNzA0OTkwNDgwLCJleHAiOjE3MDQ5OTA3ODB9.r4ez1pDnU_SXEC4GGfi7eQ-xd-vm35FKXekSV6XY5sQ",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8194/api/locations/5",
+							"raw": "http://localhost:8194/api/locations/25",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -560,17 +1441,100 @@
 							"path": [
 								"api",
 								"locations",
-								"5"
+								"25"
 							]
-						}
+						},
+						"description": "This API returns detailed information for a location based on its ID"
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Get",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8194/api/locations/25",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8194",
+									"path": [
+										"api",
+										"locations",
+										"25"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "1467"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"5bb-vgtjaOc9CSG+gXlmVghJDJLgsLg\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 14 Jan 2024 13:10:45 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"data\": {\n        \"id\": 25,\n        \"lat\": \"5\",\n        \"long\": \"20\",\n        \"isPlanning\": true,\n        \"districtId\": 1,\n        \"wardId\": 1,\n        \"fullAddress\": \"kkjhkhkbkb \",\n        \"typeId\": 1,\n        \"adTypeId\": 1,\n        \"imageUrls\": [\n            \"https://firebasestorage.googleapis.com/v0/b/ads-management-a274a.appspot.com/o/report%2F1704989673103-Screenshot 2023-12-24 155418.png?alt=media\",\n            \"https://firebasestorage.googleapis.com/v0/b/ads-management-a274a.appspot.com/o/report%2F1704989673104-Activity Diagram_ Android Application.png?alt=media\"\n        ],\n        \"createdAt\": \"2024-01-11T08:34:00.460Z\",\n        \"updatedAt\": \"2024-01-11T17:16:40.045Z\",\n        \"name\": \"location mới nè\",\n        \"belongLocationId\": 5,\n        \"status\": \"AWAITING_UPDATE\",\n        \"panel\": [\n            {\n                \"id\": 39,\n                \"typeId\": 3,\n                \"width\": \"44\",\n                \"height\": \"33\",\n                \"locationId\": 25,\n                \"imageUrls\": [\n                    \"https://firebasestorage.googleapis.com/v0/b/ads-management-a274a.appspot.com/o/report%2F1705157254896-screencapture-discord-channels-me-2023-11-27-21_46_16.png?alt=media\"\n                ],\n                \"createContractDate\": \"2024-01-11T08:48:50.000Z\",\n                \"expiredContractDate\": \"2024-01-11T08:48:50.000Z\",\n                \"companyEmail\": \"sth@gmail.com\",\n                \"companyNumber\": \"123456\",\n                \"createdAt\": \"2024-01-11T08:49:19.468Z\",\n                \"updatedAt\": \"2024-01-13T14:47:37.200Z\",\n                \"status\": \"APPROVED\",\n                \"belongPanelId\": null,\n                \"type\": {\n                    \"id\": 3,\n                    \"name\": \"Trụ hộp đèn\"\n                }\n            }\n        ],\n        \"type\": {\n            \"id\": 1,\n            \"name\": \"Đất công/Công viên/Hành lang an toàn giao thông\"\n        },\n        \"adType\": {\n            \"id\": 1,\n            \"name\": \"Cổ động chính trị\"\n        },\n        \"district\": {\n            \"id\": 1,\n            \"name\": \"Thành Phố Thủ Đức\"\n        },\n        \"ward\": {\n            \"id\": 1,\n            \"name\": \"Phường An Khánh\",\n            \"districtId\": 1\n        }\n    },\n    \"message\": \"Success\"\n}"
+						}
+					]
 				},
 				{
 					"name": "List Panel by Location id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoiY2hpaGllbjIwMDI3MUBnbWFpbC5jb20iLCJyb2xlIjoiY2RvIiwiaWF0IjoxNzA0OTkwNDgwLCJleHAiOjE3MDQ5OTA3ODB9.r4ez1pDnU_SXEC4GGfi7eQ-xd-vm35FKXekSV6XY5sQ",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
 							"raw": "http://localhost:8194/api/locations/5/panels?page=1&take=5",
 							"protocol": "http",
@@ -594,13 +1558,104 @@
 									"value": "5"
 								}
 							]
-						}
+						},
+						"description": "This API returns a list of panels belonging to a specified location\n\n  \n| Attribute | Type | Description |  \n| --- | --- | --- |  \n| `page` | number | Specifies the page number of the results to retrieve |  \n| `take` | number | Determines the number of items to retrieve per page |"
 					},
-					"response": []
+					"response": [
+						{
+							"name": "List Panel by Location id",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8194/api/locations/5/panels?page=1&take=5",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8194",
+									"path": [
+										"api",
+										"locations",
+										"5",
+										"panels"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "take",
+											"value": "5"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "5553"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"15b1-POoOYZiCdYS5d+KrFrNCjsdZtKU\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 14 Jan 2024 13:10:58 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": [\n        {\n            \"id\": 45,\n            \"typeId\": 1,\n            \"width\": \"10\",\n            \"height\": \"20\",\n            \"locationId\": 5,\n            \"imageUrls\": [\n                \"https://firebasestorage.googleapis.com/v0/b/ads-management-a274a.appspot.com/o/report%2F1705237726427-Activity Diagram_ Android Application.png?alt=media\"\n            ],\n            \"createContractDate\": \"2023-12-23T00:00:00.000Z\",\n            \"expiredContractDate\": \"2024-12-23T00:00:00.000Z\",\n            \"companyEmail\": \"example@example.com\",\n            \"companyNumber\": \"123456789\",\n            \"createdAt\": \"2024-01-14T13:08:48.705Z\",\n            \"updatedAt\": \"2024-01-14T13:08:48.705Z\",\n            \"status\": \"AWAITING_UPDATE\",\n            \"belongPanelId\": 3,\n            \"type\": {\n                \"id\": 1,\n                \"name\": \"Trụ bảng hiflex\"\n            },\n            \"location\": {\n                \"id\": 5,\n                \"lat\": \"10.8499775\",\n                \"long\": \"106.6616569\",\n                \"isPlanning\": true,\n                \"districtId\": 1,\n                \"wardId\": 1,\n                \"fullAddress\": \"227 Nguyen Van Cu\",\n                \"typeId\": 1,\n                \"adTypeId\": 1,\n                \"imageUrls\": [],\n                \"createdAt\": \"2023-12-30T06:38:36.934Z\",\n                \"updatedAt\": \"2024-01-10T15:33:36.528Z\",\n                \"name\": \"Chợ Xóm Mới\",\n                \"belongLocationId\": null,\n                \"status\": \"APPROVED\",\n                \"district\": {\n                    \"id\": 1,\n                    \"name\": \"Thành Phố Thủ Đức\"\n                },\n                \"ward\": {\n                    \"id\": 1,\n                    \"name\": \"Phường An Khánh\",\n                    \"districtId\": 1\n                },\n                \"type\": {\n                    \"id\": 1,\n                    \"name\": \"Đất công/Công viên/Hành lang an toàn giao thông\"\n                },\n                \"adType\": {\n                    \"id\": 1,\n                    \"name\": \"Cổ động chính trị\"\n                }\n            }\n        },\n        {\n            \"id\": 44,\n            \"typeId\": 1,\n            \"width\": \"10\",\n            \"height\": \"20\",\n            \"locationId\": 5,\n            \"imageUrls\": [\n                \"https://firebasestorage.googleapis.com/v0/b/ads-management-a274a.appspot.com/o/report%2F1705151938772-Screenshot 2023-12-24 155418.png?alt=media\"\n            ],\n            \"createContractDate\": \"2023-12-23T00:00:00.000Z\",\n            \"expiredContractDate\": \"2024-12-23T00:00:00.000Z\",\n            \"companyEmail\": \"example@example.com\",\n            \"companyNumber\": \"123456789\",\n            \"createdAt\": \"2024-01-13T13:18:59.954Z\",\n            \"updatedAt\": \"2024-01-13T13:18:59.954Z\",\n            \"status\": \"DRAFT\",\n            \"belongPanelId\": null,\n            \"type\": {\n                \"id\": 1,\n                \"name\": \"Trụ bảng hiflex\"\n            },\n            \"location\": {\n                \"id\": 5,\n                \"lat\": \"10.8499775\",\n                \"long\": \"106.6616569\",\n                \"isPlanning\": true,\n                \"districtId\": 1,\n                \"wardId\": 1,\n                \"fullAddress\": \"227 Nguyen Van Cu\",\n                \"typeId\": 1,\n                \"adTypeId\": 1,\n                \"imageUrls\": [],\n                \"createdAt\": \"2023-12-30T06:38:36.934Z\",\n                \"updatedAt\": \"2024-01-10T15:33:36.528Z\",\n                \"name\": \"Chợ Xóm Mới\",\n                \"belongLocationId\": null,\n                \"status\": \"APPROVED\",\n                \"district\": {\n                    \"id\": 1,\n                    \"name\": \"Thành Phố Thủ Đức\"\n                },\n                \"ward\": {\n                    \"id\": 1,\n                    \"name\": \"Phường An Khánh\",\n                    \"districtId\": 1\n                },\n                \"type\": {\n                    \"id\": 1,\n                    \"name\": \"Đất công/Công viên/Hành lang an toàn giao thông\"\n                },\n                \"adType\": {\n                    \"id\": 1,\n                    \"name\": \"Cổ động chính trị\"\n                }\n            }\n        },\n        {\n            \"id\": 43,\n            \"typeId\": 1,\n            \"width\": \"10\",\n            \"height\": \"20\",\n            \"locationId\": 5,\n            \"imageUrls\": [],\n            \"createContractDate\": \"2023-12-23T00:00:00.000Z\",\n            \"expiredContractDate\": \"2024-12-23T00:00:00.000Z\",\n            \"companyEmail\": \"example@example.com\",\n            \"companyNumber\": \"123456789\",\n            \"createdAt\": \"2024-01-13T13:18:32.108Z\",\n            \"updatedAt\": \"2024-01-13T13:18:32.108Z\",\n            \"status\": \"DRAFT\",\n            \"belongPanelId\": null,\n            \"type\": {\n                \"id\": 1,\n                \"name\": \"Trụ bảng hiflex\"\n            },\n            \"location\": {\n                \"id\": 5,\n                \"lat\": \"10.8499775\",\n                \"long\": \"106.6616569\",\n                \"isPlanning\": true,\n                \"districtId\": 1,\n                \"wardId\": 1,\n                \"fullAddress\": \"227 Nguyen Van Cu\",\n                \"typeId\": 1,\n                \"adTypeId\": 1,\n                \"imageUrls\": [],\n                \"createdAt\": \"2023-12-30T06:38:36.934Z\",\n                \"updatedAt\": \"2024-01-10T15:33:36.528Z\",\n                \"name\": \"Chợ Xóm Mới\",\n                \"belongLocationId\": null,\n                \"status\": \"APPROVED\",\n                \"district\": {\n                    \"id\": 1,\n                    \"name\": \"Thành Phố Thủ Đức\"\n                },\n                \"ward\": {\n                    \"id\": 1,\n                    \"name\": \"Phường An Khánh\",\n                    \"districtId\": 1\n                },\n                \"type\": {\n                    \"id\": 1,\n                    \"name\": \"Đất công/Công viên/Hành lang an toàn giao thông\"\n                },\n                \"adType\": {\n                    \"id\": 1,\n                    \"name\": \"Cổ động chính trị\"\n                }\n            }\n        },\n        {\n            \"id\": 42,\n            \"typeId\": 1,\n            \"width\": \"10\",\n            \"height\": \"20\",\n            \"locationId\": 5,\n            \"imageUrls\": [\n                \"https://firebasestorage.googleapis.com/v0/b/ads-management-a274a.appspot.com/o/report%2F1705151876439-Activity Diagram_ Android Application.png?alt=media\"\n            ],\n            \"createContractDate\": \"2023-12-23T00:00:00.000Z\",\n            \"expiredContractDate\": \"2024-12-23T00:00:00.000Z\",\n            \"companyEmail\": \"example@example.com\",\n            \"companyNumber\": \"123456789\",\n            \"createdAt\": \"2024-01-13T13:17:58.480Z\",\n            \"updatedAt\": \"2024-01-13T13:17:58.480Z\",\n            \"status\": \"AWAITING_UPDATE\",\n            \"belongPanelId\": 3,\n            \"type\": {\n                \"id\": 1,\n                \"name\": \"Trụ bảng hiflex\"\n            },\n            \"location\": {\n                \"id\": 5,\n                \"lat\": \"10.8499775\",\n                \"long\": \"106.6616569\",\n                \"isPlanning\": true,\n                \"districtId\": 1,\n                \"wardId\": 1,\n                \"fullAddress\": \"227 Nguyen Van Cu\",\n                \"typeId\": 1,\n                \"adTypeId\": 1,\n                \"imageUrls\": [],\n                \"createdAt\": \"2023-12-30T06:38:36.934Z\",\n                \"updatedAt\": \"2024-01-10T15:33:36.528Z\",\n                \"name\": \"Chợ Xóm Mới\",\n                \"belongLocationId\": null,\n                \"status\": \"APPROVED\",\n                \"district\": {\n                    \"id\": 1,\n                    \"name\": \"Thành Phố Thủ Đức\"\n                },\n                \"ward\": {\n                    \"id\": 1,\n                    \"name\": \"Phường An Khánh\",\n                    \"districtId\": 1\n                },\n                \"type\": {\n                    \"id\": 1,\n                    \"name\": \"Đất công/Công viên/Hành lang an toàn giao thông\"\n                },\n                \"adType\": {\n                    \"id\": 1,\n                    \"name\": \"Cổ động chính trị\"\n                }\n            }\n        },\n        {\n            \"id\": 30,\n            \"typeId\": 1,\n            \"width\": \"10\",\n            \"height\": \"20\",\n            \"locationId\": 5,\n            \"imageUrls\": [\n                \"https://firebasestorage.googleapis.com/v0/b/ads-management-a274a.appspot.com/o/report%2F1704877793765-Activity Diagram_ Android Application.png?alt=media\"\n            ],\n            \"createContractDate\": \"2023-12-23T00:00:00.000Z\",\n            \"expiredContractDate\": \"2024-12-23T00:00:00.000Z\",\n            \"companyEmail\": \"example@example.com\",\n            \"companyNumber\": \"123456789\",\n            \"createdAt\": \"2024-01-10T09:09:55.498Z\",\n            \"updatedAt\": \"2024-01-10T09:09:55.498Z\",\n            \"status\": \"AWAITING_UPDATE\",\n            \"belongPanelId\": 2,\n            \"type\": {\n                \"id\": 1,\n                \"name\": \"Trụ bảng hiflex\"\n            },\n            \"location\": {\n                \"id\": 5,\n                \"lat\": \"10.8499775\",\n                \"long\": \"106.6616569\",\n                \"isPlanning\": true,\n                \"districtId\": 1,\n                \"wardId\": 1,\n                \"fullAddress\": \"227 Nguyen Van Cu\",\n                \"typeId\": 1,\n                \"adTypeId\": 1,\n                \"imageUrls\": [],\n                \"createdAt\": \"2023-12-30T06:38:36.934Z\",\n                \"updatedAt\": \"2024-01-10T15:33:36.528Z\",\n                \"name\": \"Chợ Xóm Mới\",\n                \"belongLocationId\": null,\n                \"status\": \"APPROVED\",\n                \"district\": {\n                    \"id\": 1,\n                    \"name\": \"Thành Phố Thủ Đức\"\n                },\n                \"ward\": {\n                    \"id\": 1,\n                    \"name\": \"Phường An Khánh\",\n                    \"districtId\": 1\n                },\n                \"type\": {\n                    \"id\": 1,\n                    \"name\": \"Đất công/Công viên/Hành lang an toàn giao thông\"\n                },\n                \"adType\": {\n                    \"id\": 1,\n                    \"name\": \"Cổ động chính trị\"\n                }\n            }\n        }\n    ],\n    \"totalPages\": 2,\n    \"totalCount\": 10\n}"
+						}
+					]
 				},
 				{
 					"name": "Create",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoiY2hpaGllbjIwMDI3MUBnbWFpbC5jb20iLCJyb2xlIjoiY2RvIiwiaWF0IjoxNzA1MjQzMjU1LCJleHAiOjE3MDUyNDM1NTV9.5m5Mo7tv1qON-r-x2jTaEAgz1htbKciUTzbeRuZgTYc",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
@@ -648,12 +1703,12 @@
 								},
 								{
 									"key": "fullAddress",
-									"value": "kkjhkhkbkb ",
+									"value": "12/3A, Phan Văn Trị, Quận Gò Vấp",
 									"type": "text"
 								},
 								{
 									"key": "name",
-									"value": "akjhskjhskj",
+									"value": "Vincom",
 									"type": "text"
 								}
 							]
@@ -669,9 +1724,124 @@
 								"api",
 								"locations"
 							]
-						}
+						},
+						"description": "| Attribute | Type | Description |\n| --- | --- | --- |\n| `images` | file | Represents new images |\n| `typeId` | number | Represents a numerical identifier, indicating the type of the uploaded content. |\n| `adsTypeId` | number | Represents a numerical identifier associated with the type of advertisements. |\n| `long` | number | Represents the longitude coordinates of the location. |\n| `lat` | number | Represents the latitude coordinates of the location. |\n| `isPlanning` | boolean | Indicates whether the location is in the planning stage (true) or not (false). |\n| `districtId` | number | Represents a numerical identifier associated with the district of the location. |\n| `wardId` | number | Represents a numerical identifier associated with the ward of the location. |\n| `fullAddress` | string | Represents the full address of the location. |\n| `name` | string | Represents the name of the location. |"
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Create",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "images",
+											"type": "file",
+											"src": "postman-cloud:///1eea1b4c-b6bf-4820-b8e0-34ce8e6ff798"
+										},
+										{
+											"key": "typeId",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "adsTypeId",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "long",
+											"value": "20",
+											"type": "text"
+										},
+										{
+											"key": "lat",
+											"value": "5",
+											"type": "text"
+										},
+										{
+											"key": "isPlanning",
+											"value": "true",
+											"type": "text"
+										},
+										{
+											"key": "districtId",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "wardId",
+											"value": "2",
+											"type": "text"
+										},
+										{
+											"key": "fullAddress",
+											"value": "12/3A, Phan Văn Trị, Quận Gò Vấp",
+											"type": "text"
+										},
+										{
+											"key": "name",
+											"value": "Vincom",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:8194/api/locations",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8194",
+									"path": [
+										"api",
+										"locations"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "530"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"212-pEIxIirsAoUl6HuhJU3+TCw1hPA\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 14 Jan 2024 13:11:12 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"data\": {\n        \"id\": 42,\n        \"lat\": \"5\",\n        \"long\": \"20\",\n        \"isPlanning\": true,\n        \"districtId\": 1,\n        \"wardId\": 2,\n        \"fullAddress\": \"12/3A, Phan Văn Trị, Quận Gò Vấp\",\n        \"typeId\": 1,\n        \"adTypeId\": 1,\n        \"imageUrls\": [\n            \"https://firebasestorage.googleapis.com/v0/b/ads-management-a274a.appspot.com/o/report%2F1705237870268-Activity Diagram_ Android Application.png?alt=media\"\n        ],\n        \"createdAt\": \"2024-01-14T13:11:11.726Z\",\n        \"updatedAt\": \"2024-01-14T13:11:11.726Z\",\n        \"name\": \"Vincom\",\n        \"belongLocationId\": null,\n        \"status\": \"APPROVED\"\n    },\n    \"message\": \"Location created successfully\"\n}"
+						}
+					]
 				}
 			]
 		},
@@ -686,7 +1856,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoiY2hpaGllbjIwMDI3MUBnbWFpbC5jb20iLCJyb2xlIjoiY2RvIiwiaWF0IjoxNzA0NDY1MzYwLCJleHAiOjE3MDQ0NjU2NjB9.MZ-4aivJDxrLvPSuThehWJ9n_cO6ih8bIOdG6HRNQI4",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoiY2hpaGllbjIwMDI3MUBnbWFpbC5jb20iLCJyb2xlIjoiY2RvIiwiaWF0IjoxNzA1MjM3NjM5LCJleHAiOjE3MDUyMzc5Mzl9.5zP3IFuDvL0ugTRhV7d1EKXBJyncDE4wLnrE5qsVMII",
 									"type": "string"
 								}
 							]
@@ -694,7 +1864,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8194/api/panels",
+							"raw": "http://localhost:8194/api/panels?wards=1&status=APPROVED,DRAFT&page=1&take=10",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -707,13 +1877,12 @@
 							"query": [
 								{
 									"key": "districts",
-									"value": "1",
+									"value": "18",
 									"disabled": true
 								},
 								{
 									"key": "wards",
-									"value": "1",
-									"disabled": true
+									"value": "1"
 								},
 								{
 									"key": "typeId",
@@ -722,68 +1891,122 @@
 								},
 								{
 									"key": "status",
-									"value": "AWAITING_UPDATE",
-									"disabled": true
+									"value": "APPROVED,DRAFT"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "take",
+									"value": "10"
 								}
 							]
-						}
+						},
+						"description": "| Attribute | Type | Description |\n| --- | --- | --- |\n| `page` | number | Specifies the page number of the results to retrieve |\n| `take` | number | Determines the number of items to retrieve per page |\n| `districts` | string | Represents numerical identifiers or codes of districts. Multiple values are separated by commas. |\n| `wards` | string | Represents numerical identifiers or codes of wards. Multiple values are separated by commas. |\n| `typeId` | number | Represents a numerical identifier, potentially indicating the type of the location. |\n| `status` | enum (APPROVED, DRAFT, AWAITING_UPDATE) | Represents the status of the location. Multiple values are separated by commas. Possible values: APPROVED, DRAFT. |"
 					},
-					"response": []
+					"response": [
+						{
+							"name": "List",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8194/api/panels?wards=1&status=APPROVED,DRAFT&page=1&take=10",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8194",
+									"path": [
+										"api",
+										"panels"
+									],
+									"query": [
+										{
+											"key": "districts",
+											"value": "18",
+											"disabled": true
+										},
+										{
+											"key": "wards",
+											"value": "1"
+										},
+										{
+											"key": "typeId",
+											"value": "1",
+											"disabled": true
+										},
+										{
+											"key": "status",
+											"value": "APPROVED,DRAFT"
+										},
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "take",
+											"value": "10"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "11364"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"2c64-DgaEevIYvc1A0KkjP932TKqXC9k\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 14 Jan 2024 13:11:43 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": [\n        {\n            \"id\": 44,\n            \"typeId\": 1,\n            \"width\": \"10\",\n            \"height\": \"20\",\n            \"locationId\": 5,\n            \"imageUrls\": [\n                \"https://firebasestorage.googleapis.com/v0/b/ads-management-a274a.appspot.com/o/report%2F1705151938772-Screenshot 2023-12-24 155418.png?alt=media\"\n            ],\n            \"createContractDate\": \"2023-12-23T00:00:00.000Z\",\n            \"expiredContractDate\": \"2024-12-23T00:00:00.000Z\",\n            \"companyEmail\": \"example@example.com\",\n            \"companyNumber\": \"123456789\",\n            \"createdAt\": \"2024-01-13T13:18:59.954Z\",\n            \"updatedAt\": \"2024-01-13T13:18:59.954Z\",\n            \"status\": \"DRAFT\",\n            \"belongPanelId\": null,\n            \"type\": {\n                \"id\": 1,\n                \"name\": \"Trụ bảng hiflex\"\n            },\n            \"location\": {\n                \"id\": 5,\n                \"lat\": \"10.8499775\",\n                \"long\": \"106.6616569\",\n                \"isPlanning\": true,\n                \"districtId\": 1,\n                \"wardId\": 1,\n                \"fullAddress\": \"227 Nguyen Van Cu\",\n                \"typeId\": 1,\n                \"adTypeId\": 1,\n                \"imageUrls\": [],\n                \"createdAt\": \"2023-12-30T06:38:36.934Z\",\n                \"updatedAt\": \"2024-01-10T15:33:36.528Z\",\n                \"name\": \"Chợ Xóm Mới\",\n                \"belongLocationId\": null,\n                \"status\": \"APPROVED\",\n                \"district\": {\n                    \"id\": 1,\n                    \"name\": \"Thành Phố Thủ Đức\"\n                },\n                \"ward\": {\n                    \"id\": 1,\n                    \"name\": \"Phường An Khánh\",\n                    \"districtId\": 1\n                },\n                \"type\": {\n                    \"id\": 1,\n                    \"name\": \"Đất công/Công viên/Hành lang an toàn giao thông\"\n                },\n                \"adType\": {\n                    \"id\": 1,\n                    \"name\": \"Cổ động chính trị\"\n                }\n            }\n        },\n        {\n            \"id\": 43,\n            \"typeId\": 1,\n            \"width\": \"10\",\n            \"height\": \"20\",\n            \"locationId\": 5,\n            \"imageUrls\": [],\n            \"createContractDate\": \"2023-12-23T00:00:00.000Z\",\n            \"expiredContractDate\": \"2024-12-23T00:00:00.000Z\",\n            \"companyEmail\": \"example@example.com\",\n            \"companyNumber\": \"123456789\",\n            \"createdAt\": \"2024-01-13T13:18:32.108Z\",\n            \"updatedAt\": \"2024-01-13T13:18:32.108Z\",\n            \"status\": \"DRAFT\",\n            \"belongPanelId\": null,\n            \"type\": {\n                \"id\": 1,\n                \"name\": \"Trụ bảng hiflex\"\n            },\n            \"location\": {\n                \"id\": 5,\n                \"lat\": \"10.8499775\",\n                \"long\": \"106.6616569\",\n                \"isPlanning\": true,\n                \"districtId\": 1,\n                \"wardId\": 1,\n                \"fullAddress\": \"227 Nguyen Van Cu\",\n                \"typeId\": 1,\n                \"adTypeId\": 1,\n                \"imageUrls\": [],\n                \"createdAt\": \"2023-12-30T06:38:36.934Z\",\n                \"updatedAt\": \"2024-01-10T15:33:36.528Z\",\n                \"name\": \"Chợ Xóm Mới\",\n                \"belongLocationId\": null,\n                \"status\": \"APPROVED\",\n                \"district\": {\n                    \"id\": 1,\n                    \"name\": \"Thành Phố Thủ Đức\"\n                },\n                \"ward\": {\n                    \"id\": 1,\n                    \"name\": \"Phường An Khánh\",\n                    \"districtId\": 1\n                },\n                \"type\": {\n                    \"id\": 1,\n                    \"name\": \"Đất công/Công viên/Hành lang an toàn giao thông\"\n                },\n                \"adType\": {\n                    \"id\": 1,\n                    \"name\": \"Cổ động chính trị\"\n                }\n            }\n        },\n        {\n            \"id\": 39,\n            \"typeId\": 3,\n            \"width\": \"44\",\n            \"height\": \"33\",\n            \"locationId\": 25,\n            \"imageUrls\": [\n                \"https://firebasestorage.googleapis.com/v0/b/ads-management-a274a.appspot.com/o/report%2F1705157254896-screencapture-discord-channels-me-2023-11-27-21_46_16.png?alt=media\"\n            ],\n            \"createContractDate\": \"2024-01-11T08:48:50.000Z\",\n            \"expiredContractDate\": \"2024-01-11T08:48:50.000Z\",\n            \"companyEmail\": \"sth@gmail.com\",\n            \"companyNumber\": \"123456\",\n            \"createdAt\": \"2024-01-11T08:49:19.468Z\",\n            \"updatedAt\": \"2024-01-13T14:47:37.200Z\",\n            \"status\": \"APPROVED\",\n            \"belongPanelId\": null,\n            \"type\": {\n                \"id\": 3,\n                \"name\": \"Trụ hộp đèn\"\n            },\n            \"location\": {\n                \"id\": 25,\n                \"lat\": \"5\",\n                \"long\": \"20\",\n                \"isPlanning\": true,\n                \"districtId\": 1,\n                \"wardId\": 1,\n                \"fullAddress\": \"kkjhkhkbkb \",\n                \"typeId\": 1,\n                \"adTypeId\": 1,\n                \"imageUrls\": [\n                    \"https://firebasestorage.googleapis.com/v0/b/ads-management-a274a.appspot.com/o/report%2F1704989673103-Screenshot 2023-12-24 155418.png?alt=media\",\n                    \"https://firebasestorage.googleapis.com/v0/b/ads-management-a274a.appspot.com/o/report%2F1704989673104-Activity Diagram_ Android Application.png?alt=media\"\n                ],\n                \"createdAt\": \"2024-01-11T08:34:00.460Z\",\n                \"updatedAt\": \"2024-01-11T17:16:40.045Z\",\n                \"name\": \"location mới nè\",\n                \"belongLocationId\": 5,\n                \"status\": \"AWAITING_UPDATE\",\n                \"district\": {\n                    \"id\": 1,\n                    \"name\": \"Thành Phố Thủ Đức\"\n                },\n                \"ward\": {\n                    \"id\": 1,\n                    \"name\": \"Phường An Khánh\",\n                    \"districtId\": 1\n                },\n                \"type\": {\n                    \"id\": 1,\n                    \"name\": \"Đất công/Công viên/Hành lang an toàn giao thông\"\n                },\n                \"adType\": {\n                    \"id\": 1,\n                    \"name\": \"Cổ động chính trị\"\n                }\n            }\n        },\n        {\n            \"id\": 29,\n            \"typeId\": 6,\n            \"width\": \"1\",\n            \"height\": \"5\",\n            \"locationId\": 6,\n            \"imageUrls\": [\n                \"https://firebasestorage.googleapis.com/v0/b/ads-management-a274a.appspot.com/o/report%2F1704834974295-Screenshot from 2024-01-09 22-32-49.png?alt=media\"\n            ],\n            \"createContractDate\": \"2024-01-26T00:00:00.000Z\",\n            \"expiredContractDate\": \"2024-02-01T00:00:00.000Z\",\n            \"companyEmail\": \"gmail@gmail.com\",\n            \"companyNumber\": \"0123123123\",\n            \"createdAt\": \"2024-01-09T21:16:15.929Z\",\n            \"updatedAt\": \"2024-01-09T21:16:15.929Z\",\n            \"status\": \"DRAFT\",\n            \"belongPanelId\": null,\n            \"type\": {\n                \"id\": 6,\n                \"name\": \"Trụ treo băng rôn dọc\"\n            },\n            \"location\": {\n                \"id\": 6,\n                \"lat\": \"10.7545177\",\n                \"long\": \"101.7042252\",\n                \"isPlanning\": false,\n                \"districtId\": 1,\n                \"wardId\": 1,\n                \"fullAddress\": \"227 Nguyen Van Cu\",\n                \"typeId\": 1,\n                \"adTypeId\": 1,\n                \"imageUrls\": [],\n                \"createdAt\": \"2023-12-30T06:38:40.562Z\",\n                \"updatedAt\": \"2024-01-09T16:53:16.593Z\",\n                \"name\": \"Chợ Lớn\",\n                \"belongLocationId\": null,\n                \"status\": \"APPROVED\",\n                \"district\": {\n                    \"id\": 1,\n                    \"name\": \"Thành Phố Thủ Đức\"\n                },\n                \"ward\": {\n                    \"id\": 1,\n                    \"name\": \"Phường An Khánh\",\n                    \"districtId\": 1\n                },\n                \"type\": {\n                    \"id\": 1,\n                    \"name\": \"Đất công/Công viên/Hành lang an toàn giao thông\"\n                },\n                \"adType\": {\n                    \"id\": 1,\n                    \"name\": \"Cổ động chính trị\"\n                }\n            }\n        },\n        {\n            \"id\": 28,\n            \"typeId\": 5,\n            \"width\": \"5\",\n            \"height\": \"10\",\n            \"locationId\": 10,\n            \"imageUrls\": [\n                \"https://firebasestorage.googleapis.com/v0/b/ads-management-a274a.appspot.com/o/report%2F1704831120325-Screenshot from 2024-01-09 03-24-51.png?alt=media\"\n            ],\n            \"createContractDate\": \"2024-01-22T00:00:00.000Z\",\n            \"expiredContractDate\": \"2024-02-02T00:00:00.000Z\",\n            \"companyEmail\": \"company@gmail.com\",\n            \"companyNumber\": \"0123123132\",\n            \"createdAt\": \"2024-01-09T20:12:03.495Z\",\n            \"updatedAt\": \"2024-01-09T20:12:03.495Z\",\n            \"status\": \"DRAFT\",\n            \"belongPanelId\": null,\n            \"type\": {\n                \"id\": 5,\n                \"name\": \"Màn hình điện tử ốp tường\"\n            },\n            \"location\": {\n                \"id\": 10,\n                \"lat\": \"10.7725221\",\n                \"long\": \"106.6954459\",\n                \"isPlanning\": false,\n                \"districtId\": 1,\n                \"wardId\": 1,\n                \"fullAddress\": \"227 Nguyen Van Cu\",\n                \"typeId\": 1,\n                \"adTypeId\": 1,\n                \"imageUrls\": [],\n                \"createdAt\": \"2023-12-30T06:38:45.924Z\",\n                \"updatedAt\": \"2024-01-09T17:00:42.343Z\",\n                \"name\": \"Chợ Bến Thành\",\n                \"belongLocationId\": null,\n                \"status\": \"APPROVED\",\n                \"district\": {\n                    \"id\": 1,\n                    \"name\": \"Thành Phố Thủ Đức\"\n                },\n                \"ward\": {\n                    \"id\": 1,\n                    \"name\": \"Phường An Khánh\",\n                    \"districtId\": 1\n                },\n                \"type\": {\n                    \"id\": 1,\n                    \"name\": \"Đất công/Công viên/Hành lang an toàn giao thông\"\n                },\n                \"adType\": {\n                    \"id\": 1,\n                    \"name\": \"Cổ động chính trị\"\n                }\n            }\n        },\n        {\n            \"id\": 26,\n            \"typeId\": 2,\n            \"width\": \"12\",\n            \"height\": \"20\",\n            \"locationId\": 6,\n            \"imageUrls\": [\n                \"https://firebasestorage.googleapis.com/v0/b/ads-management-a274a.appspot.com/o/report%2F1704829962572-Screenshot from 2024-01-09 22-17-33.png?alt=media\"\n            ],\n            \"createContractDate\": \"2024-01-16T00:00:00.000Z\",\n            \"expiredContractDate\": \"2024-01-25T00:00:00.000Z\",\n            \"companyEmail\": \"company@gmail.com\",\n            \"companyNumber\": \"123123\",\n            \"createdAt\": \"2024-01-09T19:52:44.558Z\",\n            \"updatedAt\": \"2024-01-09T19:52:44.558Z\",\n            \"status\": \"DRAFT\",\n            \"belongPanelId\": null,\n            \"type\": {\n                \"id\": 2,\n                \"name\": \"Trụ màn hình điện tử LED\"\n            },\n            \"location\": {\n                \"id\": 6,\n                \"lat\": \"10.7545177\",\n                \"long\": \"101.7042252\",\n                \"isPlanning\": false,\n                \"districtId\": 1,\n                \"wardId\": 1,\n                \"fullAddress\": \"227 Nguyen Van Cu\",\n                \"typeId\": 1,\n                \"adTypeId\": 1,\n                \"imageUrls\": [],\n                \"createdAt\": \"2023-12-30T06:38:40.562Z\",\n                \"updatedAt\": \"2024-01-09T16:53:16.593Z\",\n                \"name\": \"Chợ Lớn\",\n                \"belongLocationId\": null,\n                \"status\": \"APPROVED\",\n                \"district\": {\n                    \"id\": 1,\n                    \"name\": \"Thành Phố Thủ Đức\"\n                },\n                \"ward\": {\n                    \"id\": 1,\n                    \"name\": \"Phường An Khánh\",\n                    \"districtId\": 1\n                },\n                \"type\": {\n                    \"id\": 1,\n                    \"name\": \"Đất công/Công viên/Hành lang an toàn giao thông\"\n                },\n                \"adType\": {\n                    \"id\": 1,\n                    \"name\": \"Cổ động chính trị\"\n                }\n            }\n        },\n        {\n            \"id\": 25,\n            \"typeId\": 1,\n            \"width\": \"5\",\n            \"height\": \"12\",\n            \"locationId\": 4,\n            \"imageUrls\": [\n                \"https://firebasestorage.googleapis.com/v0/b/ads-management-a274a.appspot.com/o/report%2F1704829209906-Screenshot from 2024-01-09 17-23-37.png?alt=media\"\n            ],\n            \"createContractDate\": \"2024-01-11T00:00:00.000Z\",\n            \"expiredContractDate\": \"2024-02-01T00:00:00.000Z\",\n            \"companyEmail\": \"company@gmail.com\",\n            \"companyNumber\": \"123123\",\n            \"createdAt\": \"2024-01-09T19:40:12.372Z\",\n            \"updatedAt\": \"2024-01-09T19:40:12.372Z\",\n            \"status\": \"DRAFT\",\n            \"belongPanelId\": null,\n            \"type\": {\n                \"id\": 1,\n                \"name\": \"Trụ bảng hiflex\"\n            },\n            \"location\": {\n                \"id\": 4,\n                \"lat\": \"10.8381245\",\n                \"long\": \"106.6687375\",\n                \"isPlanning\": false,\n                \"districtId\": 1,\n                \"wardId\": 1,\n                \"fullAddress\": \"227 Nguyen Van Cu\",\n                \"typeId\": 1,\n                \"adTypeId\": 1,\n                \"imageUrls\": [],\n                \"createdAt\": \"2023-12-30T06:38:35.574Z\",\n                \"updatedAt\": \"2024-01-09T16:56:20.355Z\",\n                \"name\": \"Lotte Nguyễn Văn Lượng\",\n                \"belongLocationId\": null,\n                \"status\": \"APPROVED\",\n                \"district\": {\n                    \"id\": 1,\n                    \"name\": \"Thành Phố Thủ Đức\"\n                },\n                \"ward\": {\n                    \"id\": 1,\n                    \"name\": \"Phường An Khánh\",\n                    \"districtId\": 1\n                },\n                \"type\": {\n                    \"id\": 1,\n                    \"name\": \"Đất công/Công viên/Hành lang an toàn giao thông\"\n                },\n                \"adType\": {\n                    \"id\": 1,\n                    \"name\": \"Cổ động chính trị\"\n                }\n            }\n        },\n        {\n            \"id\": 24,\n            \"typeId\": 9,\n            \"width\": \"5\",\n            \"height\": \"10\",\n            \"locationId\": 10,\n            \"imageUrls\": [\n                \"https://firebasestorage.googleapis.com/v0/b/ads-management-a274a.appspot.com/o/report%2F1704828965027-Screenshot from 2024-01-09 22-32-49.png?alt=media\"\n            ],\n            \"createContractDate\": \"2024-01-25T00:00:00.000Z\",\n            \"expiredContractDate\": \"2024-02-10T00:00:00.000Z\",\n            \"companyEmail\": \"lazada@gmail.com\",\n            \"companyNumber\": \"0123123123\",\n            \"createdAt\": \"2024-01-09T19:36:06.737Z\",\n            \"updatedAt\": \"2024-01-09T19:36:06.737Z\",\n            \"status\": \"DRAFT\",\n            \"belongPanelId\": null,\n            \"type\": {\n                \"id\": 9,\n                \"name\": \"Cổng chào\"\n            },\n            \"location\": {\n                \"id\": 10,\n                \"lat\": \"10.7725221\",\n                \"long\": \"106.6954459\",\n                \"isPlanning\": false,\n                \"districtId\": 1,\n                \"wardId\": 1,\n                \"fullAddress\": \"227 Nguyen Van Cu\",\n                \"typeId\": 1,\n                \"adTypeId\": 1,\n                \"imageUrls\": [],\n                \"createdAt\": \"2023-12-30T06:38:45.924Z\",\n                \"updatedAt\": \"2024-01-09T17:00:42.343Z\",\n                \"name\": \"Chợ Bến Thành\",\n                \"belongLocationId\": null,\n                \"status\": \"APPROVED\",\n                \"district\": {\n                    \"id\": 1,\n                    \"name\": \"Thành Phố Thủ Đức\"\n                },\n                \"ward\": {\n                    \"id\": 1,\n                    \"name\": \"Phường An Khánh\",\n                    \"districtId\": 1\n                },\n                \"type\": {\n                    \"id\": 1,\n                    \"name\": \"Đất công/Công viên/Hành lang an toàn giao thông\"\n                },\n                \"adType\": {\n                    \"id\": 1,\n                    \"name\": \"Cổ động chính trị\"\n                }\n            }\n        },\n        {\n            \"id\": 21,\n            \"typeId\": 5,\n            \"width\": \"2\",\n            \"height\": \"3\",\n            \"locationId\": 3,\n            \"imageUrls\": [\n                \"https://firebasestorage.googleapis.com/v0/b/ads-management-a274a.appspot.com/o/report%2F1704743250738-Screenshot from 2024-01-08 23-17-08.png?alt=media\"\n            ],\n            \"createContractDate\": \"2024-01-18T00:00:00.000Z\",\n            \"expiredContractDate\": \"2024-01-25T00:00:00.000Z\",\n            \"companyEmail\": \"shopee@gmail.com\",\n            \"companyNumber\": \"0123123123\",\n            \"createdAt\": \"2024-01-08T19:47:33.891Z\",\n            \"updatedAt\": \"2024-01-08T19:47:33.891Z\",\n            \"status\": \"DRAFT\",\n            \"belongPanelId\": null,\n            \"type\": {\n                \"id\": 5,\n                \"name\": \"Màn hình điện tử ốp tường\"\n            },\n            \"location\": {\n                \"id\": 3,\n                \"lat\": \"10.8361919\",\n                \"long\": \"106.6564331\",\n                \"isPlanning\": false,\n                \"districtId\": 1,\n                \"wardId\": 1,\n                \"fullAddress\": \"227 Nguyen Van Cu\",\n                \"typeId\": 1,\n                \"adTypeId\": 1,\n                \"imageUrls\": [],\n                \"createdAt\": \"2023-12-30T06:38:34.119Z\",\n                \"updatedAt\": \"2024-01-09T16:54:18.087Z\",\n                \"name\": \"Chợ Hạnh Thông Tây\",\n                \"belongLocationId\": null,\n                \"status\": \"APPROVED\",\n                \"district\": {\n                    \"id\": 1,\n                    \"name\": \"Thành Phố Thủ Đức\"\n                },\n                \"ward\": {\n                    \"id\": 1,\n                    \"name\": \"Phường An Khánh\",\n                    \"districtId\": 1\n                },\n                \"type\": {\n                    \"id\": 1,\n                    \"name\": \"Đất công/Công viên/Hành lang an toàn giao thông\"\n                },\n                \"adType\": {\n                    \"id\": 1,\n                    \"name\": \"Cổ động chính trị\"\n                }\n            }\n        },\n        {\n            \"id\": 20,\n            \"typeId\": 1,\n            \"width\": \"10\",\n            \"height\": \"20\",\n            \"locationId\": 5,\n            \"imageUrls\": [],\n            \"createContractDate\": \"2023-12-23T00:00:00.000Z\",\n            \"expiredContractDate\": \"2024-12-23T00:00:00.000Z\",\n            \"companyEmail\": \"example@example.com\",\n            \"companyNumber\": \"123456789\",\n            \"createdAt\": \"2024-01-04T15:56:45.218Z\",\n            \"updatedAt\": \"2024-01-04T15:56:45.218Z\",\n            \"status\": \"DRAFT\",\n            \"belongPanelId\": null,\n            \"type\": {\n                \"id\": 1,\n                \"name\": \"Trụ bảng hiflex\"\n            },\n            \"location\": {\n                \"id\": 5,\n                \"lat\": \"10.8499775\",\n                \"long\": \"106.6616569\",\n                \"isPlanning\": true,\n                \"districtId\": 1,\n                \"wardId\": 1,\n                \"fullAddress\": \"227 Nguyen Van Cu\",\n                \"typeId\": 1,\n                \"adTypeId\": 1,\n                \"imageUrls\": [],\n                \"createdAt\": \"2023-12-30T06:38:36.934Z\",\n                \"updatedAt\": \"2024-01-10T15:33:36.528Z\",\n                \"name\": \"Chợ Xóm Mới\",\n                \"belongLocationId\": null,\n                \"status\": \"APPROVED\",\n                \"district\": {\n                    \"id\": 1,\n                    \"name\": \"Thành Phố Thủ Đức\"\n                },\n                \"ward\": {\n                    \"id\": 1,\n                    \"name\": \"Phường An Khánh\",\n                    \"districtId\": 1\n                },\n                \"type\": {\n                    \"id\": 1,\n                    \"name\": \"Đất công/Công viên/Hành lang an toàn giao thông\"\n                },\n                \"adType\": {\n                    \"id\": 1,\n                    \"name\": \"Cổ động chính trị\"\n                }\n            }\n        }\n    ],\n    \"totalPages\": 2,\n    \"totalCount\": 18\n}"
+						}
+					]
 				},
 				{
-					"name": "List Copy",
+					"name": "Get",
 					"request": {
 						"auth": {
 							"type": "bearer",
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjYsImVtYWlsIjoiY2hpaGllbjIwMDI3MTFAZ21haWwuY29tIiwicm9sZSI6IldBUkRfT0ZGSUNFUiIsImlhdCI6MTcwNDA3NTI2OCwiZXhwIjoxNzA0MDc1NTY4fQ.R8IznZWwDOb9Mcalt1hvCatvvwinpUCpmc_6nWEWX_w",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoiY2hpaGllbjIwMDI3MUBnbWFpbC5jb20iLCJyb2xlIjoiY2RvIiwiaWF0IjoxNzA1MTUxNzY0LCJleHAiOjE3MDUxNTIwNjR9.-DrqyC4_lr2wp9X3eBo7Lg7X_6YQ32WRFyGXaIpeU2A",
 									"type": "string"
 								}
 							]
 						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8194/api/location-types?status=AWAITING_UPDATE",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8194",
-							"path": [
-								"api",
-								"location-types"
-							],
-							"query": [
-								{
-									"key": "districts",
-									"value": "1",
-									"disabled": true
-								},
-								{
-									"key": "wards",
-									"value": "1",
-									"disabled": true
-								},
-								{
-									"key": "typeId",
-									"value": "1",
-									"disabled": true
-								},
-								{
-									"key": "status",
-									"value": "AWAITING_UPDATE"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get",
-					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -798,13 +2021,84 @@
 								"panels",
 								"2"
 							]
-						}
+						},
+						"description": "This API returns detailed information for a panel based on its ID"
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Get",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8194/api/panels/2",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8194",
+									"path": [
+										"api",
+										"panels",
+										"2"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "1180"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"49c-g4VbT5UsxaEwZFQxnExJEUzW+1Q\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 14 Jan 2024 13:12:09 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"data\": {\n        \"id\": 2,\n        \"typeId\": 1,\n        \"width\": \"10\",\n        \"height\": \"20\",\n        \"locationId\": 5,\n        \"imageUrls\": [\n            \"https://firebasestorage.googleapis.com/v0/b/ads-management-a274a.appspot.com/o/report%2F1704989137018-Activity Diagram_ Android Application.png?alt=media\"\n        ],\n        \"createContractDate\": \"2023-12-23T00:00:00.000Z\",\n        \"expiredContractDate\": \"2024-12-23T00:00:00.000Z\",\n        \"companyEmail\": \"example@example.com\",\n        \"companyNumber\": \"123456789\",\n        \"createdAt\": \"2023-12-30T06:41:41.207Z\",\n        \"updatedAt\": \"2024-01-11T16:05:38.491Z\",\n        \"status\": \"AWAITING_UPDATE\",\n        \"belongPanelId\": 3,\n        \"type\": {\n            \"id\": 1,\n            \"name\": \"Trụ bảng hiflex\"\n        },\n        \"location\": {\n            \"id\": 5,\n            \"lat\": \"10.8499775\",\n            \"long\": \"106.6616569\",\n            \"isPlanning\": true,\n            \"districtId\": 1,\n            \"wardId\": 1,\n            \"fullAddress\": \"227 Nguyen Van Cu\",\n            \"typeId\": 1,\n            \"adTypeId\": 1,\n            \"imageUrls\": [],\n            \"createdAt\": \"2023-12-30T06:38:36.934Z\",\n            \"updatedAt\": \"2024-01-10T15:33:36.528Z\",\n            \"name\": \"Chợ Xóm Mới\",\n            \"belongLocationId\": null,\n            \"status\": \"APPROVED\",\n            \"district\": {\n                \"id\": 1,\n                \"name\": \"Thành Phố Thủ Đức\"\n            },\n            \"ward\": {\n                \"id\": 1,\n                \"name\": \"Phường An Khánh\",\n                \"districtId\": 1\n            },\n            \"type\": {\n                \"id\": 1,\n                \"name\": \"Đất công/Công viên/Hành lang an toàn giao thông\"\n            },\n            \"adType\": {\n                \"id\": 1,\n                \"name\": \"Cổ động chính trị\"\n            }\n        }\n    },\n    \"message\": \"Success\"\n}"
+						}
+					]
 				},
 				{
 					"name": "Create",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoiY2hpaGllbjIwMDI3MUBnbWFpbC5jb20iLCJyb2xlIjoiY2RvIiwiaWF0IjoxNzA1MTUxNzY0LCJleHAiOjE3MDUxNTIwNjR9.-DrqyC4_lr2wp9X3eBo7Lg7X_6YQ32WRFyGXaIpeU2A",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
@@ -813,7 +2107,7 @@
 								{
 									"key": "images",
 									"type": "file",
-									"src": "/C:/Users/9A312/Downloads/Activity Diagram_ Android Application.png"
+									"src": "postman-cloud:///1eeb09c8-0375-4240-a835-5f71fe1ed85e"
 								},
 								{
 									"key": "typeId",
@@ -868,9 +2162,119 @@
 								"api",
 								"panels"
 							]
-						}
+						},
+						"description": "| Attribute | Type | Description |\n| --- | --- | --- |\n| `images` | file | Represents new images |\n| `typeId` | number | Represents a numerical identifier, indicating the type of the uploaded content. |\n| `width` | number | Specifies the width of the panel. |\n| `height` | number | Specifies the height of the panel. |\n| `locationId` | number | Represents a numerical identifier associated with a location. |\n| `createContractDate` | string | Indicates the date and time when a contract was created. |\n| `expiredContractDate` | string | Indicates the date and time when the contract is set to expire. |\n| `companyEmail` | string | Represents the email associated with a company. |\n| `companyNumber` | number | Represents the numerical identifier or registration number of a company. |"
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Create",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "images",
+											"type": "file",
+											"src": "postman-cloud:///1eeb09c8-0375-4240-a835-5f71fe1ed85e"
+										},
+										{
+											"key": "typeId",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "width",
+											"value": "10",
+											"type": "text"
+										},
+										{
+											"key": "height",
+											"value": "20",
+											"type": "text"
+										},
+										{
+											"key": "locationId",
+											"value": "5",
+											"type": "text"
+										},
+										{
+											"key": "createContractDate",
+											"value": "2023-12-23T00:00:00.000Z",
+											"type": "text"
+										},
+										{
+											"key": "expiredContractDate",
+											"value": "2024-12-23T00:00:00.000Z",
+											"type": "text"
+										},
+										{
+											"key": "companyEmail",
+											"value": "example@example.com",
+											"type": "text"
+										},
+										{
+											"key": "companyNumber",
+											"value": "123456789",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:8194/api/panels",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8194",
+									"path": [
+										"api",
+										"panels"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "545"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"221-xhFCKS6UdCWFaS8XCfxqalZY5u8\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 14 Jan 2024 13:12:26 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"data\": {\n        \"id\": 46,\n        \"typeId\": 1,\n        \"width\": \"10\",\n        \"height\": \"20\",\n        \"locationId\": 5,\n        \"imageUrls\": [\n            \"https://firebasestorage.googleapis.com/v0/b/ads-management-a274a.appspot.com/o/report%2F1705237944338-Screenshot 2023-12-24 155418.png?alt=media\"\n        ],\n        \"createContractDate\": \"2023-12-23T00:00:00.000Z\",\n        \"expiredContractDate\": \"2024-12-23T00:00:00.000Z\",\n        \"companyEmail\": \"example@example.com\",\n        \"companyNumber\": \"123456789\",\n        \"createdAt\": \"2024-01-14T13:12:25.847Z\",\n        \"updatedAt\": \"2024-01-14T13:12:25.847Z\",\n        \"status\": \"DRAFT\",\n        \"belongPanelId\": null\n    },\n    \"message\": \"Success\"\n}"
+						}
+					]
 				}
 			]
 		},
@@ -880,10 +2284,20 @@
 				{
 					"name": "Get Ward By District",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUsImVtYWlsIjoiY2hpaGllbjIwMDI3MUBnbWFpbC5jb20iLCJyb2xlIjoiY2RvIiwiaWF0IjoxNzA1MjM3OTY5LCJleHAiOjE3MDUyMzgyNjl9.Us2Tj-n_tI0FnO-JxXF317Hy8oT6SabSHMJEVvCBrk8",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8194/api/districts/1/wards",
+							"raw": "http://localhost:8194/api/districts/",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -892,14 +2306,80 @@
 							"path": [
 								"api",
 								"districts",
-								"1",
-								"wards"
+								""
 							]
-						}
+						},
+						"description": "This api returns a list of ward belonging to specified district\n\n| Attribute | Type | Description |\n| --- | --- | --- |\n| order | string | Represents the order in which results should be sorted. Possible values: \"asc\" (ascending) or \"desc\" (descending). |"
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Get Ward By District",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8194/api/districts/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8194",
+									"path": [
+										"api",
+										"districts",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "749"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"2ed-VVvzD9ULRn0DTJCR97UHZPJ5WMs\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 14 Jan 2024 13:12:59 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": [\n        {\n            \"id\": 1,\n            \"name\": \"Thành Phố Thủ Đức\"\n        },\n        {\n            \"id\": 2,\n            \"name\": \"Huyện Cần Giờ\"\n        },\n        {\n            \"id\": 3,\n            \"name\": \"Huyện Nhà Bè\"\n        },\n        {\n            \"id\": 4,\n            \"name\": \"Huyện Bình Chánh\"\n        },\n        {\n            \"id\": 5,\n            \"name\": \"Quận Bình Thạnh\"\n        },\n        {\n            \"id\": 6,\n            \"name\": \"Quận Gò Vấp\"\n        },\n        {\n            \"id\": 7,\n            \"name\": \"Huyện Củ Chi\"\n        },\n        {\n            \"id\": 8,\n            \"name\": \"Huyện Hóc Môn\"\n        },\n        {\n            \"id\": 9,\n            \"name\": \"Quận Bình Tân Update\"\n        },\n        {\n            \"id\": 10,\n            \"name\": \"Quận Phú Nhuận\"\n        },\n        {\n            \"id\": 11,\n            \"name\": \"Quận Tân Phú\"\n        },\n        {\n            \"id\": 12,\n            \"name\": \"Quận Tân Bình\"\n        },\n        {\n            \"id\": 13,\n            \"name\": \"Quận 12\"\n        },\n        {\n            \"id\": 14,\n            \"name\": \"Quận 11\"\n        },\n        {\n            \"id\": 15,\n            \"name\": \"Quận 10\"\n        },\n        {\n            \"id\": 16,\n            \"name\": \"Quận 8\"\n        },\n        {\n            \"id\": 17,\n            \"name\": \"Quận 7\"\n        },\n        {\n            \"id\": 18,\n            \"name\": \"Quận 6\"\n        },\n        {\n            \"id\": 19,\n            \"name\": \"Quận 5\"\n        },\n        {\n            \"id\": 20,\n            \"name\": \"Quận 4\"\n        },\n        {\n            \"id\": 21,\n            \"name\": \"Quận 3\"\n        },\n        {\n            \"id\": 22,\n            \"name\": \"Quận 1\"\n        }\n    ]\n}"
+						}
+					]
 				}
 			]
+		}
+	],
+	"variable": [
+		{
+			"key": "URL",
+			"value": "http://localhost:8194"
 		}
 	]
 }
