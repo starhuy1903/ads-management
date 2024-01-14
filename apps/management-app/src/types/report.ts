@@ -25,7 +25,14 @@ type PanelReport = {
   panelId: number;
 } & CreateReportForm;
 
-export type ReportPayload = LocationReport | PanelReport;
+type AnyPointReport = {
+  userUuid: string;
+  targetType: 'Point';
+  lat: number;
+  long: number;
+} & CreateReportForm;
+
+export type ReportPayload = LocationReport | PanelReport | AnyPointReport;
 
 export type ReportType = {
   id: number;

@@ -12,12 +12,16 @@ import { useNavigate } from 'react-router-dom';
 
 interface AnyPointProps {
   address: string;
+  lat: number;
+  lng: number;
 }
 
-export default function AnyPoint({ address }: AnyPointProps) {
+export default function AnyPoint({ address, lat, lng }: AnyPointProps) {
   const navigate = useNavigate();
 
-  const goToReport = useCallback(() => ({}), []);
+  const goToReport = useCallback(() => {
+    navigate(`/report?=${lat}&lng=${lng}`);
+  }, [navigate, lat, lng]);
 
   return (
     <Stack spacing={2}>

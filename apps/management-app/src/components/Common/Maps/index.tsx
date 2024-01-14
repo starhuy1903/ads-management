@@ -62,6 +62,8 @@ function Maps(
       dispatch(
         showSidebar(SidebarKey.ANY_POINT, {
           address,
+          lat: event.lngLat.lat,
+          lng: event.lngLat.lng,
         }),
       );
     },
