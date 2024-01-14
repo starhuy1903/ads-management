@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "1e1b4c0e-c916-48d7-8c01-ae8491c36df5",
+		"_postman_id": "ad72c5c1-ba41-4ced-ae4b-365b7aba52a8",
 		"name": "Crew (Dân)",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "24967219"
@@ -195,7 +195,7 @@
 						},
 						{
 							"key": "targetType",
-							"value": "Location",
+							"value": "Point",
 							"type": "text"
 						},
 						{
@@ -207,7 +207,8 @@
 							"key": "locationId",
 							"value": "5",
 							"description": "Nếu targetType = Location. Ref của location",
-							"type": "text"
+							"type": "text",
+							"disabled": true
 						},
 						{
 							"key": "email",
@@ -226,6 +227,16 @@
 							"description": "Nếu targetType = Panel. Ref của panel",
 							"type": "text",
 							"disabled": true
+						},
+						{
+							"key": "lat",
+							"value": "10.236",
+							"type": "text"
+						},
+						{
+							"key": "long",
+							"value": "10.2563",
+							"type": "text"
 						}
 					]
 				},
