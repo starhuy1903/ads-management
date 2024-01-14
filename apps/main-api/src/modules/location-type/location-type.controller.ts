@@ -19,14 +19,14 @@ import { PageOptionsLocationTypeDto } from './dto/find-all-location-type.dto';
 import { CustomResponse } from '../../middlewares'; // Import your CustomResponse type
 import { UserRole } from '@prisma/client';
 import { Roles } from '../auth/decorators';
-import { JwtGuard } from '../auth/guards';
+import { JwtGuard, RolesGuard } from '../auth/guards';
 
 @Controller('location-types')
 export class LocationTypeController {
   constructor(private readonly locationTypeService: LocationTypeService) {}
 
   @Post()
-  @UseGuards(JwtGuard)
+  @UseGuards(JwtGuard, RolesGuard)
   @Roles(UserRole.cdo)
   async create(
     @Body() createLocationTypeDto: CreateLocationTypeDto,
@@ -72,7 +72,7 @@ export class LocationTypeController {
   }
 
   @Patch(':id')
-  @UseGuards(JwtGuard)
+  @UseGuards(JwtGuard, RolesGuard)
   @Roles(UserRole.cdo)
   async update(
     @Param('id') id: string,
@@ -97,7 +97,7 @@ export class LocationTypeController {
   }
 
   @Delete(':id')
-  @UseGuards(JwtGuard)
+  @UseGuards(JwtGuard, RolesGuard)
   @Roles(UserRole.cdo)
   async remove(@Param('id') id: string, @Res() res: CustomResponse) {
     try {

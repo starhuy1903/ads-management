@@ -8,88 +8,13 @@
 	},
 	"item": [
 		{
-			"name": "Sign up",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"email\": \"chihien20022@gmail.com\",\n    \"password\": \"123456789\",\n    \"firstName\": \"Hien\",\n    \"lastName\": \"Truong\",\n    \"role\": \"ward_officer\",\n    \"wardId\": 1\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": "{{URL}}/api/auth/create-user"
-			},
-			"response": [
-				{
-					"name": "Success",
-					"originalRequest": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"email\": \"chihien20025@gmail.com\",\n    \"password\": \"123456789\",\n    \"firstName\": \"Hien\",\n    \"lastName\": \"Truong\",\n    \"role\": \"district_officer\",\n    \"districtId\": 1\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": "{{URL}}/api/auth/create-user"
-					},
-					"status": "Created",
-					"code": 201,
-					"_postman_previewlanguage": "json",
-					"header": [
-						{
-							"key": "X-Powered-By",
-							"value": "Express"
-						},
-						{
-							"key": "Access-Control-Allow-Origin",
-							"value": "*"
-						},
-						{
-							"key": "Content-Type",
-							"value": "application/json; charset=utf-8"
-						},
-						{
-							"key": "Content-Length",
-							"value": "38"
-						},
-						{
-							"key": "ETag",
-							"value": "W/\"26-bPwNG458oL+42k8l9BND77BInJo\""
-						},
-						{
-							"key": "Date",
-							"value": "Tue, 02 Jan 2024 01:05:54 GMT"
-						},
-						{
-							"key": "Connection",
-							"value": "keep-alive"
-						},
-						{
-							"key": "Keep-Alive",
-							"value": "timeout=5"
-						}
-					],
-					"cookie": [],
-					"body": "{\n    \"message\": \"Create user successfully\"\n}"
-				}
-			]
-		},
-		{
 			"name": "Sign in",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"email\": \"chihien20022@gmail.com\",\n    \"password\": \"123222\"\n}",
+					"raw": "{\n    \"email\": \"chihien20023@gmail.com\",\n    \"password\": \"123456789\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"

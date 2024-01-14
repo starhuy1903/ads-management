@@ -1,7 +1,15 @@
-import { Box } from '@mui/material';
+import {
+  Box,
+  IconButton,
+  Menu,
+  MenuItem,
+  Tooltip,
+  Typography,
+} from '@mui/material';
 import { Avatar } from '@mui/material';
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Marker } from 'react-map-gl';
+import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '@/store';
 import Maps from '@/components/Common/Maps';
 import ActionBar from '@/components/Common/Maps/ActionBar';
@@ -20,11 +28,16 @@ import anonymousUser from '@/utils/anonymous-user';
 
 export default function CitizenHome() {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const {
     isShowingPlannedLocation,
     isShowingViolatedReport,
     selectedLocation,
   } = useAppSelector((state) => state.maps);
+
+  const ref = useRef<any>(null);
+
+  const [anchorElUser, setAnchorElUser] = useState<HTMLElement | null>(null);
 
   const selectedViewPort = selectedLocation
     ? {
@@ -57,6 +70,7 @@ export default function CitizenHome() {
 
   const handleViewLocationDetail = useCallback(
     (loc: AdLocation) => {
+      ref.current?.clearMarker();
       dispatch(setSelectedLocation(loc));
       dispatch(
         showSidebar(SidebarKey.AD_DETAIL, {
@@ -84,6 +98,17 @@ export default function CitizenHome() {
     },
     [dispatch],
   );
+
+  const handleOpenUserMenu = useCallback(
+    (event: React.MouseEvent<HTMLElement>) => {
+      setAnchorElUser(event.currentTarget);
+    },
+    [],
+  );
+
+  const handleCloseUserMenu = useCallback(() => {
+    setAnchorElUser(null);
+  }, []);
 
   useEffect(() => {
     if (selectedLocation) {
@@ -141,7 +166,10 @@ export default function CitizenHome() {
               border: isSelected ? '2px solid rgb(103 232 249);' : 'none',
             }}
             children={hasAdPanel ? 'QC' : ''}
-            onClick={() => handleViewLocationDetail(loc)}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleViewLocationDetail(loc);
+            }}
           />
         </Marker>
       );
@@ -158,8 +186,49 @@ export default function CitizenHome() {
         zIndex={-1}
         display="flex"
       >
-        <Maps selectedViewPort={selectedViewPort}>
+        <Maps
+          ref={ref}
+          selectedViewPort={selectedViewPort}
+          onClearSelectedLocation={() => {
+            dispatch(setSelectedLocation(null));
+          }}
+        >
           {renderLocationMarkers()}
+
+          <Box
+            sx={{
+              position: 'absolute',
+              top: 10,
+              right: 10,
+            }}
+          >
+            <Tooltip title="Open settings">
+              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+              </IconButton>
+            </Tooltip>
+            <Menu
+              sx={{ mt: '45px' }}
+              id="menu-appbar"
+              anchorEl={anchorElUser}
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              open={Boolean(anchorElUser)}
+              onClose={handleCloseUserMenu}
+            >
+              <MenuItem onClick={() => navigate('/login')}>
+                <Typography textAlign="center">Log in</Typography>
+              </MenuItem>
+            </Menu>
+          </Box>
+
           <Box
             sx={{
               position: 'absolute',

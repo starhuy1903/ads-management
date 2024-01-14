@@ -43,6 +43,8 @@ export default function CitizenReport() {
   const [searchParams] = useSearchParams();
   const locationId = searchParams.get('location');
   const panelId = searchParams.get('panel');
+  const pointLat = searchParams.get('lat');
+  const pointLng = searchParams.get('lng');
 
   const navigate = useNavigate();
 
@@ -121,9 +123,18 @@ export default function CitizenReport() {
   }) => <UploadImageCard open={open} disabled={disabled} />;
 
   const onSubmit: SubmitHandler<CreateReportForm> = async (data) => {
-    const targetObject = locationId
-      ? { targetType: 'Location', locationId: Number(locationId) }
-      : { targetType: 'Panel', panelId: Number(panelId) };
+    let targetObject;
+    if (locationId) {
+      targetObject = { targetType: 'Location', locationId: Number(locationId) };
+    } else if (panelId) {
+      targetObject = { targetType: 'Panel', panelId: Number(panelId) };
+    } else {
+      targetObject = {
+        targetType: 'Point',
+        lat: Number(pointLat),
+        long: Number(pointLng),
+      };
+    }
 
     const submitData = {
       ...data,

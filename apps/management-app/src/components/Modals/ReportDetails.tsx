@@ -9,7 +9,11 @@ import {
 } from '@mui/material';
 import parse from 'html-react-parser';
 import { useCallback } from 'react';
-import { CreatedReport } from '@/types/report';
+import {
+  CreatedLocationReport,
+  CreatedPanelReport,
+  CreatedReport,
+} from '@/types/report';
 import { formatDateTime } from '@/utils/datetime';
 import GeneralModal from './GeneralModal';
 
@@ -19,9 +23,27 @@ interface ReportDetailProps {
   onModalClose: () => void;
 }
 
-function ReportDetail({ reports, createNew, onModalClose }: ReportDetailProps) {
-  console.log({ reports });
+const isLocationReport = (
+  report: CreatedReport,
+): report is CreatedLocationReport => {
+  return report.targetType === 'Location';
+};
 
+const isPanelReport = (report: CreatedReport): report is CreatedPanelReport => {
+  return report.targetType === 'Panel';
+};
+
+const getTitle = (report: CreatedReport) => {
+  if (isLocationReport(report)) {
+    return `${report.targetType}: ${report.location.name}`;
+  }
+  if (isPanelReport(report)) {
+    return `${report.targetType}: ${report.panel.location.name}`;
+  }
+  return 'Unknown';
+};
+
+function ReportDetail({ reports, createNew, onModalClose }: ReportDetailProps) {
   const handleCreateNew = useCallback(() => {
     onModalClose();
     createNew();
@@ -41,7 +63,7 @@ function ReportDetail({ reports, createNew, onModalClose }: ReportDetailProps) {
             Đang xử lí
           </Typography>
         );
-      case 'ACCEPTED':
+      case 'DONE':
         return (
           <Typography component="span" color="success">
             Hoàn tất
@@ -71,9 +93,9 @@ function ReportDetail({ reports, createNew, onModalClose }: ReportDetailProps) {
       </Stack>
       <Stack spacing={2}>
         {reports.map((report) => (
-          <Card>
+          <Card key={report.id}>
             <CardHeader
-              title={`${report.targetType}: ${report.location.name}`}
+              title={getTitle(report)}
               subheader={formatDateTime(report?.createdAt)}
             />
             <CardContent>

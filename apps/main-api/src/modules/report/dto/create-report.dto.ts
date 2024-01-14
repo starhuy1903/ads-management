@@ -57,10 +57,12 @@ export class CreateReportDto {
   @IsString()
   readonly userUuid: string;
 
+  @Type(() => Number)
   @IsOptional()
   @IsNumber()
   readonly lat?: number;
 
+  @Type(() => Number)
   @IsOptional()
   @IsNumber()
   readonly long?: number;

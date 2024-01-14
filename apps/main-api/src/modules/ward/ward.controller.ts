@@ -17,7 +17,7 @@ import { CreateWardDto } from './dto/create-ward.dto';
 import { UpdateWardDto } from './dto/update-ward.dto';
 import { PageOptionsWardDto } from './dto/find-all-ward.dto';
 import { CustomResponse } from '../../middlewares'; // Import your CustomResponse type
-import { JwtGuard } from '../auth/guards';
+import { JwtGuard, RolesGuard } from '../auth/guards';
 import { UserRole } from '@prisma/client';
 import { Roles } from '../auth/decorators';
 
@@ -26,7 +26,7 @@ export class WardController {
   constructor(private readonly wardService: WardService) {}
 
   @Post()
-  @UseGuards(JwtGuard)
+  @UseGuards(JwtGuard, RolesGuard)
   @Roles(UserRole.cdo)
   async create(
     @Body() createWardDto: CreateWardDto,
@@ -47,8 +47,7 @@ export class WardController {
   }
 
   @Get()
-  @UseGuards(JwtGuard)
-  @Roles(UserRole.cdo)
+  @UseGuards(JwtGuard, RolesGuard)
   @Roles(UserRole.cdo, UserRole.ward_officer, UserRole.district_officer)
   async findAll(@Query() pageOptionsWardDto: PageOptionsWardDto) {
     try {
@@ -68,7 +67,7 @@ export class WardController {
   }
 
   @Get(':id')
-  @UseGuards(JwtGuard)
+  @UseGuards(JwtGuard, RolesGuard)
   @Roles(UserRole.cdo)
   async findOne(@Param('id') id: string, @Res() res: CustomResponse) {
     try {
@@ -83,7 +82,7 @@ export class WardController {
   }
 
   @Patch(':id')
-  @UseGuards(JwtGuard)
+  @UseGuards(JwtGuard, RolesGuard)
   @Roles(UserRole.cdo)
   async update(
     @Param('id') id: string,
@@ -105,7 +104,7 @@ export class WardController {
   }
 
   @Delete(':id')
-  @UseGuards(JwtGuard)
+  @UseGuards(JwtGuard, RolesGuard)
   @Roles(UserRole.cdo)
   async remove(@Param('id') id: string, @Res() res: CustomResponse) {
     try {
