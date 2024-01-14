@@ -25,13 +25,10 @@ interface ReportDetailProps {
 
 const isLocationReport = (
   report: CreatedReport,
-): report is CreatedLocationReport => {
-  return report.targetType === 'Location';
-};
+): report is CreatedLocationReport => report.targetType === 'Location';
 
-const isPanelReport = (report: CreatedReport): report is CreatedPanelReport => {
-  return report.targetType === 'Panel';
-};
+const isPanelReport = (report: CreatedReport): report is CreatedPanelReport =>
+  report.targetType === 'Panel';
 
 const getTitle = (report: CreatedReport) => {
   if (isLocationReport(report)) {
@@ -40,7 +37,7 @@ const getTitle = (report: CreatedReport) => {
   if (isPanelReport(report)) {
     return `${report.targetType}: ${report.panel.location.name}`;
   }
-  return 'Unknown';
+  return 'Point';
 };
 
 function ReportDetail({ reports, createNew, onModalClose }: ReportDetailProps) {

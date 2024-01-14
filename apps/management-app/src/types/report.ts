@@ -69,4 +69,15 @@ export interface CreatedPanelReport extends CreatedReportBase {
   panel: Panel;
 }
 
-export type CreatedReport = CreatedLocationReport | CreatedPanelReport;
+export interface CreatedPointReport extends CreatedReportBase {
+  targetType: 'Point';
+  panelId: null;
+  locationId: null;
+  lat: number;
+  long: number;
+}
+
+export type CreatedReport =
+  | CreatedLocationReport
+  | CreatedPanelReport
+  | CreatedPointReport;
